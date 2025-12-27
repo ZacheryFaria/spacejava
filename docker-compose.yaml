@@ -1,0 +1,16 @@
+services:
+  postgres:
+    image: postgres:18.0
+    ports:
+      - 5437:5432
+    volumes:
+      - postgres_data:/var/lib/postgresql
+    restart: always
+    environment:
+      POSTGRES_DB: spacegame
+      POSTGRES_USER: space
+      POSTGRES_PASSWORD: traders
+      POSTGRES_HOST_AUTH_METHOD: trust
+
+volumes:
+  postgres_data:
