@@ -30,7 +30,6 @@ import javax.net.ssl.*;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.UnsupportedEncodingException;
 import java.lang.reflect.Type;
 import java.net.URI;
 import java.net.URLConnection;
@@ -91,6 +90,19 @@ public class ApiClient {
     protected JSON json;
 
     protected HttpLoggingInterceptor loggingInterceptor;
+
+    public static ApiClient getAccountApiClient() {
+        ApiClient apiClient = new ApiClient();
+        String apiKey = System.getenv("ACCOUNT_TOKEN");
+        apiClient.setBearerToken(apiKey);
+        return apiClient;
+    }
+
+    public static ApiClient getAgentApiClient(String agentToken) {
+        ApiClient apiClient = new ApiClient();
+        apiClient.setBearerToken(agentToken);
+        return apiClient;
+    }
 
     /**
      * Basic constructor for ApiClient

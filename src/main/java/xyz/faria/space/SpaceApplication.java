@@ -1,15 +1,17 @@
 package xyz.faria.space;
 
-import org.springframework.boot.SpringApplication;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
 import com.vaadin.flow.component.dependency.StyleSheet;
 import com.vaadin.flow.component.page.AppShellConfigurator;
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.scheduling.annotation.EnableAsync;
 
 @SpringBootApplication
 @StyleSheet("styles.css")
+@EnableAsync
 public class SpaceApplication implements AppShellConfigurator {
 
-    public static void main(String[] args) {
+    static void main(String[] args) {
         SpringApplication.run(SpaceApplication.class, args);
     }
 }
