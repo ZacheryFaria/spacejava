@@ -18,6 +18,10 @@ import com.google.gson.annotations.SerializedName;
 import com.google.gson.reflect.TypeToken;
 import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonWriter;
+import jakarta.persistence.ElementCollection;
+import jakarta.persistence.Embeddable;
+import jakarta.persistence.Embedded;
+import org.hibernate.annotations.EmbeddedColumnNaming;
 import xyz.faria.space.spaceapi.client.JSON;
 
 import java.io.IOException;
@@ -28,6 +32,7 @@ import java.util.*;
  * The terms to fulfill the contract.
  */
 
+@Embeddable
 public class ContractTerms {
     public static final String SERIALIZED_NAME_DEADLINE = "deadline";
     @SerializedName(SERIALIZED_NAME_DEADLINE)
@@ -37,11 +42,14 @@ public class ContractTerms {
     public static final String SERIALIZED_NAME_PAYMENT = "payment";
     @SerializedName(SERIALIZED_NAME_PAYMENT)
     @javax.annotation.Nonnull
+    @Embedded
+    @EmbeddedColumnNaming("terms_payment_%s")
     private ContractPayment payment;
 
     public static final String SERIALIZED_NAME_DELIVER = "deliver";
     @SerializedName(SERIALIZED_NAME_DELIVER)
     @javax.annotation.Nullable
+    @ElementCollection
     private List<ContractDeliverGood> deliver = new ArrayList<>();
 
     public ContractTerms() {

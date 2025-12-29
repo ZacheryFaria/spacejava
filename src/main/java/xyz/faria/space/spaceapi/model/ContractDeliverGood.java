@@ -18,6 +18,7 @@ import com.google.gson.annotations.SerializedName;
 import com.google.gson.reflect.TypeToken;
 import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonWriter;
+import jakarta.persistence.Embeddable;
 import xyz.faria.space.spaceapi.client.JSON;
 
 import java.io.IOException;
@@ -27,6 +28,7 @@ import java.util.*;
  * The details of a delivery contract. Includes the type of good, units needed, and the destination.
  */
 
+@Embeddable
 public class ContractDeliverGood {
     public static final String SERIALIZED_NAME_TRADE_SYMBOL = "tradeSymbol";
     @SerializedName(SERIALIZED_NAME_TRADE_SYMBOL)

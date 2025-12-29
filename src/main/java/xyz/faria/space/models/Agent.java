@@ -10,7 +10,7 @@ import java.util.UUID;
 @Getter
 @Setter
 @Entity
-@Table(name = "agent")
+@Table(name = "agent", indexes = {@Index(name = "idx_agent_symbol", columnList = "symbol,reset_date", unique = true)})
 public class Agent {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
