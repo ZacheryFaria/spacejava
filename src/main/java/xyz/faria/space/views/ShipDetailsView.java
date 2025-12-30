@@ -9,7 +9,6 @@ import com.vaadin.flow.router.BeforeEnterObserver;
 import com.vaadin.flow.router.Route;
 import org.springframework.context.ApplicationListener;
 import org.springframework.stereotype.Component;
-import xyz.faria.space.components.ShipCard;
 import xyz.faria.space.models.Ship;
 import xyz.faria.space.repositories.ShipRepository;
 import xyz.faria.space.services.ShipService;
@@ -26,9 +25,6 @@ public class ShipDetailsView extends VerticalLayout implements BeforeEnterObserv
     private ShipService shipService;
 
     private String shipSymbol;
-
-    private ShipCard detailsCard;
-    private ShipCard controlsCard;
 
     private Ship ship;
 
@@ -52,10 +48,15 @@ public class ShipDetailsView extends VerticalLayout implements BeforeEnterObserv
         } else {
             this.ship = shipData.get();
         }
-        this.detailsCard = new ShipDetailCard(ship);
-        add(this.detailsCard);
-        this.controlsCard = new ShipControlsCard(ship, this.shipService);
-        add(this.controlsCard);
+        render();
+    }
+
+    private void render() {
+        this.removeAll();
+        var detailsCard = new ShipDetailCard(ship);
+        add(detailsCard);
+        var controlsCard = new ShipControlsCard(ship, this.shipService);
+        add(controlsCard);
     }
 
     @Override
@@ -63,11 +64,7 @@ public class ShipDetailsView extends VerticalLayout implements BeforeEnterObserv
         this.ship = event.getShip();
         var ui = UI.getCurrent();
         ui.access(() -> {
-            this.removeAll();
-            this.detailsCard = new ShipDetailCard(ship);
-            add(this.detailsCard);
-            this.controlsCard = new ShipControlsCard(ship, this.shipService);
-            add(this.controlsCard);
+            render();
             ui.push();
         });
     }
