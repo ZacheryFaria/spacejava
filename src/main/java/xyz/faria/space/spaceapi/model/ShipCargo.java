@@ -13,17 +13,28 @@
 
 package xyz.faria.space.spaceapi.model;
 
-import com.google.gson.*;
+import com.google.gson.Gson;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.TypeAdapter;
+import com.google.gson.TypeAdapterFactory;
 import com.google.gson.annotations.SerializedName;
 import com.google.gson.reflect.TypeToken;
 import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonWriter;
 import jakarta.persistence.ElementCollection;
 import jakarta.persistence.Embeddable;
-import xyz.faria.space.spaceapi.client.JSON;
-
+import jakarta.persistence.FetchType;
 import java.io.IOException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
+import java.util.Set;
+import xyz.faria.space.spaceapi.client.JSON;
 
 /**
  * Ship cargo details.
@@ -31,6 +42,7 @@ import java.util.*;
 
 @Embeddable
 public class ShipCargo {
+
     public static final String SERIALIZED_NAME_CAPACITY = "capacity";
     @SerializedName(SERIALIZED_NAME_CAPACITY)
     @javax.annotation.Nonnull
@@ -44,7 +56,7 @@ public class ShipCargo {
     public static final String SERIALIZED_NAME_INVENTORY = "inventory";
     @SerializedName(SERIALIZED_NAME_INVENTORY)
     @javax.annotation.Nonnull
-    @ElementCollection
+    @ElementCollection(fetch = FetchType.EAGER)
     private List<ShipCargoItem> inventory = new ArrayList<>();
 
     public ShipCargo() {
@@ -56,8 +68,7 @@ public class ShipCargo {
     }
 
     /**
-     * The max number of items that can be stored in the cargo hold.
-     * minimum: 0
+     * The max number of items that can be stored in the cargo hold. minimum: 0
      *
      * @return capacity
      */
@@ -77,8 +88,7 @@ public class ShipCargo {
     }
 
     /**
-     * The number of items currently stored in the cargo hold.
-     * minimum: 0
+     * The number of items currently stored in the cargo hold. minimum: 0
      *
      * @return units
      */
@@ -115,6 +125,10 @@ public class ShipCargo {
         return inventory;
     }
 
+    public String toCapacityString() {
+        return String.format("%d / %d", units, capacity);
+    }
+
     public void setInventory(@javax.annotation.Nonnull List<ShipCargoItem> inventory) {
         this.inventory = inventory;
     }
@@ -130,8 +144,8 @@ public class ShipCargo {
         }
         ShipCargo shipCargo = (ShipCargo) o;
         return Objects.equals(this.capacity, shipCargo.capacity) &&
-                Objects.equals(this.units, shipCargo.units) &&
-                Objects.equals(this.inventory, shipCargo.inventory);
+            Objects.equals(this.units, shipCargo.units) &&
+            Objects.equals(this.inventory, shipCargo.inventory);
     }
 
     @Override
@@ -142,16 +156,16 @@ public class ShipCargo {
     @Override
     public String toString() {
         String sb = "class ShipCargo {\n" +
-                "    capacity: " + toIndentedString(capacity) + "\n" +
-                "    units: " + toIndentedString(units) + "\n" +
-                "    inventory: " + toIndentedString(inventory) + "\n" +
-                "}";
+            "    capacity: " + toIndentedString(capacity) + "\n" +
+            "    units: " + toIndentedString(units) + "\n" +
+            "    inventory: " + toIndentedString(inventory) + "\n" +
+            "}";
         return sb;
     }
 
     /**
-     * Convert the given object to string with each line indented by 4 spaces
-     * (except the first line).
+     * Convert the given object to string with each line indented by 4 spaces (except the first
+     * line).
      */
     private String toIndentedString(Object o) {
         if (o == null) {
@@ -169,7 +183,8 @@ public class ShipCargo {
         openapiFields = new HashSet<String>(Arrays.asList("capacity", "units", "inventory"));
 
         // a set of required properties/fields (JSON key names)
-        openapiRequiredFields = new HashSet<String>(Arrays.asList("capacity", "units", "inventory"));
+        openapiRequiredFields = new HashSet<String>(
+            Arrays.asList("capacity", "units", "inventory"));
     }
 
     /**
@@ -181,7 +196,9 @@ public class ShipCargo {
     public static void validateJsonElement(JsonElement jsonElement) throws IOException {
         if (jsonElement == null) {
             if (!ShipCargo.openapiRequiredFields.isEmpty()) { // has required fields but JSON element is null
-                throw new IllegalArgumentException(String.format(java.util.Locale.ROOT, "The required field(s) %s in ShipCargo is not found in the empty JSON string", ShipCargo.openapiRequiredFields));
+                throw new IllegalArgumentException(String.format(java.util.Locale.ROOT,
+                    "The required field(s) %s in ShipCargo is not found in the empty JSON string",
+                    ShipCargo.openapiRequiredFields));
             }
         }
 
@@ -189,20 +206,26 @@ public class ShipCargo {
         // check to see if the JSON string contains additional fields
         for (Map.Entry<String, JsonElement> entry : entries) {
             if (!ShipCargo.openapiFields.contains(entry.getKey())) {
-                throw new IllegalArgumentException(String.format(java.util.Locale.ROOT, "The field `%s` in the JSON string is not defined in the `ShipCargo` properties. JSON: %s", entry.getKey(), jsonElement));
+                throw new IllegalArgumentException(String.format(java.util.Locale.ROOT,
+                    "The field `%s` in the JSON string is not defined in the `ShipCargo` properties. JSON: %s",
+                    entry.getKey(), jsonElement));
             }
         }
 
         // check to make sure all required properties/fields are present in the JSON string
         for (String requiredField : ShipCargo.openapiRequiredFields) {
             if (jsonElement.getAsJsonObject().get(requiredField) == null) {
-                throw new IllegalArgumentException(String.format(java.util.Locale.ROOT, "The required field `%s` is not found in the JSON string: %s", requiredField, jsonElement));
+                throw new IllegalArgumentException(String.format(java.util.Locale.ROOT,
+                    "The required field `%s` is not found in the JSON string: %s", requiredField,
+                    jsonElement));
             }
         }
         JsonObject jsonObj = jsonElement.getAsJsonObject();
         // ensure the json data is an array
         if (!jsonObj.get("inventory").isJsonArray()) {
-            throw new IllegalArgumentException(String.format(java.util.Locale.ROOT, "Expected the field `inventory` to be an array in the JSON string but got `%s`", jsonObj.get("inventory").toString()));
+            throw new IllegalArgumentException(String.format(java.util.Locale.ROOT,
+                "Expected the field `inventory` to be an array in the JSON string but got `%s`",
+                jsonObj.get("inventory").toString()));
         }
 
         JsonArray jsonArrayinventory = jsonObj.getAsJsonArray("inventory");
@@ -213,6 +236,7 @@ public class ShipCargo {
     }
 
     public static class CustomTypeAdapterFactory implements TypeAdapterFactory {
+
         @SuppressWarnings("unchecked")
         @Override
         public <T> TypeAdapter<T> create(Gson gson, TypeToken<T> type) {
@@ -221,7 +245,7 @@ public class ShipCargo {
             }
             final TypeAdapter<JsonElement> elementAdapter = gson.getAdapter(JsonElement.class);
             final TypeAdapter<ShipCargo> thisAdapter
-                    = gson.getDelegateAdapter(this, TypeToken.get(ShipCargo.class));
+                = gson.getDelegateAdapter(this, TypeToken.get(ShipCargo.class));
 
             return (TypeAdapter<T>) new TypeAdapter<ShipCargo>() {
                 @Override

@@ -1,16 +1,26 @@
 package xyz.faria.space.models;
 
-import jakarta.persistence.*;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.Index;
+import jakarta.persistence.Table;
+import jakarta.persistence.Temporal;
+import jakarta.persistence.TemporalType;
+import java.sql.Date;
 import lombok.Getter;
 import lombok.Setter;
-
-import java.sql.Date;
+import xyz.faria.space.spaceapi.client.ApiClient;
 
 @Getter
 @Setter
 @Entity
-@Table(name = "agent", indexes = {@Index(name = "idx_agent_symbol", columnList = "symbol,reset_date", unique = true)})
+@Table(name = "agent", indexes = {
+    @Index(name = "idx_agent_symbol", columnList = "symbol,reset_date", unique = true)})
 public class Agent {
+
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "id", nullable = false)
@@ -37,4 +47,8 @@ public class Agent {
     @Column(name = "reset_date", nullable = false)
     @Temporal(TemporalType.DATE)
     private Date resetDate;
+
+    public ApiClient getAgentClient() {
+        return ApiClient.getAgentApiClient(this.getToken());
+    }
 }
