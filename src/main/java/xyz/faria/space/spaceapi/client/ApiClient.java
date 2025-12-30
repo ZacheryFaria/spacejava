@@ -437,13 +437,16 @@ public class ApiClient {
      * @param tokenSupplier The supplier of bearer tokens
      */
     public void setBearerToken(Supplier<String> tokenSupplier) {
+        boolean ok = false;
         for (Authentication auth : authentications.values()) {
             if (auth instanceof HttpBearerAuth) {
                 ((HttpBearerAuth) auth).setBearerToken(tokenSupplier);
-                return;
+                ok = true;
             }
         }
-        throw new RuntimeException("No Bearer authentication configured!");
+        if (!ok) {
+            throw new RuntimeException("No Bearer authentication configured!");
+        }
     }
 
     /**

@@ -19,6 +19,8 @@ import com.google.gson.annotations.SerializedName;
 import com.google.gson.reflect.TypeToken;
 import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonWriter;
+import jakarta.persistence.Embeddable;
+import jakarta.persistence.Embedded;
 import xyz.faria.space.spaceapi.client.JSON;
 
 import java.io.IOException;
@@ -28,6 +30,7 @@ import java.util.*;
 /**
  * The reactor of the ship. The reactor is responsible for powering the ship&#39;s systems and weapons.
  */
+@Embeddable
 public class ShipReactor {
     /**
      * Symbol of the reactor.
@@ -120,6 +123,7 @@ public class ShipReactor {
     public static final String SERIALIZED_NAME_REQUIREMENTS = "requirements";
     @SerializedName(SERIALIZED_NAME_REQUIREMENTS)
     @javax.annotation.Nonnull
+    @Embedded
     private ShipRequirements requirements;
 
     public static final String SERIALIZED_NAME_QUALITY = "quality";

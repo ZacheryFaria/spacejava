@@ -9,4 +9,6 @@ import java.util.UUID;
 
 public interface AgentRepository extends CrudRepository<Agent, UUID> {
     Optional<Agent> findByResetDate(Date resetDate);
+
+    Optional<Agent> findBySymbolAndResetDate(String symbol, Date resetDate);
 }

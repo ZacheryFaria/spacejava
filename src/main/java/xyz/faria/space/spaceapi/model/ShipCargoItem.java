@@ -18,6 +18,7 @@ import com.google.gson.annotations.SerializedName;
 import com.google.gson.reflect.TypeToken;
 import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonWriter;
+import jakarta.persistence.Embeddable;
 import xyz.faria.space.spaceapi.client.JSON;
 
 import java.io.IOException;
@@ -27,6 +28,7 @@ import java.util.*;
  * The type of cargo item and the number of units.
  */
 
+@Embeddable
 public class ShipCargoItem {
     public static final String SERIALIZED_NAME_SYMBOL = "symbol";
     @SerializedName(SERIALIZED_NAME_SYMBOL)

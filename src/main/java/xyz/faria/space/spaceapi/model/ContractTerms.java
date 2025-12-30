@@ -21,7 +21,6 @@ import com.google.gson.stream.JsonWriter;
 import jakarta.persistence.ElementCollection;
 import jakarta.persistence.Embeddable;
 import jakarta.persistence.Embedded;
-import org.hibernate.annotations.EmbeddedColumnNaming;
 import xyz.faria.space.spaceapi.client.JSON;
 
 import java.io.IOException;
@@ -43,7 +42,6 @@ public class ContractTerms {
     @SerializedName(SERIALIZED_NAME_PAYMENT)
     @javax.annotation.Nonnull
     @Embedded
-    @EmbeddedColumnNaming("terms_payment_%s")
     private ContractPayment payment;
 
     public static final String SERIALIZED_NAME_DELIVER = "deliver";

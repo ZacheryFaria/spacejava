@@ -19,6 +19,8 @@ import com.google.gson.annotations.SerializedName;
 import com.google.gson.reflect.TypeToken;
 import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonWriter;
+import jakarta.persistence.Embeddable;
+import jakarta.persistence.Embedded;
 import xyz.faria.space.spaceapi.client.JSON;
 
 import java.io.IOException;
@@ -28,6 +30,7 @@ import java.util.*;
 /**
  * The frame of the ship. The frame determines the number of modules and mounting points of the ship, as well as base fuel capacity. As the condition of the frame takes more wear, the ship will become more sluggish and less maneuverable.
  */
+@Embeddable
 public class ShipFrame {
     /**
      * Symbol of the frame.
@@ -152,6 +155,7 @@ public class ShipFrame {
     public static final String SERIALIZED_NAME_REQUIREMENTS = "requirements";
     @SerializedName(SERIALIZED_NAME_REQUIREMENTS)
     @javax.annotation.Nonnull
+    @Embedded
     private ShipRequirements requirements;
 
     public static final String SERIALIZED_NAME_QUALITY = "quality";

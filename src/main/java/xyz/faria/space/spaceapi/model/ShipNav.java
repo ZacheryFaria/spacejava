@@ -18,6 +18,8 @@ import com.google.gson.annotations.SerializedName;
 import com.google.gson.reflect.TypeToken;
 import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonWriter;
+import jakarta.persistence.Embeddable;
+import jakarta.persistence.Embedded;
 import xyz.faria.space.spaceapi.client.JSON;
 
 import java.io.IOException;
@@ -26,6 +28,7 @@ import java.util.*;
 /**
  * The navigation information of the ship.
  */
+@Embeddable
 public class ShipNav {
     public static final String SERIALIZED_NAME_SYSTEM_SYMBOL = "systemSymbol";
     @SerializedName(SERIALIZED_NAME_SYSTEM_SYMBOL)
@@ -40,6 +43,7 @@ public class ShipNav {
     public static final String SERIALIZED_NAME_ROUTE = "route";
     @SerializedName(SERIALIZED_NAME_ROUTE)
     @javax.annotation.Nonnull
+    @Embedded
     private ShipNavRoute route;
 
     public static final String SERIALIZED_NAME_STATUS = "status";

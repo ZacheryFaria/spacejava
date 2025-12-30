@@ -19,6 +19,7 @@ import com.google.gson.annotations.SerializedName;
 import com.google.gson.reflect.TypeToken;
 import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonWriter;
+import jakarta.persistence.Embeddable;
 import xyz.faria.space.spaceapi.client.JSON;
 
 import java.io.IOException;
@@ -27,6 +28,7 @@ import java.util.*;
 /**
  * A mount is installed on the exterier of a ship.
  */
+@Embeddable
 public class ShipMount {
     /**
      * Symbo of this mount.

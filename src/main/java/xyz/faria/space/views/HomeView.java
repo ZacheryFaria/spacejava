@@ -37,15 +37,28 @@ public class HomeView extends Composite<FormLayout> {
 
 
         var agentSymbol = new TextField("Agent Symbol");
-        var submitButton = new Button("Submit", this::submit);
+        var createButton = new Button("Create", this::createAgent);
+        var syncButton = new Button("Sync", this::syncAgent);
         binder.forField(agentSymbol).asRequired("Agent symbol is required").bind("agentSymbol");
 
         var formLayout = getContent();
         formLayout.add(agentSymbol);
-        formLayout.add(submitButton);
+        formLayout.add(createButton);
+        formLayout.add(syncButton);
     }
 
-    private void submit(ClickEvent<Button> buttonClickEvent) {
+    private void syncAgent(ClickEvent<Button> buttonClickEvent) {
+        var record = this.getFormDataObject();
+        if (record.isPresent()) {
+            try {
+                agentService.syncAgent(record.get().agentSymbol());
+            } catch (ApiException e) {
+                System.err.println(e.getMessage());
+            }
+        }
+    }
+
+    private void createAgent(ClickEvent<Button> buttonClickEvent) {
         var record = this.getFormDataObject();
         if (record.isPresent()) {
             try {

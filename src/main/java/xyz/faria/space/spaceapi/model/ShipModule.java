@@ -19,6 +19,8 @@ import com.google.gson.annotations.SerializedName;
 import com.google.gson.reflect.TypeToken;
 import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonWriter;
+import jakarta.persistence.Embeddable;
+import jakarta.persistence.Embedded;
 import xyz.faria.space.spaceapi.client.JSON;
 
 import java.io.IOException;
@@ -27,6 +29,7 @@ import java.util.*;
 /**
  * A module can be installed in a ship and provides a set of capabilities such as storage space or quarters for crew. Module installations are permanent.
  */
+@Embeddable
 public class ShipModule {
     /**
      * The symbol of the module.
@@ -144,6 +147,7 @@ public class ShipModule {
     public static final String SERIALIZED_NAME_REQUIREMENTS = "requirements";
     @SerializedName(SERIALIZED_NAME_REQUIREMENTS)
     @javax.annotation.Nonnull
+    @Embedded
     private ShipRequirements requirements;
 
     public ShipModule() {

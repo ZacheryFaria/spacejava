@@ -18,6 +18,8 @@ import com.google.gson.annotations.SerializedName;
 import com.google.gson.reflect.TypeToken;
 import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonWriter;
+import jakarta.persistence.Embeddable;
+import jakarta.persistence.Embedded;
 import xyz.faria.space.spaceapi.client.JSON;
 
 import java.io.IOException;
@@ -27,15 +29,18 @@ import java.util.*;
 /**
  * The routing information for the ship&#39;s most recent transit or current location.
  */
+@Embeddable
 public class ShipNavRoute {
     public static final String SERIALIZED_NAME_DESTINATION = "destination";
     @SerializedName(SERIALIZED_NAME_DESTINATION)
     @javax.annotation.Nonnull
+    @Embedded
     private ShipNavRouteWaypoint destination;
 
     public static final String SERIALIZED_NAME_ORIGIN = "origin";
     @SerializedName(SERIALIZED_NAME_ORIGIN)
     @javax.annotation.Nonnull
+    @Embedded
     private ShipNavRouteWaypoint origin;
 
     public static final String SERIALIZED_NAME_DEPARTURE_TIME = "departureTime";

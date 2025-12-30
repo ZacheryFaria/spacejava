@@ -19,6 +19,8 @@ import com.google.gson.annotations.SerializedName;
 import com.google.gson.reflect.TypeToken;
 import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonWriter;
+import jakarta.persistence.Embeddable;
+import jakarta.persistence.Embedded;
 import xyz.faria.space.spaceapi.client.JSON;
 
 import java.io.IOException;
@@ -29,6 +31,7 @@ import java.util.*;
  * The engine determines how quickly a ship travels between waypoints.
  */
 
+@Embeddable
 public class ShipEngine {
     /**
      * The symbol of the engine.
@@ -119,6 +122,7 @@ public class ShipEngine {
     public static final String SERIALIZED_NAME_REQUIREMENTS = "requirements";
     @SerializedName(SERIALIZED_NAME_REQUIREMENTS)
     @javax.annotation.Nonnull
+    @Embedded
     private ShipRequirements requirements;
 
     public static final String SERIALIZED_NAME_QUALITY = "quality";

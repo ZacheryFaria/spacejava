@@ -18,6 +18,7 @@ import com.google.gson.annotations.SerializedName;
 import com.google.gson.reflect.TypeToken;
 import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonWriter;
+import jakarta.persistence.Embeddable;
 import xyz.faria.space.spaceapi.client.JSON;
 
 import java.io.IOException;
@@ -28,6 +29,7 @@ import java.util.*;
  * A cooldown is a period of time in which a ship cannot perform certain actions.
  */
 
+@Embeddable
 public class Cooldown {
     public static final String SERIALIZED_NAME_SHIP_SYMBOL = "shipSymbol";
     @SerializedName(SERIALIZED_NAME_SHIP_SYMBOL)

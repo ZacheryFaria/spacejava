@@ -18,6 +18,9 @@ import com.google.gson.annotations.SerializedName;
 import com.google.gson.reflect.TypeToken;
 import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonWriter;
+import jakarta.persistence.Embeddable;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import xyz.faria.space.spaceapi.client.JSON;
 
 import java.io.IOException;
@@ -26,6 +29,7 @@ import java.util.*;
 /**
  * The public registration information of the ship
  */
+@Embeddable
 public class ShipRegistration {
     public static final String SERIALIZED_NAME_NAME = "name";
     @SerializedName(SERIALIZED_NAME_NAME)
@@ -40,6 +44,7 @@ public class ShipRegistration {
     public static final String SERIALIZED_NAME_ROLE = "role";
     @SerializedName(SERIALIZED_NAME_ROLE)
     @javax.annotation.Nonnull
+    @Enumerated(EnumType.STRING)
     private ShipRole role;
 
     public ShipRegistration() {

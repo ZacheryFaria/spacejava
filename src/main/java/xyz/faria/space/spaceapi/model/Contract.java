@@ -40,6 +40,7 @@ public class Contract {
     @javax.annotation.Nonnull
     private String factionSymbol;
 
+
     /**
      * Type of contract.
      */

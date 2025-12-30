@@ -18,6 +18,8 @@ import com.google.gson.annotations.SerializedName;
 import com.google.gson.reflect.TypeToken;
 import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonWriter;
+import jakarta.persistence.ElementCollection;
+import jakarta.persistence.Embeddable;
 import xyz.faria.space.spaceapi.client.JSON;
 
 import java.io.IOException;
@@ -27,6 +29,7 @@ import java.util.*;
  * Ship cargo details.
  */
 
+@Embeddable
 public class ShipCargo {
     public static final String SERIALIZED_NAME_CAPACITY = "capacity";
     @SerializedName(SERIALIZED_NAME_CAPACITY)
@@ -41,6 +44,7 @@ public class ShipCargo {
     public static final String SERIALIZED_NAME_INVENTORY = "inventory";
     @SerializedName(SERIALIZED_NAME_INVENTORY)
     @javax.annotation.Nonnull
+    @ElementCollection
     private List<ShipCargoItem> inventory = new ArrayList<>();
 
     public ShipCargo() {

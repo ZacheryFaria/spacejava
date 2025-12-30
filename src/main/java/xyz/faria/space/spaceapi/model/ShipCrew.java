@@ -19,6 +19,7 @@ import com.google.gson.annotations.SerializedName;
 import com.google.gson.reflect.TypeToken;
 import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonWriter;
+import jakarta.persistence.Embeddable;
 import xyz.faria.space.spaceapi.client.JSON;
 
 import java.io.IOException;
@@ -27,6 +28,7 @@ import java.util.*;
 /**
  * The ship&#39;s crew service and maintain the ship&#39;s systems and equipment.
  */
+@Embeddable
 public class ShipCrew {
     public static final String SERIALIZED_NAME_CURRENT = "current";
     @SerializedName(SERIALIZED_NAME_CURRENT)

@@ -18,6 +18,7 @@ import com.google.gson.annotations.SerializedName;
 import com.google.gson.reflect.TypeToken;
 import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonWriter;
+import jakarta.persistence.ElementCollection;
 import xyz.faria.space.spaceapi.client.JSON;
 
 import java.io.IOException;
@@ -71,11 +72,13 @@ public class Ship {
     public static final String SERIALIZED_NAME_MODULES = "modules";
     @SerializedName(SERIALIZED_NAME_MODULES)
     @javax.annotation.Nonnull
+    @ElementCollection
     private List<ShipModule> modules = new ArrayList<>();
 
     public static final String SERIALIZED_NAME_MOUNTS = "mounts";
     @SerializedName(SERIALIZED_NAME_MOUNTS)
     @javax.annotation.Nonnull
+    @ElementCollection
     private List<ShipMount> mounts = new ArrayList<>();
 
     public static final String SERIALIZED_NAME_CARGO = "cargo";
