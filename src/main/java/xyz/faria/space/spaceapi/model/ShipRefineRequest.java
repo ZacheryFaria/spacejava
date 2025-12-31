@@ -13,85 +13,70 @@
 
 package xyz.faria.space.spaceapi.model;
 
-import com.google.gson.*;
+import com.google.gson.Gson;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.TypeAdapter;
+import com.google.gson.TypeAdapterFactory;
 import com.google.gson.annotations.JsonAdapter;
 import com.google.gson.annotations.SerializedName;
 import com.google.gson.reflect.TypeToken;
 import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonWriter;
-import xyz.faria.space.spaceapi.client.JSON;
-
 import java.io.IOException;
-import java.util.*;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
+import java.util.Set;
+import xyz.faria.space.spaceapi.client.JSON;
 
 /**
  * ShipRefineRequest
  */
 public class ShipRefineRequest {
+
     /**
-     * The type of good to produce out of the refining process.
+     * Validates the JSON Element and throws an exception if issues found
+     *
+     * @param jsonElement JSON Element
+     * @throws IOException if the JSON Element is invalid with respect to ShipRefineRequest
      */
-    @JsonAdapter(ProduceEnum.Adapter.class)
-    public enum ProduceEnum {
-        IRON("IRON"),
-
-        COPPER("COPPER"),
-
-        SILVER("SILVER"),
-
-        GOLD("GOLD"),
-
-        ALUMINUM("ALUMINUM"),
-
-        PLATINUM("PLATINUM"),
-
-        URANITE("URANITE"),
-
-        MERITIUM("MERITIUM"),
-
-        FUEL("FUEL");
-
-        private final String value;
-
-        ProduceEnum(String value) {
-            this.value = value;
-        }
-
-        public String getValue() {
-            return value;
-        }
-
-        @Override
-        public String toString() {
-            return String.valueOf(value);
-        }
-
-        public static ProduceEnum fromValue(String value) {
-            for (ProduceEnum b : ProduceEnum.values()) {
-                if (b.value.equals(value)) {
-                    return b;
-                }
-            }
-            throw new IllegalArgumentException("Unexpected value '" + value + "'");
-        }
-
-        public static class Adapter extends TypeAdapter<ProduceEnum> {
-            @Override
-            public void write(final JsonWriter jsonWriter, final ProduceEnum enumeration) throws IOException {
-                jsonWriter.value(enumeration.getValue());
-            }
-
-            @Override
-            public ProduceEnum read(final JsonReader jsonReader) throws IOException {
-                String value = jsonReader.nextString();
-                return ProduceEnum.fromValue(value);
+    public static void validateJsonElement(JsonElement jsonElement) throws IOException {
+        if (jsonElement == null) {
+            if (!ShipRefineRequest.openapiRequiredFields.isEmpty()) { // has required fields but JSON element is null
+                throw new IllegalArgumentException(String.format(java.util.Locale.ROOT,
+                    "The required field(s) %s in ShipRefineRequest is not found in the empty JSON string",
+                    ShipRefineRequest.openapiRequiredFields));
             }
         }
 
-        public static void validateJsonElement(JsonElement jsonElement) throws IOException {
-            String value = jsonElement.getAsString();
-            ProduceEnum.fromValue(value);
+        Set<Map.Entry<String, JsonElement>> entries = jsonElement.getAsJsonObject().entrySet();
+        // check to see if the JSON string contains additional fields
+        for (Map.Entry<String, JsonElement> entry : entries) {
+            if (!ShipRefineRequest.openapiFields.contains(entry.getKey())) {
+                throw new IllegalArgumentException(String.format(java.util.Locale.ROOT,
+                    "The field `%s` in the JSON string is not defined in the `ShipRefineRequest` properties. JSON: %s",
+                    entry.getKey(), jsonElement));
+            }
         }
+
+        // check to make sure all required properties/fields are present in the JSON string
+        for (String requiredField : ShipRefineRequest.openapiRequiredFields) {
+            if (jsonElement.getAsJsonObject().get(requiredField) == null) {
+                throw new IllegalArgumentException(String.format(java.util.Locale.ROOT,
+                    "The required field `%s` is not found in the JSON string: %s", requiredField,
+                    jsonElement));
+            }
+        }
+        JsonObject jsonObj = jsonElement.getAsJsonObject();
+        if (!jsonObj.get("produce").isJsonPrimitive()) {
+            throw new IllegalArgumentException(String.format(java.util.Locale.ROOT,
+                "Expected the field `produce` to be a primitive type in the JSON string but got `%s`",
+                jsonObj.get("produce").toString()));
+        }
+        // validate the required field `produce`
+        ProduceEnum.validateJsonElement(jsonObj.get("produce"));
     }
 
     public static final String SERIALIZED_NAME_PRODUCE = "produce";
@@ -142,14 +127,14 @@ public class ShipRefineRequest {
     @Override
     public String toString() {
         String sb = "class ShipRefineRequest {\n" +
-                "    produce: " + toIndentedString(produce) + "\n" +
-                "}";
+            "    produce: " + toIndentedString(produce) + "\n" +
+            "}";
         return sb;
     }
 
     /**
-     * Convert the given object to string with each line indented by 4 spaces
-     * (except the first line).
+     * Convert the given object to string with each line indented by 4 spaces (except the first
+     * line).
      */
     private String toIndentedString(Object o) {
         if (o == null) {
@@ -171,41 +156,75 @@ public class ShipRefineRequest {
     }
 
     /**
-     * Validates the JSON Element and throws an exception if issues found
-     *
-     * @param jsonElement JSON Element
-     * @throws IOException if the JSON Element is invalid with respect to ShipRefineRequest
+     * The type of good to produce out of the refining process.
      */
-    public static void validateJsonElement(JsonElement jsonElement) throws IOException {
-        if (jsonElement == null) {
-            if (!ShipRefineRequest.openapiRequiredFields.isEmpty()) { // has required fields but JSON element is null
-                throw new IllegalArgumentException(String.format(java.util.Locale.ROOT, "The required field(s) %s in ShipRefineRequest is not found in the empty JSON string", ShipRefineRequest.openapiRequiredFields));
+    @JsonAdapter(ProduceEnum.Adapter.class)
+    public enum ProduceEnum {
+        IRON("IRON"),
+
+        COPPER("COPPER"),
+
+        SILVER("SILVER"),
+
+        GOLD("GOLD"),
+
+        ALUMINUM("ALUMINUM"),
+
+        PLATINUM("PLATINUM"),
+
+        URANITE("URANITE"),
+
+        MERITIUM("MERITIUM"),
+
+        FUEL("FUEL");
+
+        private final String value;
+
+        ProduceEnum(String value) {
+            this.value = value;
+        }
+
+        public String getValue() {
+            return value;
+        }
+
+        @Override
+        public String toString() {
+            return String.valueOf(value);
+        }
+
+        public static ProduceEnum fromValue(String value) {
+            for (ProduceEnum b : ProduceEnum.values()) {
+                if (b.value.equals(value)) {
+                    return b;
+                }
+            }
+            throw new IllegalArgumentException("Unexpected value '" + value + "'");
+        }
+
+        public static class Adapter extends TypeAdapter<ProduceEnum> {
+
+            @Override
+            public void write(final JsonWriter jsonWriter, final ProduceEnum enumeration)
+                throws IOException {
+                jsonWriter.value(enumeration.getValue());
+            }
+
+            @Override
+            public ProduceEnum read(final JsonReader jsonReader) throws IOException {
+                String value = jsonReader.nextString();
+                return ProduceEnum.fromValue(value);
             }
         }
 
-        Set<Map.Entry<String, JsonElement>> entries = jsonElement.getAsJsonObject().entrySet();
-        // check to see if the JSON string contains additional fields
-        for (Map.Entry<String, JsonElement> entry : entries) {
-            if (!ShipRefineRequest.openapiFields.contains(entry.getKey())) {
-                throw new IllegalArgumentException(String.format(java.util.Locale.ROOT, "The field `%s` in the JSON string is not defined in the `ShipRefineRequest` properties. JSON: %s", entry.getKey(), jsonElement));
-            }
+        public static void validateJsonElement(JsonElement jsonElement) throws IOException {
+            String value = jsonElement.getAsString();
+            ProduceEnum.fromValue(value);
         }
-
-        // check to make sure all required properties/fields are present in the JSON string
-        for (String requiredField : ShipRefineRequest.openapiRequiredFields) {
-            if (jsonElement.getAsJsonObject().get(requiredField) == null) {
-                throw new IllegalArgumentException(String.format(java.util.Locale.ROOT, "The required field `%s` is not found in the JSON string: %s", requiredField, jsonElement));
-            }
-        }
-        JsonObject jsonObj = jsonElement.getAsJsonObject();
-        if (!jsonObj.get("produce").isJsonPrimitive()) {
-            throw new IllegalArgumentException(String.format(java.util.Locale.ROOT, "Expected the field `produce` to be a primitive type in the JSON string but got `%s`", jsonObj.get("produce").toString()));
-        }
-        // validate the required field `produce`
-        ProduceEnum.validateJsonElement(jsonObj.get("produce"));
     }
 
     public static class CustomTypeAdapterFactory implements TypeAdapterFactory {
+
         @SuppressWarnings("unchecked")
         @Override
         public <T> TypeAdapter<T> create(Gson gson, TypeToken<T> type) {
@@ -214,7 +233,7 @@ public class ShipRefineRequest {
             }
             final TypeAdapter<JsonElement> elementAdapter = gson.getAdapter(JsonElement.class);
             final TypeAdapter<ShipRefineRequest> thisAdapter
-                    = gson.getDelegateAdapter(this, TypeToken.get(ShipRefineRequest.class));
+                = gson.getDelegateAdapter(this, TypeToken.get(ShipRefineRequest.class));
 
             return (TypeAdapter<T>) new TypeAdapter<ShipRefineRequest>() {
                 @Override

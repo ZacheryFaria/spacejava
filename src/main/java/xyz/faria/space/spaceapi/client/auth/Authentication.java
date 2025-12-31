@@ -13,15 +13,15 @@
 
 package xyz.faria.space.spaceapi.client.auth;
 
-import xyz.faria.space.spaceapi.client.ApiException;
-import xyz.faria.space.spaceapi.client.Pair;
-
 import java.net.URI;
 import java.util.List;
 import java.util.Map;
+import xyz.faria.space.spaceapi.client.ApiException;
+import xyz.faria.space.spaceapi.client.Pair;
 
 
 public interface Authentication {
+
     /**
      * Apply authentication settings to header and query params.
      *
@@ -33,5 +33,7 @@ public interface Authentication {
      * @param uri          URI
      * @throws ApiException if failed to update the parameters
      */
-    void applyToParams(List<Pair> queryParams, Map<String, String> headerParams, Map<String, String> cookieParams, String payload, String method, URI uri) throws ApiException;
+    void applyToParams(List<Pair> queryParams, Map<String, String> headerParams,
+        Map<String, String> cookieParams, String payload, String method, URI uri)
+        throws ApiException;
 }

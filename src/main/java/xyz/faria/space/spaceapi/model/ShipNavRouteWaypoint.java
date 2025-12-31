@@ -13,22 +13,30 @@
 
 package xyz.faria.space.spaceapi.model;
 
-import com.google.gson.*;
+import com.google.gson.Gson;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.TypeAdapter;
+import com.google.gson.TypeAdapterFactory;
 import com.google.gson.annotations.SerializedName;
 import com.google.gson.reflect.TypeToken;
 import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonWriter;
 import jakarta.persistence.Embeddable;
-import xyz.faria.space.spaceapi.client.JSON;
-
 import java.io.IOException;
-import java.util.*;
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Objects;
+import java.util.Set;
+import xyz.faria.space.spaceapi.client.JSON;
 
 /**
  * The destination or departure of a ships nav route.
  */
 @Embeddable
 public class ShipNavRouteWaypoint {
+
     public static final String SERIALIZED_NAME_SYMBOL = "symbol";
     @SerializedName(SERIALIZED_NAME_SYMBOL)
     @javax.annotation.Nonnull
@@ -157,60 +165,19 @@ public class ShipNavRouteWaypoint {
     }
 
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (o == null || getClass() != o.getClass()) {
-            return false;
-        }
-        ShipNavRouteWaypoint shipNavRouteWaypoint = (ShipNavRouteWaypoint) o;
-        return Objects.equals(this.symbol, shipNavRouteWaypoint.symbol) &&
-                Objects.equals(this.type, shipNavRouteWaypoint.type) &&
-                Objects.equals(this.systemSymbol, shipNavRouteWaypoint.systemSymbol) &&
-                Objects.equals(this.x, shipNavRouteWaypoint.x) &&
-                Objects.equals(this.y, shipNavRouteWaypoint.y);
+    static {
+        // a set of all properties/fields (JSON key names)
+        openapiFields = new HashSet<String>(
+            Arrays.asList("symbol", "type", "systemSymbol", "x", "y"));
+
+        // a set of required properties/fields (JSON key names)
+        openapiRequiredFields = new HashSet<String>(
+            Arrays.asList("symbol", "type", "systemSymbol", "x", "y"));
     }
 
     @Override
     public int hashCode() {
         return Objects.hash(symbol, type, systemSymbol, x, y);
-    }
-
-    @Override
-    public String toString() {
-        String sb = "class ShipNavRouteWaypoint {\n" +
-                "    symbol: " + toIndentedString(symbol) + "\n" +
-                "    type: " + toIndentedString(type) + "\n" +
-                "    systemSymbol: " + toIndentedString(systemSymbol) + "\n" +
-                "    x: " + toIndentedString(x) + "\n" +
-                "    y: " + toIndentedString(y) + "\n" +
-                "}";
-        return sb;
-    }
-
-    /**
-     * Convert the given object to string with each line indented by 4 spaces
-     * (except the first line).
-     */
-    private String toIndentedString(Object o) {
-        if (o == null) {
-            return "null";
-        }
-        return o.toString().replace("\n", "\n    ");
-    }
-
-
-    public static HashSet<String> openapiFields;
-    public static HashSet<String> openapiRequiredFields;
-
-    static {
-        // a set of all properties/fields (JSON key names)
-        openapiFields = new HashSet<String>(Arrays.asList("symbol", "type", "systemSymbol", "x", "y"));
-
-        // a set of required properties/fields (JSON key names)
-        openapiRequiredFields = new HashSet<String>(Arrays.asList("symbol", "type", "systemSymbol", "x", "y"));
     }
 
     /**
@@ -222,7 +189,9 @@ public class ShipNavRouteWaypoint {
     public static void validateJsonElement(JsonElement jsonElement) throws IOException {
         if (jsonElement == null) {
             if (!ShipNavRouteWaypoint.openapiRequiredFields.isEmpty()) { // has required fields but JSON element is null
-                throw new IllegalArgumentException(String.format(java.util.Locale.ROOT, "The required field(s) %s in ShipNavRouteWaypoint is not found in the empty JSON string", ShipNavRouteWaypoint.openapiRequiredFields));
+                throw new IllegalArgumentException(String.format(java.util.Locale.ROOT,
+                    "The required field(s) %s in ShipNavRouteWaypoint is not found in the empty JSON string",
+                    ShipNavRouteWaypoint.openapiRequiredFields));
             }
         }
 
@@ -230,28 +199,80 @@ public class ShipNavRouteWaypoint {
         // check to see if the JSON string contains additional fields
         for (Map.Entry<String, JsonElement> entry : entries) {
             if (!ShipNavRouteWaypoint.openapiFields.contains(entry.getKey())) {
-                throw new IllegalArgumentException(String.format(java.util.Locale.ROOT, "The field `%s` in the JSON string is not defined in the `ShipNavRouteWaypoint` properties. JSON: %s", entry.getKey(), jsonElement));
+                throw new IllegalArgumentException(String.format(java.util.Locale.ROOT,
+                    "The field `%s` in the JSON string is not defined in the `ShipNavRouteWaypoint` properties. JSON: %s",
+                    entry.getKey(), jsonElement));
             }
         }
 
         // check to make sure all required properties/fields are present in the JSON string
         for (String requiredField : ShipNavRouteWaypoint.openapiRequiredFields) {
             if (jsonElement.getAsJsonObject().get(requiredField) == null) {
-                throw new IllegalArgumentException(String.format(java.util.Locale.ROOT, "The required field `%s` is not found in the JSON string: %s", requiredField, jsonElement));
+                throw new IllegalArgumentException(String.format(java.util.Locale.ROOT,
+                    "The required field `%s` is not found in the JSON string: %s", requiredField,
+                    jsonElement));
             }
         }
         JsonObject jsonObj = jsonElement.getAsJsonObject();
         if (!jsonObj.get("symbol").isJsonPrimitive()) {
-            throw new IllegalArgumentException(String.format(java.util.Locale.ROOT, "Expected the field `symbol` to be a primitive type in the JSON string but got `%s`", jsonObj.get("symbol").toString()));
+            throw new IllegalArgumentException(String.format(java.util.Locale.ROOT,
+                "Expected the field `symbol` to be a primitive type in the JSON string but got `%s`",
+                jsonObj.get("symbol").toString()));
         }
         // validate the required field `type`
         WaypointType.validateJsonElement(jsonObj.get("type"));
         if (!jsonObj.get("systemSymbol").isJsonPrimitive()) {
-            throw new IllegalArgumentException(String.format(java.util.Locale.ROOT, "Expected the field `systemSymbol` to be a primitive type in the JSON string but got `%s`", jsonObj.get("systemSymbol").toString()));
+            throw new IllegalArgumentException(String.format(java.util.Locale.ROOT,
+                "Expected the field `systemSymbol` to be a primitive type in the JSON string but got `%s`",
+                jsonObj.get("systemSymbol").toString()));
         }
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        ShipNavRouteWaypoint shipNavRouteWaypoint = (ShipNavRouteWaypoint) o;
+        return Objects.equals(this.symbol, shipNavRouteWaypoint.symbol) &&
+            Objects.equals(this.type, shipNavRouteWaypoint.type) &&
+            Objects.equals(this.systemSymbol, shipNavRouteWaypoint.systemSymbol) &&
+            Objects.equals(this.x, shipNavRouteWaypoint.x) &&
+            Objects.equals(this.y, shipNavRouteWaypoint.y);
+    }
+
+
+    public static HashSet<String> openapiFields;
+    public static HashSet<String> openapiRequiredFields;
+
+    @Override
+    public String toString() {
+        String sb = "class ShipNavRouteWaypoint {\n" +
+            "    symbol: " + toIndentedString(symbol) + "\n" +
+            "    type: " + toIndentedString(type) + "\n" +
+            "    systemSymbol: " + toIndentedString(systemSymbol) + "\n" +
+            "    x: " + toIndentedString(x) + "\n" +
+            "    y: " + toIndentedString(y) + "\n" +
+            "}";
+        return sb;
+    }
+
+    /**
+     * Convert the given object to string with each line indented by 4 spaces (except the first
+     * line).
+     */
+    private String toIndentedString(Object o) {
+        if (o == null) {
+            return "null";
+        }
+        return o.toString().replace("\n", "\n    ");
+    }
+
     public static class CustomTypeAdapterFactory implements TypeAdapterFactory {
+
         @SuppressWarnings("unchecked")
         @Override
         public <T> TypeAdapter<T> create(Gson gson, TypeToken<T> type) {
@@ -260,7 +281,7 @@ public class ShipNavRouteWaypoint {
             }
             final TypeAdapter<JsonElement> elementAdapter = gson.getAdapter(JsonElement.class);
             final TypeAdapter<ShipNavRouteWaypoint> thisAdapter
-                    = gson.getDelegateAdapter(this, TypeToken.get(ShipNavRouteWaypoint.class));
+                = gson.getDelegateAdapter(this, TypeToken.get(ShipNavRouteWaypoint.class));
 
             return (TypeAdapter<T>) new TypeAdapter<ShipNavRouteWaypoint>() {
                 @Override

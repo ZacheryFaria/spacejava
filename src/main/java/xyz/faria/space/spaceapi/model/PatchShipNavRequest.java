@@ -13,21 +13,29 @@
 
 package xyz.faria.space.spaceapi.model;
 
-import com.google.gson.*;
+import com.google.gson.Gson;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.TypeAdapter;
+import com.google.gson.TypeAdapterFactory;
 import com.google.gson.annotations.SerializedName;
 import com.google.gson.reflect.TypeToken;
 import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonWriter;
-import xyz.faria.space.spaceapi.client.JSON;
-
 import java.io.IOException;
-import java.util.*;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
+import java.util.Set;
+import xyz.faria.space.spaceapi.client.JSON;
 
 /**
  * PatchShipNavRequest
  */
 
 public class PatchShipNavRequest {
+
     public static final String SERIALIZED_NAME_FLIGHT_MODE = "flightMode";
     @SerializedName(SERIALIZED_NAME_FLIGHT_MODE)
     @javax.annotation.Nullable
@@ -73,23 +81,43 @@ public class PatchShipNavRequest {
         return Objects.hash(flightMode);
     }
 
+    /**
+     * Validates the JSON Element and throws an exception if issues found
+     *
+     * @param jsonElement JSON Element
+     * @throws IOException if the JSON Element is invalid with respect to PatchShipNavRequest
+     */
+    public static void validateJsonElement(JsonElement jsonElement) throws IOException {
+        if (jsonElement == null) {
+            if (!PatchShipNavRequest.openapiRequiredFields.isEmpty()) { // has required fields but JSON element is null
+                throw new IllegalArgumentException(String.format(java.util.Locale.ROOT,
+                    "The required field(s) %s in PatchShipNavRequest is not found in the empty JSON string",
+                    PatchShipNavRequest.openapiRequiredFields));
+            }
+        }
+
+        Set<Map.Entry<String, JsonElement>> entries = jsonElement.getAsJsonObject().entrySet();
+        // check to see if the JSON string contains additional fields
+        for (Map.Entry<String, JsonElement> entry : entries) {
+            if (!PatchShipNavRequest.openapiFields.contains(entry.getKey())) {
+                throw new IllegalArgumentException(String.format(java.util.Locale.ROOT,
+                    "The field `%s` in the JSON string is not defined in the `PatchShipNavRequest` properties. JSON: %s",
+                    entry.getKey(), jsonElement));
+            }
+        }
+        JsonObject jsonObj = jsonElement.getAsJsonObject();
+        // validate the optional field `flightMode`
+        if (jsonObj.get("flightMode") != null && !jsonObj.get("flightMode").isJsonNull()) {
+            ShipNavFlightMode.validateJsonElement(jsonObj.get("flightMode"));
+        }
+    }
+
     @Override
     public String toString() {
         String sb = "class PatchShipNavRequest {\n" +
-                "    flightMode: " + toIndentedString(flightMode) + "\n" +
-                "}";
+            "    flightMode: " + toIndentedString(flightMode) + "\n" +
+            "}";
         return sb;
-    }
-
-    /**
-     * Convert the given object to string with each line indented by 4 spaces
-     * (except the first line).
-     */
-    private String toIndentedString(Object o) {
-        if (o == null) {
-            return "null";
-        }
-        return o.toString().replace("\n", "\n    ");
     }
 
 
@@ -105,33 +133,18 @@ public class PatchShipNavRequest {
     }
 
     /**
-     * Validates the JSON Element and throws an exception if issues found
-     *
-     * @param jsonElement JSON Element
-     * @throws IOException if the JSON Element is invalid with respect to PatchShipNavRequest
+     * Convert the given object to string with each line indented by 4 spaces (except the first
+     * line).
      */
-    public static void validateJsonElement(JsonElement jsonElement) throws IOException {
-        if (jsonElement == null) {
-            if (!PatchShipNavRequest.openapiRequiredFields.isEmpty()) { // has required fields but JSON element is null
-                throw new IllegalArgumentException(String.format(java.util.Locale.ROOT, "The required field(s) %s in PatchShipNavRequest is not found in the empty JSON string", PatchShipNavRequest.openapiRequiredFields));
-            }
+    private String toIndentedString(Object o) {
+        if (o == null) {
+            return "null";
         }
-
-        Set<Map.Entry<String, JsonElement>> entries = jsonElement.getAsJsonObject().entrySet();
-        // check to see if the JSON string contains additional fields
-        for (Map.Entry<String, JsonElement> entry : entries) {
-            if (!PatchShipNavRequest.openapiFields.contains(entry.getKey())) {
-                throw new IllegalArgumentException(String.format(java.util.Locale.ROOT, "The field `%s` in the JSON string is not defined in the `PatchShipNavRequest` properties. JSON: %s", entry.getKey(), jsonElement));
-            }
-        }
-        JsonObject jsonObj = jsonElement.getAsJsonObject();
-        // validate the optional field `flightMode`
-        if (jsonObj.get("flightMode") != null && !jsonObj.get("flightMode").isJsonNull()) {
-            ShipNavFlightMode.validateJsonElement(jsonObj.get("flightMode"));
-        }
+        return o.toString().replace("\n", "\n    ");
     }
 
     public static class CustomTypeAdapterFactory implements TypeAdapterFactory {
+
         @SuppressWarnings("unchecked")
         @Override
         public <T> TypeAdapter<T> create(Gson gson, TypeToken<T> type) {
@@ -140,7 +153,7 @@ public class PatchShipNavRequest {
             }
             final TypeAdapter<JsonElement> elementAdapter = gson.getAdapter(JsonElement.class);
             final TypeAdapter<PatchShipNavRequest> thisAdapter
-                    = gson.getDelegateAdapter(this, TypeToken.get(PatchShipNavRequest.class));
+                = gson.getDelegateAdapter(this, TypeToken.get(PatchShipNavRequest.class));
 
             return (TypeAdapter<T>) new TypeAdapter<PatchShipNavRequest>() {
                 @Override

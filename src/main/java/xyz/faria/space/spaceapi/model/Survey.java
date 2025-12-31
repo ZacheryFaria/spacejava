@@ -13,22 +13,34 @@
 
 package xyz.faria.space.spaceapi.model;
 
-import com.google.gson.*;
+import com.google.gson.Gson;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.TypeAdapter;
+import com.google.gson.TypeAdapterFactory;
 import com.google.gson.annotations.JsonAdapter;
 import com.google.gson.annotations.SerializedName;
 import com.google.gson.reflect.TypeToken;
 import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonWriter;
-import xyz.faria.space.spaceapi.client.JSON;
-
 import java.io.IOException;
 import java.time.OffsetDateTime;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
+import java.util.Set;
+import xyz.faria.space.spaceapi.client.JSON;
 
 /**
- * A resource survey of a waypoint, detailing a specific extraction location and the types of resources that can be found there.
+ * A resource survey of a waypoint, detailing a specific extraction location and the types of
+ * resources that can be found there.
  */
 public class Survey {
+
     public static final String SERIALIZED_NAME_SIGNATURE = "signature";
     @SerializedName(SERIALIZED_NAME_SIGNATURE)
     @javax.annotation.Nonnull
@@ -49,58 +61,14 @@ public class Survey {
     @javax.annotation.Nonnull
     private OffsetDateTime expiration;
 
-    /**
-     * The size of the deposit. This value indicates how much can be extracted from the survey before it is exhausted.
-     */
-    @JsonAdapter(SizeEnum.Adapter.class)
-    public enum SizeEnum {
-        SMALL("SMALL"),
+    static {
+        // a set of all properties/fields (JSON key names)
+        openapiFields = new HashSet<String>(
+            Arrays.asList("signature", "symbol", "deposits", "expiration", "size"));
 
-        MODERATE("MODERATE"),
-
-        LARGE("LARGE");
-
-        private final String value;
-
-        SizeEnum(String value) {
-            this.value = value;
-        }
-
-        public String getValue() {
-            return value;
-        }
-
-        @Override
-        public String toString() {
-            return String.valueOf(value);
-        }
-
-        public static SizeEnum fromValue(String value) {
-            for (SizeEnum b : SizeEnum.values()) {
-                if (b.value.equals(value)) {
-                    return b;
-                }
-            }
-            throw new IllegalArgumentException("Unexpected value '" + value + "'");
-        }
-
-        public static class Adapter extends TypeAdapter<SizeEnum> {
-            @Override
-            public void write(final JsonWriter jsonWriter, final SizeEnum enumeration) throws IOException {
-                jsonWriter.value(enumeration.getValue());
-            }
-
-            @Override
-            public SizeEnum read(final JsonReader jsonReader) throws IOException {
-                String value = jsonReader.nextString();
-                return SizeEnum.fromValue(value);
-            }
-        }
-
-        public static void validateJsonElement(JsonElement jsonElement) throws IOException {
-            String value = jsonElement.getAsString();
-            SizeEnum.fromValue(value);
-        }
+        // a set of required properties/fields (JSON key names)
+        openapiRequiredFields = new HashSet<String>(
+            Arrays.asList("signature", "symbol", "deposits", "expiration", "size"));
     }
 
     public static final String SERIALIZED_NAME_SIZE = "size";
@@ -117,13 +85,68 @@ public class Survey {
     }
 
     /**
-     * A unique signature for the location of this survey. This signature is verified when attempting an extraction using this survey.
+     * Validates the JSON Element and throws an exception if issues found
      *
-     * @return signature
+     * @param jsonElement JSON Element
+     * @throws IOException if the JSON Element is invalid with respect to Survey
      */
-    @javax.annotation.Nonnull
-    public String getSignature() {
-        return signature;
+    public static void validateJsonElement(JsonElement jsonElement) throws IOException {
+        if (jsonElement == null) {
+            if (!Survey.openapiRequiredFields.isEmpty()) { // has required fields but JSON element is null
+                throw new IllegalArgumentException(String.format(java.util.Locale.ROOT,
+                    "The required field(s) %s in Survey is not found in the empty JSON string",
+                    Survey.openapiRequiredFields));
+            }
+        }
+
+        Set<Map.Entry<String, JsonElement>> entries = jsonElement.getAsJsonObject().entrySet();
+        // check to see if the JSON string contains additional fields
+        for (Map.Entry<String, JsonElement> entry : entries) {
+            if (!Survey.openapiFields.contains(entry.getKey())) {
+                throw new IllegalArgumentException(String.format(java.util.Locale.ROOT,
+                    "The field `%s` in the JSON string is not defined in the `Survey` properties. JSON: %s",
+                    entry.getKey(), jsonElement));
+            }
+        }
+
+        // check to make sure all required properties/fields are present in the JSON string
+        for (String requiredField : Survey.openapiRequiredFields) {
+            if (jsonElement.getAsJsonObject().get(requiredField) == null) {
+                throw new IllegalArgumentException(String.format(java.util.Locale.ROOT,
+                    "The required field `%s` is not found in the JSON string: %s", requiredField,
+                    jsonElement));
+            }
+        }
+        JsonObject jsonObj = jsonElement.getAsJsonObject();
+        if (!jsonObj.get("signature").isJsonPrimitive()) {
+            throw new IllegalArgumentException(String.format(java.util.Locale.ROOT,
+                "Expected the field `signature` to be a primitive type in the JSON string but got `%s`",
+                jsonObj.get("signature").toString()));
+        }
+        if (!jsonObj.get("symbol").isJsonPrimitive()) {
+            throw new IllegalArgumentException(String.format(java.util.Locale.ROOT,
+                "Expected the field `symbol` to be a primitive type in the JSON string but got `%s`",
+                jsonObj.get("symbol").toString()));
+        }
+        // ensure the json data is an array
+        if (!jsonObj.get("deposits").isJsonArray()) {
+            throw new IllegalArgumentException(String.format(java.util.Locale.ROOT,
+                "Expected the field `deposits` to be an array in the JSON string but got `%s`",
+                jsonObj.get("deposits").toString()));
+        }
+
+        JsonArray jsonArraydeposits = jsonObj.getAsJsonArray("deposits");
+        // validate the required field `deposits` (array)
+        for (int i = 0; i < jsonArraydeposits.size(); i++) {
+            SurveyDeposit.validateJsonElement(jsonArraydeposits.get(i));
+        }
+        if (!jsonObj.get("size").isJsonPrimitive()) {
+            throw new IllegalArgumentException(String.format(java.util.Locale.ROOT,
+                "Expected the field `size` to be a primitive type in the JSON string but got `%s`",
+                jsonObj.get("size").toString()));
+        }
+        // validate the required field `size`
+        SizeEnum.validateJsonElement(jsonObj.get("size"));
     }
 
     public void setSignature(@javax.annotation.Nonnull String signature) {
@@ -165,13 +188,14 @@ public class Survey {
     }
 
     /**
-     * A list of deposits that can be found at this location. A ship will extract one of these deposits when using this survey in an extraction request. If multiple deposits of the same type are present, the chance of extracting that deposit is increased.
+     * A unique signature for the location of this survey. This signature is verified when
+     * attempting an extraction using this survey.
      *
-     * @return deposits
+     * @return signature
      */
     @javax.annotation.Nonnull
-    public List<SurveyDeposit> getDeposits() {
-        return deposits;
+    public String getSignature() {
+        return signature;
     }
 
     public void setDeposits(@javax.annotation.Nonnull List<SurveyDeposit> deposits) {
@@ -185,13 +209,15 @@ public class Survey {
     }
 
     /**
-     * The date and time when the survey expires. After this date and time, the survey will no longer be available for extraction.
+     * A list of deposits that can be found at this location. A ship will extract one of these
+     * deposits when using this survey in an extraction request. If multiple deposits of the same
+     * type are present, the chance of extracting that deposit is increased.
      *
-     * @return expiration
+     * @return deposits
      */
     @javax.annotation.Nonnull
-    public OffsetDateTime getExpiration() {
-        return expiration;
+    public List<SurveyDeposit> getDeposits() {
+        return deposits;
     }
 
     public void setExpiration(@javax.annotation.Nonnull OffsetDateTime expiration) {
@@ -205,7 +231,23 @@ public class Survey {
     }
 
     /**
-     * The size of the deposit. This value indicates how much can be extracted from the survey before it is exhausted.
+     * The date and time when the survey expires. After this date and time, the survey will no
+     * longer be available for extraction.
+     *
+     * @return expiration
+     */
+    @javax.annotation.Nonnull
+    public OffsetDateTime getExpiration() {
+        return expiration;
+    }
+
+    public void setSize(@javax.annotation.Nonnull SizeEnum size) {
+        this.size = size;
+    }
+
+    /**
+     * The size of the deposit. This value indicates how much can be extracted from the survey
+     * before it is exhausted.
      *
      * @return size
      */
@@ -214,10 +256,10 @@ public class Survey {
         return size;
     }
 
-    public void setSize(@javax.annotation.Nonnull SizeEnum size) {
-        this.size = size;
+    @Override
+    public int hashCode() {
+        return Objects.hash(signature, symbol, deposits, expiration, size);
     }
-
 
     @Override
     public boolean equals(Object o) {
@@ -229,32 +271,31 @@ public class Survey {
         }
         Survey survey = (Survey) o;
         return Objects.equals(this.signature, survey.signature) &&
-                Objects.equals(this.symbol, survey.symbol) &&
-                Objects.equals(this.deposits, survey.deposits) &&
-                Objects.equals(this.expiration, survey.expiration) &&
-                Objects.equals(this.size, survey.size);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(signature, symbol, deposits, expiration, size);
+            Objects.equals(this.symbol, survey.symbol) &&
+            Objects.equals(this.deposits, survey.deposits) &&
+            Objects.equals(this.expiration, survey.expiration) &&
+            Objects.equals(this.size, survey.size);
     }
 
     @Override
     public String toString() {
         String sb = "class Survey {\n" +
-                "    signature: " + toIndentedString(signature) + "\n" +
-                "    symbol: " + toIndentedString(symbol) + "\n" +
-                "    deposits: " + toIndentedString(deposits) + "\n" +
-                "    expiration: " + toIndentedString(expiration) + "\n" +
-                "    size: " + toIndentedString(size) + "\n" +
-                "}";
+            "    signature: " + toIndentedString(signature) + "\n" +
+            "    symbol: " + toIndentedString(symbol) + "\n" +
+            "    deposits: " + toIndentedString(deposits) + "\n" +
+            "    expiration: " + toIndentedString(expiration) + "\n" +
+            "    size: " + toIndentedString(size) + "\n" +
+            "}";
         return sb;
     }
 
+
+    public static HashSet<String> openapiFields;
+    public static HashSet<String> openapiRequiredFields;
+
     /**
-     * Convert the given object to string with each line indented by 4 spaces
-     * (except the first line).
+     * Convert the given object to string with each line indented by 4 spaces (except the first
+     * line).
      */
     private String toIndentedString(Object o) {
         if (o == null) {
@@ -263,70 +304,65 @@ public class Survey {
         return o.toString().replace("\n", "\n    ");
     }
 
-
-    public static HashSet<String> openapiFields;
-    public static HashSet<String> openapiRequiredFields;
-
-    static {
-        // a set of all properties/fields (JSON key names)
-        openapiFields = new HashSet<String>(Arrays.asList("signature", "symbol", "deposits", "expiration", "size"));
-
-        // a set of required properties/fields (JSON key names)
-        openapiRequiredFields = new HashSet<String>(Arrays.asList("signature", "symbol", "deposits", "expiration", "size"));
-    }
-
     /**
-     * Validates the JSON Element and throws an exception if issues found
-     *
-     * @param jsonElement JSON Element
-     * @throws IOException if the JSON Element is invalid with respect to Survey
+     * The size of the deposit. This value indicates how much can be extracted from the survey
+     * before it is exhausted.
      */
-    public static void validateJsonElement(JsonElement jsonElement) throws IOException {
-        if (jsonElement == null) {
-            if (!Survey.openapiRequiredFields.isEmpty()) { // has required fields but JSON element is null
-                throw new IllegalArgumentException(String.format(java.util.Locale.ROOT, "The required field(s) %s in Survey is not found in the empty JSON string", Survey.openapiRequiredFields));
+    @JsonAdapter(SizeEnum.Adapter.class)
+    public enum SizeEnum {
+        SMALL("SMALL"),
+
+        MODERATE("MODERATE"),
+
+        LARGE("LARGE");
+
+        private final String value;
+
+        SizeEnum(String value) {
+            this.value = value;
+        }
+
+        public String getValue() {
+            return value;
+        }
+
+        @Override
+        public String toString() {
+            return String.valueOf(value);
+        }
+
+        public static SizeEnum fromValue(String value) {
+            for (SizeEnum b : SizeEnum.values()) {
+                if (b.value.equals(value)) {
+                    return b;
+                }
+            }
+            throw new IllegalArgumentException("Unexpected value '" + value + "'");
+        }
+
+        public static class Adapter extends TypeAdapter<SizeEnum> {
+
+            @Override
+            public void write(final JsonWriter jsonWriter, final SizeEnum enumeration)
+                throws IOException {
+                jsonWriter.value(enumeration.getValue());
+            }
+
+            @Override
+            public SizeEnum read(final JsonReader jsonReader) throws IOException {
+                String value = jsonReader.nextString();
+                return SizeEnum.fromValue(value);
             }
         }
 
-        Set<Map.Entry<String, JsonElement>> entries = jsonElement.getAsJsonObject().entrySet();
-        // check to see if the JSON string contains additional fields
-        for (Map.Entry<String, JsonElement> entry : entries) {
-            if (!Survey.openapiFields.contains(entry.getKey())) {
-                throw new IllegalArgumentException(String.format(java.util.Locale.ROOT, "The field `%s` in the JSON string is not defined in the `Survey` properties. JSON: %s", entry.getKey(), jsonElement));
-            }
+        public static void validateJsonElement(JsonElement jsonElement) throws IOException {
+            String value = jsonElement.getAsString();
+            SizeEnum.fromValue(value);
         }
-
-        // check to make sure all required properties/fields are present in the JSON string
-        for (String requiredField : Survey.openapiRequiredFields) {
-            if (jsonElement.getAsJsonObject().get(requiredField) == null) {
-                throw new IllegalArgumentException(String.format(java.util.Locale.ROOT, "The required field `%s` is not found in the JSON string: %s", requiredField, jsonElement));
-            }
-        }
-        JsonObject jsonObj = jsonElement.getAsJsonObject();
-        if (!jsonObj.get("signature").isJsonPrimitive()) {
-            throw new IllegalArgumentException(String.format(java.util.Locale.ROOT, "Expected the field `signature` to be a primitive type in the JSON string but got `%s`", jsonObj.get("signature").toString()));
-        }
-        if (!jsonObj.get("symbol").isJsonPrimitive()) {
-            throw new IllegalArgumentException(String.format(java.util.Locale.ROOT, "Expected the field `symbol` to be a primitive type in the JSON string but got `%s`", jsonObj.get("symbol").toString()));
-        }
-        // ensure the json data is an array
-        if (!jsonObj.get("deposits").isJsonArray()) {
-            throw new IllegalArgumentException(String.format(java.util.Locale.ROOT, "Expected the field `deposits` to be an array in the JSON string but got `%s`", jsonObj.get("deposits").toString()));
-        }
-
-        JsonArray jsonArraydeposits = jsonObj.getAsJsonArray("deposits");
-        // validate the required field `deposits` (array)
-        for (int i = 0; i < jsonArraydeposits.size(); i++) {
-            SurveyDeposit.validateJsonElement(jsonArraydeposits.get(i));
-        }
-        if (!jsonObj.get("size").isJsonPrimitive()) {
-            throw new IllegalArgumentException(String.format(java.util.Locale.ROOT, "Expected the field `size` to be a primitive type in the JSON string but got `%s`", jsonObj.get("size").toString()));
-        }
-        // validate the required field `size`
-        SizeEnum.validateJsonElement(jsonObj.get("size"));
     }
 
     public static class CustomTypeAdapterFactory implements TypeAdapterFactory {
+
         @SuppressWarnings("unchecked")
         @Override
         public <T> TypeAdapter<T> create(Gson gson, TypeToken<T> type) {
@@ -335,7 +371,7 @@ public class Survey {
             }
             final TypeAdapter<JsonElement> elementAdapter = gson.getAdapter(JsonElement.class);
             final TypeAdapter<Survey> thisAdapter
-                    = gson.getDelegateAdapter(this, TypeToken.get(Survey.class));
+                = gson.getDelegateAdapter(this, TypeToken.get(Survey.class));
 
             return (TypeAdapter<T>) new TypeAdapter<Survey>() {
                 @Override

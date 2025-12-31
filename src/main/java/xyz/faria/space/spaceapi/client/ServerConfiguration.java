@@ -20,6 +20,7 @@ import java.util.Map;
  */
 
 public class ServerConfiguration {
+
     public String URL;
     public String description;
     public Map<String, ServerVariable> variables;
@@ -27,9 +28,11 @@ public class ServerConfiguration {
     /**
      * @param URL         A URL to the target host.
      * @param description A description of the host designated by the URL.
-     * @param variables   A map between a variable name and its value. The value is used for substitution in the server's URL template.
+     * @param variables   A map between a variable name and its value. The value is used for
+     *                    substitution in the server's URL template.
      */
-    public ServerConfiguration(String URL, String description, Map<String, ServerVariable> variables) {
+    public ServerConfiguration(String URL, String description,
+        Map<String, ServerVariable> variables) {
         this.URL = URL;
         this.description = description;
         this.variables = variables;
@@ -52,8 +55,11 @@ public class ServerConfiguration {
 
             if (variables != null && variables.containsKey(name)) {
                 value = variables.get(name);
-                if (serverVariable.enumValues.size() > 0 && !serverVariable.enumValues.contains(value)) {
-                    throw new IllegalArgumentException("The variable " + name + " in the server URL has invalid value " + value + ".");
+                if (serverVariable.enumValues.size() > 0 && !serverVariable.enumValues.contains(
+                    value)) {
+                    throw new IllegalArgumentException(
+                        "The variable " + name + " in the server URL has invalid value " + value
+                            + ".");
                 }
             }
             url = url.replace("{" + name + "}", value);

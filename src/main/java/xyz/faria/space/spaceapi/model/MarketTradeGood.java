@@ -13,80 +13,51 @@
 
 package xyz.faria.space.spaceapi.model;
 
-import com.google.gson.*;
+import com.google.gson.Gson;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.TypeAdapter;
+import com.google.gson.TypeAdapterFactory;
 import com.google.gson.annotations.JsonAdapter;
 import com.google.gson.annotations.SerializedName;
 import com.google.gson.reflect.TypeToken;
 import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonWriter;
-import xyz.faria.space.spaceapi.client.JSON;
-
+import jakarta.persistence.Embeddable;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import java.io.IOException;
-import java.util.*;
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Objects;
+import java.util.Set;
+import xyz.faria.space.spaceapi.client.JSON;
 
 /**
  * MarketTradeGood
  */
 
+@Embeddable
 public class MarketTradeGood {
+
     public static final String SERIALIZED_NAME_SYMBOL = "symbol";
+
+    static {
+        // a set of all properties/fields (JSON key names)
+        openapiFields = new HashSet<String>(
+            Arrays.asList("symbol", "type", "tradeVolume", "supply", "activity", "purchasePrice",
+                "sellPrice"));
+
+        // a set of required properties/fields (JSON key names)
+        openapiRequiredFields = new HashSet<String>(
+            Arrays.asList("symbol", "type", "tradeVolume", "supply", "purchasePrice", "sellPrice"));
+    }
+
     @SerializedName(SERIALIZED_NAME_SYMBOL)
     @javax.annotation.Nonnull
+    @Enumerated(EnumType.STRING)
     private TradeSymbol symbol;
-
-    /**
-     * The type of trade good (export, import, or exchange).
-     */
-    @JsonAdapter(TypeEnum.Adapter.class)
-    public enum TypeEnum {
-        EXPORT("EXPORT"),
-
-        IMPORT("IMPORT"),
-
-        EXCHANGE("EXCHANGE");
-
-        private final String value;
-
-        TypeEnum(String value) {
-            this.value = value;
-        }
-
-        public String getValue() {
-            return value;
-        }
-
-        @Override
-        public String toString() {
-            return String.valueOf(value);
-        }
-
-        public static TypeEnum fromValue(String value) {
-            for (TypeEnum b : TypeEnum.values()) {
-                if (b.value.equals(value)) {
-                    return b;
-                }
-            }
-            throw new IllegalArgumentException("Unexpected value '" + value + "'");
-        }
-
-        public static class Adapter extends TypeAdapter<TypeEnum> {
-            @Override
-            public void write(final JsonWriter jsonWriter, final TypeEnum enumeration) throws IOException {
-                jsonWriter.value(enumeration.getValue());
-            }
-
-            @Override
-            public TypeEnum read(final JsonReader jsonReader) throws IOException {
-                String value = jsonReader.nextString();
-                return TypeEnum.fromValue(value);
-            }
-        }
-
-        public static void validateJsonElement(JsonElement jsonElement) throws IOException {
-            String value = jsonElement.getAsString();
-            TypeEnum.fromValue(value);
-        }
-    }
 
     public static final String SERIALIZED_NAME_TYPE = "type";
     @SerializedName(SERIALIZED_NAME_TYPE)
@@ -167,14 +138,54 @@ public class MarketTradeGood {
     }
 
     /**
-     * This is the maximum number of units that can be purchased or sold at this market in a single trade for this good. Trade volume also gives an indication of price volatility. A market with a low trade volume will have large price swings, while high trade volume will be more resilient to price changes.
-     * minimum: 1
+     * Validates the JSON Element and throws an exception if issues found
      *
-     * @return tradeVolume
+     * @param jsonElement JSON Element
+     * @throws IOException if the JSON Element is invalid with respect to MarketTradeGood
      */
-    @javax.annotation.Nonnull
-    public Integer getTradeVolume() {
-        return tradeVolume;
+    public static void validateJsonElement(JsonElement jsonElement) throws IOException {
+        if (jsonElement == null) {
+            if (!MarketTradeGood.openapiRequiredFields.isEmpty()) { // has required fields but JSON element is null
+                throw new IllegalArgumentException(String.format(java.util.Locale.ROOT,
+                    "The required field(s) %s in MarketTradeGood is not found in the empty JSON string",
+                    MarketTradeGood.openapiRequiredFields));
+            }
+        }
+
+        Set<Map.Entry<String, JsonElement>> entries = jsonElement.getAsJsonObject().entrySet();
+        // check to see if the JSON string contains additional fields
+        for (Map.Entry<String, JsonElement> entry : entries) {
+            if (!MarketTradeGood.openapiFields.contains(entry.getKey())) {
+                throw new IllegalArgumentException(String.format(java.util.Locale.ROOT,
+                    "The field `%s` in the JSON string is not defined in the `MarketTradeGood` properties. JSON: %s",
+                    entry.getKey(), jsonElement));
+            }
+        }
+
+        // check to make sure all required properties/fields are present in the JSON string
+        for (String requiredField : MarketTradeGood.openapiRequiredFields) {
+            if (jsonElement.getAsJsonObject().get(requiredField) == null) {
+                throw new IllegalArgumentException(String.format(java.util.Locale.ROOT,
+                    "The required field `%s` is not found in the JSON string: %s", requiredField,
+                    jsonElement));
+            }
+        }
+        JsonObject jsonObj = jsonElement.getAsJsonObject();
+        // validate the required field `symbol`
+        TradeSymbol.validateJsonElement(jsonObj.get("symbol"));
+        if (!jsonObj.get("type").isJsonPrimitive()) {
+            throw new IllegalArgumentException(String.format(java.util.Locale.ROOT,
+                "Expected the field `type` to be a primitive type in the JSON string but got `%s`",
+                jsonObj.get("type").toString()));
+        }
+        // validate the required field `type`
+        TypeEnum.validateJsonElement(jsonObj.get("type"));
+        // validate the required field `supply`
+        SupplyLevel.validateJsonElement(jsonObj.get("supply"));
+        // validate the optional field `activity`
+        if (jsonObj.get("activity") != null && !jsonObj.get("activity").isJsonNull()) {
+            ActivityLevel.validateJsonElement(jsonObj.get("activity"));
+        }
     }
 
     public void setTradeVolume(@javax.annotation.Nonnull Integer tradeVolume) {
@@ -228,14 +239,16 @@ public class MarketTradeGood {
     }
 
     /**
-     * The price at which this good can be purchased from the market.
-     * minimum: 0
+     * This is the maximum number of units that can be purchased or sold at this market in a single
+     * trade for this good. Trade volume also gives an indication of price volatility. A market with
+     * a low trade volume will have large price swings, while high trade volume will be more
+     * resilient to price changes. minimum: 1
      *
-     * @return purchasePrice
+     * @return tradeVolume
      */
     @javax.annotation.Nonnull
-    public Integer getPurchasePrice() {
-        return purchasePrice;
+    public Integer getTradeVolume() {
+        return tradeVolume;
     }
 
     public void setPurchasePrice(@javax.annotation.Nonnull Integer purchasePrice) {
@@ -249,8 +262,21 @@ public class MarketTradeGood {
     }
 
     /**
-     * The price at which this good can be sold to the market.
-     * minimum: 0
+     * The price at which this good can be purchased from the market. minimum: 0
+     *
+     * @return purchasePrice
+     */
+    @javax.annotation.Nonnull
+    public Integer getPurchasePrice() {
+        return purchasePrice;
+    }
+
+    public void setSellPrice(@javax.annotation.Nonnull Integer sellPrice) {
+        this.sellPrice = sellPrice;
+    }
+
+    /**
+     * The price at which this good can be sold to the market. minimum: 0
      *
      * @return sellPrice
      */
@@ -259,10 +285,10 @@ public class MarketTradeGood {
         return sellPrice;
     }
 
-    public void setSellPrice(@javax.annotation.Nonnull Integer sellPrice) {
-        this.sellPrice = sellPrice;
+    @Override
+    public int hashCode() {
+        return Objects.hash(symbol, type, tradeVolume, supply, activity, purchasePrice, sellPrice);
     }
-
 
     @Override
     public boolean equals(Object o) {
@@ -274,36 +300,35 @@ public class MarketTradeGood {
         }
         MarketTradeGood marketTradeGood = (MarketTradeGood) o;
         return Objects.equals(this.symbol, marketTradeGood.symbol) &&
-                Objects.equals(this.type, marketTradeGood.type) &&
-                Objects.equals(this.tradeVolume, marketTradeGood.tradeVolume) &&
-                Objects.equals(this.supply, marketTradeGood.supply) &&
-                Objects.equals(this.activity, marketTradeGood.activity) &&
-                Objects.equals(this.purchasePrice, marketTradeGood.purchasePrice) &&
-                Objects.equals(this.sellPrice, marketTradeGood.sellPrice);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(symbol, type, tradeVolume, supply, activity, purchasePrice, sellPrice);
+            Objects.equals(this.type, marketTradeGood.type) &&
+            Objects.equals(this.tradeVolume, marketTradeGood.tradeVolume) &&
+            Objects.equals(this.supply, marketTradeGood.supply) &&
+            Objects.equals(this.activity, marketTradeGood.activity) &&
+            Objects.equals(this.purchasePrice, marketTradeGood.purchasePrice) &&
+            Objects.equals(this.sellPrice, marketTradeGood.sellPrice);
     }
 
     @Override
     public String toString() {
         String sb = "class MarketTradeGood {\n" +
-                "    symbol: " + toIndentedString(symbol) + "\n" +
-                "    type: " + toIndentedString(type) + "\n" +
-                "    tradeVolume: " + toIndentedString(tradeVolume) + "\n" +
-                "    supply: " + toIndentedString(supply) + "\n" +
-                "    activity: " + toIndentedString(activity) + "\n" +
-                "    purchasePrice: " + toIndentedString(purchasePrice) + "\n" +
-                "    sellPrice: " + toIndentedString(sellPrice) + "\n" +
-                "}";
+            "    symbol: " + toIndentedString(symbol) + "\n" +
+            "    type: " + toIndentedString(type) + "\n" +
+            "    tradeVolume: " + toIndentedString(tradeVolume) + "\n" +
+            "    supply: " + toIndentedString(supply) + "\n" +
+            "    activity: " + toIndentedString(activity) + "\n" +
+            "    purchasePrice: " + toIndentedString(purchasePrice) + "\n" +
+            "    sellPrice: " + toIndentedString(sellPrice) + "\n" +
+            "}";
         return sb;
     }
 
+
+    public static HashSet<String> openapiFields;
+    public static HashSet<String> openapiRequiredFields;
+
     /**
-     * Convert the given object to string with each line indented by 4 spaces
-     * (except the first line).
+     * Convert the given object to string with each line indented by 4 spaces (except the first
+     * line).
      */
     private String toIndentedString(Object o) {
         if (o == null) {
@@ -312,62 +337,64 @@ public class MarketTradeGood {
         return o.toString().replace("\n", "\n    ");
     }
 
-
-    public static HashSet<String> openapiFields;
-    public static HashSet<String> openapiRequiredFields;
-
-    static {
-        // a set of all properties/fields (JSON key names)
-        openapiFields = new HashSet<String>(Arrays.asList("symbol", "type", "tradeVolume", "supply", "activity", "purchasePrice", "sellPrice"));
-
-        // a set of required properties/fields (JSON key names)
-        openapiRequiredFields = new HashSet<String>(Arrays.asList("symbol", "type", "tradeVolume", "supply", "purchasePrice", "sellPrice"));
-    }
-
     /**
-     * Validates the JSON Element and throws an exception if issues found
-     *
-     * @param jsonElement JSON Element
-     * @throws IOException if the JSON Element is invalid with respect to MarketTradeGood
+     * The type of trade good (export, import, or exchange).
      */
-    public static void validateJsonElement(JsonElement jsonElement) throws IOException {
-        if (jsonElement == null) {
-            if (!MarketTradeGood.openapiRequiredFields.isEmpty()) { // has required fields but JSON element is null
-                throw new IllegalArgumentException(String.format(java.util.Locale.ROOT, "The required field(s) %s in MarketTradeGood is not found in the empty JSON string", MarketTradeGood.openapiRequiredFields));
+    @JsonAdapter(TypeEnum.Adapter.class)
+    public enum TypeEnum {
+        EXPORT("EXPORT"),
+
+        IMPORT("IMPORT"),
+
+        EXCHANGE("EXCHANGE");
+
+        private final String value;
+
+        TypeEnum(String value) {
+            this.value = value;
+        }
+
+        public String getValue() {
+            return value;
+        }
+
+        @Override
+        public String toString() {
+            return String.valueOf(value);
+        }
+
+        public static TypeEnum fromValue(String value) {
+            for (TypeEnum b : TypeEnum.values()) {
+                if (b.value.equals(value)) {
+                    return b;
+                }
+            }
+            throw new IllegalArgumentException("Unexpected value '" + value + "'");
+        }
+
+        public static class Adapter extends TypeAdapter<TypeEnum> {
+
+            @Override
+            public void write(final JsonWriter jsonWriter, final TypeEnum enumeration)
+                throws IOException {
+                jsonWriter.value(enumeration.getValue());
+            }
+
+            @Override
+            public TypeEnum read(final JsonReader jsonReader) throws IOException {
+                String value = jsonReader.nextString();
+                return TypeEnum.fromValue(value);
             }
         }
 
-        Set<Map.Entry<String, JsonElement>> entries = jsonElement.getAsJsonObject().entrySet();
-        // check to see if the JSON string contains additional fields
-        for (Map.Entry<String, JsonElement> entry : entries) {
-            if (!MarketTradeGood.openapiFields.contains(entry.getKey())) {
-                throw new IllegalArgumentException(String.format(java.util.Locale.ROOT, "The field `%s` in the JSON string is not defined in the `MarketTradeGood` properties. JSON: %s", entry.getKey(), jsonElement));
-            }
-        }
-
-        // check to make sure all required properties/fields are present in the JSON string
-        for (String requiredField : MarketTradeGood.openapiRequiredFields) {
-            if (jsonElement.getAsJsonObject().get(requiredField) == null) {
-                throw new IllegalArgumentException(String.format(java.util.Locale.ROOT, "The required field `%s` is not found in the JSON string: %s", requiredField, jsonElement));
-            }
-        }
-        JsonObject jsonObj = jsonElement.getAsJsonObject();
-        // validate the required field `symbol`
-        TradeSymbol.validateJsonElement(jsonObj.get("symbol"));
-        if (!jsonObj.get("type").isJsonPrimitive()) {
-            throw new IllegalArgumentException(String.format(java.util.Locale.ROOT, "Expected the field `type` to be a primitive type in the JSON string but got `%s`", jsonObj.get("type").toString()));
-        }
-        // validate the required field `type`
-        TypeEnum.validateJsonElement(jsonObj.get("type"));
-        // validate the required field `supply`
-        SupplyLevel.validateJsonElement(jsonObj.get("supply"));
-        // validate the optional field `activity`
-        if (jsonObj.get("activity") != null && !jsonObj.get("activity").isJsonNull()) {
-            ActivityLevel.validateJsonElement(jsonObj.get("activity"));
+        public static void validateJsonElement(JsonElement jsonElement) throws IOException {
+            String value = jsonElement.getAsString();
+            TypeEnum.fromValue(value);
         }
     }
 
     public static class CustomTypeAdapterFactory implements TypeAdapterFactory {
+
         @SuppressWarnings("unchecked")
         @Override
         public <T> TypeAdapter<T> create(Gson gson, TypeToken<T> type) {
@@ -376,7 +403,7 @@ public class MarketTradeGood {
             }
             final TypeAdapter<JsonElement> elementAdapter = gson.getAdapter(JsonElement.class);
             final TypeAdapter<MarketTradeGood> thisAdapter
-                    = gson.getDelegateAdapter(this, TypeToken.get(MarketTradeGood.class));
+                = gson.getDelegateAdapter(this, TypeToken.get(MarketTradeGood.class));
 
             return (TypeAdapter<T>) new TypeAdapter<MarketTradeGood>() {
                 @Override

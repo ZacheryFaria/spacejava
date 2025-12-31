@@ -13,23 +13,33 @@
 
 package xyz.faria.space.spaceapi.model;
 
-import com.google.gson.*;
+import com.google.gson.Gson;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.TypeAdapter;
+import com.google.gson.TypeAdapterFactory;
 import com.google.gson.annotations.JsonAdapter;
 import com.google.gson.annotations.SerializedName;
 import com.google.gson.reflect.TypeToken;
 import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonWriter;
-import xyz.faria.space.spaceapi.client.JSON;
-
+import jakarta.persistence.Embeddable;
 import java.io.IOException;
 import java.time.OffsetDateTime;
-import java.util.*;
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Objects;
+import java.util.Set;
+import xyz.faria.space.spaceapi.client.JSON;
 
 /**
  * Result of a transaction with a market.
  */
 
+@Embeddable
 public class MarketTransaction {
+
     public static final String SERIALIZED_NAME_WAYPOINT_SYMBOL = "waypointSymbol";
     @SerializedName(SERIALIZED_NAME_WAYPOINT_SYMBOL)
     @javax.annotation.Nonnull
@@ -45,56 +55,16 @@ public class MarketTransaction {
     @javax.annotation.Nonnull
     private String tradeSymbol;
 
-    /**
-     * The type of transaction.
-     */
-    @JsonAdapter(TypeEnum.Adapter.class)
-    public enum TypeEnum {
-        PURCHASE("PURCHASE"),
+    static {
+        // a set of all properties/fields (JSON key names)
+        openapiFields = new HashSet<String>(
+            Arrays.asList("waypointSymbol", "shipSymbol", "tradeSymbol", "type", "units",
+                "pricePerUnit", "totalPrice", "timestamp"));
 
-        SELL("SELL");
-
-        private final String value;
-
-        TypeEnum(String value) {
-            this.value = value;
-        }
-
-        public String getValue() {
-            return value;
-        }
-
-        @Override
-        public String toString() {
-            return String.valueOf(value);
-        }
-
-        public static TypeEnum fromValue(String value) {
-            for (TypeEnum b : TypeEnum.values()) {
-                if (b.value.equals(value)) {
-                    return b;
-                }
-            }
-            throw new IllegalArgumentException("Unexpected value '" + value + "'");
-        }
-
-        public static class Adapter extends TypeAdapter<TypeEnum> {
-            @Override
-            public void write(final JsonWriter jsonWriter, final TypeEnum enumeration) throws IOException {
-                jsonWriter.value(enumeration.getValue());
-            }
-
-            @Override
-            public TypeEnum read(final JsonReader jsonReader) throws IOException {
-                String value = jsonReader.nextString();
-                return TypeEnum.fromValue(value);
-            }
-        }
-
-        public static void validateJsonElement(JsonElement jsonElement) throws IOException {
-            String value = jsonElement.getAsString();
-            TypeEnum.fromValue(value);
-        }
+        // a set of required properties/fields (JSON key names)
+        openapiRequiredFields = new HashSet<String>(
+            Arrays.asList("waypointSymbol", "shipSymbol", "tradeSymbol", "type", "units",
+                "pricePerUnit", "totalPrice", "timestamp"));
     }
 
     public static final String SERIALIZED_NAME_TYPE = "type";
@@ -211,14 +181,61 @@ public class MarketTransaction {
     }
 
     /**
-     * The number of units of the transaction.
-     * minimum: 0
+     * Validates the JSON Element and throws an exception if issues found
      *
-     * @return units
+     * @param jsonElement JSON Element
+     * @throws IOException if the JSON Element is invalid with respect to MarketTransaction
      */
-    @javax.annotation.Nonnull
-    public Integer getUnits() {
-        return units;
+    public static void validateJsonElement(JsonElement jsonElement) throws IOException {
+        if (jsonElement == null) {
+            if (!MarketTransaction.openapiRequiredFields.isEmpty()) { // has required fields but JSON element is null
+                throw new IllegalArgumentException(String.format(java.util.Locale.ROOT,
+                    "The required field(s) %s in MarketTransaction is not found in the empty JSON string",
+                    MarketTransaction.openapiRequiredFields));
+            }
+        }
+
+        Set<Map.Entry<String, JsonElement>> entries = jsonElement.getAsJsonObject().entrySet();
+        // check to see if the JSON string contains additional fields
+        for (Map.Entry<String, JsonElement> entry : entries) {
+            if (!MarketTransaction.openapiFields.contains(entry.getKey())) {
+                throw new IllegalArgumentException(String.format(java.util.Locale.ROOT,
+                    "The field `%s` in the JSON string is not defined in the `MarketTransaction` properties. JSON: %s",
+                    entry.getKey(), jsonElement));
+            }
+        }
+
+        // check to make sure all required properties/fields are present in the JSON string
+        for (String requiredField : MarketTransaction.openapiRequiredFields) {
+            if (jsonElement.getAsJsonObject().get(requiredField) == null) {
+                throw new IllegalArgumentException(String.format(java.util.Locale.ROOT,
+                    "The required field `%s` is not found in the JSON string: %s", requiredField,
+                    jsonElement));
+            }
+        }
+        JsonObject jsonObj = jsonElement.getAsJsonObject();
+        if (!jsonObj.get("waypointSymbol").isJsonPrimitive()) {
+            throw new IllegalArgumentException(String.format(java.util.Locale.ROOT,
+                "Expected the field `waypointSymbol` to be a primitive type in the JSON string but got `%s`",
+                jsonObj.get("waypointSymbol").toString()));
+        }
+        if (!jsonObj.get("shipSymbol").isJsonPrimitive()) {
+            throw new IllegalArgumentException(String.format(java.util.Locale.ROOT,
+                "Expected the field `shipSymbol` to be a primitive type in the JSON string but got `%s`",
+                jsonObj.get("shipSymbol").toString()));
+        }
+        if (!jsonObj.get("tradeSymbol").isJsonPrimitive()) {
+            throw new IllegalArgumentException(String.format(java.util.Locale.ROOT,
+                "Expected the field `tradeSymbol` to be a primitive type in the JSON string but got `%s`",
+                jsonObj.get("tradeSymbol").toString()));
+        }
+        if (!jsonObj.get("type").isJsonPrimitive()) {
+            throw new IllegalArgumentException(String.format(java.util.Locale.ROOT,
+                "Expected the field `type` to be a primitive type in the JSON string but got `%s`",
+                jsonObj.get("type").toString()));
+        }
+        // validate the required field `type`
+        TypeEnum.validateJsonElement(jsonObj.get("type"));
     }
 
     public void setUnits(@javax.annotation.Nonnull Integer units) {
@@ -232,14 +249,13 @@ public class MarketTransaction {
     }
 
     /**
-     * The price per unit of the transaction.
-     * minimum: 0
+     * The number of units of the transaction. minimum: 0
      *
-     * @return pricePerUnit
+     * @return units
      */
     @javax.annotation.Nonnull
-    public Integer getPricePerUnit() {
-        return pricePerUnit;
+    public Integer getUnits() {
+        return units;
     }
 
     public void setPricePerUnit(@javax.annotation.Nonnull Integer pricePerUnit) {
@@ -253,14 +269,13 @@ public class MarketTransaction {
     }
 
     /**
-     * The total price of the transaction.
-     * minimum: 0
+     * The price per unit of the transaction. minimum: 0
      *
-     * @return totalPrice
+     * @return pricePerUnit
      */
     @javax.annotation.Nonnull
-    public Integer getTotalPrice() {
-        return totalPrice;
+    public Integer getPricePerUnit() {
+        return pricePerUnit;
     }
 
     public void setTotalPrice(@javax.annotation.Nonnull Integer totalPrice) {
@@ -287,6 +302,15 @@ public class MarketTransaction {
         this.timestamp = timestamp;
     }
 
+    /**
+     * The total price of the transaction. minimum: 0
+     *
+     * @return totalPrice
+     */
+    @javax.annotation.Nonnull
+    public Integer getTotalPrice() {
+        return totalPrice;
+    }
 
     @Override
     public boolean equals(Object o) {
@@ -298,38 +322,43 @@ public class MarketTransaction {
         }
         MarketTransaction marketTransaction = (MarketTransaction) o;
         return Objects.equals(this.waypointSymbol, marketTransaction.waypointSymbol) &&
-                Objects.equals(this.shipSymbol, marketTransaction.shipSymbol) &&
-                Objects.equals(this.tradeSymbol, marketTransaction.tradeSymbol) &&
-                Objects.equals(this.type, marketTransaction.type) &&
-                Objects.equals(this.units, marketTransaction.units) &&
-                Objects.equals(this.pricePerUnit, marketTransaction.pricePerUnit) &&
-                Objects.equals(this.totalPrice, marketTransaction.totalPrice) &&
-                Objects.equals(this.timestamp, marketTransaction.timestamp);
+            Objects.equals(this.shipSymbol, marketTransaction.shipSymbol) &&
+            Objects.equals(this.tradeSymbol, marketTransaction.tradeSymbol) &&
+            Objects.equals(this.type, marketTransaction.type) &&
+            Objects.equals(this.units, marketTransaction.units) &&
+            Objects.equals(this.pricePerUnit, marketTransaction.pricePerUnit) &&
+            Objects.equals(this.totalPrice, marketTransaction.totalPrice) &&
+            Objects.equals(this.timestamp, marketTransaction.timestamp);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(waypointSymbol, shipSymbol, tradeSymbol, type, units, pricePerUnit, totalPrice, timestamp);
+        return Objects.hash(waypointSymbol, shipSymbol, tradeSymbol, type, units, pricePerUnit,
+            totalPrice, timestamp);
     }
 
     @Override
     public String toString() {
         String sb = "class MarketTransaction {\n" +
-                "    waypointSymbol: " + toIndentedString(waypointSymbol) + "\n" +
-                "    shipSymbol: " + toIndentedString(shipSymbol) + "\n" +
-                "    tradeSymbol: " + toIndentedString(tradeSymbol) + "\n" +
-                "    type: " + toIndentedString(type) + "\n" +
-                "    units: " + toIndentedString(units) + "\n" +
-                "    pricePerUnit: " + toIndentedString(pricePerUnit) + "\n" +
-                "    totalPrice: " + toIndentedString(totalPrice) + "\n" +
-                "    timestamp: " + toIndentedString(timestamp) + "\n" +
-                "}";
+            "    waypointSymbol: " + toIndentedString(waypointSymbol) + "\n" +
+            "    shipSymbol: " + toIndentedString(shipSymbol) + "\n" +
+            "    tradeSymbol: " + toIndentedString(tradeSymbol) + "\n" +
+            "    type: " + toIndentedString(type) + "\n" +
+            "    units: " + toIndentedString(units) + "\n" +
+            "    pricePerUnit: " + toIndentedString(pricePerUnit) + "\n" +
+            "    totalPrice: " + toIndentedString(totalPrice) + "\n" +
+            "    timestamp: " + toIndentedString(timestamp) + "\n" +
+            "}";
         return sb;
     }
 
+
+    public static HashSet<String> openapiFields;
+    public static HashSet<String> openapiRequiredFields;
+
     /**
-     * Convert the given object to string with each line indented by 4 spaces
-     * (except the first line).
+     * Convert the given object to string with each line indented by 4 spaces (except the first
+     * line).
      */
     private String toIndentedString(Object o) {
         if (o == null) {
@@ -338,63 +367,62 @@ public class MarketTransaction {
         return o.toString().replace("\n", "\n    ");
     }
 
-
-    public static HashSet<String> openapiFields;
-    public static HashSet<String> openapiRequiredFields;
-
-    static {
-        // a set of all properties/fields (JSON key names)
-        openapiFields = new HashSet<String>(Arrays.asList("waypointSymbol", "shipSymbol", "tradeSymbol", "type", "units", "pricePerUnit", "totalPrice", "timestamp"));
-
-        // a set of required properties/fields (JSON key names)
-        openapiRequiredFields = new HashSet<String>(Arrays.asList("waypointSymbol", "shipSymbol", "tradeSymbol", "type", "units", "pricePerUnit", "totalPrice", "timestamp"));
-    }
-
     /**
-     * Validates the JSON Element and throws an exception if issues found
-     *
-     * @param jsonElement JSON Element
-     * @throws IOException if the JSON Element is invalid with respect to MarketTransaction
+     * The type of transaction.
      */
-    public static void validateJsonElement(JsonElement jsonElement) throws IOException {
-        if (jsonElement == null) {
-            if (!MarketTransaction.openapiRequiredFields.isEmpty()) { // has required fields but JSON element is null
-                throw new IllegalArgumentException(String.format(java.util.Locale.ROOT, "The required field(s) %s in MarketTransaction is not found in the empty JSON string", MarketTransaction.openapiRequiredFields));
+    @JsonAdapter(TypeEnum.Adapter.class)
+    public enum TypeEnum {
+        PURCHASE("PURCHASE"),
+
+        SELL("SELL");
+
+        private final String value;
+
+        TypeEnum(String value) {
+            this.value = value;
+        }
+
+        public String getValue() {
+            return value;
+        }
+
+        @Override
+        public String toString() {
+            return String.valueOf(value);
+        }
+
+        public static TypeEnum fromValue(String value) {
+            for (TypeEnum b : TypeEnum.values()) {
+                if (b.value.equals(value)) {
+                    return b;
+                }
+            }
+            throw new IllegalArgumentException("Unexpected value '" + value + "'");
+        }
+
+        public static class Adapter extends TypeAdapter<TypeEnum> {
+
+            @Override
+            public void write(final JsonWriter jsonWriter, final TypeEnum enumeration)
+                throws IOException {
+                jsonWriter.value(enumeration.getValue());
+            }
+
+            @Override
+            public TypeEnum read(final JsonReader jsonReader) throws IOException {
+                String value = jsonReader.nextString();
+                return TypeEnum.fromValue(value);
             }
         }
 
-        Set<Map.Entry<String, JsonElement>> entries = jsonElement.getAsJsonObject().entrySet();
-        // check to see if the JSON string contains additional fields
-        for (Map.Entry<String, JsonElement> entry : entries) {
-            if (!MarketTransaction.openapiFields.contains(entry.getKey())) {
-                throw new IllegalArgumentException(String.format(java.util.Locale.ROOT, "The field `%s` in the JSON string is not defined in the `MarketTransaction` properties. JSON: %s", entry.getKey(), jsonElement));
-            }
+        public static void validateJsonElement(JsonElement jsonElement) throws IOException {
+            String value = jsonElement.getAsString();
+            TypeEnum.fromValue(value);
         }
-
-        // check to make sure all required properties/fields are present in the JSON string
-        for (String requiredField : MarketTransaction.openapiRequiredFields) {
-            if (jsonElement.getAsJsonObject().get(requiredField) == null) {
-                throw new IllegalArgumentException(String.format(java.util.Locale.ROOT, "The required field `%s` is not found in the JSON string: %s", requiredField, jsonElement));
-            }
-        }
-        JsonObject jsonObj = jsonElement.getAsJsonObject();
-        if (!jsonObj.get("waypointSymbol").isJsonPrimitive()) {
-            throw new IllegalArgumentException(String.format(java.util.Locale.ROOT, "Expected the field `waypointSymbol` to be a primitive type in the JSON string but got `%s`", jsonObj.get("waypointSymbol").toString()));
-        }
-        if (!jsonObj.get("shipSymbol").isJsonPrimitive()) {
-            throw new IllegalArgumentException(String.format(java.util.Locale.ROOT, "Expected the field `shipSymbol` to be a primitive type in the JSON string but got `%s`", jsonObj.get("shipSymbol").toString()));
-        }
-        if (!jsonObj.get("tradeSymbol").isJsonPrimitive()) {
-            throw new IllegalArgumentException(String.format(java.util.Locale.ROOT, "Expected the field `tradeSymbol` to be a primitive type in the JSON string but got `%s`", jsonObj.get("tradeSymbol").toString()));
-        }
-        if (!jsonObj.get("type").isJsonPrimitive()) {
-            throw new IllegalArgumentException(String.format(java.util.Locale.ROOT, "Expected the field `type` to be a primitive type in the JSON string but got `%s`", jsonObj.get("type").toString()));
-        }
-        // validate the required field `type`
-        TypeEnum.validateJsonElement(jsonObj.get("type"));
     }
 
     public static class CustomTypeAdapterFactory implements TypeAdapterFactory {
+
         @SuppressWarnings("unchecked")
         @Override
         public <T> TypeAdapter<T> create(Gson gson, TypeToken<T> type) {
@@ -403,7 +431,7 @@ public class MarketTransaction {
             }
             final TypeAdapter<JsonElement> elementAdapter = gson.getAdapter(JsonElement.class);
             final TypeAdapter<MarketTransaction> thisAdapter
-                    = gson.getDelegateAdapter(this, TypeToken.get(MarketTransaction.class));
+                = gson.getDelegateAdapter(this, TypeToken.get(MarketTransaction.class));
 
             return (TypeAdapter<T>) new TypeAdapter<MarketTransaction>() {
                 @Override

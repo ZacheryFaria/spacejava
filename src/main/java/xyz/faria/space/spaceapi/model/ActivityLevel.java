@@ -18,11 +18,13 @@ import com.google.gson.TypeAdapter;
 import com.google.gson.annotations.JsonAdapter;
 import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonWriter;
-
 import java.io.IOException;
 
 /**
- * The activity level of a trade good. If the good is an import, this represents how strong consumption is. If the good is an export, this represents how strong the production is for the good. When activity is strong, consumption or production is near maximum capacity. When activity is weak, consumption or production is near minimum capacity.
+ * The activity level of a trade good. If the good is an import, this represents how strong
+ * consumption is. If the good is an export, this represents how strong the production is for the
+ * good. When activity is strong, consumption or production is near maximum capacity. When activity
+ * is weak, consumption or production is near minimum capacity.
  */
 @JsonAdapter(ActivityLevel.Adapter.class)
 public enum ActivityLevel {
@@ -60,8 +62,10 @@ public enum ActivityLevel {
     }
 
     public static class Adapter extends TypeAdapter<ActivityLevel> {
+
         @Override
-        public void write(final JsonWriter jsonWriter, final ActivityLevel enumeration) throws IOException {
+        public void write(final JsonWriter jsonWriter, final ActivityLevel enumeration)
+            throws IOException {
             jsonWriter.value(enumeration.getValue());
         }
 

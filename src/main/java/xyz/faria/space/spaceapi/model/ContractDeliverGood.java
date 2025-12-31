@@ -13,23 +13,32 @@
 
 package xyz.faria.space.spaceapi.model;
 
-import com.google.gson.*;
+import com.google.gson.Gson;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.TypeAdapter;
+import com.google.gson.TypeAdapterFactory;
 import com.google.gson.annotations.SerializedName;
 import com.google.gson.reflect.TypeToken;
 import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonWriter;
 import jakarta.persistence.Embeddable;
+import java.io.IOException;
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Objects;
+import java.util.Set;
 import xyz.faria.space.spaceapi.client.JSON;
 
-import java.io.IOException;
-import java.util.*;
-
 /**
- * The details of a delivery contract. Includes the type of good, units needed, and the destination.
+ * The details of a delivery contract. Includes the type of good, units needed, and the
+ * destination.
  */
 
 @Embeddable
 public class ContractDeliverGood {
+
     public static final String SERIALIZED_NAME_TRADE_SYMBOL = "tradeSymbol";
     @SerializedName(SERIALIZED_NAME_TRADE_SYMBOL)
     @javax.annotation.Nonnull
@@ -73,9 +82,14 @@ public class ContractDeliverGood {
     }
 
 
-    public ContractDeliverGood destinationSymbol(@javax.annotation.Nonnull String destinationSymbol) {
-        this.destinationSymbol = destinationSymbol;
-        return this;
+    static {
+        // a set of all properties/fields (JSON key names)
+        openapiFields = new HashSet<String>(
+            Arrays.asList("tradeSymbol", "destinationSymbol", "unitsRequired", "unitsFulfilled"));
+
+        // a set of required properties/fields (JSON key names)
+        openapiRequiredFields = new HashSet<String>(
+            Arrays.asList("tradeSymbol", "destinationSymbol", "unitsRequired", "unitsFulfilled"));
     }
 
     /**
@@ -132,6 +146,62 @@ public class ContractDeliverGood {
         this.unitsFulfilled = unitsFulfilled;
     }
 
+    /**
+     * Validates the JSON Element and throws an exception if issues found
+     *
+     * @param jsonElement JSON Element
+     * @throws IOException if the JSON Element is invalid with respect to ContractDeliverGood
+     */
+    public static void validateJsonElement(JsonElement jsonElement) throws IOException {
+        if (jsonElement == null) {
+            if (!ContractDeliverGood.openapiRequiredFields.isEmpty()) { // has required fields but JSON element is null
+                throw new IllegalArgumentException(String.format(java.util.Locale.ROOT,
+                    "The required field(s) %s in ContractDeliverGood is not found in the empty JSON string",
+                    ContractDeliverGood.openapiRequiredFields));
+            }
+        }
+
+        Set<Map.Entry<String, JsonElement>> entries = jsonElement.getAsJsonObject().entrySet();
+        // check to see if the JSON string contains additional fields
+        for (Map.Entry<String, JsonElement> entry : entries) {
+            if (!ContractDeliverGood.openapiFields.contains(entry.getKey())) {
+                throw new IllegalArgumentException(String.format(java.util.Locale.ROOT,
+                    "The field `%s` in the JSON string is not defined in the `ContractDeliverGood` properties. JSON: %s",
+                    entry.getKey(), jsonElement));
+            }
+        }
+
+        // check to make sure all required properties/fields are present in the JSON string
+        for (String requiredField : ContractDeliverGood.openapiRequiredFields) {
+            if (jsonElement.getAsJsonObject().get(requiredField) == null) {
+                throw new IllegalArgumentException(String.format(java.util.Locale.ROOT,
+                    "The required field `%s` is not found in the JSON string: %s", requiredField,
+                    jsonElement));
+            }
+        }
+        JsonObject jsonObj = jsonElement.getAsJsonObject();
+        if (!jsonObj.get("tradeSymbol").isJsonPrimitive()) {
+            throw new IllegalArgumentException(String.format(java.util.Locale.ROOT,
+                "Expected the field `tradeSymbol` to be a primitive type in the JSON string but got `%s`",
+                jsonObj.get("tradeSymbol").toString()));
+        }
+        if (!jsonObj.get("destinationSymbol").isJsonPrimitive()) {
+            throw new IllegalArgumentException(String.format(java.util.Locale.ROOT,
+                "Expected the field `destinationSymbol` to be a primitive type in the JSON string but got `%s`",
+                jsonObj.get("destinationSymbol").toString()));
+        }
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(tradeSymbol, destinationSymbol, unitsRequired, unitsFulfilled);
+    }
+
+    public ContractDeliverGood destinationSymbol(
+        @javax.annotation.Nonnull String destinationSymbol) {
+        this.destinationSymbol = destinationSymbol;
+        return this;
+    }
 
     @Override
     public boolean equals(Object o) {
@@ -143,30 +213,29 @@ public class ContractDeliverGood {
         }
         ContractDeliverGood contractDeliverGood = (ContractDeliverGood) o;
         return Objects.equals(this.tradeSymbol, contractDeliverGood.tradeSymbol) &&
-                Objects.equals(this.destinationSymbol, contractDeliverGood.destinationSymbol) &&
-                Objects.equals(this.unitsRequired, contractDeliverGood.unitsRequired) &&
-                Objects.equals(this.unitsFulfilled, contractDeliverGood.unitsFulfilled);
+            Objects.equals(this.destinationSymbol, contractDeliverGood.destinationSymbol) &&
+            Objects.equals(this.unitsRequired, contractDeliverGood.unitsRequired) &&
+            Objects.equals(this.unitsFulfilled, contractDeliverGood.unitsFulfilled);
     }
 
-    @Override
-    public int hashCode() {
-        return Objects.hash(tradeSymbol, destinationSymbol, unitsRequired, unitsFulfilled);
-    }
+
+    public static HashSet<String> openapiFields;
+    public static HashSet<String> openapiRequiredFields;
 
     @Override
     public String toString() {
         String sb = "class ContractDeliverGood {\n" +
-                "    tradeSymbol: " + toIndentedString(tradeSymbol) + "\n" +
-                "    destinationSymbol: " + toIndentedString(destinationSymbol) + "\n" +
-                "    unitsRequired: " + toIndentedString(unitsRequired) + "\n" +
-                "    unitsFulfilled: " + toIndentedString(unitsFulfilled) + "\n" +
-                "}";
+            "    tradeSymbol: " + toIndentedString(tradeSymbol) + "\n" +
+            "    destinationSymbol: " + toIndentedString(destinationSymbol) + "\n" +
+            "    unitsRequired: " + toIndentedString(unitsRequired) + "\n" +
+            "    unitsFulfilled: " + toIndentedString(unitsFulfilled) + "\n" +
+            "}";
         return sb;
     }
 
     /**
-     * Convert the given object to string with each line indented by 4 spaces
-     * (except the first line).
+     * Convert the given object to string with each line indented by 4 spaces (except the first
+     * line).
      */
     private String toIndentedString(Object o) {
         if (o == null) {
@@ -175,55 +244,8 @@ public class ContractDeliverGood {
         return o.toString().replace("\n", "\n    ");
     }
 
-
-    public static HashSet<String> openapiFields;
-    public static HashSet<String> openapiRequiredFields;
-
-    static {
-        // a set of all properties/fields (JSON key names)
-        openapiFields = new HashSet<String>(Arrays.asList("tradeSymbol", "destinationSymbol", "unitsRequired", "unitsFulfilled"));
-
-        // a set of required properties/fields (JSON key names)
-        openapiRequiredFields = new HashSet<String>(Arrays.asList("tradeSymbol", "destinationSymbol", "unitsRequired", "unitsFulfilled"));
-    }
-
-    /**
-     * Validates the JSON Element and throws an exception if issues found
-     *
-     * @param jsonElement JSON Element
-     * @throws IOException if the JSON Element is invalid with respect to ContractDeliverGood
-     */
-    public static void validateJsonElement(JsonElement jsonElement) throws IOException {
-        if (jsonElement == null) {
-            if (!ContractDeliverGood.openapiRequiredFields.isEmpty()) { // has required fields but JSON element is null
-                throw new IllegalArgumentException(String.format(java.util.Locale.ROOT, "The required field(s) %s in ContractDeliverGood is not found in the empty JSON string", ContractDeliverGood.openapiRequiredFields));
-            }
-        }
-
-        Set<Map.Entry<String, JsonElement>> entries = jsonElement.getAsJsonObject().entrySet();
-        // check to see if the JSON string contains additional fields
-        for (Map.Entry<String, JsonElement> entry : entries) {
-            if (!ContractDeliverGood.openapiFields.contains(entry.getKey())) {
-                throw new IllegalArgumentException(String.format(java.util.Locale.ROOT, "The field `%s` in the JSON string is not defined in the `ContractDeliverGood` properties. JSON: %s", entry.getKey(), jsonElement));
-            }
-        }
-
-        // check to make sure all required properties/fields are present in the JSON string
-        for (String requiredField : ContractDeliverGood.openapiRequiredFields) {
-            if (jsonElement.getAsJsonObject().get(requiredField) == null) {
-                throw new IllegalArgumentException(String.format(java.util.Locale.ROOT, "The required field `%s` is not found in the JSON string: %s", requiredField, jsonElement));
-            }
-        }
-        JsonObject jsonObj = jsonElement.getAsJsonObject();
-        if (!jsonObj.get("tradeSymbol").isJsonPrimitive()) {
-            throw new IllegalArgumentException(String.format(java.util.Locale.ROOT, "Expected the field `tradeSymbol` to be a primitive type in the JSON string but got `%s`", jsonObj.get("tradeSymbol").toString()));
-        }
-        if (!jsonObj.get("destinationSymbol").isJsonPrimitive()) {
-            throw new IllegalArgumentException(String.format(java.util.Locale.ROOT, "Expected the field `destinationSymbol` to be a primitive type in the JSON string but got `%s`", jsonObj.get("destinationSymbol").toString()));
-        }
-    }
-
     public static class CustomTypeAdapterFactory implements TypeAdapterFactory {
+
         @SuppressWarnings("unchecked")
         @Override
         public <T> TypeAdapter<T> create(Gson gson, TypeToken<T> type) {
@@ -232,7 +254,7 @@ public class ContractDeliverGood {
             }
             final TypeAdapter<JsonElement> elementAdapter = gson.getAdapter(JsonElement.class);
             final TypeAdapter<ContractDeliverGood> thisAdapter
-                    = gson.getDelegateAdapter(this, TypeToken.get(ContractDeliverGood.class));
+                = gson.getDelegateAdapter(this, TypeToken.get(ContractDeliverGood.class));
 
             return (TypeAdapter<T>) new TypeAdapter<ContractDeliverGood>() {
                 @Override

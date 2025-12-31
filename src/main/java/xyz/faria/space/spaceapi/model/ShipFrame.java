@@ -13,7 +13,11 @@
 
 package xyz.faria.space.spaceapi.model;
 
-import com.google.gson.*;
+import com.google.gson.Gson;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.TypeAdapter;
+import com.google.gson.TypeAdapterFactory;
 import com.google.gson.annotations.JsonAdapter;
 import com.google.gson.annotations.SerializedName;
 import com.google.gson.reflect.TypeToken;
@@ -21,95 +25,35 @@ import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonWriter;
 import jakarta.persistence.Embeddable;
 import jakarta.persistence.Embedded;
-import xyz.faria.space.spaceapi.client.JSON;
-
 import java.io.IOException;
 import java.math.BigDecimal;
-import java.util.*;
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Objects;
+import java.util.Set;
+import xyz.faria.space.spaceapi.client.JSON;
 
 /**
- * The frame of the ship. The frame determines the number of modules and mounting points of the ship, as well as base fuel capacity. As the condition of the frame takes more wear, the ship will become more sluggish and less maneuverable.
+ * The frame of the ship. The frame determines the number of modules and mounting points of the
+ * ship, as well as base fuel capacity. As the condition of the frame takes more wear, the ship will
+ * become more sluggish and less maneuverable.
  */
 @Embeddable
 public class ShipFrame {
-    /**
-     * Symbol of the frame.
-     */
-    @JsonAdapter(SymbolEnum.Adapter.class)
-    public enum SymbolEnum {
-        FRAME_PROBE("FRAME_PROBE"),
 
-        FRAME_DRONE("FRAME_DRONE"),
+    static {
+        // a set of all properties/fields (JSON key names)
+        openapiFields = new HashSet<String>(
+            Arrays.asList("symbol", "name", "description", "condition", "integrity",
+                "moduleSlots",
+                "mountingPoints", "fuelCapacity", "requirements", "quality"));
 
-        FRAME_INTERCEPTOR("FRAME_INTERCEPTOR"),
-
-        FRAME_RACER("FRAME_RACER"),
-
-        FRAME_FIGHTER("FRAME_FIGHTER"),
-
-        FRAME_FRIGATE("FRAME_FRIGATE"),
-
-        FRAME_SHUTTLE("FRAME_SHUTTLE"),
-
-        FRAME_EXPLORER("FRAME_EXPLORER"),
-
-        FRAME_MINER("FRAME_MINER"),
-
-        FRAME_LIGHT_FREIGHTER("FRAME_LIGHT_FREIGHTER"),
-
-        FRAME_HEAVY_FREIGHTER("FRAME_HEAVY_FREIGHTER"),
-
-        FRAME_TRANSPORT("FRAME_TRANSPORT"),
-
-        FRAME_DESTROYER("FRAME_DESTROYER"),
-
-        FRAME_CRUISER("FRAME_CRUISER"),
-
-        FRAME_CARRIER("FRAME_CARRIER"),
-
-        FRAME_BULK_FREIGHTER("FRAME_BULK_FREIGHTER");
-
-        private final String value;
-
-        SymbolEnum(String value) {
-            this.value = value;
-        }
-
-        public String getValue() {
-            return value;
-        }
-
-        @Override
-        public String toString() {
-            return String.valueOf(value);
-        }
-
-        public static SymbolEnum fromValue(String value) {
-            for (SymbolEnum b : SymbolEnum.values()) {
-                if (b.value.equals(value)) {
-                    return b;
-                }
-            }
-            throw new IllegalArgumentException("Unexpected value '" + value + "'");
-        }
-
-        public static class Adapter extends TypeAdapter<SymbolEnum> {
-            @Override
-            public void write(final JsonWriter jsonWriter, final SymbolEnum enumeration) throws IOException {
-                jsonWriter.value(enumeration.getValue());
-            }
-
-            @Override
-            public SymbolEnum read(final JsonReader jsonReader) throws IOException {
-                String value = jsonReader.nextString();
-                return SymbolEnum.fromValue(value);
-            }
-        }
-
-        public static void validateJsonElement(JsonElement jsonElement) throws IOException {
-            String value = jsonElement.getAsString();
-            SymbolEnum.fromValue(value);
-        }
+        // a set of required properties/fields (JSON key names)
+        openapiRequiredFields = new HashSet<String>(
+            Arrays.asList("symbol", "name", "description", "condition", "integrity",
+                "moduleSlots",
+                "mountingPoints", "fuelCapacity", "requirements", "quality"));
     }
 
     public static final String SERIALIZED_NAME_SYMBOL = "symbol";
@@ -232,15 +176,59 @@ public class ShipFrame {
     }
 
     /**
-     * The repairable condition of a component. A value of 0 indicates the component needs significant repairs, while a value of 1 indicates the component is in near perfect condition. As the condition of a component is repaired, the overall integrity of the component decreases.
-     * minimum: 0
-     * maximum: 1
+     * Validates the JSON Element and throws an exception if issues found
      *
-     * @return condition
+     * @param jsonElement JSON Element
+     * @throws IOException if the JSON Element is invalid with respect to ShipFrame
      */
-    @javax.annotation.Nonnull
-    public Double getCondition() {
-        return condition;
+    public static void validateJsonElement(JsonElement jsonElement) throws IOException {
+        if (jsonElement == null) {
+            if (!ShipFrame.openapiRequiredFields.isEmpty()) { // has required fields but JSON element is null
+                throw new IllegalArgumentException(String.format(java.util.Locale.ROOT,
+                    "The required field(s) %s in ShipFrame is not found in the empty JSON string",
+                    ShipFrame.openapiRequiredFields));
+            }
+        }
+
+        Set<Map.Entry<String, JsonElement>> entries = jsonElement.getAsJsonObject().entrySet();
+        // check to see if the JSON string contains additional fields
+        for (Map.Entry<String, JsonElement> entry : entries) {
+            if (!ShipFrame.openapiFields.contains(entry.getKey())) {
+                throw new IllegalArgumentException(String.format(java.util.Locale.ROOT,
+                    "The field `%s` in the JSON string is not defined in the `ShipFrame` properties. JSON: %s",
+                    entry.getKey(), jsonElement));
+            }
+        }
+
+        // check to make sure all required properties/fields are present in the JSON string
+        for (String requiredField : ShipFrame.openapiRequiredFields) {
+            if (jsonElement.getAsJsonObject().get(requiredField) == null) {
+                throw new IllegalArgumentException(String.format(java.util.Locale.ROOT,
+                    "The required field `%s` is not found in the JSON string: %s",
+                    requiredField,
+                    jsonElement));
+            }
+        }
+        JsonObject jsonObj = jsonElement.getAsJsonObject();
+        if (!jsonObj.get("symbol").isJsonPrimitive()) {
+            throw new IllegalArgumentException(String.format(java.util.Locale.ROOT,
+                "Expected the field `symbol` to be a primitive type in the JSON string but got `%s`",
+                jsonObj.get("symbol").toString()));
+        }
+        // validate the required field `symbol`
+        SymbolEnum.validateJsonElement(jsonObj.get("symbol"));
+        if (!jsonObj.get("name").isJsonPrimitive()) {
+            throw new IllegalArgumentException(String.format(java.util.Locale.ROOT,
+                "Expected the field `name` to be a primitive type in the JSON string but got `%s`",
+                jsonObj.get("name").toString()));
+        }
+        if (!jsonObj.get("description").isJsonPrimitive()) {
+            throw new IllegalArgumentException(String.format(java.util.Locale.ROOT,
+                "Expected the field `description` to be a primitive type in the JSON string but got `%s`",
+                jsonObj.get("description").toString()));
+        }
+        // validate the required field `requirements`
+        ShipRequirements.validateJsonElement(jsonObj.get("requirements"));
     }
 
     public void setCondition(@javax.annotation.Nonnull Double condition) {
@@ -254,15 +242,16 @@ public class ShipFrame {
     }
 
     /**
-     * The overall integrity of the component, which determines the performance of the component. A value of 0 indicates that the component is almost completely degraded, while a value of 1 indicates that the component is in near perfect condition. The integrity of the component is non-repairable, and represents permanent wear over time.
-     * minimum: 0
-     * maximum: 1
+     * The repairable condition of a component. A value of 0 indicates the component needs
+     * significant repairs, while a value of 1 indicates the component is in near perfect condition.
+     * As the condition of a component is repaired, the overall integrity of the component
+     * decreases. minimum: 0 maximum: 1
      *
-     * @return integrity
+     * @return condition
      */
     @javax.annotation.Nonnull
-    public Double getIntegrity() {
-        return integrity;
+    public Double getCondition() {
+        return condition;
     }
 
     public void setIntegrity(@javax.annotation.Nonnull Double integrity) {
@@ -276,14 +265,16 @@ public class ShipFrame {
     }
 
     /**
-     * The amount of slots that can be dedicated to modules installed in the ship. Each installed module take up a number of slots, and once there are no more slots, no new modules can be installed.
-     * minimum: 0
+     * The overall integrity of the component, which determines the performance of the component. A
+     * value of 0 indicates that the component is almost completely degraded, while a value of 1
+     * indicates that the component is in near perfect condition. The integrity of the component is
+     * non-repairable, and represents permanent wear over time. minimum: 0 maximum: 1
      *
-     * @return moduleSlots
+     * @return integrity
      */
     @javax.annotation.Nonnull
-    public Integer getModuleSlots() {
-        return moduleSlots;
+    public Double getIntegrity() {
+        return integrity;
     }
 
     public void setModuleSlots(@javax.annotation.Nonnull Integer moduleSlots) {
@@ -297,14 +288,15 @@ public class ShipFrame {
     }
 
     /**
-     * The amount of slots that can be dedicated to mounts installed in the ship. Each installed mount takes up a number of points, and once there are no more points remaining, no new mounts can be installed.
-     * minimum: 0
+     * The amount of slots that can be dedicated to modules installed in the ship. Each installed
+     * module take up a number of slots, and once there are no more slots, no new modules can be
+     * installed. minimum: 0
      *
-     * @return mountingPoints
+     * @return moduleSlots
      */
     @javax.annotation.Nonnull
-    public Integer getMountingPoints() {
-        return mountingPoints;
+    public Integer getModuleSlots() {
+        return moduleSlots;
     }
 
     public void setMountingPoints(@javax.annotation.Nonnull Integer mountingPoints) {
@@ -318,14 +310,15 @@ public class ShipFrame {
     }
 
     /**
-     * The maximum amount of fuel that can be stored in this ship. When refueling, the ship will be refueled to this amount.
-     * minimum: 0
+     * The amount of slots that can be dedicated to mounts installed in the ship. Each installed
+     * mount takes up a number of points, and once there are no more points remaining, no new mounts
+     * can be installed. minimum: 0
      *
-     * @return fuelCapacity
+     * @return mountingPoints
      */
     @javax.annotation.Nonnull
-    public Integer getFuelCapacity() {
-        return fuelCapacity;
+    public Integer getMountingPoints() {
+        return mountingPoints;
     }
 
     public void setFuelCapacity(@javax.annotation.Nonnull Integer fuelCapacity) {
@@ -359,7 +352,25 @@ public class ShipFrame {
     }
 
     /**
-     * The overall quality of the component, which determines the quality of the component. High quality components return more ships parts and ship plating when a ship is scrapped. But also require more of these parts to repair. This is transparent to the player, as the parts are bought from/sold to the marketplace.
+     * The maximum amount of fuel that can be stored in this ship. When refueling, the ship will be
+     * refueled to this amount. minimum: 0
+     *
+     * @return fuelCapacity
+     */
+    @javax.annotation.Nonnull
+    public Integer getFuelCapacity() {
+        return fuelCapacity;
+    }
+
+    public void setQuality(@javax.annotation.Nonnull BigDecimal quality) {
+        this.quality = quality;
+    }
+
+    /**
+     * The overall quality of the component, which determines the quality of the component. High
+     * quality components return more ships parts and ship plating when a ship is scrapped. But also
+     * require more of these parts to repair. This is transparent to the player, as the parts are
+     * bought from/sold to the marketplace.
      *
      * @return quality
      */
@@ -367,11 +378,6 @@ public class ShipFrame {
     public BigDecimal getQuality() {
         return quality;
     }
-
-    public void setQuality(@javax.annotation.Nonnull BigDecimal quality) {
-        this.quality = quality;
-    }
-
 
     @Override
     public boolean equals(Object o) {
@@ -383,42 +389,47 @@ public class ShipFrame {
         }
         ShipFrame shipFrame = (ShipFrame) o;
         return Objects.equals(this.symbol, shipFrame.symbol) &&
-                Objects.equals(this.name, shipFrame.name) &&
-                Objects.equals(this.description, shipFrame.description) &&
-                Objects.equals(this.condition, shipFrame.condition) &&
-                Objects.equals(this.integrity, shipFrame.integrity) &&
-                Objects.equals(this.moduleSlots, shipFrame.moduleSlots) &&
-                Objects.equals(this.mountingPoints, shipFrame.mountingPoints) &&
-                Objects.equals(this.fuelCapacity, shipFrame.fuelCapacity) &&
-                Objects.equals(this.requirements, shipFrame.requirements) &&
-                Objects.equals(this.quality, shipFrame.quality);
+            Objects.equals(this.name, shipFrame.name) &&
+            Objects.equals(this.description, shipFrame.description) &&
+            Objects.equals(this.condition, shipFrame.condition) &&
+            Objects.equals(this.integrity, shipFrame.integrity) &&
+            Objects.equals(this.moduleSlots, shipFrame.moduleSlots) &&
+            Objects.equals(this.mountingPoints, shipFrame.mountingPoints) &&
+            Objects.equals(this.fuelCapacity, shipFrame.fuelCapacity) &&
+            Objects.equals(this.requirements, shipFrame.requirements) &&
+            Objects.equals(this.quality, shipFrame.quality);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(symbol, name, description, condition, integrity, moduleSlots, mountingPoints, fuelCapacity, requirements, quality);
+        return Objects.hash(symbol, name, description, condition, integrity, moduleSlots,
+            mountingPoints, fuelCapacity, requirements, quality);
     }
 
     @Override
     public String toString() {
         String sb = "class ShipFrame {\n" +
-                "    symbol: " + toIndentedString(symbol) + "\n" +
-                "    name: " + toIndentedString(name) + "\n" +
-                "    description: " + toIndentedString(description) + "\n" +
-                "    condition: " + toIndentedString(condition) + "\n" +
-                "    integrity: " + toIndentedString(integrity) + "\n" +
-                "    moduleSlots: " + toIndentedString(moduleSlots) + "\n" +
-                "    mountingPoints: " + toIndentedString(mountingPoints) + "\n" +
-                "    fuelCapacity: " + toIndentedString(fuelCapacity) + "\n" +
-                "    requirements: " + toIndentedString(requirements) + "\n" +
-                "    quality: " + toIndentedString(quality) + "\n" +
-                "}";
+            "    symbol: " + toIndentedString(symbol) + "\n" +
+            "    name: " + toIndentedString(name) + "\n" +
+            "    description: " + toIndentedString(description) + "\n" +
+            "    condition: " + toIndentedString(condition) + "\n" +
+            "    integrity: " + toIndentedString(integrity) + "\n" +
+            "    moduleSlots: " + toIndentedString(moduleSlots) + "\n" +
+            "    mountingPoints: " + toIndentedString(mountingPoints) + "\n" +
+            "    fuelCapacity: " + toIndentedString(fuelCapacity) + "\n" +
+            "    requirements: " + toIndentedString(requirements) + "\n" +
+            "    quality: " + toIndentedString(quality) + "\n" +
+            "}";
         return sb;
     }
 
+
+    public static HashSet<String> openapiFields;
+    public static HashSet<String> openapiRequiredFields;
+
     /**
-     * Convert the given object to string with each line indented by 4 spaces
-     * (except the first line).
+     * Convert the given object to string with each line indented by 4 spaces (except the first
+     * line).
      */
     private String toIndentedString(Object o) {
         if (o == null) {
@@ -427,62 +438,90 @@ public class ShipFrame {
         return o.toString().replace("\n", "\n    ");
     }
 
-
-    public static HashSet<String> openapiFields;
-    public static HashSet<String> openapiRequiredFields;
-
-    static {
-        // a set of all properties/fields (JSON key names)
-        openapiFields = new HashSet<String>(Arrays.asList("symbol", "name", "description", "condition", "integrity", "moduleSlots", "mountingPoints", "fuelCapacity", "requirements", "quality"));
-
-        // a set of required properties/fields (JSON key names)
-        openapiRequiredFields = new HashSet<String>(Arrays.asList("symbol", "name", "description", "condition", "integrity", "moduleSlots", "mountingPoints", "fuelCapacity", "requirements", "quality"));
-    }
-
     /**
-     * Validates the JSON Element and throws an exception if issues found
-     *
-     * @param jsonElement JSON Element
-     * @throws IOException if the JSON Element is invalid with respect to ShipFrame
+     * Symbol of the frame.
      */
-    public static void validateJsonElement(JsonElement jsonElement) throws IOException {
-        if (jsonElement == null) {
-            if (!ShipFrame.openapiRequiredFields.isEmpty()) { // has required fields but JSON element is null
-                throw new IllegalArgumentException(String.format(java.util.Locale.ROOT, "The required field(s) %s in ShipFrame is not found in the empty JSON string", ShipFrame.openapiRequiredFields));
+    @JsonAdapter(SymbolEnum.Adapter.class)
+    public enum SymbolEnum {
+        FRAME_PROBE("FRAME_PROBE"),
+
+        FRAME_DRONE("FRAME_DRONE"),
+
+        FRAME_INTERCEPTOR("FRAME_INTERCEPTOR"),
+
+        FRAME_RACER("FRAME_RACER"),
+
+        FRAME_FIGHTER("FRAME_FIGHTER"),
+
+        FRAME_FRIGATE("FRAME_FRIGATE"),
+
+        FRAME_SHUTTLE("FRAME_SHUTTLE"),
+
+        FRAME_EXPLORER("FRAME_EXPLORER"),
+
+        FRAME_MINER("FRAME_MINER"),
+
+        FRAME_LIGHT_FREIGHTER("FRAME_LIGHT_FREIGHTER"),
+
+        FRAME_HEAVY_FREIGHTER("FRAME_HEAVY_FREIGHTER"),
+
+        FRAME_TRANSPORT("FRAME_TRANSPORT"),
+
+        FRAME_DESTROYER("FRAME_DESTROYER"),
+
+        FRAME_CRUISER("FRAME_CRUISER"),
+
+        FRAME_CARRIER("FRAME_CARRIER"),
+
+        FRAME_BULK_FREIGHTER("FRAME_BULK_FREIGHTER");
+
+        private final String value;
+
+        SymbolEnum(String value) {
+            this.value = value;
+        }
+
+        public String getValue() {
+            return value;
+        }
+
+        @Override
+        public String toString() {
+            return String.valueOf(value);
+        }
+
+        public static SymbolEnum fromValue(String value) {
+            for (SymbolEnum b : SymbolEnum.values()) {
+                if (b.value.equals(value)) {
+                    return b;
+                }
+            }
+            throw new IllegalArgumentException("Unexpected value '" + value + "'");
+        }
+
+        public static class Adapter extends TypeAdapter<SymbolEnum> {
+
+            @Override
+            public void write(final JsonWriter jsonWriter, final SymbolEnum enumeration)
+                throws IOException {
+                jsonWriter.value(enumeration.getValue());
+            }
+
+            @Override
+            public SymbolEnum read(final JsonReader jsonReader) throws IOException {
+                String value = jsonReader.nextString();
+                return SymbolEnum.fromValue(value);
             }
         }
 
-        Set<Map.Entry<String, JsonElement>> entries = jsonElement.getAsJsonObject().entrySet();
-        // check to see if the JSON string contains additional fields
-        for (Map.Entry<String, JsonElement> entry : entries) {
-            if (!ShipFrame.openapiFields.contains(entry.getKey())) {
-                throw new IllegalArgumentException(String.format(java.util.Locale.ROOT, "The field `%s` in the JSON string is not defined in the `ShipFrame` properties. JSON: %s", entry.getKey(), jsonElement));
-            }
+        public static void validateJsonElement(JsonElement jsonElement) throws IOException {
+            String value = jsonElement.getAsString();
+            SymbolEnum.fromValue(value);
         }
-
-        // check to make sure all required properties/fields are present in the JSON string
-        for (String requiredField : ShipFrame.openapiRequiredFields) {
-            if (jsonElement.getAsJsonObject().get(requiredField) == null) {
-                throw new IllegalArgumentException(String.format(java.util.Locale.ROOT, "The required field `%s` is not found in the JSON string: %s", requiredField, jsonElement));
-            }
-        }
-        JsonObject jsonObj = jsonElement.getAsJsonObject();
-        if (!jsonObj.get("symbol").isJsonPrimitive()) {
-            throw new IllegalArgumentException(String.format(java.util.Locale.ROOT, "Expected the field `symbol` to be a primitive type in the JSON string but got `%s`", jsonObj.get("symbol").toString()));
-        }
-        // validate the required field `symbol`
-        SymbolEnum.validateJsonElement(jsonObj.get("symbol"));
-        if (!jsonObj.get("name").isJsonPrimitive()) {
-            throw new IllegalArgumentException(String.format(java.util.Locale.ROOT, "Expected the field `name` to be a primitive type in the JSON string but got `%s`", jsonObj.get("name").toString()));
-        }
-        if (!jsonObj.get("description").isJsonPrimitive()) {
-            throw new IllegalArgumentException(String.format(java.util.Locale.ROOT, "Expected the field `description` to be a primitive type in the JSON string but got `%s`", jsonObj.get("description").toString()));
-        }
-        // validate the required field `requirements`
-        ShipRequirements.validateJsonElement(jsonObj.get("requirements"));
     }
 
     public static class CustomTypeAdapterFactory implements TypeAdapterFactory {
+
         @SuppressWarnings("unchecked")
         @Override
         public <T> TypeAdapter<T> create(Gson gson, TypeToken<T> type) {
@@ -491,7 +530,7 @@ public class ShipFrame {
             }
             final TypeAdapter<JsonElement> elementAdapter = gson.getAdapter(JsonElement.class);
             final TypeAdapter<ShipFrame> thisAdapter
-                    = gson.getDelegateAdapter(this, TypeToken.get(ShipFrame.class));
+                = gson.getDelegateAdapter(this, TypeToken.get(ShipFrame.class));
 
             return (TypeAdapter<T>) new TypeAdapter<ShipFrame>() {
                 @Override

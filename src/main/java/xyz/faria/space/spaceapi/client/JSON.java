@@ -13,13 +13,15 @@
 
 package xyz.faria.space.spaceapi.client;
 
-import com.google.gson.*;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonParseException;
+import com.google.gson.TypeAdapter;
 import com.google.gson.internal.bind.util.ISO8601Utils;
 import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonWriter;
 import io.gsonfire.GsonFireBuilder;
-import okio.ByteString;
-
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -34,6 +36,7 @@ import java.time.OffsetDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Date;
 import java.util.Map;
+import okio.ByteString;
 
 /*
  * A JSON utility class
@@ -42,6 +45,7 @@ import java.util.Map;
  *       backward-compatibility
  */
 public class JSON {
+
     private static Gson gson;
     private static boolean isLenientOnJson = false;
     private static final DateTypeAdapter dateTypeAdapter = new DateTypeAdapter();
@@ -57,29 +61,6 @@ public class JSON {
         return builder;
     }
 
-    private static String getDiscriminatorValue(JsonElement readElement, String discriminatorField) {
-        JsonElement element = readElement.getAsJsonObject().get(discriminatorField);
-        if (null == element) {
-            throw new IllegalArgumentException("missing discriminator field: <" + discriminatorField + ">");
-        }
-        return element.getAsString();
-    }
-
-    /**
-     * Returns the Java class that implements the OpenAPI schema for the specified discriminator value.
-     *
-     * @param classByDiscriminatorValue The map of discriminator values to Java classes.
-     * @param discriminatorValue        The value of the OpenAPI discriminator in the input data.
-     * @return The Java class that implements the OpenAPI schema
-     */
-    private static Class getClassByDiscriminator(Map classByDiscriminatorValue, String discriminatorValue) {
-        Class clazz = (Class) classByDiscriminatorValue.get(discriminatorValue);
-        if (null == clazz) {
-            throw new IllegalArgumentException("cannot determine model class of name: <" + discriminatorValue + ">");
-        }
-        return clazz;
-    }
-
     static {
         GsonBuilder gsonBuilder = createGson();
         gsonBuilder.registerTypeAdapter(Date.class, dateTypeAdapter);
@@ -87,187 +68,395 @@ public class JSON {
         gsonBuilder.registerTypeAdapter(OffsetDateTime.class, offsetDateTimeTypeAdapter);
         gsonBuilder.registerTypeAdapter(LocalDate.class, localDateTypeAdapter);
         gsonBuilder.registerTypeAdapter(byte[].class, byteArrayAdapter);
-        gsonBuilder.registerTypeAdapterFactory(new xyz.faria.space.spaceapi.model.AcceptContract200Response.CustomTypeAdapterFactory());
-        gsonBuilder.registerTypeAdapterFactory(new xyz.faria.space.spaceapi.model.AcceptContract200ResponseData.CustomTypeAdapterFactory());
-        gsonBuilder.registerTypeAdapterFactory(new xyz.faria.space.spaceapi.model.Agent.CustomTypeAdapterFactory());
-        gsonBuilder.registerTypeAdapterFactory(new xyz.faria.space.spaceapi.model.Chart.CustomTypeAdapterFactory());
-        gsonBuilder.registerTypeAdapterFactory(new xyz.faria.space.spaceapi.model.Construction.CustomTypeAdapterFactory());
-        gsonBuilder.registerTypeAdapterFactory(new xyz.faria.space.spaceapi.model.ConstructionMaterial.CustomTypeAdapterFactory());
-        gsonBuilder.registerTypeAdapterFactory(new xyz.faria.space.spaceapi.model.Contract.CustomTypeAdapterFactory());
-        gsonBuilder.registerTypeAdapterFactory(new xyz.faria.space.spaceapi.model.ContractDeliverGood.CustomTypeAdapterFactory());
-        gsonBuilder.registerTypeAdapterFactory(new xyz.faria.space.spaceapi.model.ContractPayment.CustomTypeAdapterFactory());
-        gsonBuilder.registerTypeAdapterFactory(new xyz.faria.space.spaceapi.model.ContractTerms.CustomTypeAdapterFactory());
-        gsonBuilder.registerTypeAdapterFactory(new xyz.faria.space.spaceapi.model.Cooldown.CustomTypeAdapterFactory());
-        gsonBuilder.registerTypeAdapterFactory(new xyz.faria.space.spaceapi.model.CreateChart201Response.CustomTypeAdapterFactory());
-        gsonBuilder.registerTypeAdapterFactory(new xyz.faria.space.spaceapi.model.CreateChart201ResponseData.CustomTypeAdapterFactory());
-        gsonBuilder.registerTypeAdapterFactory(new xyz.faria.space.spaceapi.model.CreateShipShipScan201Response.CustomTypeAdapterFactory());
-        gsonBuilder.registerTypeAdapterFactory(new xyz.faria.space.spaceapi.model.CreateShipShipScan201ResponseData.CustomTypeAdapterFactory());
-        gsonBuilder.registerTypeAdapterFactory(new xyz.faria.space.spaceapi.model.CreateShipSystemScan201Response.CustomTypeAdapterFactory());
-        gsonBuilder.registerTypeAdapterFactory(new xyz.faria.space.spaceapi.model.CreateShipSystemScan201ResponseData.CustomTypeAdapterFactory());
-        gsonBuilder.registerTypeAdapterFactory(new xyz.faria.space.spaceapi.model.CreateShipWaypointScan201Response.CustomTypeAdapterFactory());
-        gsonBuilder.registerTypeAdapterFactory(new xyz.faria.space.spaceapi.model.CreateShipWaypointScan201ResponseData.CustomTypeAdapterFactory());
-        gsonBuilder.registerTypeAdapterFactory(new xyz.faria.space.spaceapi.model.CreateSurvey201Response.CustomTypeAdapterFactory());
-        gsonBuilder.registerTypeAdapterFactory(new xyz.faria.space.spaceapi.model.CreateSurvey201ResponseData.CustomTypeAdapterFactory());
-        gsonBuilder.registerTypeAdapterFactory(new xyz.faria.space.spaceapi.model.DeliverContract200Response.CustomTypeAdapterFactory());
-        gsonBuilder.registerTypeAdapterFactory(new xyz.faria.space.spaceapi.model.DeliverContract200ResponseData.CustomTypeAdapterFactory());
-        gsonBuilder.registerTypeAdapterFactory(new xyz.faria.space.spaceapi.model.DeliverContractRequest.CustomTypeAdapterFactory());
-        gsonBuilder.registerTypeAdapterFactory(new xyz.faria.space.spaceapi.model.DockShip200Response.CustomTypeAdapterFactory());
-        gsonBuilder.registerTypeAdapterFactory(new xyz.faria.space.spaceapi.model.ExtractResources201Response.CustomTypeAdapterFactory());
-        gsonBuilder.registerTypeAdapterFactory(new xyz.faria.space.spaceapi.model.ExtractResources201ResponseData.CustomTypeAdapterFactory());
-        gsonBuilder.registerTypeAdapterFactory(new xyz.faria.space.spaceapi.model.ExtractResourcesRequest.CustomTypeAdapterFactory());
-        gsonBuilder.registerTypeAdapterFactory(new xyz.faria.space.spaceapi.model.ExtractResourcesWithSurvey201Response.CustomTypeAdapterFactory());
-        gsonBuilder.registerTypeAdapterFactory(new xyz.faria.space.spaceapi.model.ExtractResourcesWithSurvey201ResponseData.CustomTypeAdapterFactory());
-        gsonBuilder.registerTypeAdapterFactory(new xyz.faria.space.spaceapi.model.Extraction.CustomTypeAdapterFactory());
-        gsonBuilder.registerTypeAdapterFactory(new xyz.faria.space.spaceapi.model.ExtractionYield.CustomTypeAdapterFactory());
-        gsonBuilder.registerTypeAdapterFactory(new xyz.faria.space.spaceapi.model.Faction.CustomTypeAdapterFactory());
-        gsonBuilder.registerTypeAdapterFactory(new xyz.faria.space.spaceapi.model.FactionTrait.CustomTypeAdapterFactory());
-        gsonBuilder.registerTypeAdapterFactory(new xyz.faria.space.spaceapi.model.FulfillContract200Response.CustomTypeAdapterFactory());
-        gsonBuilder.registerTypeAdapterFactory(new xyz.faria.space.spaceapi.model.GetAgents200Response.CustomTypeAdapterFactory());
-        gsonBuilder.registerTypeAdapterFactory(new xyz.faria.space.spaceapi.model.GetConstruction200Response.CustomTypeAdapterFactory());
-        gsonBuilder.registerTypeAdapterFactory(new xyz.faria.space.spaceapi.model.GetContract200Response.CustomTypeAdapterFactory());
-        gsonBuilder.registerTypeAdapterFactory(new xyz.faria.space.spaceapi.model.GetContracts200Response.CustomTypeAdapterFactory());
-        gsonBuilder.registerTypeAdapterFactory(new xyz.faria.space.spaceapi.model.GetFaction200Response.CustomTypeAdapterFactory());
-        gsonBuilder.registerTypeAdapterFactory(new xyz.faria.space.spaceapi.model.GetFactions200Response.CustomTypeAdapterFactory());
-        gsonBuilder.registerTypeAdapterFactory(new xyz.faria.space.spaceapi.model.GetJumpGate200Response.CustomTypeAdapterFactory());
-        gsonBuilder.registerTypeAdapterFactory(new xyz.faria.space.spaceapi.model.GetMarket200Response.CustomTypeAdapterFactory());
-        gsonBuilder.registerTypeAdapterFactory(new xyz.faria.space.spaceapi.model.GetMounts200Response.CustomTypeAdapterFactory());
-        gsonBuilder.registerTypeAdapterFactory(new xyz.faria.space.spaceapi.model.GetMyAgent200Response.CustomTypeAdapterFactory());
-        gsonBuilder.registerTypeAdapterFactory(new xyz.faria.space.spaceapi.model.GetMyShip200Response.CustomTypeAdapterFactory());
-        gsonBuilder.registerTypeAdapterFactory(new xyz.faria.space.spaceapi.model.GetMyShipCargo200Response.CustomTypeAdapterFactory());
-        gsonBuilder.registerTypeAdapterFactory(new xyz.faria.space.spaceapi.model.GetMyShips200Response.CustomTypeAdapterFactory());
-        gsonBuilder.registerTypeAdapterFactory(new xyz.faria.space.spaceapi.model.GetRepairShip200Response.CustomTypeAdapterFactory());
-        gsonBuilder.registerTypeAdapterFactory(new xyz.faria.space.spaceapi.model.GetRepairShip200ResponseData.CustomTypeAdapterFactory());
-        gsonBuilder.registerTypeAdapterFactory(new xyz.faria.space.spaceapi.model.GetScrapShip200Response.CustomTypeAdapterFactory());
-        gsonBuilder.registerTypeAdapterFactory(new xyz.faria.space.spaceapi.model.GetScrapShip200ResponseData.CustomTypeAdapterFactory());
-        gsonBuilder.registerTypeAdapterFactory(new xyz.faria.space.spaceapi.model.GetShipCooldown200Response.CustomTypeAdapterFactory());
-        gsonBuilder.registerTypeAdapterFactory(new xyz.faria.space.spaceapi.model.GetShipModules200Response.CustomTypeAdapterFactory());
-        gsonBuilder.registerTypeAdapterFactory(new xyz.faria.space.spaceapi.model.GetShipNav200Response.CustomTypeAdapterFactory());
-        gsonBuilder.registerTypeAdapterFactory(new xyz.faria.space.spaceapi.model.GetShipyard200Response.CustomTypeAdapterFactory());
-        gsonBuilder.registerTypeAdapterFactory(new xyz.faria.space.spaceapi.model.GetStatus200Response.CustomTypeAdapterFactory());
-        gsonBuilder.registerTypeAdapterFactory(new xyz.faria.space.spaceapi.model.GetStatus200ResponseAnnouncementsInner.CustomTypeAdapterFactory());
-        gsonBuilder.registerTypeAdapterFactory(new xyz.faria.space.spaceapi.model.GetStatus200ResponseLeaderboards.CustomTypeAdapterFactory());
-        gsonBuilder.registerTypeAdapterFactory(new xyz.faria.space.spaceapi.model.GetStatus200ResponseLeaderboardsMostCreditsInner.CustomTypeAdapterFactory());
-        gsonBuilder.registerTypeAdapterFactory(new xyz.faria.space.spaceapi.model.GetStatus200ResponseLeaderboardsMostSubmittedChartsInner.CustomTypeAdapterFactory());
-        gsonBuilder.registerTypeAdapterFactory(new xyz.faria.space.spaceapi.model.GetStatus200ResponseLinksInner.CustomTypeAdapterFactory());
-        gsonBuilder.registerTypeAdapterFactory(new xyz.faria.space.spaceapi.model.GetStatus200ResponseServerResets.CustomTypeAdapterFactory());
-        gsonBuilder.registerTypeAdapterFactory(new xyz.faria.space.spaceapi.model.GetStatus200ResponseStats.CustomTypeAdapterFactory());
-        gsonBuilder.registerTypeAdapterFactory(new xyz.faria.space.spaceapi.model.GetSupplyChain200Response.CustomTypeAdapterFactory());
-        gsonBuilder.registerTypeAdapterFactory(new xyz.faria.space.spaceapi.model.GetSupplyChain200ResponseData.CustomTypeAdapterFactory());
-        gsonBuilder.registerTypeAdapterFactory(new xyz.faria.space.spaceapi.model.GetSystem200Response.CustomTypeAdapterFactory());
-        gsonBuilder.registerTypeAdapterFactory(new xyz.faria.space.spaceapi.model.GetSystemWaypoints200Response.CustomTypeAdapterFactory());
-        gsonBuilder.registerTypeAdapterFactory(new xyz.faria.space.spaceapi.model.GetSystemWaypointsTraitsParameter.CustomTypeAdapterFactory());
-        gsonBuilder.registerTypeAdapterFactory(new xyz.faria.space.spaceapi.model.GetSystems200Response.CustomTypeAdapterFactory());
-        gsonBuilder.registerTypeAdapterFactory(new xyz.faria.space.spaceapi.model.GetWaypoint200Response.CustomTypeAdapterFactory());
-        gsonBuilder.registerTypeAdapterFactory(new xyz.faria.space.spaceapi.model.InstallMount201Response.CustomTypeAdapterFactory());
-        gsonBuilder.registerTypeAdapterFactory(new xyz.faria.space.spaceapi.model.InstallMount201ResponseData.CustomTypeAdapterFactory());
-        gsonBuilder.registerTypeAdapterFactory(new xyz.faria.space.spaceapi.model.InstallMountRequest.CustomTypeAdapterFactory());
-        gsonBuilder.registerTypeAdapterFactory(new xyz.faria.space.spaceapi.model.InstallShipModule201Response.CustomTypeAdapterFactory());
-        gsonBuilder.registerTypeAdapterFactory(new xyz.faria.space.spaceapi.model.InstallShipModule201ResponseData.CustomTypeAdapterFactory());
-        gsonBuilder.registerTypeAdapterFactory(new xyz.faria.space.spaceapi.model.InstallShipModule201ResponseDataTransaction.CustomTypeAdapterFactory());
-        gsonBuilder.registerTypeAdapterFactory(new xyz.faria.space.spaceapi.model.InstallShipModuleRequest.CustomTypeAdapterFactory());
-        gsonBuilder.registerTypeAdapterFactory(new xyz.faria.space.spaceapi.model.Jettison200Response.CustomTypeAdapterFactory());
-        gsonBuilder.registerTypeAdapterFactory(new xyz.faria.space.spaceapi.model.Jettison200ResponseData.CustomTypeAdapterFactory());
-        gsonBuilder.registerTypeAdapterFactory(new xyz.faria.space.spaceapi.model.JettisonRequest.CustomTypeAdapterFactory());
-        gsonBuilder.registerTypeAdapterFactory(new xyz.faria.space.spaceapi.model.JumpGate.CustomTypeAdapterFactory());
-        gsonBuilder.registerTypeAdapterFactory(new xyz.faria.space.spaceapi.model.JumpShip200Response.CustomTypeAdapterFactory());
-        gsonBuilder.registerTypeAdapterFactory(new xyz.faria.space.spaceapi.model.JumpShip200ResponseData.CustomTypeAdapterFactory());
-        gsonBuilder.registerTypeAdapterFactory(new xyz.faria.space.spaceapi.model.JumpShipRequest.CustomTypeAdapterFactory());
-        gsonBuilder.registerTypeAdapterFactory(new xyz.faria.space.spaceapi.model.Market.CustomTypeAdapterFactory());
-        gsonBuilder.registerTypeAdapterFactory(new xyz.faria.space.spaceapi.model.MarketTradeGood.CustomTypeAdapterFactory());
-        gsonBuilder.registerTypeAdapterFactory(new xyz.faria.space.spaceapi.model.MarketTransaction.CustomTypeAdapterFactory());
-        gsonBuilder.registerTypeAdapterFactory(new xyz.faria.space.spaceapi.model.Meta.CustomTypeAdapterFactory());
-        gsonBuilder.registerTypeAdapterFactory(new xyz.faria.space.spaceapi.model.NavigateShip200Response.CustomTypeAdapterFactory());
-        gsonBuilder.registerTypeAdapterFactory(new xyz.faria.space.spaceapi.model.NavigateShip200ResponseData.CustomTypeAdapterFactory());
-        gsonBuilder.registerTypeAdapterFactory(new xyz.faria.space.spaceapi.model.NavigateShipRequest.CustomTypeAdapterFactory());
-        gsonBuilder.registerTypeAdapterFactory(new xyz.faria.space.spaceapi.model.NegotiateContract200Response.CustomTypeAdapterFactory());
-        gsonBuilder.registerTypeAdapterFactory(new xyz.faria.space.spaceapi.model.NegotiateContract200ResponseData.CustomTypeAdapterFactory());
-        gsonBuilder.registerTypeAdapterFactory(new xyz.faria.space.spaceapi.model.OrbitShip200Response.CustomTypeAdapterFactory());
-        gsonBuilder.registerTypeAdapterFactory(new xyz.faria.space.spaceapi.model.OrbitShip200ResponseData.CustomTypeAdapterFactory());
-        gsonBuilder.registerTypeAdapterFactory(new xyz.faria.space.spaceapi.model.PatchShipNav200Response.CustomTypeAdapterFactory());
-        gsonBuilder.registerTypeAdapterFactory(new xyz.faria.space.spaceapi.model.PatchShipNav200ResponseData.CustomTypeAdapterFactory());
-        gsonBuilder.registerTypeAdapterFactory(new xyz.faria.space.spaceapi.model.PatchShipNavRequest.CustomTypeAdapterFactory());
-        gsonBuilder.registerTypeAdapterFactory(new xyz.faria.space.spaceapi.model.PurchaseCargo201Response.CustomTypeAdapterFactory());
-        gsonBuilder.registerTypeAdapterFactory(new xyz.faria.space.spaceapi.model.PurchaseCargoRequest.CustomTypeAdapterFactory());
-        gsonBuilder.registerTypeAdapterFactory(new xyz.faria.space.spaceapi.model.PurchaseShip201Response.CustomTypeAdapterFactory());
-        gsonBuilder.registerTypeAdapterFactory(new xyz.faria.space.spaceapi.model.PurchaseShip201ResponseData.CustomTypeAdapterFactory());
-        gsonBuilder.registerTypeAdapterFactory(new xyz.faria.space.spaceapi.model.PurchaseShipRequest.CustomTypeAdapterFactory());
-        gsonBuilder.registerTypeAdapterFactory(new xyz.faria.space.spaceapi.model.RefuelShip200Response.CustomTypeAdapterFactory());
-        gsonBuilder.registerTypeAdapterFactory(new xyz.faria.space.spaceapi.model.RefuelShip200ResponseData.CustomTypeAdapterFactory());
-        gsonBuilder.registerTypeAdapterFactory(new xyz.faria.space.spaceapi.model.RefuelShipRequest.CustomTypeAdapterFactory());
-        gsonBuilder.registerTypeAdapterFactory(new xyz.faria.space.spaceapi.model.Register201Response.CustomTypeAdapterFactory());
-        gsonBuilder.registerTypeAdapterFactory(new xyz.faria.space.spaceapi.model.Register201ResponseData.CustomTypeAdapterFactory());
-        gsonBuilder.registerTypeAdapterFactory(new xyz.faria.space.spaceapi.model.RegisterRequest.CustomTypeAdapterFactory());
-        gsonBuilder.registerTypeAdapterFactory(new xyz.faria.space.spaceapi.model.RemoveModule201Response.CustomTypeAdapterFactory());
-        gsonBuilder.registerTypeAdapterFactory(new xyz.faria.space.spaceapi.model.RemoveMount201Response.CustomTypeAdapterFactory());
-        gsonBuilder.registerTypeAdapterFactory(new xyz.faria.space.spaceapi.model.RemoveMount201ResponseData.CustomTypeAdapterFactory());
-        gsonBuilder.registerTypeAdapterFactory(new xyz.faria.space.spaceapi.model.RemoveMountRequest.CustomTypeAdapterFactory());
-        gsonBuilder.registerTypeAdapterFactory(new xyz.faria.space.spaceapi.model.RemoveShipModuleRequest.CustomTypeAdapterFactory());
-        gsonBuilder.registerTypeAdapterFactory(new xyz.faria.space.spaceapi.model.RepairShip200Response.CustomTypeAdapterFactory());
-        gsonBuilder.registerTypeAdapterFactory(new xyz.faria.space.spaceapi.model.RepairShip200ResponseData.CustomTypeAdapterFactory());
-        gsonBuilder.registerTypeAdapterFactory(new xyz.faria.space.spaceapi.model.RepairTransaction.CustomTypeAdapterFactory());
-        gsonBuilder.registerTypeAdapterFactory(new xyz.faria.space.spaceapi.model.ScannedShip.CustomTypeAdapterFactory());
-        gsonBuilder.registerTypeAdapterFactory(new xyz.faria.space.spaceapi.model.ScannedShipEngine.CustomTypeAdapterFactory());
-        gsonBuilder.registerTypeAdapterFactory(new xyz.faria.space.spaceapi.model.ScannedShipFrame.CustomTypeAdapterFactory());
-        gsonBuilder.registerTypeAdapterFactory(new xyz.faria.space.spaceapi.model.ScannedShipMountsInner.CustomTypeAdapterFactory());
-        gsonBuilder.registerTypeAdapterFactory(new xyz.faria.space.spaceapi.model.ScannedShipReactor.CustomTypeAdapterFactory());
-        gsonBuilder.registerTypeAdapterFactory(new xyz.faria.space.spaceapi.model.ScannedSystem.CustomTypeAdapterFactory());
-        gsonBuilder.registerTypeAdapterFactory(new xyz.faria.space.spaceapi.model.ScannedWaypoint.CustomTypeAdapterFactory());
-        gsonBuilder.registerTypeAdapterFactory(new xyz.faria.space.spaceapi.model.ScrapShip200Response.CustomTypeAdapterFactory());
-        gsonBuilder.registerTypeAdapterFactory(new xyz.faria.space.spaceapi.model.ScrapShip200ResponseData.CustomTypeAdapterFactory());
-        gsonBuilder.registerTypeAdapterFactory(new xyz.faria.space.spaceapi.model.ScrapTransaction.CustomTypeAdapterFactory());
-        gsonBuilder.registerTypeAdapterFactory(new xyz.faria.space.spaceapi.model.SellCargo201Response.CustomTypeAdapterFactory());
-        gsonBuilder.registerTypeAdapterFactory(new xyz.faria.space.spaceapi.model.SellCargo201ResponseData.CustomTypeAdapterFactory());
-        gsonBuilder.registerTypeAdapterFactory(new xyz.faria.space.spaceapi.model.SellCargoRequest.CustomTypeAdapterFactory());
-        gsonBuilder.registerTypeAdapterFactory(new xyz.faria.space.spaceapi.model.Ship.CustomTypeAdapterFactory());
-        gsonBuilder.registerTypeAdapterFactory(new xyz.faria.space.spaceapi.model.ShipCargo.CustomTypeAdapterFactory());
-        gsonBuilder.registerTypeAdapterFactory(new xyz.faria.space.spaceapi.model.ShipCargoItem.CustomTypeAdapterFactory());
-        gsonBuilder.registerTypeAdapterFactory(new xyz.faria.space.spaceapi.model.ShipConditionEvent.CustomTypeAdapterFactory());
-        gsonBuilder.registerTypeAdapterFactory(new xyz.faria.space.spaceapi.model.ShipCrew.CustomTypeAdapterFactory());
-        gsonBuilder.registerTypeAdapterFactory(new xyz.faria.space.spaceapi.model.ShipEngine.CustomTypeAdapterFactory());
-        gsonBuilder.registerTypeAdapterFactory(new xyz.faria.space.spaceapi.model.ShipFrame.CustomTypeAdapterFactory());
-        gsonBuilder.registerTypeAdapterFactory(new xyz.faria.space.spaceapi.model.ShipFuel.CustomTypeAdapterFactory());
-        gsonBuilder.registerTypeAdapterFactory(new xyz.faria.space.spaceapi.model.ShipFuelConsumed.CustomTypeAdapterFactory());
-        gsonBuilder.registerTypeAdapterFactory(new xyz.faria.space.spaceapi.model.ShipModificationTransaction.CustomTypeAdapterFactory());
-        gsonBuilder.registerTypeAdapterFactory(new xyz.faria.space.spaceapi.model.ShipModule.CustomTypeAdapterFactory());
-        gsonBuilder.registerTypeAdapterFactory(new xyz.faria.space.spaceapi.model.ShipMount.CustomTypeAdapterFactory());
-        gsonBuilder.registerTypeAdapterFactory(new xyz.faria.space.spaceapi.model.ShipNav.CustomTypeAdapterFactory());
-        gsonBuilder.registerTypeAdapterFactory(new xyz.faria.space.spaceapi.model.ShipNavRoute.CustomTypeAdapterFactory());
-        gsonBuilder.registerTypeAdapterFactory(new xyz.faria.space.spaceapi.model.ShipNavRouteWaypoint.CustomTypeAdapterFactory());
-        gsonBuilder.registerTypeAdapterFactory(new xyz.faria.space.spaceapi.model.ShipReactor.CustomTypeAdapterFactory());
-        gsonBuilder.registerTypeAdapterFactory(new xyz.faria.space.spaceapi.model.ShipRefine201Response.CustomTypeAdapterFactory());
-        gsonBuilder.registerTypeAdapterFactory(new xyz.faria.space.spaceapi.model.ShipRefine201ResponseData.CustomTypeAdapterFactory());
-        gsonBuilder.registerTypeAdapterFactory(new xyz.faria.space.spaceapi.model.ShipRefine201ResponseDataProducedInner.CustomTypeAdapterFactory());
-        gsonBuilder.registerTypeAdapterFactory(new xyz.faria.space.spaceapi.model.ShipRefineRequest.CustomTypeAdapterFactory());
-        gsonBuilder.registerTypeAdapterFactory(new xyz.faria.space.spaceapi.model.ShipRegistration.CustomTypeAdapterFactory());
-        gsonBuilder.registerTypeAdapterFactory(new xyz.faria.space.spaceapi.model.ShipRequirements.CustomTypeAdapterFactory());
-        gsonBuilder.registerTypeAdapterFactory(new xyz.faria.space.spaceapi.model.Shipyard.CustomTypeAdapterFactory());
-        gsonBuilder.registerTypeAdapterFactory(new xyz.faria.space.spaceapi.model.ShipyardShip.CustomTypeAdapterFactory());
-        gsonBuilder.registerTypeAdapterFactory(new xyz.faria.space.spaceapi.model.ShipyardShipCrew.CustomTypeAdapterFactory());
-        gsonBuilder.registerTypeAdapterFactory(new xyz.faria.space.spaceapi.model.ShipyardShipTypesInner.CustomTypeAdapterFactory());
-        gsonBuilder.registerTypeAdapterFactory(new xyz.faria.space.spaceapi.model.ShipyardTransaction.CustomTypeAdapterFactory());
-        gsonBuilder.registerTypeAdapterFactory(new xyz.faria.space.spaceapi.model.Siphon.CustomTypeAdapterFactory());
-        gsonBuilder.registerTypeAdapterFactory(new xyz.faria.space.spaceapi.model.SiphonResources201Response.CustomTypeAdapterFactory());
-        gsonBuilder.registerTypeAdapterFactory(new xyz.faria.space.spaceapi.model.SiphonResources201ResponseData.CustomTypeAdapterFactory());
-        gsonBuilder.registerTypeAdapterFactory(new xyz.faria.space.spaceapi.model.SiphonYield.CustomTypeAdapterFactory());
-        gsonBuilder.registerTypeAdapterFactory(new xyz.faria.space.spaceapi.model.SupplyConstruction201Response.CustomTypeAdapterFactory());
-        gsonBuilder.registerTypeAdapterFactory(new xyz.faria.space.spaceapi.model.SupplyConstruction201ResponseData.CustomTypeAdapterFactory());
-        gsonBuilder.registerTypeAdapterFactory(new xyz.faria.space.spaceapi.model.SupplyConstructionRequest.CustomTypeAdapterFactory());
-        gsonBuilder.registerTypeAdapterFactory(new xyz.faria.space.spaceapi.model.Survey.CustomTypeAdapterFactory());
-        gsonBuilder.registerTypeAdapterFactory(new xyz.faria.space.spaceapi.model.SurveyDeposit.CustomTypeAdapterFactory());
-        gsonBuilder.registerTypeAdapterFactory(new xyz.faria.space.spaceapi.model.System.CustomTypeAdapterFactory());
-        gsonBuilder.registerTypeAdapterFactory(new xyz.faria.space.spaceapi.model.SystemFaction.CustomTypeAdapterFactory());
-        gsonBuilder.registerTypeAdapterFactory(new xyz.faria.space.spaceapi.model.SystemWaypoint.CustomTypeAdapterFactory());
-        gsonBuilder.registerTypeAdapterFactory(new xyz.faria.space.spaceapi.model.TradeGood.CustomTypeAdapterFactory());
-        gsonBuilder.registerTypeAdapterFactory(new xyz.faria.space.spaceapi.model.TransferCargo200Response.CustomTypeAdapterFactory());
-        gsonBuilder.registerTypeAdapterFactory(new xyz.faria.space.spaceapi.model.TransferCargoRequest.CustomTypeAdapterFactory());
-        gsonBuilder.registerTypeAdapterFactory(new xyz.faria.space.spaceapi.model.WarpShip200Response.CustomTypeAdapterFactory());
-        gsonBuilder.registerTypeAdapterFactory(new xyz.faria.space.spaceapi.model.WarpShip200ResponseData.CustomTypeAdapterFactory());
-        gsonBuilder.registerTypeAdapterFactory(new xyz.faria.space.spaceapi.model.Waypoint.CustomTypeAdapterFactory());
-        gsonBuilder.registerTypeAdapterFactory(new xyz.faria.space.spaceapi.model.WaypointFaction.CustomTypeAdapterFactory());
-        gsonBuilder.registerTypeAdapterFactory(new xyz.faria.space.spaceapi.model.WaypointModifier.CustomTypeAdapterFactory());
-        gsonBuilder.registerTypeAdapterFactory(new xyz.faria.space.spaceapi.model.WaypointOrbital.CustomTypeAdapterFactory());
-        gsonBuilder.registerTypeAdapterFactory(new xyz.faria.space.spaceapi.model.WaypointTrait.CustomTypeAdapterFactory());
+        gsonBuilder.registerTypeAdapterFactory(
+            new xyz.faria.space.spaceapi.model.AcceptContract200Response.CustomTypeAdapterFactory());
+        gsonBuilder.registerTypeAdapterFactory(
+            new xyz.faria.space.spaceapi.model.AcceptContract200ResponseData.CustomTypeAdapterFactory());
+        gsonBuilder.registerTypeAdapterFactory(
+            new xyz.faria.space.spaceapi.model.Agent.CustomTypeAdapterFactory());
+        gsonBuilder.registerTypeAdapterFactory(
+            new xyz.faria.space.spaceapi.model.Chart.CustomTypeAdapterFactory());
+        gsonBuilder.registerTypeAdapterFactory(
+            new xyz.faria.space.spaceapi.model.Construction.CustomTypeAdapterFactory());
+        gsonBuilder.registerTypeAdapterFactory(
+            new xyz.faria.space.spaceapi.model.ConstructionMaterial.CustomTypeAdapterFactory());
+        gsonBuilder.registerTypeAdapterFactory(
+            new xyz.faria.space.spaceapi.model.Contract.CustomTypeAdapterFactory());
+        gsonBuilder.registerTypeAdapterFactory(
+            new xyz.faria.space.spaceapi.model.ContractDeliverGood.CustomTypeAdapterFactory());
+        gsonBuilder.registerTypeAdapterFactory(
+            new xyz.faria.space.spaceapi.model.ContractPayment.CustomTypeAdapterFactory());
+        gsonBuilder.registerTypeAdapterFactory(
+            new xyz.faria.space.spaceapi.model.ContractTerms.CustomTypeAdapterFactory());
+        gsonBuilder.registerTypeAdapterFactory(
+            new xyz.faria.space.spaceapi.model.Cooldown.CustomTypeAdapterFactory());
+        gsonBuilder.registerTypeAdapterFactory(
+            new xyz.faria.space.spaceapi.model.CreateChart201Response.CustomTypeAdapterFactory());
+        gsonBuilder.registerTypeAdapterFactory(
+            new xyz.faria.space.spaceapi.model.CreateChart201ResponseData.CustomTypeAdapterFactory());
+        gsonBuilder.registerTypeAdapterFactory(
+            new xyz.faria.space.spaceapi.model.CreateShipShipScan201Response.CustomTypeAdapterFactory());
+        gsonBuilder.registerTypeAdapterFactory(
+            new xyz.faria.space.spaceapi.model.CreateShipShipScan201ResponseData.CustomTypeAdapterFactory());
+        gsonBuilder.registerTypeAdapterFactory(
+            new xyz.faria.space.spaceapi.model.CreateShipSystemScan201Response.CustomTypeAdapterFactory());
+        gsonBuilder.registerTypeAdapterFactory(
+            new xyz.faria.space.spaceapi.model.CreateShipSystemScan201ResponseData.CustomTypeAdapterFactory());
+        gsonBuilder.registerTypeAdapterFactory(
+            new xyz.faria.space.spaceapi.model.CreateShipWaypointScan201Response.CustomTypeAdapterFactory());
+        gsonBuilder.registerTypeAdapterFactory(
+            new xyz.faria.space.spaceapi.model.CreateShipWaypointScan201ResponseData.CustomTypeAdapterFactory());
+        gsonBuilder.registerTypeAdapterFactory(
+            new xyz.faria.space.spaceapi.model.CreateSurvey201Response.CustomTypeAdapterFactory());
+        gsonBuilder.registerTypeAdapterFactory(
+            new xyz.faria.space.spaceapi.model.CreateSurvey201ResponseData.CustomTypeAdapterFactory());
+        gsonBuilder.registerTypeAdapterFactory(
+            new xyz.faria.space.spaceapi.model.DeliverContract200Response.CustomTypeAdapterFactory());
+        gsonBuilder.registerTypeAdapterFactory(
+            new xyz.faria.space.spaceapi.model.DeliverContract200ResponseData.CustomTypeAdapterFactory());
+        gsonBuilder.registerTypeAdapterFactory(
+            new xyz.faria.space.spaceapi.model.DeliverContractRequest.CustomTypeAdapterFactory());
+        gsonBuilder.registerTypeAdapterFactory(
+            new xyz.faria.space.spaceapi.model.DockShip200Response.CustomTypeAdapterFactory());
+        gsonBuilder.registerTypeAdapterFactory(
+            new xyz.faria.space.spaceapi.model.ExtractResources201Response.CustomTypeAdapterFactory());
+        gsonBuilder.registerTypeAdapterFactory(
+            new xyz.faria.space.spaceapi.model.ExtractResources201ResponseData.CustomTypeAdapterFactory());
+        gsonBuilder.registerTypeAdapterFactory(
+            new xyz.faria.space.spaceapi.model.ExtractResourcesRequest.CustomTypeAdapterFactory());
+        gsonBuilder.registerTypeAdapterFactory(
+            new xyz.faria.space.spaceapi.model.ExtractResourcesWithSurvey201Response.CustomTypeAdapterFactory());
+        gsonBuilder.registerTypeAdapterFactory(
+            new xyz.faria.space.spaceapi.model.ExtractResourcesWithSurvey201ResponseData.CustomTypeAdapterFactory());
+        gsonBuilder.registerTypeAdapterFactory(
+            new xyz.faria.space.spaceapi.model.Extraction.CustomTypeAdapterFactory());
+        gsonBuilder.registerTypeAdapterFactory(
+            new xyz.faria.space.spaceapi.model.ExtractionYield.CustomTypeAdapterFactory());
+        gsonBuilder.registerTypeAdapterFactory(
+            new xyz.faria.space.spaceapi.model.Faction.CustomTypeAdapterFactory());
+        gsonBuilder.registerTypeAdapterFactory(
+            new xyz.faria.space.spaceapi.model.FactionTrait.CustomTypeAdapterFactory());
+        gsonBuilder.registerTypeAdapterFactory(
+            new xyz.faria.space.spaceapi.model.FulfillContract200Response.CustomTypeAdapterFactory());
+        gsonBuilder.registerTypeAdapterFactory(
+            new xyz.faria.space.spaceapi.model.GetAgents200Response.CustomTypeAdapterFactory());
+        gsonBuilder.registerTypeAdapterFactory(
+            new xyz.faria.space.spaceapi.model.GetConstruction200Response.CustomTypeAdapterFactory());
+        gsonBuilder.registerTypeAdapterFactory(
+            new xyz.faria.space.spaceapi.model.GetContract200Response.CustomTypeAdapterFactory());
+        gsonBuilder.registerTypeAdapterFactory(
+            new xyz.faria.space.spaceapi.model.GetContracts200Response.CustomTypeAdapterFactory());
+        gsonBuilder.registerTypeAdapterFactory(
+            new xyz.faria.space.spaceapi.model.GetFaction200Response.CustomTypeAdapterFactory());
+        gsonBuilder.registerTypeAdapterFactory(
+            new xyz.faria.space.spaceapi.model.GetFactions200Response.CustomTypeAdapterFactory());
+        gsonBuilder.registerTypeAdapterFactory(
+            new xyz.faria.space.spaceapi.model.GetJumpGate200Response.CustomTypeAdapterFactory());
+        gsonBuilder.registerTypeAdapterFactory(
+            new xyz.faria.space.spaceapi.model.GetMarket200Response.CustomTypeAdapterFactory());
+        gsonBuilder.registerTypeAdapterFactory(
+            new xyz.faria.space.spaceapi.model.GetMounts200Response.CustomTypeAdapterFactory());
+        gsonBuilder.registerTypeAdapterFactory(
+            new xyz.faria.space.spaceapi.model.GetMyAgent200Response.CustomTypeAdapterFactory());
+        gsonBuilder.registerTypeAdapterFactory(
+            new xyz.faria.space.spaceapi.model.GetMyShip200Response.CustomTypeAdapterFactory());
+        gsonBuilder.registerTypeAdapterFactory(
+            new xyz.faria.space.spaceapi.model.GetMyShipCargo200Response.CustomTypeAdapterFactory());
+        gsonBuilder.registerTypeAdapterFactory(
+            new xyz.faria.space.spaceapi.model.GetMyShips200Response.CustomTypeAdapterFactory());
+        gsonBuilder.registerTypeAdapterFactory(
+            new xyz.faria.space.spaceapi.model.GetRepairShip200Response.CustomTypeAdapterFactory());
+        gsonBuilder.registerTypeAdapterFactory(
+            new xyz.faria.space.spaceapi.model.GetRepairShip200ResponseData.CustomTypeAdapterFactory());
+        gsonBuilder.registerTypeAdapterFactory(
+            new xyz.faria.space.spaceapi.model.GetScrapShip200Response.CustomTypeAdapterFactory());
+        gsonBuilder.registerTypeAdapterFactory(
+            new xyz.faria.space.spaceapi.model.GetScrapShip200ResponseData.CustomTypeAdapterFactory());
+        gsonBuilder.registerTypeAdapterFactory(
+            new xyz.faria.space.spaceapi.model.GetShipCooldown200Response.CustomTypeAdapterFactory());
+        gsonBuilder.registerTypeAdapterFactory(
+            new xyz.faria.space.spaceapi.model.GetShipModules200Response.CustomTypeAdapterFactory());
+        gsonBuilder.registerTypeAdapterFactory(
+            new xyz.faria.space.spaceapi.model.GetShipNav200Response.CustomTypeAdapterFactory());
+        gsonBuilder.registerTypeAdapterFactory(
+            new xyz.faria.space.spaceapi.model.GetShipyard200Response.CustomTypeAdapterFactory());
+        gsonBuilder.registerTypeAdapterFactory(
+            new xyz.faria.space.spaceapi.model.GetStatus200Response.CustomTypeAdapterFactory());
+        gsonBuilder.registerTypeAdapterFactory(
+            new xyz.faria.space.spaceapi.model.GetStatus200ResponseAnnouncementsInner.CustomTypeAdapterFactory());
+        gsonBuilder.registerTypeAdapterFactory(
+            new xyz.faria.space.spaceapi.model.GetStatus200ResponseLeaderboards.CustomTypeAdapterFactory());
+        gsonBuilder.registerTypeAdapterFactory(
+            new xyz.faria.space.spaceapi.model.GetStatus200ResponseLeaderboardsMostCreditsInner.CustomTypeAdapterFactory());
+        gsonBuilder.registerTypeAdapterFactory(
+            new xyz.faria.space.spaceapi.model.GetStatus200ResponseLeaderboardsMostSubmittedChartsInner.CustomTypeAdapterFactory());
+        gsonBuilder.registerTypeAdapterFactory(
+            new xyz.faria.space.spaceapi.model.GetStatus200ResponseLinksInner.CustomTypeAdapterFactory());
+        gsonBuilder.registerTypeAdapterFactory(
+            new xyz.faria.space.spaceapi.model.GetStatus200ResponseServerResets.CustomTypeAdapterFactory());
+        gsonBuilder.registerTypeAdapterFactory(
+            new xyz.faria.space.spaceapi.model.GetStatus200ResponseStats.CustomTypeAdapterFactory());
+        gsonBuilder.registerTypeAdapterFactory(
+            new xyz.faria.space.spaceapi.model.GetSupplyChain200Response.CustomTypeAdapterFactory());
+        gsonBuilder.registerTypeAdapterFactory(
+            new xyz.faria.space.spaceapi.model.GetSupplyChain200ResponseData.CustomTypeAdapterFactory());
+        gsonBuilder.registerTypeAdapterFactory(
+            new xyz.faria.space.spaceapi.model.GetSystem200Response.CustomTypeAdapterFactory());
+        gsonBuilder.registerTypeAdapterFactory(
+            new xyz.faria.space.spaceapi.model.GetSystemWaypoints200Response.CustomTypeAdapterFactory());
+        gsonBuilder.registerTypeAdapterFactory(
+            new xyz.faria.space.spaceapi.model.GetSystemWaypointsTraitsParameter.CustomTypeAdapterFactory());
+        gsonBuilder.registerTypeAdapterFactory(
+            new xyz.faria.space.spaceapi.model.GetSystems200Response.CustomTypeAdapterFactory());
+        gsonBuilder.registerTypeAdapterFactory(
+            new xyz.faria.space.spaceapi.model.GetWaypoint200Response.CustomTypeAdapterFactory());
+        gsonBuilder.registerTypeAdapterFactory(
+            new xyz.faria.space.spaceapi.model.InstallMount201Response.CustomTypeAdapterFactory());
+        gsonBuilder.registerTypeAdapterFactory(
+            new xyz.faria.space.spaceapi.model.InstallMount201ResponseData.CustomTypeAdapterFactory());
+        gsonBuilder.registerTypeAdapterFactory(
+            new xyz.faria.space.spaceapi.model.InstallMountRequest.CustomTypeAdapterFactory());
+        gsonBuilder.registerTypeAdapterFactory(
+            new xyz.faria.space.spaceapi.model.InstallShipModule201Response.CustomTypeAdapterFactory());
+        gsonBuilder.registerTypeAdapterFactory(
+            new xyz.faria.space.spaceapi.model.InstallShipModule201ResponseData.CustomTypeAdapterFactory());
+        gsonBuilder.registerTypeAdapterFactory(
+            new xyz.faria.space.spaceapi.model.InstallShipModule201ResponseDataTransaction.CustomTypeAdapterFactory());
+        gsonBuilder.registerTypeAdapterFactory(
+            new xyz.faria.space.spaceapi.model.InstallShipModuleRequest.CustomTypeAdapterFactory());
+        gsonBuilder.registerTypeAdapterFactory(
+            new xyz.faria.space.spaceapi.model.Jettison200Response.CustomTypeAdapterFactory());
+        gsonBuilder.registerTypeAdapterFactory(
+            new xyz.faria.space.spaceapi.model.Jettison200ResponseData.CustomTypeAdapterFactory());
+        gsonBuilder.registerTypeAdapterFactory(
+            new xyz.faria.space.spaceapi.model.JettisonRequest.CustomTypeAdapterFactory());
+        gsonBuilder.registerTypeAdapterFactory(
+            new xyz.faria.space.spaceapi.model.JumpGate.CustomTypeAdapterFactory());
+        gsonBuilder.registerTypeAdapterFactory(
+            new xyz.faria.space.spaceapi.model.JumpShip200Response.CustomTypeAdapterFactory());
+        gsonBuilder.registerTypeAdapterFactory(
+            new xyz.faria.space.spaceapi.model.JumpShip200ResponseData.CustomTypeAdapterFactory());
+        gsonBuilder.registerTypeAdapterFactory(
+            new xyz.faria.space.spaceapi.model.JumpShipRequest.CustomTypeAdapterFactory());
+        gsonBuilder.registerTypeAdapterFactory(
+            new xyz.faria.space.spaceapi.model.Market.CustomTypeAdapterFactory());
+        gsonBuilder.registerTypeAdapterFactory(
+            new xyz.faria.space.spaceapi.model.MarketTradeGood.CustomTypeAdapterFactory());
+        gsonBuilder.registerTypeAdapterFactory(
+            new xyz.faria.space.spaceapi.model.MarketTransaction.CustomTypeAdapterFactory());
+        gsonBuilder.registerTypeAdapterFactory(
+            new xyz.faria.space.spaceapi.model.Meta.CustomTypeAdapterFactory());
+        gsonBuilder.registerTypeAdapterFactory(
+            new xyz.faria.space.spaceapi.model.NavigateShip200Response.CustomTypeAdapterFactory());
+        gsonBuilder.registerTypeAdapterFactory(
+            new xyz.faria.space.spaceapi.model.NavigateShip200ResponseData.CustomTypeAdapterFactory());
+        gsonBuilder.registerTypeAdapterFactory(
+            new xyz.faria.space.spaceapi.model.NavigateShipRequest.CustomTypeAdapterFactory());
+        gsonBuilder.registerTypeAdapterFactory(
+            new xyz.faria.space.spaceapi.model.NegotiateContract200Response.CustomTypeAdapterFactory());
+        gsonBuilder.registerTypeAdapterFactory(
+            new xyz.faria.space.spaceapi.model.NegotiateContract200ResponseData.CustomTypeAdapterFactory());
+        gsonBuilder.registerTypeAdapterFactory(
+            new xyz.faria.space.spaceapi.model.OrbitShip200Response.CustomTypeAdapterFactory());
+        gsonBuilder.registerTypeAdapterFactory(
+            new xyz.faria.space.spaceapi.model.OrbitShip200ResponseData.CustomTypeAdapterFactory());
+        gsonBuilder.registerTypeAdapterFactory(
+            new xyz.faria.space.spaceapi.model.PatchShipNav200Response.CustomTypeAdapterFactory());
+        gsonBuilder.registerTypeAdapterFactory(
+            new xyz.faria.space.spaceapi.model.PatchShipNav200ResponseData.CustomTypeAdapterFactory());
+        gsonBuilder.registerTypeAdapterFactory(
+            new xyz.faria.space.spaceapi.model.PatchShipNavRequest.CustomTypeAdapterFactory());
+        gsonBuilder.registerTypeAdapterFactory(
+            new xyz.faria.space.spaceapi.model.PurchaseCargo201Response.CustomTypeAdapterFactory());
+        gsonBuilder.registerTypeAdapterFactory(
+            new xyz.faria.space.spaceapi.model.PurchaseCargoRequest.CustomTypeAdapterFactory());
+        gsonBuilder.registerTypeAdapterFactory(
+            new xyz.faria.space.spaceapi.model.PurchaseShip201Response.CustomTypeAdapterFactory());
+        gsonBuilder.registerTypeAdapterFactory(
+            new xyz.faria.space.spaceapi.model.PurchaseShip201ResponseData.CustomTypeAdapterFactory());
+        gsonBuilder.registerTypeAdapterFactory(
+            new xyz.faria.space.spaceapi.model.PurchaseShipRequest.CustomTypeAdapterFactory());
+        gsonBuilder.registerTypeAdapterFactory(
+            new xyz.faria.space.spaceapi.model.RefuelShip200Response.CustomTypeAdapterFactory());
+        gsonBuilder.registerTypeAdapterFactory(
+            new xyz.faria.space.spaceapi.model.RefuelShip200ResponseData.CustomTypeAdapterFactory());
+        gsonBuilder.registerTypeAdapterFactory(
+            new xyz.faria.space.spaceapi.model.RefuelShipRequest.CustomTypeAdapterFactory());
+        gsonBuilder.registerTypeAdapterFactory(
+            new xyz.faria.space.spaceapi.model.Register201Response.CustomTypeAdapterFactory());
+        gsonBuilder.registerTypeAdapterFactory(
+            new xyz.faria.space.spaceapi.model.Register201ResponseData.CustomTypeAdapterFactory());
+        gsonBuilder.registerTypeAdapterFactory(
+            new xyz.faria.space.spaceapi.model.RegisterRequest.CustomTypeAdapterFactory());
+        gsonBuilder.registerTypeAdapterFactory(
+            new xyz.faria.space.spaceapi.model.RemoveModule201Response.CustomTypeAdapterFactory());
+        gsonBuilder.registerTypeAdapterFactory(
+            new xyz.faria.space.spaceapi.model.RemoveMount201Response.CustomTypeAdapterFactory());
+        gsonBuilder.registerTypeAdapterFactory(
+            new xyz.faria.space.spaceapi.model.RemoveMount201ResponseData.CustomTypeAdapterFactory());
+        gsonBuilder.registerTypeAdapterFactory(
+            new xyz.faria.space.spaceapi.model.RemoveMountRequest.CustomTypeAdapterFactory());
+        gsonBuilder.registerTypeAdapterFactory(
+            new xyz.faria.space.spaceapi.model.RemoveShipModuleRequest.CustomTypeAdapterFactory());
+        gsonBuilder.registerTypeAdapterFactory(
+            new xyz.faria.space.spaceapi.model.RepairShip200Response.CustomTypeAdapterFactory());
+        gsonBuilder.registerTypeAdapterFactory(
+            new xyz.faria.space.spaceapi.model.RepairShip200ResponseData.CustomTypeAdapterFactory());
+        gsonBuilder.registerTypeAdapterFactory(
+            new xyz.faria.space.spaceapi.model.RepairTransaction.CustomTypeAdapterFactory());
+        gsonBuilder.registerTypeAdapterFactory(
+            new xyz.faria.space.spaceapi.model.ScannedShip.CustomTypeAdapterFactory());
+        gsonBuilder.registerTypeAdapterFactory(
+            new xyz.faria.space.spaceapi.model.ScannedShipEngine.CustomTypeAdapterFactory());
+        gsonBuilder.registerTypeAdapterFactory(
+            new xyz.faria.space.spaceapi.model.ScannedShipFrame.CustomTypeAdapterFactory());
+        gsonBuilder.registerTypeAdapterFactory(
+            new xyz.faria.space.spaceapi.model.ScannedShipMountsInner.CustomTypeAdapterFactory());
+        gsonBuilder.registerTypeAdapterFactory(
+            new xyz.faria.space.spaceapi.model.ScannedShipReactor.CustomTypeAdapterFactory());
+        gsonBuilder.registerTypeAdapterFactory(
+            new xyz.faria.space.spaceapi.model.ScannedSystem.CustomTypeAdapterFactory());
+        gsonBuilder.registerTypeAdapterFactory(
+            new xyz.faria.space.spaceapi.model.ScannedWaypoint.CustomTypeAdapterFactory());
+        gsonBuilder.registerTypeAdapterFactory(
+            new xyz.faria.space.spaceapi.model.ScrapShip200Response.CustomTypeAdapterFactory());
+        gsonBuilder.registerTypeAdapterFactory(
+            new xyz.faria.space.spaceapi.model.ScrapShip200ResponseData.CustomTypeAdapterFactory());
+        gsonBuilder.registerTypeAdapterFactory(
+            new xyz.faria.space.spaceapi.model.ScrapTransaction.CustomTypeAdapterFactory());
+        gsonBuilder.registerTypeAdapterFactory(
+            new xyz.faria.space.spaceapi.model.SellCargo201Response.CustomTypeAdapterFactory());
+        gsonBuilder.registerTypeAdapterFactory(
+            new xyz.faria.space.spaceapi.model.SellCargo201ResponseData.CustomTypeAdapterFactory());
+        gsonBuilder.registerTypeAdapterFactory(
+            new xyz.faria.space.spaceapi.model.SellCargoRequest.CustomTypeAdapterFactory());
+        gsonBuilder.registerTypeAdapterFactory(
+            new xyz.faria.space.spaceapi.model.Ship.CustomTypeAdapterFactory());
+        gsonBuilder.registerTypeAdapterFactory(
+            new xyz.faria.space.spaceapi.model.ShipCargo.CustomTypeAdapterFactory());
+        gsonBuilder.registerTypeAdapterFactory(
+            new xyz.faria.space.spaceapi.model.ShipCargoItem.CustomTypeAdapterFactory());
+        gsonBuilder.registerTypeAdapterFactory(
+            new xyz.faria.space.spaceapi.model.ShipConditionEvent.CustomTypeAdapterFactory());
+        gsonBuilder.registerTypeAdapterFactory(
+            new xyz.faria.space.spaceapi.model.ShipCrew.CustomTypeAdapterFactory());
+        gsonBuilder.registerTypeAdapterFactory(
+            new xyz.faria.space.spaceapi.model.ShipEngine.CustomTypeAdapterFactory());
+        gsonBuilder.registerTypeAdapterFactory(
+            new xyz.faria.space.spaceapi.model.ShipFrame.CustomTypeAdapterFactory());
+        gsonBuilder.registerTypeAdapterFactory(
+            new xyz.faria.space.spaceapi.model.ShipFuel.CustomTypeAdapterFactory());
+        gsonBuilder.registerTypeAdapterFactory(
+            new xyz.faria.space.spaceapi.model.ShipFuelConsumed.CustomTypeAdapterFactory());
+        gsonBuilder.registerTypeAdapterFactory(
+            new xyz.faria.space.spaceapi.model.ShipModificationTransaction.CustomTypeAdapterFactory());
+        gsonBuilder.registerTypeAdapterFactory(
+            new xyz.faria.space.spaceapi.model.ShipModule.CustomTypeAdapterFactory());
+        gsonBuilder.registerTypeAdapterFactory(
+            new xyz.faria.space.spaceapi.model.ShipMount.CustomTypeAdapterFactory());
+        gsonBuilder.registerTypeAdapterFactory(
+            new xyz.faria.space.spaceapi.model.ShipNav.CustomTypeAdapterFactory());
+        gsonBuilder.registerTypeAdapterFactory(
+            new xyz.faria.space.spaceapi.model.ShipNavRoute.CustomTypeAdapterFactory());
+        gsonBuilder.registerTypeAdapterFactory(
+            new xyz.faria.space.spaceapi.model.ShipNavRouteWaypoint.CustomTypeAdapterFactory());
+        gsonBuilder.registerTypeAdapterFactory(
+            new xyz.faria.space.spaceapi.model.ShipReactor.CustomTypeAdapterFactory());
+        gsonBuilder.registerTypeAdapterFactory(
+            new xyz.faria.space.spaceapi.model.ShipRefine201Response.CustomTypeAdapterFactory());
+        gsonBuilder.registerTypeAdapterFactory(
+            new xyz.faria.space.spaceapi.model.ShipRefine201ResponseData.CustomTypeAdapterFactory());
+        gsonBuilder.registerTypeAdapterFactory(
+            new xyz.faria.space.spaceapi.model.ShipRefine201ResponseDataProducedInner.CustomTypeAdapterFactory());
+        gsonBuilder.registerTypeAdapterFactory(
+            new xyz.faria.space.spaceapi.model.ShipRefineRequest.CustomTypeAdapterFactory());
+        gsonBuilder.registerTypeAdapterFactory(
+            new xyz.faria.space.spaceapi.model.ShipRegistration.CustomTypeAdapterFactory());
+        gsonBuilder.registerTypeAdapterFactory(
+            new xyz.faria.space.spaceapi.model.ShipRequirements.CustomTypeAdapterFactory());
+        gsonBuilder.registerTypeAdapterFactory(
+            new xyz.faria.space.spaceapi.model.Shipyard.CustomTypeAdapterFactory());
+        gsonBuilder.registerTypeAdapterFactory(
+            new xyz.faria.space.spaceapi.model.ShipyardShip.CustomTypeAdapterFactory());
+        gsonBuilder.registerTypeAdapterFactory(
+            new xyz.faria.space.spaceapi.model.ShipyardShipCrew.CustomTypeAdapterFactory());
+        gsonBuilder.registerTypeAdapterFactory(
+            new xyz.faria.space.spaceapi.model.ShipyardShipTypesInner.CustomTypeAdapterFactory());
+        gsonBuilder.registerTypeAdapterFactory(
+            new xyz.faria.space.spaceapi.model.ShipyardTransaction.CustomTypeAdapterFactory());
+        gsonBuilder.registerTypeAdapterFactory(
+            new xyz.faria.space.spaceapi.model.Siphon.CustomTypeAdapterFactory());
+        gsonBuilder.registerTypeAdapterFactory(
+            new xyz.faria.space.spaceapi.model.SiphonResources201Response.CustomTypeAdapterFactory());
+        gsonBuilder.registerTypeAdapterFactory(
+            new xyz.faria.space.spaceapi.model.SiphonResources201ResponseData.CustomTypeAdapterFactory());
+        gsonBuilder.registerTypeAdapterFactory(
+            new xyz.faria.space.spaceapi.model.SiphonYield.CustomTypeAdapterFactory());
+        gsonBuilder.registerTypeAdapterFactory(
+            new xyz.faria.space.spaceapi.model.SupplyConstruction201Response.CustomTypeAdapterFactory());
+        gsonBuilder.registerTypeAdapterFactory(
+            new xyz.faria.space.spaceapi.model.SupplyConstruction201ResponseData.CustomTypeAdapterFactory());
+        gsonBuilder.registerTypeAdapterFactory(
+            new xyz.faria.space.spaceapi.model.SupplyConstructionRequest.CustomTypeAdapterFactory());
+        gsonBuilder.registerTypeAdapterFactory(
+            new xyz.faria.space.spaceapi.model.Survey.CustomTypeAdapterFactory());
+        gsonBuilder.registerTypeAdapterFactory(
+            new xyz.faria.space.spaceapi.model.SurveyDeposit.CustomTypeAdapterFactory());
+        gsonBuilder.registerTypeAdapterFactory(
+            new xyz.faria.space.spaceapi.model.System.CustomTypeAdapterFactory());
+        gsonBuilder.registerTypeAdapterFactory(
+            new xyz.faria.space.spaceapi.model.SystemFaction.CustomTypeAdapterFactory());
+        gsonBuilder.registerTypeAdapterFactory(
+            new xyz.faria.space.spaceapi.model.SystemWaypoint.CustomTypeAdapterFactory());
+        gsonBuilder.registerTypeAdapterFactory(
+            new xyz.faria.space.spaceapi.model.TradeGood.CustomTypeAdapterFactory());
+        gsonBuilder.registerTypeAdapterFactory(
+            new xyz.faria.space.spaceapi.model.TransferCargo200Response.CustomTypeAdapterFactory());
+        gsonBuilder.registerTypeAdapterFactory(
+            new xyz.faria.space.spaceapi.model.TransferCargoRequest.CustomTypeAdapterFactory());
+        gsonBuilder.registerTypeAdapterFactory(
+            new xyz.faria.space.spaceapi.model.WarpShip200Response.CustomTypeAdapterFactory());
+        gsonBuilder.registerTypeAdapterFactory(
+            new xyz.faria.space.spaceapi.model.WarpShip200ResponseData.CustomTypeAdapterFactory());
+        gsonBuilder.registerTypeAdapterFactory(
+            new xyz.faria.space.spaceapi.model.Waypoint.CustomTypeAdapterFactory());
+        gsonBuilder.registerTypeAdapterFactory(
+            new xyz.faria.space.spaceapi.model.WaypointFaction.CustomTypeAdapterFactory());
+        gsonBuilder.registerTypeAdapterFactory(
+            new xyz.faria.space.spaceapi.model.WaypointModifier.CustomTypeAdapterFactory());
+        gsonBuilder.registerTypeAdapterFactory(
+            new xyz.faria.space.spaceapi.model.WaypointOrbital.CustomTypeAdapterFactory());
+        gsonBuilder.registerTypeAdapterFactory(
+            new xyz.faria.space.spaceapi.model.WaypointTrait.CustomTypeAdapterFactory());
         gson = gsonBuilder.create();
+    }
+
+    private static String getDiscriminatorValue(JsonElement readElement,
+        String discriminatorField) {
+        JsonElement element = readElement.getAsJsonObject().get(discriminatorField);
+        if (null == element) {
+            throw new IllegalArgumentException(
+                "missing discriminator field: <" + discriminatorField + ">");
+        }
+        return element.getAsString();
+    }
+
+    /**
+     * Returns the Java class that implements the OpenAPI schema for the specified discriminator
+     * value.
+     *
+     * @param classByDiscriminatorValue The map of discriminator values to Java classes.
+     * @param discriminatorValue        The value of the OpenAPI discriminator in the input data.
+     * @return The Java class that implements the OpenAPI schema
+     */
+    private static Class getClassByDiscriminator(Map classByDiscriminatorValue,
+        String discriminatorValue) {
+        Class clazz = (Class) classByDiscriminatorValue.get(discriminatorValue);
+        if (null == clazz) {
+            throw new IllegalArgumentException(
+                "cannot determine model class of name: <" + discriminatorValue + ">");
+        }
+        return clazz;
     }
 
     /**
@@ -342,7 +531,8 @@ public class JSON {
      */
     @SuppressWarnings("unchecked")
     public static <T> T deserialize(InputStream inputStream, Type returnType) throws IOException {
-        try (InputStreamReader reader = new InputStreamReader(inputStream, StandardCharsets.UTF_8)) {
+        try (InputStreamReader reader = new InputStreamReader(inputStream,
+            StandardCharsets.UTF_8)) {
             if (isLenientOnJson) {
                 // see https://google-gson.googlecode.com/svn/trunk/gson/docs/javadocs/com/google/gson/stream/JsonReader.html#setLenient(boolean)
                 JsonReader jsonReader = new JsonReader(reader);
@@ -476,9 +666,8 @@ public class JSON {
     }
 
     /**
-     * Gson TypeAdapter for java.sql.Date type
-     * If the dateFormat is null, a simple "yyyy-MM-dd" format will be used
-     * (more efficient than SimpleDateFormat).
+     * Gson TypeAdapter for java.sql.Date type If the dateFormat is null, a simple "yyyy-MM-dd"
+     * format will be used (more efficient than SimpleDateFormat).
      */
     public static class SqlDateTypeAdapter extends TypeAdapter<java.sql.Date> {
 
@@ -522,7 +711,8 @@ public class JSON {
                         if (dateFormat != null) {
                             return new java.sql.Date(dateFormat.parse(date).getTime());
                         }
-                        return new java.sql.Date(ISO8601Utils.parse(date, new ParsePosition(0)).getTime());
+                        return new java.sql.Date(
+                            ISO8601Utils.parse(date, new ParsePosition(0)).getTime());
                     } catch (ParseException e) {
                         throw new JsonParseException(e);
                     }
@@ -531,8 +721,8 @@ public class JSON {
     }
 
     /**
-     * Gson TypeAdapter for java.util.Date type
-     * If the dateFormat is null, ISO8601Utils will be used.
+     * Gson TypeAdapter for java.util.Date type If the dateFormat is null, ISO8601Utils will be
+     * used.
      */
     public static class DateTypeAdapter extends TypeAdapter<Date> {
 

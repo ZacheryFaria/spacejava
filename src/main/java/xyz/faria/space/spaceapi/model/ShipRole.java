@@ -18,7 +18,6 @@ import com.google.gson.TypeAdapter;
 import com.google.gson.annotations.JsonAdapter;
 import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonWriter;
-
 import java.io.IOException;
 
 /**
@@ -80,8 +79,10 @@ public enum ShipRole {
     }
 
     public static class Adapter extends TypeAdapter<ShipRole> {
+
         @Override
-        public void write(final JsonWriter jsonWriter, final ShipRole enumeration) throws IOException {
+        public void write(final JsonWriter jsonWriter, final ShipRole enumeration)
+            throws IOException {
             jsonWriter.value(enumeration.getValue());
         }
 

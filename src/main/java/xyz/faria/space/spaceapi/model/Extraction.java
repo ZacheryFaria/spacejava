@@ -13,21 +13,29 @@
 
 package xyz.faria.space.spaceapi.model;
 
-import com.google.gson.*;
+import com.google.gson.Gson;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.TypeAdapter;
+import com.google.gson.TypeAdapterFactory;
 import com.google.gson.annotations.SerializedName;
 import com.google.gson.reflect.TypeToken;
 import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonWriter;
-import xyz.faria.space.spaceapi.client.JSON;
-
 import java.io.IOException;
-import java.util.*;
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Objects;
+import java.util.Set;
+import xyz.faria.space.spaceapi.client.JSON;
 
 /**
  * Extraction details.
  */
 
 public class Extraction {
+
     public static final String SERIALIZED_NAME_SHIP_SYMBOL = "shipSymbol";
     @SerializedName(SERIALIZED_NAME_SHIP_SYMBOL)
     @javax.annotation.Nonnull
@@ -81,6 +89,55 @@ public class Extraction {
     }
 
 
+    /**
+     * Validates the JSON Element and throws an exception if issues found
+     *
+     * @param jsonElement JSON Element
+     * @throws IOException if the JSON Element is invalid with respect to Extraction
+     */
+    public static void validateJsonElement(JsonElement jsonElement) throws IOException {
+        if (jsonElement == null) {
+            if (!Extraction.openapiRequiredFields.isEmpty()) { // has required fields but JSON element is null
+                throw new IllegalArgumentException(String.format(java.util.Locale.ROOT,
+                    "The required field(s) %s in Extraction is not found in the empty JSON string",
+                    Extraction.openapiRequiredFields));
+            }
+        }
+
+        Set<Map.Entry<String, JsonElement>> entries = jsonElement.getAsJsonObject().entrySet();
+        // check to see if the JSON string contains additional fields
+        for (Map.Entry<String, JsonElement> entry : entries) {
+            if (!Extraction.openapiFields.contains(entry.getKey())) {
+                throw new IllegalArgumentException(String.format(java.util.Locale.ROOT,
+                    "The field `%s` in the JSON string is not defined in the `Extraction` properties. JSON: %s",
+                    entry.getKey(), jsonElement));
+            }
+        }
+
+        // check to make sure all required properties/fields are present in the JSON string
+        for (String requiredField : Extraction.openapiRequiredFields) {
+            if (jsonElement.getAsJsonObject().get(requiredField) == null) {
+                throw new IllegalArgumentException(String.format(java.util.Locale.ROOT,
+                    "The required field `%s` is not found in the JSON string: %s",
+                    requiredField,
+                    jsonElement));
+            }
+        }
+        JsonObject jsonObj = jsonElement.getAsJsonObject();
+        if (!jsonObj.get("shipSymbol").isJsonPrimitive()) {
+            throw new IllegalArgumentException(String.format(java.util.Locale.ROOT,
+                "Expected the field `shipSymbol` to be a primitive type in the JSON string but got `%s`",
+                jsonObj.get("shipSymbol").toString()));
+        }
+        // validate the required field `yield`
+        ExtractionYield.validateJsonElement(jsonObj.get("yield"));
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(shipSymbol, yield);
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) {
@@ -91,32 +148,16 @@ public class Extraction {
         }
         Extraction extraction = (Extraction) o;
         return Objects.equals(this.shipSymbol, extraction.shipSymbol) &&
-                Objects.equals(this.yield, extraction.yield);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(shipSymbol, yield);
+            Objects.equals(this.yield, extraction.yield);
     }
 
     @Override
     public String toString() {
         String sb = "class Extraction {\n" +
-                "    shipSymbol: " + toIndentedString(shipSymbol) + "\n" +
-                "    yield: " + toIndentedString(yield) + "\n" +
-                "}";
+            "    shipSymbol: " + toIndentedString(shipSymbol) + "\n" +
+            "    yield: " + toIndentedString(yield) + "\n" +
+            "}";
         return sb;
-    }
-
-    /**
-     * Convert the given object to string with each line indented by 4 spaces
-     * (except the first line).
-     */
-    private String toIndentedString(Object o) {
-        if (o == null) {
-            return "null";
-        }
-        return o.toString().replace("\n", "\n    ");
     }
 
 
@@ -132,41 +173,18 @@ public class Extraction {
     }
 
     /**
-     * Validates the JSON Element and throws an exception if issues found
-     *
-     * @param jsonElement JSON Element
-     * @throws IOException if the JSON Element is invalid with respect to Extraction
+     * Convert the given object to string with each line indented by 4 spaces (except the first
+     * line).
      */
-    public static void validateJsonElement(JsonElement jsonElement) throws IOException {
-        if (jsonElement == null) {
-            if (!Extraction.openapiRequiredFields.isEmpty()) { // has required fields but JSON element is null
-                throw new IllegalArgumentException(String.format(java.util.Locale.ROOT, "The required field(s) %s in Extraction is not found in the empty JSON string", Extraction.openapiRequiredFields));
-            }
+    private String toIndentedString(Object o) {
+        if (o == null) {
+            return "null";
         }
-
-        Set<Map.Entry<String, JsonElement>> entries = jsonElement.getAsJsonObject().entrySet();
-        // check to see if the JSON string contains additional fields
-        for (Map.Entry<String, JsonElement> entry : entries) {
-            if (!Extraction.openapiFields.contains(entry.getKey())) {
-                throw new IllegalArgumentException(String.format(java.util.Locale.ROOT, "The field `%s` in the JSON string is not defined in the `Extraction` properties. JSON: %s", entry.getKey(), jsonElement));
-            }
-        }
-
-        // check to make sure all required properties/fields are present in the JSON string
-        for (String requiredField : Extraction.openapiRequiredFields) {
-            if (jsonElement.getAsJsonObject().get(requiredField) == null) {
-                throw new IllegalArgumentException(String.format(java.util.Locale.ROOT, "The required field `%s` is not found in the JSON string: %s", requiredField, jsonElement));
-            }
-        }
-        JsonObject jsonObj = jsonElement.getAsJsonObject();
-        if (!jsonObj.get("shipSymbol").isJsonPrimitive()) {
-            throw new IllegalArgumentException(String.format(java.util.Locale.ROOT, "Expected the field `shipSymbol` to be a primitive type in the JSON string but got `%s`", jsonObj.get("shipSymbol").toString()));
-        }
-        // validate the required field `yield`
-        ExtractionYield.validateJsonElement(jsonObj.get("yield"));
+        return o.toString().replace("\n", "\n    ");
     }
 
     public static class CustomTypeAdapterFactory implements TypeAdapterFactory {
+
         @SuppressWarnings("unchecked")
         @Override
         public <T> TypeAdapter<T> create(Gson gson, TypeToken<T> type) {
@@ -175,7 +193,7 @@ public class Extraction {
             }
             final TypeAdapter<JsonElement> elementAdapter = gson.getAdapter(JsonElement.class);
             final TypeAdapter<Extraction> thisAdapter
-                    = gson.getDelegateAdapter(this, TypeToken.get(Extraction.class));
+                = gson.getDelegateAdapter(this, TypeToken.get(Extraction.class));
 
             return (TypeAdapter<T>) new TypeAdapter<Extraction>() {
                 @Override

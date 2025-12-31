@@ -13,21 +13,32 @@
 
 package xyz.faria.space.spaceapi.model;
 
-import com.google.gson.*;
+import com.google.gson.Gson;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.TypeAdapter;
+import com.google.gson.TypeAdapterFactory;
 import com.google.gson.annotations.SerializedName;
 import com.google.gson.reflect.TypeToken;
 import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonWriter;
-import xyz.faria.space.spaceapi.client.JSON;
-
 import java.io.IOException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
+import java.util.Set;
+import xyz.faria.space.spaceapi.client.JSON;
 
 /**
  * CreateSurvey201ResponseData
  */
 
 public class CreateSurvey201ResponseData {
+
     public static final String SERIALIZED_NAME_COOLDOWN = "cooldown";
     @SerializedName(SERIALIZED_NAME_COOLDOWN)
     @javax.annotation.Nonnull
@@ -89,6 +100,75 @@ public class CreateSurvey201ResponseData {
     }
 
 
+    /**
+     * Validates the JSON Element and throws an exception if issues found
+     *
+     * @param jsonElement JSON Element
+     * @throws IOException if the JSON Element is invalid with respect to
+     *                     CreateSurvey201ResponseData
+     */
+    public static void validateJsonElement(JsonElement jsonElement) throws IOException {
+        if (jsonElement == null) {
+            if (!CreateSurvey201ResponseData.openapiRequiredFields.isEmpty()) { // has required fields but JSON element is null
+                throw new IllegalArgumentException(String.format(java.util.Locale.ROOT,
+                    "The required field(s) %s in CreateSurvey201ResponseData is not found in the empty JSON string",
+                    CreateSurvey201ResponseData.openapiRequiredFields));
+            }
+        }
+
+        Set<Map.Entry<String, JsonElement>> entries = jsonElement.getAsJsonObject().entrySet();
+        // check to see if the JSON string contains additional fields
+        for (Map.Entry<String, JsonElement> entry : entries) {
+            if (!CreateSurvey201ResponseData.openapiFields.contains(entry.getKey())) {
+                throw new IllegalArgumentException(String.format(java.util.Locale.ROOT,
+                    "The field `%s` in the JSON string is not defined in the `CreateSurvey201ResponseData` properties. JSON: %s",
+                    entry.getKey(), jsonElement));
+            }
+        }
+
+        // check to make sure all required properties/fields are present in the JSON string
+        for (String requiredField : CreateSurvey201ResponseData.openapiRequiredFields) {
+            if (jsonElement.getAsJsonObject().get(requiredField) == null) {
+                throw new IllegalArgumentException(String.format(java.util.Locale.ROOT,
+                    "The required field `%s` is not found in the JSON string: %s",
+                    requiredField,
+                    jsonElement));
+            }
+        }
+        JsonObject jsonObj = jsonElement.getAsJsonObject();
+        // validate the required field `cooldown`
+        Cooldown.validateJsonElement(jsonObj.get("cooldown"));
+        // ensure the json data is an array
+        if (!jsonObj.get("surveys").isJsonArray()) {
+            throw new IllegalArgumentException(String.format(java.util.Locale.ROOT,
+                "Expected the field `surveys` to be an array in the JSON string but got `%s`",
+                jsonObj.get("surveys").toString()));
+        }
+
+        JsonArray jsonArraysurveys = jsonObj.getAsJsonArray("surveys");
+        // validate the required field `surveys` (array)
+        for (int i = 0; i < jsonArraysurveys.size(); i++) {
+            Survey.validateJsonElement(jsonArraysurveys.get(i));
+        }
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(cooldown, surveys);
+    }
+
+    /**
+     * Create an instance of CreateSurvey201ResponseData given an JSON string
+     *
+     * @param jsonString JSON string
+     * @return An instance of CreateSurvey201ResponseData
+     * @throws IOException if the JSON string is invalid with respect to
+     *                     CreateSurvey201ResponseData
+     */
+    public static CreateSurvey201ResponseData fromJson(String jsonString) throws IOException {
+        return JSON.getGson().fromJson(jsonString, CreateSurvey201ResponseData.class);
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) {
@@ -99,32 +179,7 @@ public class CreateSurvey201ResponseData {
         }
         CreateSurvey201ResponseData createSurvey201ResponseData = (CreateSurvey201ResponseData) o;
         return Objects.equals(this.cooldown, createSurvey201ResponseData.cooldown) &&
-                Objects.equals(this.surveys, createSurvey201ResponseData.surveys);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(cooldown, surveys);
-    }
-
-    @Override
-    public String toString() {
-        String sb = "class CreateSurvey201ResponseData {\n" +
-                "    cooldown: " + toIndentedString(cooldown) + "\n" +
-                "    surveys: " + toIndentedString(surveys) + "\n" +
-                "}";
-        return sb;
-    }
-
-    /**
-     * Convert the given object to string with each line indented by 4 spaces
-     * (except the first line).
-     */
-    private String toIndentedString(Object o) {
-        if (o == null) {
-            return "null";
-        }
-        return o.toString().replace("\n", "\n    ");
+            Objects.equals(this.surveys, createSurvey201ResponseData.surveys);
     }
 
 
@@ -139,49 +194,28 @@ public class CreateSurvey201ResponseData {
         openapiRequiredFields = new HashSet<String>(Arrays.asList("cooldown", "surveys"));
     }
 
+    @Override
+    public String toString() {
+        String sb = "class CreateSurvey201ResponseData {\n" +
+            "    cooldown: " + toIndentedString(cooldown) + "\n" +
+            "    surveys: " + toIndentedString(surveys) + "\n" +
+            "}";
+        return sb;
+    }
+
     /**
-     * Validates the JSON Element and throws an exception if issues found
-     *
-     * @param jsonElement JSON Element
-     * @throws IOException if the JSON Element is invalid with respect to CreateSurvey201ResponseData
+     * Convert the given object to string with each line indented by 4 spaces (except the first
+     * line).
      */
-    public static void validateJsonElement(JsonElement jsonElement) throws IOException {
-        if (jsonElement == null) {
-            if (!CreateSurvey201ResponseData.openapiRequiredFields.isEmpty()) { // has required fields but JSON element is null
-                throw new IllegalArgumentException(String.format(java.util.Locale.ROOT, "The required field(s) %s in CreateSurvey201ResponseData is not found in the empty JSON string", CreateSurvey201ResponseData.openapiRequiredFields));
-            }
+    private String toIndentedString(Object o) {
+        if (o == null) {
+            return "null";
         }
-
-        Set<Map.Entry<String, JsonElement>> entries = jsonElement.getAsJsonObject().entrySet();
-        // check to see if the JSON string contains additional fields
-        for (Map.Entry<String, JsonElement> entry : entries) {
-            if (!CreateSurvey201ResponseData.openapiFields.contains(entry.getKey())) {
-                throw new IllegalArgumentException(String.format(java.util.Locale.ROOT, "The field `%s` in the JSON string is not defined in the `CreateSurvey201ResponseData` properties. JSON: %s", entry.getKey(), jsonElement));
-            }
-        }
-
-        // check to make sure all required properties/fields are present in the JSON string
-        for (String requiredField : CreateSurvey201ResponseData.openapiRequiredFields) {
-            if (jsonElement.getAsJsonObject().get(requiredField) == null) {
-                throw new IllegalArgumentException(String.format(java.util.Locale.ROOT, "The required field `%s` is not found in the JSON string: %s", requiredField, jsonElement));
-            }
-        }
-        JsonObject jsonObj = jsonElement.getAsJsonObject();
-        // validate the required field `cooldown`
-        Cooldown.validateJsonElement(jsonObj.get("cooldown"));
-        // ensure the json data is an array
-        if (!jsonObj.get("surveys").isJsonArray()) {
-            throw new IllegalArgumentException(String.format(java.util.Locale.ROOT, "Expected the field `surveys` to be an array in the JSON string but got `%s`", jsonObj.get("surveys").toString()));
-        }
-
-        JsonArray jsonArraysurveys = jsonObj.getAsJsonArray("surveys");
-        // validate the required field `surveys` (array)
-        for (int i = 0; i < jsonArraysurveys.size(); i++) {
-            Survey.validateJsonElement(jsonArraysurveys.get(i));
-        }
+        return o.toString().replace("\n", "\n    ");
     }
 
     public static class CustomTypeAdapterFactory implements TypeAdapterFactory {
+
         @SuppressWarnings("unchecked")
         @Override
         public <T> TypeAdapter<T> create(Gson gson, TypeToken<T> type) {
@@ -190,11 +224,13 @@ public class CreateSurvey201ResponseData {
             }
             final TypeAdapter<JsonElement> elementAdapter = gson.getAdapter(JsonElement.class);
             final TypeAdapter<CreateSurvey201ResponseData> thisAdapter
-                    = gson.getDelegateAdapter(this, TypeToken.get(CreateSurvey201ResponseData.class));
+                = gson.getDelegateAdapter(this,
+                TypeToken.get(CreateSurvey201ResponseData.class));
 
             return (TypeAdapter<T>) new TypeAdapter<CreateSurvey201ResponseData>() {
                 @Override
-                public void write(JsonWriter out, CreateSurvey201ResponseData value) throws IOException {
+                public void write(JsonWriter out, CreateSurvey201ResponseData value)
+                    throws IOException {
                     JsonObject obj = thisAdapter.toJsonTree(value).getAsJsonObject();
                     elementAdapter.write(out, obj);
                 }
@@ -208,17 +244,6 @@ public class CreateSurvey201ResponseData {
 
             }.nullSafe();
         }
-    }
-
-    /**
-     * Create an instance of CreateSurvey201ResponseData given an JSON string
-     *
-     * @param jsonString JSON string
-     * @return An instance of CreateSurvey201ResponseData
-     * @throws IOException if the JSON string is invalid with respect to CreateSurvey201ResponseData
-     */
-    public static CreateSurvey201ResponseData fromJson(String jsonString) throws IOException {
-        return JSON.getGson().fromJson(jsonString, CreateSurvey201ResponseData.class);
     }
 
     /**

@@ -22,6 +22,7 @@ import java.util.Map;
  * @param <T> The return type
  */
 public interface ApiCallback<T> {
+
     /**
      * This is called when the API call fails.
      *

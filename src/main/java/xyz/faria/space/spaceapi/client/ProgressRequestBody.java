@@ -13,11 +13,14 @@
 
 package xyz.faria.space.spaceapi.client;
 
+import java.io.IOException;
 import okhttp3.MediaType;
 import okhttp3.RequestBody;
-import okio.*;
-
-import java.io.IOException;
+import okio.Buffer;
+import okio.BufferedSink;
+import okio.ForwardingSink;
+import okio.Okio;
+import okio.Sink;
 
 public class ProgressRequestBody extends RequestBody {
 
@@ -61,7 +64,8 @@ public class ProgressRequestBody extends RequestBody {
                 }
 
                 bytesWritten += byteCount;
-                callback.onUploadProgress(bytesWritten, contentLength, bytesWritten == contentLength);
+                callback.onUploadProgress(bytesWritten, contentLength,
+                    bytesWritten == contentLength);
             }
         };
     }

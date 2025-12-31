@@ -13,21 +13,29 @@
 
 package xyz.faria.space.spaceapi.model;
 
-import com.google.gson.*;
+import com.google.gson.Gson;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.TypeAdapter;
+import com.google.gson.TypeAdapterFactory;
 import com.google.gson.annotations.SerializedName;
 import com.google.gson.reflect.TypeToken;
 import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonWriter;
-import xyz.faria.space.spaceapi.client.JSON;
-
 import java.io.IOException;
-import java.util.*;
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Objects;
+import java.util.Set;
+import xyz.faria.space.spaceapi.client.JSON;
 
 /**
  * CreateChart201ResponseData
  */
 
 public class CreateChart201ResponseData {
+
     public static final String SERIALIZED_NAME_CHART = "chart";
     @SerializedName(SERIALIZED_NAME_CHART)
     @javax.annotation.Nonnull
@@ -106,6 +114,55 @@ public class CreateChart201ResponseData {
     }
 
 
+    /**
+     * Validates the JSON Element and throws an exception if issues found
+     *
+     * @param jsonElement JSON Element
+     * @throws IOException if the JSON Element is invalid with respect to
+     *                     CreateChart201ResponseData
+     */
+    public static void validateJsonElement(JsonElement jsonElement) throws IOException {
+        if (jsonElement == null) {
+            if (!CreateChart201ResponseData.openapiRequiredFields.isEmpty()) { // has required fields but JSON element is null
+                throw new IllegalArgumentException(String.format(java.util.Locale.ROOT,
+                    "The required field(s) %s in CreateChart201ResponseData is not found in the empty JSON string",
+                    CreateChart201ResponseData.openapiRequiredFields));
+            }
+        }
+
+        Set<Map.Entry<String, JsonElement>> entries = jsonElement.getAsJsonObject().entrySet();
+        // check to see if the JSON string contains additional fields
+        for (Map.Entry<String, JsonElement> entry : entries) {
+            if (!CreateChart201ResponseData.openapiFields.contains(entry.getKey())) {
+                throw new IllegalArgumentException(String.format(java.util.Locale.ROOT,
+                    "The field `%s` in the JSON string is not defined in the `CreateChart201ResponseData` properties. JSON: %s",
+                    entry.getKey(), jsonElement));
+            }
+        }
+
+        // check to make sure all required properties/fields are present in the JSON string
+        for (String requiredField : CreateChart201ResponseData.openapiRequiredFields) {
+            if (jsonElement.getAsJsonObject().get(requiredField) == null) {
+                throw new IllegalArgumentException(String.format(java.util.Locale.ROOT,
+                    "The required field `%s` is not found in the JSON string: %s",
+                    requiredField,
+                    jsonElement));
+            }
+        }
+        JsonObject jsonObj = jsonElement.getAsJsonObject();
+        // validate the required field `chart`
+        Chart.validateJsonElement(jsonObj.get("chart"));
+        // validate the required field `waypoint`
+        Waypoint.validateJsonElement(jsonObj.get("waypoint"));
+        // validate the required field `agent`
+        Agent.validateJsonElement(jsonObj.get("agent"));
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(chart, waypoint, agent);
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) {
@@ -116,34 +173,18 @@ public class CreateChart201ResponseData {
         }
         CreateChart201ResponseData createChart201ResponseData = (CreateChart201ResponseData) o;
         return Objects.equals(this.chart, createChart201ResponseData.chart) &&
-                Objects.equals(this.waypoint, createChart201ResponseData.waypoint) &&
-                Objects.equals(this.agent, createChart201ResponseData.agent);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(chart, waypoint, agent);
+            Objects.equals(this.waypoint, createChart201ResponseData.waypoint) &&
+            Objects.equals(this.agent, createChart201ResponseData.agent);
     }
 
     @Override
     public String toString() {
         String sb = "class CreateChart201ResponseData {\n" +
-                "    chart: " + toIndentedString(chart) + "\n" +
-                "    waypoint: " + toIndentedString(waypoint) + "\n" +
-                "    agent: " + toIndentedString(agent) + "\n" +
-                "}";
+            "    chart: " + toIndentedString(chart) + "\n" +
+            "    waypoint: " + toIndentedString(waypoint) + "\n" +
+            "    agent: " + toIndentedString(agent) + "\n" +
+            "}";
         return sb;
-    }
-
-    /**
-     * Convert the given object to string with each line indented by 4 spaces
-     * (except the first line).
-     */
-    private String toIndentedString(Object o) {
-        if (o == null) {
-            return "null";
-        }
-        return o.toString().replace("\n", "\n    ");
     }
 
 
@@ -159,42 +200,18 @@ public class CreateChart201ResponseData {
     }
 
     /**
-     * Validates the JSON Element and throws an exception if issues found
-     *
-     * @param jsonElement JSON Element
-     * @throws IOException if the JSON Element is invalid with respect to CreateChart201ResponseData
+     * Convert the given object to string with each line indented by 4 spaces (except the first
+     * line).
      */
-    public static void validateJsonElement(JsonElement jsonElement) throws IOException {
-        if (jsonElement == null) {
-            if (!CreateChart201ResponseData.openapiRequiredFields.isEmpty()) { // has required fields but JSON element is null
-                throw new IllegalArgumentException(String.format(java.util.Locale.ROOT, "The required field(s) %s in CreateChart201ResponseData is not found in the empty JSON string", CreateChart201ResponseData.openapiRequiredFields));
-            }
+    private String toIndentedString(Object o) {
+        if (o == null) {
+            return "null";
         }
-
-        Set<Map.Entry<String, JsonElement>> entries = jsonElement.getAsJsonObject().entrySet();
-        // check to see if the JSON string contains additional fields
-        for (Map.Entry<String, JsonElement> entry : entries) {
-            if (!CreateChart201ResponseData.openapiFields.contains(entry.getKey())) {
-                throw new IllegalArgumentException(String.format(java.util.Locale.ROOT, "The field `%s` in the JSON string is not defined in the `CreateChart201ResponseData` properties. JSON: %s", entry.getKey(), jsonElement));
-            }
-        }
-
-        // check to make sure all required properties/fields are present in the JSON string
-        for (String requiredField : CreateChart201ResponseData.openapiRequiredFields) {
-            if (jsonElement.getAsJsonObject().get(requiredField) == null) {
-                throw new IllegalArgumentException(String.format(java.util.Locale.ROOT, "The required field `%s` is not found in the JSON string: %s", requiredField, jsonElement));
-            }
-        }
-        JsonObject jsonObj = jsonElement.getAsJsonObject();
-        // validate the required field `chart`
-        Chart.validateJsonElement(jsonObj.get("chart"));
-        // validate the required field `waypoint`
-        Waypoint.validateJsonElement(jsonObj.get("waypoint"));
-        // validate the required field `agent`
-        Agent.validateJsonElement(jsonObj.get("agent"));
+        return o.toString().replace("\n", "\n    ");
     }
 
     public static class CustomTypeAdapterFactory implements TypeAdapterFactory {
+
         @SuppressWarnings("unchecked")
         @Override
         public <T> TypeAdapter<T> create(Gson gson, TypeToken<T> type) {
@@ -203,11 +220,13 @@ public class CreateChart201ResponseData {
             }
             final TypeAdapter<JsonElement> elementAdapter = gson.getAdapter(JsonElement.class);
             final TypeAdapter<CreateChart201ResponseData> thisAdapter
-                    = gson.getDelegateAdapter(this, TypeToken.get(CreateChart201ResponseData.class));
+                = gson.getDelegateAdapter(this,
+                TypeToken.get(CreateChart201ResponseData.class));
 
             return (TypeAdapter<T>) new TypeAdapter<CreateChart201ResponseData>() {
                 @Override
-                public void write(JsonWriter out, CreateChart201ResponseData value) throws IOException {
+                public void write(JsonWriter out, CreateChart201ResponseData value)
+                    throws IOException {
                     JsonObject obj = thisAdapter.toJsonTree(value).getAsJsonObject();
                     elementAdapter.write(out, obj);
                 }

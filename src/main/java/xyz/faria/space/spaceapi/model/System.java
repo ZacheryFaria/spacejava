@@ -13,20 +13,31 @@
 
 package xyz.faria.space.spaceapi.model;
 
-import com.google.gson.*;
+import com.google.gson.Gson;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.TypeAdapter;
+import com.google.gson.TypeAdapterFactory;
 import com.google.gson.annotations.SerializedName;
 import com.google.gson.reflect.TypeToken;
 import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonWriter;
-import xyz.faria.space.spaceapi.client.JSON;
-
 import java.io.IOException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
+import java.util.Set;
+import xyz.faria.space.spaceapi.client.JSON;
 
 /**
  * System details.
  */
 public class System {
+
     public static final String SERIALIZED_NAME_SYMBOL = "symbol";
     @SerializedName(SERIALIZED_NAME_SYMBOL)
     @javax.annotation.Nonnull
@@ -271,68 +282,15 @@ public class System {
     }
 
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (o == null || getClass() != o.getClass()) {
-            return false;
-        }
-        System system = (System) o;
-        return Objects.equals(this.symbol, system.symbol) &&
-                Objects.equals(this.sectorSymbol, system.sectorSymbol) &&
-                Objects.equals(this.constellation, system.constellation) &&
-                Objects.equals(this.name, system.name) &&
-                Objects.equals(this.type, system.type) &&
-                Objects.equals(this.x, system.x) &&
-                Objects.equals(this.y, system.y) &&
-                Objects.equals(this.waypoints, system.waypoints) &&
-                Objects.equals(this.factions, system.factions);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(symbol, sectorSymbol, constellation, name, type, x, y, waypoints, factions);
-    }
-
-    @Override
-    public String toString() {
-        String sb = "class System {\n" +
-                "    symbol: " + toIndentedString(symbol) + "\n" +
-                "    sectorSymbol: " + toIndentedString(sectorSymbol) + "\n" +
-                "    constellation: " + toIndentedString(constellation) + "\n" +
-                "    name: " + toIndentedString(name) + "\n" +
-                "    type: " + toIndentedString(type) + "\n" +
-                "    x: " + toIndentedString(x) + "\n" +
-                "    y: " + toIndentedString(y) + "\n" +
-                "    waypoints: " + toIndentedString(waypoints) + "\n" +
-                "    factions: " + toIndentedString(factions) + "\n" +
-                "}";
-        return sb;
-    }
-
-    /**
-     * Convert the given object to string with each line indented by 4 spaces
-     * (except the first line).
-     */
-    private String toIndentedString(Object o) {
-        if (o == null) {
-            return "null";
-        }
-        return o.toString().replace("\n", "\n    ");
-    }
-
-
-    public static HashSet<String> openapiFields;
-    public static HashSet<String> openapiRequiredFields;
-
     static {
         // a set of all properties/fields (JSON key names)
-        openapiFields = new HashSet<String>(Arrays.asList("symbol", "sectorSymbol", "constellation", "name", "type", "x", "y", "waypoints", "factions"));
+        openapiFields = new HashSet<String>(
+            Arrays.asList("symbol", "sectorSymbol", "constellation", "name", "type", "x", "y",
+                "waypoints", "factions"));
 
         // a set of required properties/fields (JSON key names)
-        openapiRequiredFields = new HashSet<String>(Arrays.asList("symbol", "sectorSymbol", "type", "x", "y", "waypoints", "factions"));
+        openapiRequiredFields = new HashSet<String>(
+            Arrays.asList("symbol", "sectorSymbol", "type", "x", "y", "waypoints", "factions"));
     }
 
     /**
@@ -344,7 +302,9 @@ public class System {
     public static void validateJsonElement(JsonElement jsonElement) throws IOException {
         if (jsonElement == null) {
             if (!System.openapiRequiredFields.isEmpty()) { // has required fields but JSON element is null
-                throw new IllegalArgumentException(String.format(java.util.Locale.ROOT, "The required field(s) %s in System is not found in the empty JSON string", System.openapiRequiredFields));
+                throw new IllegalArgumentException(String.format(java.util.Locale.ROOT,
+                    "The required field(s) %s in System is not found in the empty JSON string",
+                    System.openapiRequiredFields));
             }
         }
 
@@ -352,34 +312,50 @@ public class System {
         // check to see if the JSON string contains additional fields
         for (Map.Entry<String, JsonElement> entry : entries) {
             if (!System.openapiFields.contains(entry.getKey())) {
-                throw new IllegalArgumentException(String.format(java.util.Locale.ROOT, "The field `%s` in the JSON string is not defined in the `System` properties. JSON: %s", entry.getKey(), jsonElement));
+                throw new IllegalArgumentException(String.format(java.util.Locale.ROOT,
+                    "The field `%s` in the JSON string is not defined in the `System` properties. JSON: %s",
+                    entry.getKey(), jsonElement));
             }
         }
 
         // check to make sure all required properties/fields are present in the JSON string
         for (String requiredField : System.openapiRequiredFields) {
             if (jsonElement.getAsJsonObject().get(requiredField) == null) {
-                throw new IllegalArgumentException(String.format(java.util.Locale.ROOT, "The required field `%s` is not found in the JSON string: %s", requiredField, jsonElement));
+                throw new IllegalArgumentException(String.format(java.util.Locale.ROOT,
+                    "The required field `%s` is not found in the JSON string: %s", requiredField,
+                    jsonElement));
             }
         }
         JsonObject jsonObj = jsonElement.getAsJsonObject();
         if (!jsonObj.get("symbol").isJsonPrimitive()) {
-            throw new IllegalArgumentException(String.format(java.util.Locale.ROOT, "Expected the field `symbol` to be a primitive type in the JSON string but got `%s`", jsonObj.get("symbol").toString()));
+            throw new IllegalArgumentException(String.format(java.util.Locale.ROOT,
+                "Expected the field `symbol` to be a primitive type in the JSON string but got `%s`",
+                jsonObj.get("symbol").toString()));
         }
         if (!jsonObj.get("sectorSymbol").isJsonPrimitive()) {
-            throw new IllegalArgumentException(String.format(java.util.Locale.ROOT, "Expected the field `sectorSymbol` to be a primitive type in the JSON string but got `%s`", jsonObj.get("sectorSymbol").toString()));
+            throw new IllegalArgumentException(String.format(java.util.Locale.ROOT,
+                "Expected the field `sectorSymbol` to be a primitive type in the JSON string but got `%s`",
+                jsonObj.get("sectorSymbol").toString()));
         }
-        if ((jsonObj.get("constellation") != null && !jsonObj.get("constellation").isJsonNull()) && !jsonObj.get("constellation").isJsonPrimitive()) {
-            throw new IllegalArgumentException(String.format(java.util.Locale.ROOT, "Expected the field `constellation` to be a primitive type in the JSON string but got `%s`", jsonObj.get("constellation").toString()));
+        if ((jsonObj.get("constellation") != null && !jsonObj.get("constellation").isJsonNull())
+            && !jsonObj.get("constellation").isJsonPrimitive()) {
+            throw new IllegalArgumentException(String.format(java.util.Locale.ROOT,
+                "Expected the field `constellation` to be a primitive type in the JSON string but got `%s`",
+                jsonObj.get("constellation").toString()));
         }
-        if ((jsonObj.get("name") != null && !jsonObj.get("name").isJsonNull()) && !jsonObj.get("name").isJsonPrimitive()) {
-            throw new IllegalArgumentException(String.format(java.util.Locale.ROOT, "Expected the field `name` to be a primitive type in the JSON string but got `%s`", jsonObj.get("name").toString()));
+        if ((jsonObj.get("name") != null && !jsonObj.get("name").isJsonNull()) && !jsonObj.get(
+            "name").isJsonPrimitive()) {
+            throw new IllegalArgumentException(String.format(java.util.Locale.ROOT,
+                "Expected the field `name` to be a primitive type in the JSON string but got `%s`",
+                jsonObj.get("name").toString()));
         }
         // validate the required field `type`
         SystemType.validateJsonElement(jsonObj.get("type"));
         // ensure the json data is an array
         if (!jsonObj.get("waypoints").isJsonArray()) {
-            throw new IllegalArgumentException(String.format(java.util.Locale.ROOT, "Expected the field `waypoints` to be an array in the JSON string but got `%s`", jsonObj.get("waypoints").toString()));
+            throw new IllegalArgumentException(String.format(java.util.Locale.ROOT,
+                "Expected the field `waypoints` to be an array in the JSON string but got `%s`",
+                jsonObj.get("waypoints").toString()));
         }
 
         JsonArray jsonArraywaypoints = jsonObj.getAsJsonArray("waypoints");
@@ -389,7 +365,9 @@ public class System {
         }
         // ensure the json data is an array
         if (!jsonObj.get("factions").isJsonArray()) {
-            throw new IllegalArgumentException(String.format(java.util.Locale.ROOT, "Expected the field `factions` to be an array in the JSON string but got `%s`", jsonObj.get("factions").toString()));
+            throw new IllegalArgumentException(String.format(java.util.Locale.ROOT,
+                "Expected the field `factions` to be an array in the JSON string but got `%s`",
+                jsonObj.get("factions").toString()));
         }
 
         JsonArray jsonArrayfactions = jsonObj.getAsJsonArray("factions");
@@ -399,7 +377,65 @@ public class System {
         }
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        System system = (System) o;
+        return Objects.equals(this.symbol, system.symbol) &&
+            Objects.equals(this.sectorSymbol, system.sectorSymbol) &&
+            Objects.equals(this.constellation, system.constellation) &&
+            Objects.equals(this.name, system.name) &&
+            Objects.equals(this.type, system.type) &&
+            Objects.equals(this.x, system.x) &&
+            Objects.equals(this.y, system.y) &&
+            Objects.equals(this.waypoints, system.waypoints) &&
+            Objects.equals(this.factions, system.factions);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(symbol, sectorSymbol, constellation, name, type, x, y, waypoints,
+            factions);
+    }
+
+
+    public static HashSet<String> openapiFields;
+    public static HashSet<String> openapiRequiredFields;
+
+    @Override
+    public String toString() {
+        String sb = "class System {\n" +
+            "    symbol: " + toIndentedString(symbol) + "\n" +
+            "    sectorSymbol: " + toIndentedString(sectorSymbol) + "\n" +
+            "    constellation: " + toIndentedString(constellation) + "\n" +
+            "    name: " + toIndentedString(name) + "\n" +
+            "    type: " + toIndentedString(type) + "\n" +
+            "    x: " + toIndentedString(x) + "\n" +
+            "    y: " + toIndentedString(y) + "\n" +
+            "    waypoints: " + toIndentedString(waypoints) + "\n" +
+            "    factions: " + toIndentedString(factions) + "\n" +
+            "}";
+        return sb;
+    }
+
+    /**
+     * Convert the given object to string with each line indented by 4 spaces (except the first
+     * line).
+     */
+    private String toIndentedString(Object o) {
+        if (o == null) {
+            return "null";
+        }
+        return o.toString().replace("\n", "\n    ");
+    }
+
     public static class CustomTypeAdapterFactory implements TypeAdapterFactory {
+
         @SuppressWarnings("unchecked")
         @Override
         public <T> TypeAdapter<T> create(Gson gson, TypeToken<T> type) {
@@ -408,7 +444,7 @@ public class System {
             }
             final TypeAdapter<JsonElement> elementAdapter = gson.getAdapter(JsonElement.class);
             final TypeAdapter<System> thisAdapter
-                    = gson.getDelegateAdapter(this, TypeToken.get(System.class));
+                = gson.getDelegateAdapter(this, TypeToken.get(System.class));
 
             return (TypeAdapter<T>) new TypeAdapter<System>() {
                 @Override

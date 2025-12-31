@@ -13,21 +13,32 @@
 
 package xyz.faria.space.spaceapi.model;
 
-import com.google.gson.*;
+import com.google.gson.Gson;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.TypeAdapter;
+import com.google.gson.TypeAdapterFactory;
 import com.google.gson.annotations.SerializedName;
 import com.google.gson.reflect.TypeToken;
 import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonWriter;
-import xyz.faria.space.spaceapi.client.JSON;
-
 import java.io.IOException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
+import java.util.Set;
+import xyz.faria.space.spaceapi.client.JSON;
 
 /**
  * GetStatus200Response
  */
 
 public class GetStatus200Response {
+
     public static final String SERIALIZED_NAME_STATUS = "status";
     @SerializedName(SERIALIZED_NAME_STATUS)
     @javax.annotation.Nonnull
@@ -176,9 +187,16 @@ public class GetStatus200Response {
     }
 
 
-    public GetStatus200Response leaderboards(@javax.annotation.Nonnull GetStatus200ResponseLeaderboards leaderboards) {
-        this.leaderboards = leaderboards;
-        return this;
+    static {
+        // a set of all properties/fields (JSON key names)
+        openapiFields = new HashSet<String>(
+            Arrays.asList("status", "version", "resetDate", "description", "stats", "leaderboards",
+                "serverResets", "announcements", "links"));
+
+        // a set of required properties/fields (JSON key names)
+        openapiRequiredFields = new HashSet<String>(
+            Arrays.asList("status", "version", "resetDate", "description", "stats", "leaderboards",
+                "serverResets", "announcements", "links"));
     }
 
     /**
@@ -191,13 +209,96 @@ public class GetStatus200Response {
         return leaderboards;
     }
 
-    public void setLeaderboards(@javax.annotation.Nonnull GetStatus200ResponseLeaderboards leaderboards) {
-        this.leaderboards = leaderboards;
+    /**
+     * Validates the JSON Element and throws an exception if issues found
+     *
+     * @param jsonElement JSON Element
+     * @throws IOException if the JSON Element is invalid with respect to GetStatus200Response
+     */
+    public static void validateJsonElement(JsonElement jsonElement) throws IOException {
+        if (jsonElement == null) {
+            if (!GetStatus200Response.openapiRequiredFields.isEmpty()) { // has required fields but JSON element is null
+                throw new IllegalArgumentException(String.format(java.util.Locale.ROOT,
+                    "The required field(s) %s in GetStatus200Response is not found in the empty JSON string",
+                    GetStatus200Response.openapiRequiredFields));
+            }
+        }
+
+        Set<Map.Entry<String, JsonElement>> entries = jsonElement.getAsJsonObject().entrySet();
+        // check to see if the JSON string contains additional fields
+        for (Map.Entry<String, JsonElement> entry : entries) {
+            if (!GetStatus200Response.openapiFields.contains(entry.getKey())) {
+                throw new IllegalArgumentException(String.format(java.util.Locale.ROOT,
+                    "The field `%s` in the JSON string is not defined in the `GetStatus200Response` properties. JSON: %s",
+                    entry.getKey(), jsonElement));
+            }
+        }
+
+        // check to make sure all required properties/fields are present in the JSON string
+        for (String requiredField : GetStatus200Response.openapiRequiredFields) {
+            if (jsonElement.getAsJsonObject().get(requiredField) == null) {
+                throw new IllegalArgumentException(String.format(java.util.Locale.ROOT,
+                    "The required field `%s` is not found in the JSON string: %s", requiredField,
+                    jsonElement));
+            }
+        }
+        JsonObject jsonObj = jsonElement.getAsJsonObject();
+        if (!jsonObj.get("status").isJsonPrimitive()) {
+            throw new IllegalArgumentException(String.format(java.util.Locale.ROOT,
+                "Expected the field `status` to be a primitive type in the JSON string but got `%s`",
+                jsonObj.get("status").toString()));
+        }
+        if (!jsonObj.get("version").isJsonPrimitive()) {
+            throw new IllegalArgumentException(String.format(java.util.Locale.ROOT,
+                "Expected the field `version` to be a primitive type in the JSON string but got `%s`",
+                jsonObj.get("version").toString()));
+        }
+        if (!jsonObj.get("resetDate").isJsonPrimitive()) {
+            throw new IllegalArgumentException(String.format(java.util.Locale.ROOT,
+                "Expected the field `resetDate` to be a primitive type in the JSON string but got `%s`",
+                jsonObj.get("resetDate").toString()));
+        }
+        if (!jsonObj.get("description").isJsonPrimitive()) {
+            throw new IllegalArgumentException(String.format(java.util.Locale.ROOT,
+                "Expected the field `description` to be a primitive type in the JSON string but got `%s`",
+                jsonObj.get("description").toString()));
+        }
+        // validate the required field `stats`
+        GetStatus200ResponseStats.validateJsonElement(jsonObj.get("stats"));
+        // validate the required field `leaderboards`
+        GetStatus200ResponseLeaderboards.validateJsonElement(jsonObj.get("leaderboards"));
+        // validate the required field `serverResets`
+        GetStatus200ResponseServerResets.validateJsonElement(jsonObj.get("serverResets"));
+        // ensure the json data is an array
+        if (!jsonObj.get("announcements").isJsonArray()) {
+            throw new IllegalArgumentException(String.format(java.util.Locale.ROOT,
+                "Expected the field `announcements` to be an array in the JSON string but got `%s`",
+                jsonObj.get("announcements").toString()));
+        }
+
+        JsonArray jsonArrayannouncements = jsonObj.getAsJsonArray("announcements");
+        // validate the required field `announcements` (array)
+        for (int i = 0; i < jsonArrayannouncements.size(); i++) {
+            GetStatus200ResponseAnnouncementsInner.validateJsonElement(
+                jsonArrayannouncements.get(i));
+        }
+        // ensure the json data is an array
+        if (!jsonObj.get("links").isJsonArray()) {
+            throw new IllegalArgumentException(String.format(java.util.Locale.ROOT,
+                "Expected the field `links` to be an array in the JSON string but got `%s`",
+                jsonObj.get("links").toString()));
+        }
+
+        JsonArray jsonArraylinks = jsonObj.getAsJsonArray("links");
+        // validate the required field `links` (array)
+        for (int i = 0; i < jsonArraylinks.size(); i++) {
+            GetStatus200ResponseLinksInner.validateJsonElement(jsonArraylinks.get(i));
+        }
     }
 
-
-    public GetStatus200Response serverResets(@javax.annotation.Nonnull GetStatus200ResponseServerResets serverResets) {
-        this.serverResets = serverResets;
+    public GetStatus200Response leaderboards(
+        @javax.annotation.Nonnull GetStatus200ResponseLeaderboards leaderboards) {
+        this.leaderboards = leaderboards;
         return this;
     }
 
@@ -211,22 +312,20 @@ public class GetStatus200Response {
         return serverResets;
     }
 
-    public void setServerResets(@javax.annotation.Nonnull GetStatus200ResponseServerResets serverResets) {
+    public void setLeaderboards(
+        @javax.annotation.Nonnull GetStatus200ResponseLeaderboards leaderboards) {
+        this.leaderboards = leaderboards;
+    }
+
+    public GetStatus200Response serverResets(
+        @javax.annotation.Nonnull GetStatus200ResponseServerResets serverResets) {
         this.serverResets = serverResets;
-    }
-
-
-    public GetStatus200Response announcements(@javax.annotation.Nonnull List<GetStatus200ResponseAnnouncementsInner> announcements) {
-        this.announcements = announcements;
         return this;
     }
 
-    public GetStatus200Response addAnnouncementsItem(GetStatus200ResponseAnnouncementsInner announcementsItem) {
-        if (this.announcements == null) {
-            this.announcements = new ArrayList<>();
-        }
-        this.announcements.add(announcementsItem);
-        return this;
+    public void setServerResets(
+        @javax.annotation.Nonnull GetStatus200ResponseServerResets serverResets) {
+        this.serverResets = serverResets;
     }
 
     /**
@@ -239,13 +338,18 @@ public class GetStatus200Response {
         return announcements;
     }
 
-    public void setAnnouncements(@javax.annotation.Nonnull List<GetStatus200ResponseAnnouncementsInner> announcements) {
+    public GetStatus200Response announcements(
+        @javax.annotation.Nonnull List<GetStatus200ResponseAnnouncementsInner> announcements) {
         this.announcements = announcements;
+        return this;
     }
 
-
-    public GetStatus200Response links(@javax.annotation.Nonnull List<GetStatus200ResponseLinksInner> links) {
-        this.links = links;
+    public GetStatus200Response addAnnouncementsItem(
+        GetStatus200ResponseAnnouncementsInner announcementsItem) {
+        if (this.announcements == null) {
+            this.announcements = new ArrayList<>();
+        }
+        this.announcements.add(announcementsItem);
         return this;
     }
 
@@ -271,6 +375,16 @@ public class GetStatus200Response {
         this.links = links;
     }
 
+    public void setAnnouncements(
+        @javax.annotation.Nonnull List<GetStatus200ResponseAnnouncementsInner> announcements) {
+        this.announcements = announcements;
+    }
+
+    public GetStatus200Response links(
+        @javax.annotation.Nonnull List<GetStatus200ResponseLinksInner> links) {
+        this.links = links;
+        return this;
+    }
 
     @Override
     public boolean equals(Object o) {
@@ -282,40 +396,45 @@ public class GetStatus200Response {
         }
         GetStatus200Response getStatus200Response = (GetStatus200Response) o;
         return Objects.equals(this.status, getStatus200Response.status) &&
-                Objects.equals(this.version, getStatus200Response.version) &&
-                Objects.equals(this.resetDate, getStatus200Response.resetDate) &&
-                Objects.equals(this.description, getStatus200Response.description) &&
-                Objects.equals(this.stats, getStatus200Response.stats) &&
-                Objects.equals(this.leaderboards, getStatus200Response.leaderboards) &&
-                Objects.equals(this.serverResets, getStatus200Response.serverResets) &&
-                Objects.equals(this.announcements, getStatus200Response.announcements) &&
-                Objects.equals(this.links, getStatus200Response.links);
+            Objects.equals(this.version, getStatus200Response.version) &&
+            Objects.equals(this.resetDate, getStatus200Response.resetDate) &&
+            Objects.equals(this.description, getStatus200Response.description) &&
+            Objects.equals(this.stats, getStatus200Response.stats) &&
+            Objects.equals(this.leaderboards, getStatus200Response.leaderboards) &&
+            Objects.equals(this.serverResets, getStatus200Response.serverResets) &&
+            Objects.equals(this.announcements, getStatus200Response.announcements) &&
+            Objects.equals(this.links, getStatus200Response.links);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(status, version, resetDate, description, stats, leaderboards, serverResets, announcements, links);
+        return Objects.hash(status, version, resetDate, description, stats, leaderboards,
+            serverResets, announcements, links);
     }
+
+
+    public static HashSet<String> openapiFields;
+    public static HashSet<String> openapiRequiredFields;
 
     @Override
     public String toString() {
         String sb = "class GetStatus200Response {\n" +
-                "    status: " + toIndentedString(status) + "\n" +
-                "    version: " + toIndentedString(version) + "\n" +
-                "    resetDate: " + toIndentedString(resetDate) + "\n" +
-                "    description: " + toIndentedString(description) + "\n" +
-                "    stats: " + toIndentedString(stats) + "\n" +
-                "    leaderboards: " + toIndentedString(leaderboards) + "\n" +
-                "    serverResets: " + toIndentedString(serverResets) + "\n" +
-                "    announcements: " + toIndentedString(announcements) + "\n" +
-                "    links: " + toIndentedString(links) + "\n" +
-                "}";
+            "    status: " + toIndentedString(status) + "\n" +
+            "    version: " + toIndentedString(version) + "\n" +
+            "    resetDate: " + toIndentedString(resetDate) + "\n" +
+            "    description: " + toIndentedString(description) + "\n" +
+            "    stats: " + toIndentedString(stats) + "\n" +
+            "    leaderboards: " + toIndentedString(leaderboards) + "\n" +
+            "    serverResets: " + toIndentedString(serverResets) + "\n" +
+            "    announcements: " + toIndentedString(announcements) + "\n" +
+            "    links: " + toIndentedString(links) + "\n" +
+            "}";
         return sb;
     }
 
     /**
-     * Convert the given object to string with each line indented by 4 spaces
-     * (except the first line).
+     * Convert the given object to string with each line indented by 4 spaces (except the first
+     * line).
      */
     private String toIndentedString(Object o) {
         if (o == null) {
@@ -324,87 +443,8 @@ public class GetStatus200Response {
         return o.toString().replace("\n", "\n    ");
     }
 
-
-    public static HashSet<String> openapiFields;
-    public static HashSet<String> openapiRequiredFields;
-
-    static {
-        // a set of all properties/fields (JSON key names)
-        openapiFields = new HashSet<String>(Arrays.asList("status", "version", "resetDate", "description", "stats", "leaderboards", "serverResets", "announcements", "links"));
-
-        // a set of required properties/fields (JSON key names)
-        openapiRequiredFields = new HashSet<String>(Arrays.asList("status", "version", "resetDate", "description", "stats", "leaderboards", "serverResets", "announcements", "links"));
-    }
-
-    /**
-     * Validates the JSON Element and throws an exception if issues found
-     *
-     * @param jsonElement JSON Element
-     * @throws IOException if the JSON Element is invalid with respect to GetStatus200Response
-     */
-    public static void validateJsonElement(JsonElement jsonElement) throws IOException {
-        if (jsonElement == null) {
-            if (!GetStatus200Response.openapiRequiredFields.isEmpty()) { // has required fields but JSON element is null
-                throw new IllegalArgumentException(String.format(java.util.Locale.ROOT, "The required field(s) %s in GetStatus200Response is not found in the empty JSON string", GetStatus200Response.openapiRequiredFields));
-            }
-        }
-
-        Set<Map.Entry<String, JsonElement>> entries = jsonElement.getAsJsonObject().entrySet();
-        // check to see if the JSON string contains additional fields
-        for (Map.Entry<String, JsonElement> entry : entries) {
-            if (!GetStatus200Response.openapiFields.contains(entry.getKey())) {
-                throw new IllegalArgumentException(String.format(java.util.Locale.ROOT, "The field `%s` in the JSON string is not defined in the `GetStatus200Response` properties. JSON: %s", entry.getKey(), jsonElement));
-            }
-        }
-
-        // check to make sure all required properties/fields are present in the JSON string
-        for (String requiredField : GetStatus200Response.openapiRequiredFields) {
-            if (jsonElement.getAsJsonObject().get(requiredField) == null) {
-                throw new IllegalArgumentException(String.format(java.util.Locale.ROOT, "The required field `%s` is not found in the JSON string: %s", requiredField, jsonElement));
-            }
-        }
-        JsonObject jsonObj = jsonElement.getAsJsonObject();
-        if (!jsonObj.get("status").isJsonPrimitive()) {
-            throw new IllegalArgumentException(String.format(java.util.Locale.ROOT, "Expected the field `status` to be a primitive type in the JSON string but got `%s`", jsonObj.get("status").toString()));
-        }
-        if (!jsonObj.get("version").isJsonPrimitive()) {
-            throw new IllegalArgumentException(String.format(java.util.Locale.ROOT, "Expected the field `version` to be a primitive type in the JSON string but got `%s`", jsonObj.get("version").toString()));
-        }
-        if (!jsonObj.get("resetDate").isJsonPrimitive()) {
-            throw new IllegalArgumentException(String.format(java.util.Locale.ROOT, "Expected the field `resetDate` to be a primitive type in the JSON string but got `%s`", jsonObj.get("resetDate").toString()));
-        }
-        if (!jsonObj.get("description").isJsonPrimitive()) {
-            throw new IllegalArgumentException(String.format(java.util.Locale.ROOT, "Expected the field `description` to be a primitive type in the JSON string but got `%s`", jsonObj.get("description").toString()));
-        }
-        // validate the required field `stats`
-        GetStatus200ResponseStats.validateJsonElement(jsonObj.get("stats"));
-        // validate the required field `leaderboards`
-        GetStatus200ResponseLeaderboards.validateJsonElement(jsonObj.get("leaderboards"));
-        // validate the required field `serverResets`
-        GetStatus200ResponseServerResets.validateJsonElement(jsonObj.get("serverResets"));
-        // ensure the json data is an array
-        if (!jsonObj.get("announcements").isJsonArray()) {
-            throw new IllegalArgumentException(String.format(java.util.Locale.ROOT, "Expected the field `announcements` to be an array in the JSON string but got `%s`", jsonObj.get("announcements").toString()));
-        }
-
-        JsonArray jsonArrayannouncements = jsonObj.getAsJsonArray("announcements");
-        // validate the required field `announcements` (array)
-        for (int i = 0; i < jsonArrayannouncements.size(); i++) {
-            GetStatus200ResponseAnnouncementsInner.validateJsonElement(jsonArrayannouncements.get(i));
-        }
-        // ensure the json data is an array
-        if (!jsonObj.get("links").isJsonArray()) {
-            throw new IllegalArgumentException(String.format(java.util.Locale.ROOT, "Expected the field `links` to be an array in the JSON string but got `%s`", jsonObj.get("links").toString()));
-        }
-
-        JsonArray jsonArraylinks = jsonObj.getAsJsonArray("links");
-        // validate the required field `links` (array)
-        for (int i = 0; i < jsonArraylinks.size(); i++) {
-            GetStatus200ResponseLinksInner.validateJsonElement(jsonArraylinks.get(i));
-        }
-    }
-
     public static class CustomTypeAdapterFactory implements TypeAdapterFactory {
+
         @SuppressWarnings("unchecked")
         @Override
         public <T> TypeAdapter<T> create(Gson gson, TypeToken<T> type) {
@@ -413,7 +453,7 @@ public class GetStatus200Response {
             }
             final TypeAdapter<JsonElement> elementAdapter = gson.getAdapter(JsonElement.class);
             final TypeAdapter<GetStatus200Response> thisAdapter
-                    = gson.getDelegateAdapter(this, TypeToken.get(GetStatus200Response.class));
+                = gson.getDelegateAdapter(this, TypeToken.get(GetStatus200Response.class));
 
             return (TypeAdapter<T>) new TypeAdapter<GetStatus200Response>() {
                 @Override

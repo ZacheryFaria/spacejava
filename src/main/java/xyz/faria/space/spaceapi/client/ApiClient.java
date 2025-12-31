@@ -13,20 +13,6 @@
 
 package xyz.faria.space.spaceapi.client;
 
-import okhttp3.*;
-import okhttp3.internal.http.HttpMethod;
-import okhttp3.internal.tls.OkHostnameVerifier;
-import okhttp3.logging.HttpLoggingInterceptor;
-import okhttp3.logging.HttpLoggingInterceptor.Level;
-import okio.Buffer;
-import okio.BufferedSink;
-import okio.Okio;
-import xyz.faria.space.spaceapi.client.auth.ApiKeyAuth;
-import xyz.faria.space.spaceapi.client.auth.Authentication;
-import xyz.faria.space.spaceapi.client.auth.HttpBasicAuth;
-import xyz.faria.space.spaceapi.client.auth.HttpBearerAuth;
-
-import javax.net.ssl.*;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
@@ -47,12 +33,48 @@ import java.text.DateFormat;
 import java.time.LocalDate;
 import java.time.OffsetDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Objects;
 import java.util.concurrent.TimeUnit;
 import java.util.function.Supplier;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import javax.net.ssl.HostnameVerifier;
+import javax.net.ssl.KeyManager;
+import javax.net.ssl.SSLContext;
+import javax.net.ssl.SSLSession;
+import javax.net.ssl.TrustManager;
+import javax.net.ssl.TrustManagerFactory;
+import javax.net.ssl.X509TrustManager;
+import okhttp3.Call;
+import okhttp3.Callback;
+import okhttp3.Headers;
+import okhttp3.Interceptor;
+import okhttp3.MediaType;
+import okhttp3.MultipartBody;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.RequestBody;
+import okhttp3.Response;
+import okhttp3.ResponseBody;
+import okhttp3.internal.http.HttpMethod;
+import okhttp3.internal.tls.OkHostnameVerifier;
+import okhttp3.logging.HttpLoggingInterceptor;
+import okhttp3.logging.HttpLoggingInterceptor.Level;
+import okio.Buffer;
+import okio.BufferedSink;
+import okio.Okio;
+import xyz.faria.space.spaceapi.client.auth.ApiKeyAuth;
+import xyz.faria.space.spaceapi.client.auth.Authentication;
+import xyz.faria.space.spaceapi.client.auth.HttpBasicAuth;
+import xyz.faria.space.spaceapi.client.auth.HttpBearerAuth;
 
 /**
  * <p>ApiClient class.</p>
@@ -61,11 +83,11 @@ public class ApiClient {
 
     protected String basePath = "https://api.spacetraders.io/v2";
     protected List<ServerConfiguration> servers = new ArrayList<ServerConfiguration>(List.of(
-            new ServerConfiguration(
-                    "https://api.spacetraders.io/v2",
-                    "v2",
-                    new HashMap<String, ServerVariable>()
-            )
+        new ServerConfiguration(
+            "https://api.spacetraders.io/v2",
+            "v2",
+            new HashMap<String, ServerVariable>()
+        )
     ));
     protected Integer serverIndex = 0;
     protected Map<String, String> serverVariables = null;
@@ -259,9 +281,9 @@ public class ApiClient {
     }
 
     /**
-     * Configure whether to verify certificate and hostname when making https requests.
-     * Default to true.
-     * NOTE: Do NOT set to false in production code, otherwise you would face multiple types of cryptographic attacks.
+     * Configure whether to verify certificate and hostname when making https requests. Default to
+     * true. NOTE: Do NOT set to false in production code, otherwise you would face multiple types
+     * of cryptographic attacks.
      *
      * @param verifyingSsl True to verify TLS/SSL connection
      * @return ApiClient
@@ -282,8 +304,8 @@ public class ApiClient {
     }
 
     /**
-     * Configure the CA certificate to be trusted when making https requests.
-     * Use null to reset to default.
+     * Configure the CA certificate to be trusted when making https requests. Use null to reset to
+     * default.
      *
      * @param sslCaCert input stream for SSL CA cert
      * @return ApiClient
@@ -304,8 +326,8 @@ public class ApiClient {
     }
 
     /**
-     * Configure client keys to use for authorization in an SSL session.
-     * Use null to reset to default.
+     * Configure client keys to use for authorization in an SSL session. Use null to reset to
+     * default.
      *
      * @param managers The KeyManagers to use
      * @return ApiClient
@@ -326,9 +348,8 @@ public class ApiClient {
     }
 
     /**
-     * Set TLS server name for SNI (Server Name Indication).
-     * This is used to verify the server certificate against a specific hostname
-     * instead of the hostname in the URL.
+     * Set TLS server name for SNI (Server Name Indication). This is used to verify the server
+     * certificate against a specific hostname instead of the hostname in the URL.
      *
      * @param tlsServerName The TLS server name to use for certificate verification
      * @return ApiClient
@@ -526,7 +547,8 @@ public class ApiClient {
      * @param region    Region
      * @param service   Service to access to
      */
-    public void setAWS4Configuration(String accessKey, String secretKey, String region, String service) {
+    public void setAWS4Configuration(String accessKey, String secretKey, String region,
+        String service) {
         throw new RuntimeException("No AWS4 authentication configured!");
     }
 
@@ -539,7 +561,8 @@ public class ApiClient {
      * @param region       Region
      * @param service      Service to access to
      */
-    public void setAWS4Configuration(String accessKey, String secretKey, String sessionToken, String region, String service) {
+    public void setAWS4Configuration(String accessKey, String secretKey, String sessionToken,
+        String region, String service) {
         throw new RuntimeException("No AWS4 authentication configured!");
     }
 
@@ -611,12 +634,13 @@ public class ApiClient {
     }
 
     /**
-     * The path of temporary folder used to store downloaded files from endpoints
-     * with file response. The default value is <code>null</code>, i.e. using
-     * the system's default temporary folder.
+     * The path of temporary folder used to store downloaded files from endpoints with file
+     * response. The default value is <code>null</code>, i.e. using the system's default temporary
+     * folder.
      *
      * @return Temporary folder path
-     * @see <a href="https://docs.oracle.com/javase/7/docs/api/java/nio/file/Files.html#createTempFile(java.lang.String,%20java.lang.String,%20java.nio.file.attribute.FileAttribute...)">createTempFile</a>
+     * @see <a
+     * href="https://docs.oracle.com/javase/7/docs/api/java/nio/file/Files.html#createTempFile(java.lang.String,%20java.lang.String,%20java.nio.file.attribute.FileAttribute...)">createTempFile</a>
      */
     public String getTempFolderPath() {
         return tempFolderPath;
@@ -643,15 +667,15 @@ public class ApiClient {
     }
 
     /**
-     * Sets the connect timeout (in milliseconds).
-     * A value of 0 means no timeout, otherwise values must be between 1 and
-     * {@link java.lang.Integer#MAX_VALUE}.
+     * Sets the connect timeout (in milliseconds). A value of 0 means no timeout, otherwise values
+     * must be between 1 and {@link java.lang.Integer#MAX_VALUE}.
      *
      * @param connectionTimeout connection timeout in milliseconds
      * @return Api client
      */
     public ApiClient setConnectTimeout(int connectionTimeout) {
-        httpClient = httpClient.newBuilder().connectTimeout(connectionTimeout, TimeUnit.MILLISECONDS).build();
+        httpClient = httpClient.newBuilder()
+            .connectTimeout(connectionTimeout, TimeUnit.MILLISECONDS).build();
         return this;
     }
 
@@ -665,15 +689,15 @@ public class ApiClient {
     }
 
     /**
-     * Sets the read timeout (in milliseconds).
-     * A value of 0 means no timeout, otherwise values must be between 1 and
-     * {@link java.lang.Integer#MAX_VALUE}.
+     * Sets the read timeout (in milliseconds). A value of 0 means no timeout, otherwise values must
+     * be between 1 and {@link java.lang.Integer#MAX_VALUE}.
      *
      * @param readTimeout read timeout in milliseconds
      * @return Api client
      */
     public ApiClient setReadTimeout(int readTimeout) {
-        httpClient = httpClient.newBuilder().readTimeout(readTimeout, TimeUnit.MILLISECONDS).build();
+        httpClient = httpClient.newBuilder().readTimeout(readTimeout, TimeUnit.MILLISECONDS)
+            .build();
         return this;
     }
 
@@ -687,15 +711,15 @@ public class ApiClient {
     }
 
     /**
-     * Sets the write timeout (in milliseconds).
-     * A value of 0 means no timeout, otherwise values must be between 1 and
-     * {@link java.lang.Integer#MAX_VALUE}.
+     * Sets the write timeout (in milliseconds). A value of 0 means no timeout, otherwise values
+     * must be between 1 and {@link java.lang.Integer#MAX_VALUE}.
      *
      * @param writeTimeout connection timeout in milliseconds
      * @return Api client
      */
     public ApiClient setWriteTimeout(int writeTimeout) {
-        httpClient = httpClient.newBuilder().writeTimeout(writeTimeout, TimeUnit.MILLISECONDS).build();
+        httpClient = httpClient.newBuilder().writeTimeout(writeTimeout, TimeUnit.MILLISECONDS)
+            .build();
         return this;
     }
 
@@ -709,7 +733,8 @@ public class ApiClient {
     public String parameterToString(Object param) {
         if (param == null) {
             return "";
-        } else if (param instanceof Date || param instanceof OffsetDateTime || param instanceof LocalDate) {
+        } else if (param instanceof Date || param instanceof OffsetDateTime
+            || param instanceof LocalDate) {
             //Serialize to json string and remove the " enclosing characters
             String jsonStr = JSON.serialize(param);
             return jsonStr.substring(1, jsonStr.length() - 1);
@@ -857,8 +882,7 @@ public class ApiClient {
     }
 
     /**
-     * Sanitize filename by removing path.
-     * e.g. ../../sun.gif becomes sun.gif
+     * Sanitize filename by removing path. e.g. ../../sun.gif becomes sun.gif
      *
      * @param filename The filename to be sanitized
      * @return The sanitized filename
@@ -868,13 +892,9 @@ public class ApiClient {
     }
 
     /**
-     * Check if the given MIME is a JSON MIME.
-     * JSON MIME examples:
-     * application/json
-     * application/json; charset=UTF8
-     * APPLICATION/JSON
-     * application/vnd.company+json
-     * "* / *" is also default to JSON
+     * Check if the given MIME is a JSON MIME. JSON MIME examples: application/json
+     * application/json; charset=UTF8 APPLICATION/JSON application/vnd.company+json "* / *" is also
+     * default to JSON
      *
      * @param mime MIME (Multipurpose Internet Mail Extensions)
      * @return True if the given MIME is JSON, false otherwise.
@@ -885,13 +905,12 @@ public class ApiClient {
     }
 
     /**
-     * Select the Accept header's value from the given accepts array:
-     * if JSON exists in the given array, use it;
-     * otherwise use all of them (joining into a string)
+     * Select the Accept header's value from the given accepts array: if JSON exists in the given
+     * array, use it; otherwise use all of them (joining into a string)
      *
      * @param accepts The accepts array to select from
-     * @return The Accept header to use. If the given array is empty,
-     * null will be returned (not to set the Accept header explicitly).
+     * @return The Accept header to use. If the given array is empty, null will be returned (not to
+     * set the Accept header explicitly).
      */
     public String selectHeaderAccept(String[] accepts) {
         if (accepts.length == 0) {
@@ -906,13 +925,12 @@ public class ApiClient {
     }
 
     /**
-     * Select the Content-Type header's value from the given array:
-     * if JSON exists in the given array, use it;
-     * otherwise use the first one of the array.
+     * Select the Content-Type header's value from the given array: if JSON exists in the given
+     * array, use it; otherwise use the first one of the array.
      *
      * @param contentTypes The Content-Type array to select from
-     * @return The Content-Type header to use. If the given array is empty,
-     * returns null. If it matches "any", JSON will be used.
+     * @return The Content-Type header to use. If the given array is empty, returns null. If it
+     * matches "any", JSON will be used.
      */
     public String selectHeaderContentType(String[] contentTypes) {
         if (contentTypes.length == 0) {
@@ -943,15 +961,17 @@ public class ApiClient {
     }
 
     /**
-     * Deserialize response body to Java object, according to the return type and
-     * the Content-Type response header.
+     * Deserialize response body to Java object, according to the return type and the Content-Type
+     * response header.
      *
      * @param <T>        Type
      * @param response   HTTP response
      * @param returnType The type of the Java object
      * @return The deserialized Java object
-     * @throws xyz.faria.space.spaceapi.client.ApiException If fail to deserialize response body, i.e. cannot read response body
-     *                                                      or the Content-Type of the response is not supported.
+     * @throws xyz.faria.space.spaceapi.client.ApiException If fail to deserialize response body,
+     *                                                      i.e. cannot read response body or the
+     *                                                      Content-Type of the response is not
+     *                                                      supported.
      */
     @SuppressWarnings("unchecked")
     public <T> T deserialize(Response response, Type returnType) throws ApiException {
@@ -1003,10 +1023,10 @@ public class ApiClient {
                 return (T) respBodyString;
             } else {
                 throw new ApiException(
-                        "Content type \"" + contentType + "\" is not supported for type: " + returnType,
-                        response.code(),
-                        response.headers().toMultimap(),
-                        response.body().string());
+                    "Content type \"" + contentType + "\" is not supported for type: " + returnType,
+                    response.code(),
+                    response.headers().toMultimap(),
+                    response.body().string());
             }
         } catch (IOException e) {
             throw new ApiException(e);
@@ -1014,8 +1034,8 @@ public class ApiClient {
     }
 
     /**
-     * Serialize the given Java object into request body according to the object's
-     * class and the request Content-Type.
+     * Serialize the given Java object into request body according to the object's class and the
+     * request Content-Type.
      *
      * @param obj         The Java object
      * @param contentType The request Content-Type
@@ -1051,7 +1071,8 @@ public class ApiClient {
      *
      * @param response An instance of the Response object
      * @return Downloaded file
-     * @throws xyz.faria.space.spaceapi.client.ApiException If fail to read file content from response and write to disk
+     * @throws xyz.faria.space.spaceapi.client.ApiException If fail to read file content from
+     *                                                      response and write to disk
      */
     public File downloadFileFromResponse(Response response) throws ApiException {
         try {
@@ -1098,14 +1119,16 @@ public class ApiClient {
                 suffix = filename.substring(pos);
             }
             // Files.createTempFile requires the prefix to be at least three characters long
-            if (prefix.length() < 3)
+            if (prefix.length() < 3) {
                 prefix = "download-";
+            }
         }
 
-        if (tempFolderPath == null)
+        if (tempFolderPath == null) {
             return Files.createTempFile(prefix, suffix).toFile();
-        else
+        } else {
             return Files.createTempFile(Paths.get(tempFolderPath), prefix, suffix).toFile();
+        }
     }
 
     /**
@@ -1126,9 +1149,8 @@ public class ApiClient {
      * @param returnType The return type used to deserialize HTTP response body
      * @param <T>        The return type corresponding to (same with) returnType
      * @param call       Call
-     * @return ApiResponse object containing response status, headers and
-     * data, which is a Java object deserialized from response body and would be null
-     * when returnType is null.
+     * @return ApiResponse object containing response status, headers and data, which is a Java
+     * object deserialized from response body and would be null when returnType is null.
      * @throws xyz.faria.space.spaceapi.client.ApiException If fail to execute the call
      */
     public <T> ApiResponse<T> execute(Call call, Type returnType) throws ApiException {
@@ -1178,7 +1200,8 @@ public class ApiClient {
                     callback.onFailure(e, response.code(), response.headers().toMultimap());
                     return;
                 } catch (Exception e) {
-                    callback.onFailure(new ApiException(e), response.code(), response.headers().toMultimap());
+                    callback.onFailure(new ApiException(e), response.code(),
+                        response.headers().toMultimap());
                     return;
                 }
                 callback.onSuccess(result, response.code(), response.headers().toMultimap());
@@ -1193,8 +1216,9 @@ public class ApiClient {
      * @param response   Response
      * @param returnType Return type
      * @return Type
-     * @throws xyz.faria.space.spaceapi.client.ApiException If the response has an unsuccessful status code or
-     *                                                      fail to deserialize the response body
+     * @throws xyz.faria.space.spaceapi.client.ApiException If the response has an unsuccessful
+     *                                                      status code or fail to deserialize the
+     *                                                      response body
      */
     public <T> T handleResponse(Response response, Type returnType) throws ApiException {
         if (response.isSuccessful()) {
@@ -1205,7 +1229,8 @@ public class ApiClient {
                     try {
                         response.body().close();
                     } catch (Exception e) {
-                        throw new ApiException(response.message(), e, response.code(), response.headers().toMultimap());
+                        throw new ApiException(response.message(), e, response.code(),
+                            response.headers().toMultimap());
                     }
                 }
                 return null;
@@ -1218,10 +1243,12 @@ public class ApiClient {
                 try {
                     respBody = response.body().string();
                 } catch (IOException e) {
-                    throw new ApiException(response.message(), e, response.code(), response.headers().toMultimap());
+                    throw new ApiException(response.message(), e, response.code(),
+                        response.headers().toMultimap());
                 }
             }
-            throw new ApiException(response.message(), response.code(), response.headers().toMultimap(), respBody);
+            throw new ApiException(response.message(), response.code(),
+                response.headers().toMultimap(), respBody);
         }
     }
 
@@ -1230,7 +1257,8 @@ public class ApiClient {
      *
      * @param baseUrl               The base URL
      * @param path                  The sub-path of the HTTP URL
-     * @param method                The request method, one of "GET", "HEAD", "OPTIONS", "POST", "PUT", "PATCH" and "DELETE"
+     * @param method                The request method, one of "GET", "HEAD", "OPTIONS", "POST",
+     *                              "PUT", "PATCH" and "DELETE"
      * @param queryParams           The query parameters
      * @param collectionQueryParams The collection query parameters
      * @param body                  The request body object
@@ -1240,10 +1268,15 @@ public class ApiClient {
      * @param authNames             The authentications to apply
      * @param callback              Callback for upload/download progress
      * @return The HTTP call
-     * @throws xyz.faria.space.spaceapi.client.ApiException If fail to serialize the request body object
+     * @throws xyz.faria.space.spaceapi.client.ApiException If fail to serialize the request body
+     *                                                      object
      */
-    public Call buildCall(String baseUrl, String path, String method, List<Pair> queryParams, List<Pair> collectionQueryParams, Object body, Map<String, String> headerParams, Map<String, String> cookieParams, Map<String, Object> formParams, String[] authNames, ApiCallback callback) throws ApiException {
-        Request request = buildRequest(baseUrl, path, method, queryParams, collectionQueryParams, body, headerParams, cookieParams, formParams, authNames, callback);
+    public Call buildCall(String baseUrl, String path, String method, List<Pair> queryParams,
+        List<Pair> collectionQueryParams, Object body, Map<String, String> headerParams,
+        Map<String, String> cookieParams, Map<String, Object> formParams, String[] authNames,
+        ApiCallback callback) throws ApiException {
+        Request request = buildRequest(baseUrl, path, method, queryParams, collectionQueryParams,
+            body, headerParams, cookieParams, formParams, authNames, callback);
 
         return httpClient.newCall(request);
     }
@@ -1253,7 +1286,8 @@ public class ApiClient {
      *
      * @param baseUrl               The base URL
      * @param path                  The sub-path of the HTTP URL
-     * @param method                The request method, one of "GET", "HEAD", "OPTIONS", "POST", "PUT", "PATCH" and "DELETE"
+     * @param method                The request method, one of "GET", "HEAD", "OPTIONS", "POST",
+     *                              "PUT", "PATCH" and "DELETE"
      * @param queryParams           The query parameters
      * @param collectionQueryParams The collection query parameters
      * @param body                  The request body object
@@ -1263,9 +1297,13 @@ public class ApiClient {
      * @param authNames             The authentications to apply
      * @param callback              Callback for upload/download progress
      * @return The HTTP request
-     * @throws xyz.faria.space.spaceapi.client.ApiException If fail to serialize the request body object
+     * @throws xyz.faria.space.spaceapi.client.ApiException If fail to serialize the request body
+     *                                                      object
      */
-    public Request buildRequest(String baseUrl, String path, String method, List<Pair> queryParams, List<Pair> collectionQueryParams, Object body, Map<String, String> headerParams, Map<String, String> cookieParams, Map<String, Object> formParams, String[] authNames, ApiCallback callback) throws ApiException {
+    public Request buildRequest(String baseUrl, String path, String method, List<Pair> queryParams,
+        List<Pair> collectionQueryParams, Object body, Map<String, String> headerParams,
+        Map<String, String> cookieParams, Map<String, Object> formParams, String[] authNames,
+        ApiCallback callback) throws ApiException {
         final String url = buildUrl(baseUrl, path, queryParams, collectionQueryParams);
 
         // prepare HTTP request body
@@ -1287,7 +1325,8 @@ public class ApiClient {
                 reqBody = null;
             } else {
                 // use an empty request body (for POST, PUT and PATCH)
-                reqBody = RequestBody.create("", contentType == null ? null : MediaType.parse(contentType));
+                reqBody = RequestBody.create("",
+                    contentType == null ? null : MediaType.parse(contentType));
             }
         } else {
             reqBody = serialize(body, contentType);
@@ -1296,9 +1335,11 @@ public class ApiClient {
         List<Pair> updatedQueryParams = new ArrayList<>(queryParams);
 
         // update parameters with authentication settings
-        updateParamsForAuth(authNames, updatedQueryParams, headerParams, cookieParams, requestBodyToString(reqBody), method, URI.create(url));
+        updateParamsForAuth(authNames, updatedQueryParams, headerParams, cookieParams,
+            requestBodyToString(reqBody), method, URI.create(url));
 
-        final Request.Builder reqBuilder = new Request.Builder().url(buildUrl(baseUrl, path, updatedQueryParams, collectionQueryParams));
+        final Request.Builder reqBuilder = new Request.Builder().url(
+            buildUrl(baseUrl, path, updatedQueryParams, collectionQueryParams));
         processHeaderParams(headerParams, reqBuilder);
         processCookieParams(cookieParams, reqBuilder);
 
@@ -1327,7 +1368,8 @@ public class ApiClient {
      * @param collectionQueryParams The collection query parameters
      * @return The full URL
      */
-    public String buildUrl(String baseUrl, String path, List<Pair> queryParams, List<Pair> collectionQueryParams) {
+    public String buildUrl(String baseUrl, String path, List<Pair> queryParams,
+        List<Pair> collectionQueryParams) {
         final StringBuilder url = new StringBuilder();
         if (baseUrl != null) {
             url.append(baseUrl).append(path);
@@ -1336,8 +1378,9 @@ public class ApiClient {
             if (serverIndex != null) {
                 if (serverIndex < 0 || serverIndex >= servers.size()) {
                     throw new ArrayIndexOutOfBoundsException(String.format(
-                            java.util.Locale.ROOT,
-                            "Invalid index %d when selecting the host settings. Must be less than %d", serverIndex, servers.size()
+                        java.util.Locale.ROOT,
+                        "Invalid index %d when selecting the host settings. Must be less than %d",
+                        serverIndex, servers.size()
                     ));
                 }
                 baseURL = servers.get(serverIndex).URL(serverVariables);
@@ -1409,11 +1452,14 @@ public class ApiClient {
      */
     public void processCookieParams(Map<String, String> cookieParams, Request.Builder reqBuilder) {
         for (Entry<String, String> param : cookieParams.entrySet()) {
-            reqBuilder.addHeader("Cookie", String.format(java.util.Locale.ROOT, "%s=%s", param.getKey(), param.getValue()));
+            reqBuilder.addHeader("Cookie",
+                String.format(java.util.Locale.ROOT, "%s=%s", param.getKey(), param.getValue()));
         }
         for (Entry<String, String> param : defaultCookieMap.entrySet()) {
             if (!cookieParams.containsKey(param.getKey())) {
-                reqBuilder.addHeader("Cookie", String.format(java.util.Locale.ROOT, "%s=%s", param.getKey(), param.getValue()));
+                reqBuilder.addHeader("Cookie",
+                    String.format(java.util.Locale.ROOT, "%s=%s", param.getKey(),
+                        param.getValue()));
             }
         }
     }
@@ -1430,8 +1476,10 @@ public class ApiClient {
      * @param uri          URI
      * @throws xyz.faria.space.spaceapi.client.ApiException If fails to update the parameters
      */
-    public void updateParamsForAuth(String[] authNames, List<Pair> queryParams, Map<String, String> headerParams,
-                                    Map<String, String> cookieParams, String payload, String method, URI uri) throws ApiException {
+    public void updateParamsForAuth(String[] authNames, List<Pair> queryParams,
+        Map<String, String> headerParams,
+        Map<String, String> cookieParams, String payload, String method, URI uri)
+        throws ApiException {
         for (String authName : authNames) {
             Authentication auth = authentications.get(authName);
             if (auth == null) {
@@ -1456,8 +1504,8 @@ public class ApiClient {
     }
 
     /**
-     * Build a multipart (file uploading) request body with the given form parameters,
-     * which could contain text fields and file fields.
+     * Build a multipart (file uploading) request body with the given form parameters, which could
+     * contain text fields and file fields.
      *
      * @param formParams Form parameters in the form of Map
      * @return RequestBody
@@ -1504,20 +1552,24 @@ public class ApiClient {
      * @param key       The key of the Header element
      * @param file      The file to add to the Header
      */
-    protected void addPartToMultiPartBuilder(MultipartBody.Builder mpBuilder, String key, File file) {
-        Headers partHeaders = Headers.of("Content-Disposition", "form-data; name=\"" + key + "\"; filename=\"" + file.getName() + "\"");
+    protected void addPartToMultiPartBuilder(MultipartBody.Builder mpBuilder, String key,
+        File file) {
+        Headers partHeaders = Headers.of("Content-Disposition",
+            "form-data; name=\"" + key + "\"; filename=\"" + file.getName() + "\"");
         MediaType mediaType = MediaType.parse(guessContentTypeFromFile(file));
         mpBuilder.addPart(partHeaders, RequestBody.create(file, mediaType));
     }
 
     /**
-     * Add a Content-Disposition Header for the given key and complex object to the MultipartBody Builder.
+     * Add a Content-Disposition Header for the given key and complex object to the MultipartBody
+     * Builder.
      *
      * @param mpBuilder MultipartBody.Builder
      * @param key       The key of the Header element
      * @param obj       The complex object to add to the Header
      */
-    protected void addPartToMultiPartBuilder(MultipartBody.Builder mpBuilder, String key, Object obj) {
+    protected void addPartToMultiPartBuilder(MultipartBody.Builder mpBuilder, String key,
+        Object obj) {
         RequestBody requestBody;
         if (obj instanceof String) {
             requestBody = RequestBody.create((String) obj, MediaType.parse("text/plain"));
@@ -1536,8 +1588,8 @@ public class ApiClient {
     }
 
     /**
-     * Get network interceptor to add it to the httpClient to track download progress for
-     * async requests.
+     * Get network interceptor to add it to the httpClient to track download progress for async
+     * requests.
      */
     protected Interceptor getProgressInterceptor() {
         return new Interceptor() {
@@ -1547,8 +1599,8 @@ public class ApiClient {
                 final Response originalResponse = chain.proceed(request);
                 if (request.tag() instanceof ApiCallback callback) {
                     return originalResponse.newBuilder()
-                            .body(new ProgressResponseBody(originalResponse.body(), callback))
-                            .build();
+                        .body(new ProgressResponseBody(originalResponse.body(), callback))
+                        .build();
                 }
                 return originalResponse;
             }
@@ -1556,8 +1608,8 @@ public class ApiClient {
     }
 
     /**
-     * Apply SSL related settings to httpClient according to the current values of
-     * verifyingSsl and sslCaCert.
+     * Apply SSL related settings to httpClient according to the current values of verifyingSsl and
+     * sslCaCert.
      */
     protected void applySslSettings() {
         try {
@@ -1565,20 +1617,22 @@ public class ApiClient {
             HostnameVerifier hostnameVerifier;
             if (!verifyingSsl) {
                 trustManagers = new TrustManager[]{
-                        new X509TrustManager() {
-                            @Override
-                            public void checkClientTrusted(java.security.cert.X509Certificate[] chain, String authType) throws CertificateException {
-                            }
-
-                            @Override
-                            public void checkServerTrusted(java.security.cert.X509Certificate[] chain, String authType) throws CertificateException {
-                            }
-
-                            @Override
-                            public java.security.cert.X509Certificate[] getAcceptedIssuers() {
-                                return new java.security.cert.X509Certificate[]{};
-                            }
+                    new X509TrustManager() {
+                        @Override
+                        public void checkClientTrusted(java.security.cert.X509Certificate[] chain,
+                            String authType) throws CertificateException {
                         }
+
+                        @Override
+                        public void checkServerTrusted(java.security.cert.X509Certificate[] chain,
+                            String authType) throws CertificateException {
+                        }
+
+                        @Override
+                        public java.security.cert.X509Certificate[] getAcceptedIssuers() {
+                            return new java.security.cert.X509Certificate[]{};
+                        }
+                    }
                 };
                 hostnameVerifier = new HostnameVerifier() {
                     @Override
@@ -1587,16 +1641,19 @@ public class ApiClient {
                     }
                 };
             } else {
-                TrustManagerFactory trustManagerFactory = TrustManagerFactory.getInstance(TrustManagerFactory.getDefaultAlgorithm());
+                TrustManagerFactory trustManagerFactory = TrustManagerFactory.getInstance(
+                    TrustManagerFactory.getDefaultAlgorithm());
 
                 if (sslCaCert == null) {
                     trustManagerFactory.init((KeyStore) null);
                 } else {
                     char[] password = null; // Any password will work.
                     CertificateFactory certificateFactory = CertificateFactory.getInstance("X.509");
-                    Collection<? extends Certificate> certificates = certificateFactory.generateCertificates(sslCaCert);
+                    Collection<? extends Certificate> certificates = certificateFactory.generateCertificates(
+                        sslCaCert);
                     if (certificates.isEmpty()) {
-                        throw new IllegalArgumentException("expected non-empty set of trusted certificates");
+                        throw new IllegalArgumentException(
+                            "expected non-empty set of trusted certificates");
                     }
                     KeyStore caKeyStore = newEmptyKeyStore(password);
                     int index = 0;
@@ -1623,9 +1680,10 @@ public class ApiClient {
             SSLContext sslContext = SSLContext.getInstance("TLS");
             sslContext.init(keyManagers, trustManagers, new SecureRandom());
             httpClient = httpClient.newBuilder()
-                    .sslSocketFactory(sslContext.getSocketFactory(), (X509TrustManager) trustManagers[0])
-                    .hostnameVerifier(hostnameVerifier)
-                    .build();
+                .sslSocketFactory(sslContext.getSocketFactory(),
+                    (X509TrustManager) trustManagers[0])
+                .hostnameVerifier(hostnameVerifier)
+                .build();
         } catch (GeneralSecurityException e) {
             throw new RuntimeException(e);
         }
@@ -1646,7 +1704,8 @@ public class ApiClient {
      *
      * @param requestBody The HTTP request object
      * @return The string representation of the HTTP request body
-     * @throws xyz.faria.space.spaceapi.client.ApiException If fail to serialize the request body object into a string
+     * @throws xyz.faria.space.spaceapi.client.ApiException If fail to serialize the request body
+     *                                                      object into a string
      */
     protected String requestBodyToString(RequestBody requestBody) throws ApiException {
         if (requestBody != null) {

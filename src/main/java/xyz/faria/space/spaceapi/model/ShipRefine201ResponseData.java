@@ -13,20 +13,31 @@
 
 package xyz.faria.space.spaceapi.model;
 
-import com.google.gson.*;
+import com.google.gson.Gson;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.TypeAdapter;
+import com.google.gson.TypeAdapterFactory;
 import com.google.gson.annotations.SerializedName;
 import com.google.gson.reflect.TypeToken;
 import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonWriter;
-import xyz.faria.space.spaceapi.client.JSON;
-
 import java.io.IOException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
+import java.util.Set;
+import xyz.faria.space.spaceapi.client.JSON;
 
 /**
  * ShipRefine201ResponseData
  */
 public class ShipRefine201ResponseData {
+
     public static final String SERIALIZED_NAME_CARGO = "cargo";
     @SerializedName(SERIALIZED_NAME_CARGO)
     @javax.annotation.Nonnull
@@ -90,17 +101,79 @@ public class ShipRefine201ResponseData {
     }
 
 
-    public ShipRefine201ResponseData produced(@javax.annotation.Nonnull List<ShipRefine201ResponseDataProducedInner> produced) {
-        this.produced = produced;
-        return this;
+    static {
+        // a set of all properties/fields (JSON key names)
+        openapiFields = new HashSet<String>(
+            Arrays.asList("cargo", "cooldown", "produced", "consumed"));
+
+        // a set of required properties/fields (JSON key names)
+        openapiRequiredFields = new HashSet<String>(
+            Arrays.asList("cargo", "cooldown", "produced", "consumed"));
     }
 
-    public ShipRefine201ResponseData addProducedItem(ShipRefine201ResponseDataProducedInner producedItem) {
-        if (this.produced == null) {
-            this.produced = new ArrayList<>();
+    /**
+     * Validates the JSON Element and throws an exception if issues found
+     *
+     * @param jsonElement JSON Element
+     * @throws IOException if the JSON Element is invalid with respect to ShipRefine201ResponseData
+     */
+    public static void validateJsonElement(JsonElement jsonElement) throws IOException {
+        if (jsonElement == null) {
+            if (!ShipRefine201ResponseData.openapiRequiredFields.isEmpty()) { // has required fields but JSON element is null
+                throw new IllegalArgumentException(String.format(java.util.Locale.ROOT,
+                    "The required field(s) %s in ShipRefine201ResponseData is not found in the empty JSON string",
+                    ShipRefine201ResponseData.openapiRequiredFields));
+            }
         }
-        this.produced.add(producedItem);
-        return this;
+
+        Set<Map.Entry<String, JsonElement>> entries = jsonElement.getAsJsonObject().entrySet();
+        // check to see if the JSON string contains additional fields
+        for (Map.Entry<String, JsonElement> entry : entries) {
+            if (!ShipRefine201ResponseData.openapiFields.contains(entry.getKey())) {
+                throw new IllegalArgumentException(String.format(java.util.Locale.ROOT,
+                    "The field `%s` in the JSON string is not defined in the `ShipRefine201ResponseData` properties. JSON: %s",
+                    entry.getKey(), jsonElement));
+            }
+        }
+
+        // check to make sure all required properties/fields are present in the JSON string
+        for (String requiredField : ShipRefine201ResponseData.openapiRequiredFields) {
+            if (jsonElement.getAsJsonObject().get(requiredField) == null) {
+                throw new IllegalArgumentException(String.format(java.util.Locale.ROOT,
+                    "The required field `%s` is not found in the JSON string: %s",
+                    requiredField,
+                    jsonElement));
+            }
+        }
+        JsonObject jsonObj = jsonElement.getAsJsonObject();
+        // validate the required field `cargo`
+        ShipCargo.validateJsonElement(jsonObj.get("cargo"));
+        // validate the required field `cooldown`
+        Cooldown.validateJsonElement(jsonObj.get("cooldown"));
+        // ensure the json data is an array
+        if (!jsonObj.get("produced").isJsonArray()) {
+            throw new IllegalArgumentException(String.format(java.util.Locale.ROOT,
+                "Expected the field `produced` to be an array in the JSON string but got `%s`",
+                jsonObj.get("produced").toString()));
+        }
+
+        JsonArray jsonArrayproduced = jsonObj.getAsJsonArray("produced");
+        // validate the required field `produced` (array)
+        for (int i = 0; i < jsonArrayproduced.size(); i++) {
+            ShipRefine201ResponseDataProducedInner.validateJsonElement(jsonArrayproduced.get(i));
+        }
+        // ensure the json data is an array
+        if (!jsonObj.get("consumed").isJsonArray()) {
+            throw new IllegalArgumentException(String.format(java.util.Locale.ROOT,
+                "Expected the field `consumed` to be an array in the JSON string but got `%s`",
+                jsonObj.get("consumed").toString()));
+        }
+
+        JsonArray jsonArrayconsumed = jsonObj.getAsJsonArray("consumed");
+        // validate the required field `consumed` (array)
+        for (int i = 0; i < jsonArrayconsumed.size(); i++) {
+            ShipRefine201ResponseDataProducedInner.validateJsonElement(jsonArrayconsumed.get(i));
+        }
     }
 
     /**
@@ -113,22 +186,24 @@ public class ShipRefine201ResponseData {
         return produced;
     }
 
-    public void setProduced(@javax.annotation.Nonnull List<ShipRefine201ResponseDataProducedInner> produced) {
+    public ShipRefine201ResponseData produced(
+        @javax.annotation.Nonnull List<ShipRefine201ResponseDataProducedInner> produced) {
         this.produced = produced;
-    }
-
-
-    public ShipRefine201ResponseData consumed(@javax.annotation.Nonnull List<ShipRefine201ResponseDataProducedInner> consumed) {
-        this.consumed = consumed;
         return this;
     }
 
-    public ShipRefine201ResponseData addConsumedItem(ShipRefine201ResponseDataProducedInner consumedItem) {
-        if (this.consumed == null) {
-            this.consumed = new ArrayList<>();
+    public ShipRefine201ResponseData addProducedItem(
+        ShipRefine201ResponseDataProducedInner producedItem) {
+        if (this.produced == null) {
+            this.produced = new ArrayList<>();
         }
-        this.consumed.add(consumedItem);
+        this.produced.add(producedItem);
         return this;
+    }
+
+    public void setProduced(
+        @javax.annotation.Nonnull List<ShipRefine201ResponseDataProducedInner> produced) {
+        this.produced = produced;
     }
 
     /**
@@ -141,10 +216,30 @@ public class ShipRefine201ResponseData {
         return consumed;
     }
 
-    public void setConsumed(@javax.annotation.Nonnull List<ShipRefine201ResponseDataProducedInner> consumed) {
+    public ShipRefine201ResponseData consumed(
+        @javax.annotation.Nonnull List<ShipRefine201ResponseDataProducedInner> consumed) {
         this.consumed = consumed;
+        return this;
     }
 
+    public ShipRefine201ResponseData addConsumedItem(
+        ShipRefine201ResponseDataProducedInner consumedItem) {
+        if (this.consumed == null) {
+            this.consumed = new ArrayList<>();
+        }
+        this.consumed.add(consumedItem);
+        return this;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(cargo, cooldown, produced, consumed);
+    }
+
+    public void setConsumed(
+        @javax.annotation.Nonnull List<ShipRefine201ResponseDataProducedInner> consumed) {
+        this.consumed = consumed;
+    }
 
     @Override
     public boolean equals(Object o) {
@@ -156,30 +251,29 @@ public class ShipRefine201ResponseData {
         }
         ShipRefine201ResponseData shipRefine201ResponseData = (ShipRefine201ResponseData) o;
         return Objects.equals(this.cargo, shipRefine201ResponseData.cargo) &&
-                Objects.equals(this.cooldown, shipRefine201ResponseData.cooldown) &&
-                Objects.equals(this.produced, shipRefine201ResponseData.produced) &&
-                Objects.equals(this.consumed, shipRefine201ResponseData.consumed);
+            Objects.equals(this.cooldown, shipRefine201ResponseData.cooldown) &&
+            Objects.equals(this.produced, shipRefine201ResponseData.produced) &&
+            Objects.equals(this.consumed, shipRefine201ResponseData.consumed);
     }
 
-    @Override
-    public int hashCode() {
-        return Objects.hash(cargo, cooldown, produced, consumed);
-    }
+
+    public static HashSet<String> openapiFields;
+    public static HashSet<String> openapiRequiredFields;
 
     @Override
     public String toString() {
         String sb = "class ShipRefine201ResponseData {\n" +
-                "    cargo: " + toIndentedString(cargo) + "\n" +
-                "    cooldown: " + toIndentedString(cooldown) + "\n" +
-                "    produced: " + toIndentedString(produced) + "\n" +
-                "    consumed: " + toIndentedString(consumed) + "\n" +
-                "}";
+            "    cargo: " + toIndentedString(cargo) + "\n" +
+            "    cooldown: " + toIndentedString(cooldown) + "\n" +
+            "    produced: " + toIndentedString(produced) + "\n" +
+            "    consumed: " + toIndentedString(consumed) + "\n" +
+            "}";
         return sb;
     }
 
     /**
-     * Convert the given object to string with each line indented by 4 spaces
-     * (except the first line).
+     * Convert the given object to string with each line indented by 4 spaces (except the first
+     * line).
      */
     private String toIndentedString(Object o) {
         if (o == null) {
@@ -188,73 +282,8 @@ public class ShipRefine201ResponseData {
         return o.toString().replace("\n", "\n    ");
     }
 
-
-    public static HashSet<String> openapiFields;
-    public static HashSet<String> openapiRequiredFields;
-
-    static {
-        // a set of all properties/fields (JSON key names)
-        openapiFields = new HashSet<String>(Arrays.asList("cargo", "cooldown", "produced", "consumed"));
-
-        // a set of required properties/fields (JSON key names)
-        openapiRequiredFields = new HashSet<String>(Arrays.asList("cargo", "cooldown", "produced", "consumed"));
-    }
-
-    /**
-     * Validates the JSON Element and throws an exception if issues found
-     *
-     * @param jsonElement JSON Element
-     * @throws IOException if the JSON Element is invalid with respect to ShipRefine201ResponseData
-     */
-    public static void validateJsonElement(JsonElement jsonElement) throws IOException {
-        if (jsonElement == null) {
-            if (!ShipRefine201ResponseData.openapiRequiredFields.isEmpty()) { // has required fields but JSON element is null
-                throw new IllegalArgumentException(String.format(java.util.Locale.ROOT, "The required field(s) %s in ShipRefine201ResponseData is not found in the empty JSON string", ShipRefine201ResponseData.openapiRequiredFields));
-            }
-        }
-
-        Set<Map.Entry<String, JsonElement>> entries = jsonElement.getAsJsonObject().entrySet();
-        // check to see if the JSON string contains additional fields
-        for (Map.Entry<String, JsonElement> entry : entries) {
-            if (!ShipRefine201ResponseData.openapiFields.contains(entry.getKey())) {
-                throw new IllegalArgumentException(String.format(java.util.Locale.ROOT, "The field `%s` in the JSON string is not defined in the `ShipRefine201ResponseData` properties. JSON: %s", entry.getKey(), jsonElement));
-            }
-        }
-
-        // check to make sure all required properties/fields are present in the JSON string
-        for (String requiredField : ShipRefine201ResponseData.openapiRequiredFields) {
-            if (jsonElement.getAsJsonObject().get(requiredField) == null) {
-                throw new IllegalArgumentException(String.format(java.util.Locale.ROOT, "The required field `%s` is not found in the JSON string: %s", requiredField, jsonElement));
-            }
-        }
-        JsonObject jsonObj = jsonElement.getAsJsonObject();
-        // validate the required field `cargo`
-        ShipCargo.validateJsonElement(jsonObj.get("cargo"));
-        // validate the required field `cooldown`
-        Cooldown.validateJsonElement(jsonObj.get("cooldown"));
-        // ensure the json data is an array
-        if (!jsonObj.get("produced").isJsonArray()) {
-            throw new IllegalArgumentException(String.format(java.util.Locale.ROOT, "Expected the field `produced` to be an array in the JSON string but got `%s`", jsonObj.get("produced").toString()));
-        }
-
-        JsonArray jsonArrayproduced = jsonObj.getAsJsonArray("produced");
-        // validate the required field `produced` (array)
-        for (int i = 0; i < jsonArrayproduced.size(); i++) {
-            ShipRefine201ResponseDataProducedInner.validateJsonElement(jsonArrayproduced.get(i));
-        }
-        // ensure the json data is an array
-        if (!jsonObj.get("consumed").isJsonArray()) {
-            throw new IllegalArgumentException(String.format(java.util.Locale.ROOT, "Expected the field `consumed` to be an array in the JSON string but got `%s`", jsonObj.get("consumed").toString()));
-        }
-
-        JsonArray jsonArrayconsumed = jsonObj.getAsJsonArray("consumed");
-        // validate the required field `consumed` (array)
-        for (int i = 0; i < jsonArrayconsumed.size(); i++) {
-            ShipRefine201ResponseDataProducedInner.validateJsonElement(jsonArrayconsumed.get(i));
-        }
-    }
-
     public static class CustomTypeAdapterFactory implements TypeAdapterFactory {
+
         @SuppressWarnings("unchecked")
         @Override
         public <T> TypeAdapter<T> create(Gson gson, TypeToken<T> type) {
@@ -263,11 +292,12 @@ public class ShipRefine201ResponseData {
             }
             final TypeAdapter<JsonElement> elementAdapter = gson.getAdapter(JsonElement.class);
             final TypeAdapter<ShipRefine201ResponseData> thisAdapter
-                    = gson.getDelegateAdapter(this, TypeToken.get(ShipRefine201ResponseData.class));
+                = gson.getDelegateAdapter(this, TypeToken.get(ShipRefine201ResponseData.class));
 
             return (TypeAdapter<T>) new TypeAdapter<ShipRefine201ResponseData>() {
                 @Override
-                public void write(JsonWriter out, ShipRefine201ResponseData value) throws IOException {
+                public void write(JsonWriter out, ShipRefine201ResponseData value)
+                    throws IOException {
                     JsonObject obj = thisAdapter.toJsonTree(value).getAsJsonObject();
                     elementAdapter.write(out, obj);
                 }

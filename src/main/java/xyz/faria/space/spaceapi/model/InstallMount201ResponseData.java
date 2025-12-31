@@ -13,21 +13,32 @@
 
 package xyz.faria.space.spaceapi.model;
 
-import com.google.gson.*;
+import com.google.gson.Gson;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.TypeAdapter;
+import com.google.gson.TypeAdapterFactory;
 import com.google.gson.annotations.SerializedName;
 import com.google.gson.reflect.TypeToken;
 import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonWriter;
-import xyz.faria.space.spaceapi.client.JSON;
-
 import java.io.IOException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
+import java.util.Set;
+import xyz.faria.space.spaceapi.client.JSON;
 
 /**
  * InstallMount201ResponseData
  */
 
 public class InstallMount201ResponseData {
+
     public static final String SERIALIZED_NAME_AGENT = "agent";
     @SerializedName(SERIALIZED_NAME_AGENT)
     @javax.annotation.Nonnull
@@ -119,9 +130,14 @@ public class InstallMount201ResponseData {
     }
 
 
-    public InstallMount201ResponseData transaction(@javax.annotation.Nonnull ShipModificationTransaction transaction) {
-        this.transaction = transaction;
-        return this;
+    static {
+        // a set of all properties/fields (JSON key names)
+        openapiFields = new HashSet<String>(
+            Arrays.asList("agent", "mounts", "cargo", "transaction"));
+
+        // a set of required properties/fields (JSON key names)
+        openapiRequiredFields = new HashSet<String>(
+            Arrays.asList("agent", "mounts", "cargo", "transaction"));
     }
 
     /**
@@ -138,71 +154,19 @@ public class InstallMount201ResponseData {
         this.transaction = transaction;
     }
 
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (o == null || getClass() != o.getClass()) {
-            return false;
-        }
-        InstallMount201ResponseData installMount201ResponseData = (InstallMount201ResponseData) o;
-        return Objects.equals(this.agent, installMount201ResponseData.agent) &&
-                Objects.equals(this.mounts, installMount201ResponseData.mounts) &&
-                Objects.equals(this.cargo, installMount201ResponseData.cargo) &&
-                Objects.equals(this.transaction, installMount201ResponseData.transaction);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(agent, mounts, cargo, transaction);
-    }
-
-    @Override
-    public String toString() {
-        String sb = "class InstallMount201ResponseData {\n" +
-                "    agent: " + toIndentedString(agent) + "\n" +
-                "    mounts: " + toIndentedString(mounts) + "\n" +
-                "    cargo: " + toIndentedString(cargo) + "\n" +
-                "    transaction: " + toIndentedString(transaction) + "\n" +
-                "}";
-        return sb;
-    }
-
-    /**
-     * Convert the given object to string with each line indented by 4 spaces
-     * (except the first line).
-     */
-    private String toIndentedString(Object o) {
-        if (o == null) {
-            return "null";
-        }
-        return o.toString().replace("\n", "\n    ");
-    }
-
-
-    public static HashSet<String> openapiFields;
-    public static HashSet<String> openapiRequiredFields;
-
-    static {
-        // a set of all properties/fields (JSON key names)
-        openapiFields = new HashSet<String>(Arrays.asList("agent", "mounts", "cargo", "transaction"));
-
-        // a set of required properties/fields (JSON key names)
-        openapiRequiredFields = new HashSet<String>(Arrays.asList("agent", "mounts", "cargo", "transaction"));
-    }
-
     /**
      * Validates the JSON Element and throws an exception if issues found
      *
      * @param jsonElement JSON Element
-     * @throws IOException if the JSON Element is invalid with respect to InstallMount201ResponseData
+     * @throws IOException if the JSON Element is invalid with respect to
+     *                     InstallMount201ResponseData
      */
     public static void validateJsonElement(JsonElement jsonElement) throws IOException {
         if (jsonElement == null) {
             if (!InstallMount201ResponseData.openapiRequiredFields.isEmpty()) { // has required fields but JSON element is null
-                throw new IllegalArgumentException(String.format(java.util.Locale.ROOT, "The required field(s) %s in InstallMount201ResponseData is not found in the empty JSON string", InstallMount201ResponseData.openapiRequiredFields));
+                throw new IllegalArgumentException(String.format(java.util.Locale.ROOT,
+                    "The required field(s) %s in InstallMount201ResponseData is not found in the empty JSON string",
+                    InstallMount201ResponseData.openapiRequiredFields));
             }
         }
 
@@ -210,14 +174,19 @@ public class InstallMount201ResponseData {
         // check to see if the JSON string contains additional fields
         for (Map.Entry<String, JsonElement> entry : entries) {
             if (!InstallMount201ResponseData.openapiFields.contains(entry.getKey())) {
-                throw new IllegalArgumentException(String.format(java.util.Locale.ROOT, "The field `%s` in the JSON string is not defined in the `InstallMount201ResponseData` properties. JSON: %s", entry.getKey(), jsonElement));
+                throw new IllegalArgumentException(String.format(java.util.Locale.ROOT,
+                    "The field `%s` in the JSON string is not defined in the `InstallMount201ResponseData` properties. JSON: %s",
+                    entry.getKey(), jsonElement));
             }
         }
 
         // check to make sure all required properties/fields are present in the JSON string
         for (String requiredField : InstallMount201ResponseData.openapiRequiredFields) {
             if (jsonElement.getAsJsonObject().get(requiredField) == null) {
-                throw new IllegalArgumentException(String.format(java.util.Locale.ROOT, "The required field `%s` is not found in the JSON string: %s", requiredField, jsonElement));
+                throw new IllegalArgumentException(String.format(java.util.Locale.ROOT,
+                    "The required field `%s` is not found in the JSON string: %s",
+                    requiredField,
+                    jsonElement));
             }
         }
         JsonObject jsonObj = jsonElement.getAsJsonObject();
@@ -225,7 +194,9 @@ public class InstallMount201ResponseData {
         Agent.validateJsonElement(jsonObj.get("agent"));
         // ensure the json data is an array
         if (!jsonObj.get("mounts").isJsonArray()) {
-            throw new IllegalArgumentException(String.format(java.util.Locale.ROOT, "Expected the field `mounts` to be an array in the JSON string but got `%s`", jsonObj.get("mounts").toString()));
+            throw new IllegalArgumentException(String.format(java.util.Locale.ROOT,
+                "Expected the field `mounts` to be an array in the JSON string but got `%s`",
+                jsonObj.get("mounts").toString()));
         }
 
         JsonArray jsonArraymounts = jsonObj.getAsJsonArray("mounts");
@@ -239,7 +210,72 @@ public class InstallMount201ResponseData {
         ShipModificationTransaction.validateJsonElement(jsonObj.get("transaction"));
     }
 
+    @Override
+    public int hashCode() {
+        return Objects.hash(agent, mounts, cargo, transaction);
+    }
+
+    /**
+     * Create an instance of InstallMount201ResponseData given an JSON string
+     *
+     * @param jsonString JSON string
+     * @return An instance of InstallMount201ResponseData
+     * @throws IOException if the JSON string is invalid with respect to
+     *                     InstallMount201ResponseData
+     */
+    public static InstallMount201ResponseData fromJson(String jsonString) throws IOException {
+        return JSON.getGson().fromJson(jsonString, InstallMount201ResponseData.class);
+    }
+
+    public InstallMount201ResponseData transaction(
+        @javax.annotation.Nonnull ShipModificationTransaction transaction) {
+        this.transaction = transaction;
+        return this;
+    }
+
+
+    public static HashSet<String> openapiFields;
+    public static HashSet<String> openapiRequiredFields;
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        InstallMount201ResponseData installMount201ResponseData = (InstallMount201ResponseData) o;
+        return Objects.equals(this.agent, installMount201ResponseData.agent) &&
+            Objects.equals(this.mounts, installMount201ResponseData.mounts) &&
+            Objects.equals(this.cargo, installMount201ResponseData.cargo) &&
+            Objects.equals(this.transaction, installMount201ResponseData.transaction);
+    }
+
+    @Override
+    public String toString() {
+        String sb = "class InstallMount201ResponseData {\n" +
+            "    agent: " + toIndentedString(agent) + "\n" +
+            "    mounts: " + toIndentedString(mounts) + "\n" +
+            "    cargo: " + toIndentedString(cargo) + "\n" +
+            "    transaction: " + toIndentedString(transaction) + "\n" +
+            "}";
+        return sb;
+    }
+
+    /**
+     * Convert the given object to string with each line indented by 4 spaces (except the first
+     * line).
+     */
+    private String toIndentedString(Object o) {
+        if (o == null) {
+            return "null";
+        }
+        return o.toString().replace("\n", "\n    ");
+    }
+
     public static class CustomTypeAdapterFactory implements TypeAdapterFactory {
+
         @SuppressWarnings("unchecked")
         @Override
         public <T> TypeAdapter<T> create(Gson gson, TypeToken<T> type) {
@@ -248,11 +284,13 @@ public class InstallMount201ResponseData {
             }
             final TypeAdapter<JsonElement> elementAdapter = gson.getAdapter(JsonElement.class);
             final TypeAdapter<InstallMount201ResponseData> thisAdapter
-                    = gson.getDelegateAdapter(this, TypeToken.get(InstallMount201ResponseData.class));
+                = gson.getDelegateAdapter(this,
+                TypeToken.get(InstallMount201ResponseData.class));
 
             return (TypeAdapter<T>) new TypeAdapter<InstallMount201ResponseData>() {
                 @Override
-                public void write(JsonWriter out, InstallMount201ResponseData value) throws IOException {
+                public void write(JsonWriter out, InstallMount201ResponseData value)
+                    throws IOException {
                     JsonObject obj = thisAdapter.toJsonTree(value).getAsJsonObject();
                     elementAdapter.write(out, obj);
                 }
@@ -266,17 +304,6 @@ public class InstallMount201ResponseData {
 
             }.nullSafe();
         }
-    }
-
-    /**
-     * Create an instance of InstallMount201ResponseData given an JSON string
-     *
-     * @param jsonString JSON string
-     * @return An instance of InstallMount201ResponseData
-     * @throws IOException if the JSON string is invalid with respect to InstallMount201ResponseData
-     */
-    public static InstallMount201ResponseData fromJson(String jsonString) throws IOException {
-        return JSON.getGson().fromJson(jsonString, InstallMount201ResponseData.class);
     }
 
     /**

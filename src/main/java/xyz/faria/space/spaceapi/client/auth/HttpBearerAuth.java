@@ -13,17 +13,17 @@
 
 package xyz.faria.space.spaceapi.client.auth;
 
-import xyz.faria.space.spaceapi.client.ApiException;
-import xyz.faria.space.spaceapi.client.Pair;
-
 import java.net.URI;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.function.Supplier;
+import xyz.faria.space.spaceapi.client.ApiException;
+import xyz.faria.space.spaceapi.client.Pair;
 
 
 public class HttpBearerAuth implements Authentication {
+
     private final String scheme;
     private Supplier<String> tokenSupplier;
 
@@ -32,7 +32,8 @@ public class HttpBearerAuth implements Authentication {
     }
 
     /**
-     * Gets the token, which together with the scheme, will be sent as the value of the Authorization header.
+     * Gets the token, which together with the scheme, will be sent as the value of the
+     * Authorization header.
      *
      * @return The bearer token
      */
@@ -41,7 +42,8 @@ public class HttpBearerAuth implements Authentication {
     }
 
     /**
-     * Sets the token, which together with the scheme, will be sent as the value of the Authorization header.
+     * Sets the token, which together with the scheme, will be sent as the value of the
+     * Authorization header.
      *
      * @param bearerToken The bearer token to send in the Authorization header
      */
@@ -50,7 +52,8 @@ public class HttpBearerAuth implements Authentication {
     }
 
     /**
-     * Sets the supplier of tokens, which together with the scheme, will be sent as the value of the Authorization header.
+     * Sets the supplier of tokens, which together with the scheme, will be sent as the value of the
+     * Authorization header.
      *
      * @param tokenSupplier The supplier of bearer tokens to send in the Authorization header
      */
@@ -59,14 +62,16 @@ public class HttpBearerAuth implements Authentication {
     }
 
     @Override
-    public void applyToParams(List<Pair> queryParams, Map<String, String> headerParams, Map<String, String> cookieParams,
-                              String payload, String method, URI uri) throws ApiException {
+    public void applyToParams(List<Pair> queryParams, Map<String, String> headerParams,
+        Map<String, String> cookieParams,
+        String payload, String method, URI uri) throws ApiException {
         String bearerToken = Optional.ofNullable(tokenSupplier).map(Supplier::get).orElse(null);
         if (bearerToken == null) {
             return;
         }
 
-        headerParams.put("Authorization", (scheme != null ? upperCaseBearer(scheme) + " " : "") + bearerToken);
+        headerParams.put("Authorization",
+            (scheme != null ? upperCaseBearer(scheme) + " " : "") + bearerToken);
     }
 
     private static String upperCaseBearer(String scheme) {

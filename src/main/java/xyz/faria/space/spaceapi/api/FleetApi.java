@@ -14,16 +14,73 @@
 package xyz.faria.space.spaceapi.api;
 
 import com.google.gson.reflect.TypeToken;
-import xyz.faria.space.spaceapi.client.*;
-import xyz.faria.space.spaceapi.model.*;
-
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import xyz.faria.space.spaceapi.client.ApiCallback;
+import xyz.faria.space.spaceapi.client.ApiClient;
+import xyz.faria.space.spaceapi.client.ApiException;
+import xyz.faria.space.spaceapi.client.ApiResponse;
+import xyz.faria.space.spaceapi.client.Configuration;
+import xyz.faria.space.spaceapi.client.Pair;
+import xyz.faria.space.spaceapi.model.CreateChart201Response;
+import xyz.faria.space.spaceapi.model.CreateShipShipScan201Response;
+import xyz.faria.space.spaceapi.model.CreateShipSystemScan201Response;
+import xyz.faria.space.spaceapi.model.CreateShipWaypointScan201Response;
+import xyz.faria.space.spaceapi.model.CreateSurvey201Response;
+import xyz.faria.space.spaceapi.model.DockShip200Response;
+import xyz.faria.space.spaceapi.model.ExtractResources201Response;
+import xyz.faria.space.spaceapi.model.ExtractResourcesRequest;
+import xyz.faria.space.spaceapi.model.ExtractResourcesWithSurvey201Response;
+import xyz.faria.space.spaceapi.model.GetMounts200Response;
+import xyz.faria.space.spaceapi.model.GetMyShip200Response;
+import xyz.faria.space.spaceapi.model.GetMyShipCargo200Response;
+import xyz.faria.space.spaceapi.model.GetMyShips200Response;
+import xyz.faria.space.spaceapi.model.GetRepairShip200Response;
+import xyz.faria.space.spaceapi.model.GetScrapShip200Response;
+import xyz.faria.space.spaceapi.model.GetShipCooldown200Response;
+import xyz.faria.space.spaceapi.model.GetShipModules200Response;
+import xyz.faria.space.spaceapi.model.GetShipNav200Response;
+import xyz.faria.space.spaceapi.model.InstallMount201Response;
+import xyz.faria.space.spaceapi.model.InstallMountRequest;
+import xyz.faria.space.spaceapi.model.InstallShipModule201Response;
+import xyz.faria.space.spaceapi.model.InstallShipModuleRequest;
+import xyz.faria.space.spaceapi.model.Jettison200Response;
+import xyz.faria.space.spaceapi.model.JettisonRequest;
+import xyz.faria.space.spaceapi.model.JumpShip200Response;
+import xyz.faria.space.spaceapi.model.JumpShipRequest;
+import xyz.faria.space.spaceapi.model.NavigateShip200Response;
+import xyz.faria.space.spaceapi.model.NavigateShipRequest;
+import xyz.faria.space.spaceapi.model.NegotiateContract200Response;
+import xyz.faria.space.spaceapi.model.OrbitShip200Response;
+import xyz.faria.space.spaceapi.model.PatchShipNav200Response;
+import xyz.faria.space.spaceapi.model.PatchShipNavRequest;
+import xyz.faria.space.spaceapi.model.PurchaseCargo201Response;
+import xyz.faria.space.spaceapi.model.PurchaseCargoRequest;
+import xyz.faria.space.spaceapi.model.PurchaseShip201Response;
+import xyz.faria.space.spaceapi.model.PurchaseShipRequest;
+import xyz.faria.space.spaceapi.model.RefuelShip200Response;
+import xyz.faria.space.spaceapi.model.RefuelShipRequest;
+import xyz.faria.space.spaceapi.model.RemoveModule201Response;
+import xyz.faria.space.spaceapi.model.RemoveMount201Response;
+import xyz.faria.space.spaceapi.model.RemoveMountRequest;
+import xyz.faria.space.spaceapi.model.RemoveShipModuleRequest;
+import xyz.faria.space.spaceapi.model.RepairShip200Response;
+import xyz.faria.space.spaceapi.model.ScrapShip200Response;
+import xyz.faria.space.spaceapi.model.SellCargo201Response;
+import xyz.faria.space.spaceapi.model.SellCargoRequest;
+import xyz.faria.space.spaceapi.model.ShipRefine201Response;
+import xyz.faria.space.spaceapi.model.ShipRefineRequest;
+import xyz.faria.space.spaceapi.model.SiphonResources201Response;
+import xyz.faria.space.spaceapi.model.Survey;
+import xyz.faria.space.spaceapi.model.TransferCargo200Response;
+import xyz.faria.space.spaceapi.model.TransferCargoRequest;
+import xyz.faria.space.spaceapi.model.WarpShip200Response;
 
 public class FleetApi {
+
     private ApiClient localVarApiClient;
     private int localHostIndex;
     private String localCustomBaseUrl;
@@ -73,7 +130,8 @@ public class FleetApi {
      * <tr><td> 201 </td><td> Created </td><td>  -  </td></tr>
      * </table>
      */
-    public okhttp3.Call createChartCall(@javax.annotation.Nonnull String shipSymbol, final ApiCallback _callback) throws ApiException {
+    public okhttp3.Call createChartCall(@javax.annotation.Nonnull String shipSymbol,
+        final ApiCallback _callback) throws ApiException {
         String basePath = null;
         // Operation Servers
         String[] localBasePaths = new String[]{};
@@ -91,7 +149,7 @@ public class FleetApi {
 
         // create path and map variables
         String localVarPath = "/my/ships/{shipSymbol}/chart"
-                .replace("{" + "shipSymbol" + "}", localVarApiClient.escapeString(shipSymbol));
+            .replace("{" + "shipSymbol" + "}", localVarApiClient.escapeString(shipSymbol));
 
         List<Pair> localVarQueryParams = new ArrayList<Pair>();
         List<Pair> localVarCollectionQueryParams = new ArrayList<Pair>();
@@ -100,7 +158,7 @@ public class FleetApi {
         Map<String, Object> localVarFormParams = new HashMap<String, Object>();
 
         final String[] localVarAccepts = {
-                "application/json"
+            "application/json"
         };
         final String localVarAccept = localVarApiClient.selectHeaderAccept(localVarAccepts);
         if (localVarAccept != null) {
@@ -109,20 +167,25 @@ public class FleetApi {
 
         final String[] localVarContentTypes = {
         };
-        final String localVarContentType = localVarApiClient.selectHeaderContentType(localVarContentTypes);
+        final String localVarContentType = localVarApiClient.selectHeaderContentType(
+            localVarContentTypes);
         if (localVarContentType != null) {
             localVarHeaderParams.put("Content-Type", localVarContentType);
         }
 
         String[] localVarAuthNames = new String[]{"AgentToken"};
-        return localVarApiClient.buildCall(basePath, localVarPath, "POST", localVarQueryParams, localVarCollectionQueryParams, localVarPostBody, localVarHeaderParams, localVarCookieParams, localVarFormParams, localVarAuthNames, _callback);
+        return localVarApiClient.buildCall(basePath, localVarPath, "POST", localVarQueryParams,
+            localVarCollectionQueryParams, localVarPostBody, localVarHeaderParams,
+            localVarCookieParams, localVarFormParams, localVarAuthNames, _callback);
     }
 
     @SuppressWarnings("rawtypes")
-    private okhttp3.Call createChartValidateBeforeCall(@javax.annotation.Nonnull String shipSymbol, final ApiCallback _callback) throws ApiException {
+    private okhttp3.Call createChartValidateBeforeCall(@javax.annotation.Nonnull String shipSymbol,
+        final ApiCallback _callback) throws ApiException {
         // verify the required parameter 'shipSymbol' is set
         if (shipSymbol == null) {
-            throw new ApiException("Missing the required parameter 'shipSymbol' when calling createChart(Async)");
+            throw new ApiException(
+                "Missing the required parameter 'shipSymbol' when calling createChart(Async)");
         }
 
         return createChartCall(shipSymbol, _callback);
@@ -130,37 +193,49 @@ public class FleetApi {
     }
 
     /**
-     * Create Chart
-     * Command a ship to chart the waypoint at its current location.  Most waypoints in the universe are uncharted by default. These waypoints have their traits hidden until they have been charted by a ship.  Charting a waypoint will record your agent as the one who created the chart, and all other agents would also be able to see the waypoint&#39;s traits. Charting a waypoint gives you a one time reward of credits based on the rarity of the waypoint&#39;s traits.
+     * Create Chart Command a ship to chart the waypoint at its current location.  Most waypoints in
+     * the universe are uncharted by default. These waypoints have their traits hidden until they
+     * have been charted by a ship.  Charting a waypoint will record your agent as the one who
+     * created the chart, and all other agents would also be able to see the waypoint&#39;s traits.
+     * Charting a waypoint gives you a one time reward of credits based on the rarity of the
+     * waypoint&#39;s traits.
      *
      * @param shipSymbol The symbol of the ship. (required)
      * @return CreateChart201Response
-     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
+     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the
+     *                      response body
      * @http.response.details <table border="1">
      * <caption>Response Details</caption>
      * <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
      * <tr><td> 201 </td><td> Created </td><td>  -  </td></tr>
      * </table>
      */
-    public CreateChart201Response createChart(@javax.annotation.Nonnull String shipSymbol) throws ApiException {
+    public CreateChart201Response createChart(@javax.annotation.Nonnull String shipSymbol)
+        throws ApiException {
         ApiResponse<CreateChart201Response> localVarResp = createChartWithHttpInfo(shipSymbol);
         return localVarResp.data();
     }
 
     /**
-     * Create Chart
-     * Command a ship to chart the waypoint at its current location.  Most waypoints in the universe are uncharted by default. These waypoints have their traits hidden until they have been charted by a ship.  Charting a waypoint will record your agent as the one who created the chart, and all other agents would also be able to see the waypoint&#39;s traits. Charting a waypoint gives you a one time reward of credits based on the rarity of the waypoint&#39;s traits.
+     * Create Chart Command a ship to chart the waypoint at its current location.  Most waypoints in
+     * the universe are uncharted by default. These waypoints have their traits hidden until they
+     * have been charted by a ship.  Charting a waypoint will record your agent as the one who
+     * created the chart, and all other agents would also be able to see the waypoint&#39;s traits.
+     * Charting a waypoint gives you a one time reward of credits based on the rarity of the
+     * waypoint&#39;s traits.
      *
      * @param shipSymbol The symbol of the ship. (required)
      * @return ApiResponse&lt;CreateChart201Response&gt;
-     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
+     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the
+     *                      response body
      * @http.response.details <table border="1">
      * <caption>Response Details</caption>
      * <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
      * <tr><td> 201 </td><td> Created </td><td>  -  </td></tr>
      * </table>
      */
-    public ApiResponse<CreateChart201Response> createChartWithHttpInfo(@javax.annotation.Nonnull String shipSymbol) throws ApiException {
+    public ApiResponse<CreateChart201Response> createChartWithHttpInfo(
+        @javax.annotation.Nonnull String shipSymbol) throws ApiException {
         okhttp3.Call localVarCall = createChartValidateBeforeCall(shipSymbol, null);
         Type localVarReturnType = new TypeToken<CreateChart201Response>() {
         }.getType();
@@ -168,20 +243,26 @@ public class FleetApi {
     }
 
     /**
-     * Create Chart (asynchronously)
-     * Command a ship to chart the waypoint at its current location.  Most waypoints in the universe are uncharted by default. These waypoints have their traits hidden until they have been charted by a ship.  Charting a waypoint will record your agent as the one who created the chart, and all other agents would also be able to see the waypoint&#39;s traits. Charting a waypoint gives you a one time reward of credits based on the rarity of the waypoint&#39;s traits.
+     * Create Chart (asynchronously) Command a ship to chart the waypoint at its current location.
+     * Most waypoints in the universe are uncharted by default. These waypoints have their traits
+     * hidden until they have been charted by a ship.  Charting a waypoint will record your agent as
+     * the one who created the chart, and all other agents would also be able to see the
+     * waypoint&#39;s traits. Charting a waypoint gives you a one time reward of credits based on
+     * the rarity of the waypoint&#39;s traits.
      *
      * @param shipSymbol The symbol of the ship. (required)
      * @param _callback  The callback to be executed when the API call finishes
      * @return The request call
-     * @throws ApiException If fail to process the API call, e.g. serializing the request body object
+     * @throws ApiException If fail to process the API call, e.g. serializing the request body
+     *                      object
      * @http.response.details <table border="1">
      * <caption>Response Details</caption>
      * <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
      * <tr><td> 201 </td><td> Created </td><td>  -  </td></tr>
      * </table>
      */
-    public okhttp3.Call createChartAsync(@javax.annotation.Nonnull String shipSymbol, final ApiCallback<CreateChart201Response> _callback) throws ApiException {
+    public okhttp3.Call createChartAsync(@javax.annotation.Nonnull String shipSymbol,
+        final ApiCallback<CreateChart201Response> _callback) throws ApiException {
 
         okhttp3.Call localVarCall = createChartValidateBeforeCall(shipSymbol, _callback);
         Type localVarReturnType = new TypeToken<CreateChart201Response>() {
@@ -203,7 +284,8 @@ public class FleetApi {
      * <tr><td> 201 </td><td> Successfully scanned for nearby ships. </td><td>  -  </td></tr>
      * </table>
      */
-    public okhttp3.Call createShipShipScanCall(@javax.annotation.Nonnull String shipSymbol, final ApiCallback _callback) throws ApiException {
+    public okhttp3.Call createShipShipScanCall(@javax.annotation.Nonnull String shipSymbol,
+        final ApiCallback _callback) throws ApiException {
         String basePath = null;
         // Operation Servers
         String[] localBasePaths = new String[]{};
@@ -221,7 +303,7 @@ public class FleetApi {
 
         // create path and map variables
         String localVarPath = "/my/ships/{shipSymbol}/scan/ships"
-                .replace("{" + "shipSymbol" + "}", localVarApiClient.escapeString(shipSymbol));
+            .replace("{" + "shipSymbol" + "}", localVarApiClient.escapeString(shipSymbol));
 
         List<Pair> localVarQueryParams = new ArrayList<Pair>();
         List<Pair> localVarCollectionQueryParams = new ArrayList<Pair>();
@@ -230,7 +312,7 @@ public class FleetApi {
         Map<String, Object> localVarFormParams = new HashMap<String, Object>();
 
         final String[] localVarAccepts = {
-                "application/json"
+            "application/json"
         };
         final String localVarAccept = localVarApiClient.selectHeaderAccept(localVarAccepts);
         if (localVarAccept != null) {
@@ -239,20 +321,26 @@ public class FleetApi {
 
         final String[] localVarContentTypes = {
         };
-        final String localVarContentType = localVarApiClient.selectHeaderContentType(localVarContentTypes);
+        final String localVarContentType = localVarApiClient.selectHeaderContentType(
+            localVarContentTypes);
         if (localVarContentType != null) {
             localVarHeaderParams.put("Content-Type", localVarContentType);
         }
 
         String[] localVarAuthNames = new String[]{"AgentToken"};
-        return localVarApiClient.buildCall(basePath, localVarPath, "POST", localVarQueryParams, localVarCollectionQueryParams, localVarPostBody, localVarHeaderParams, localVarCookieParams, localVarFormParams, localVarAuthNames, _callback);
+        return localVarApiClient.buildCall(basePath, localVarPath, "POST", localVarQueryParams,
+            localVarCollectionQueryParams, localVarPostBody, localVarHeaderParams,
+            localVarCookieParams, localVarFormParams, localVarAuthNames, _callback);
     }
 
     @SuppressWarnings("rawtypes")
-    private okhttp3.Call createShipShipScanValidateBeforeCall(@javax.annotation.Nonnull String shipSymbol, final ApiCallback _callback) throws ApiException {
+    private okhttp3.Call createShipShipScanValidateBeforeCall(
+        @javax.annotation.Nonnull String shipSymbol, final ApiCallback _callback)
+        throws ApiException {
         // verify the required parameter 'shipSymbol' is set
         if (shipSymbol == null) {
-            throw new ApiException("Missing the required parameter 'shipSymbol' when calling createShipShipScan(Async)");
+            throw new ApiException(
+                "Missing the required parameter 'shipSymbol' when calling createShipShipScan(Async)");
         }
 
         return createShipShipScanCall(shipSymbol, _callback);
@@ -260,37 +348,44 @@ public class FleetApi {
     }
 
     /**
-     * Scan Ships
-     * Scan for nearby ships, retrieving information for all ships in range.  Requires a ship to have the &#x60;Sensor Array&#x60; mount installed to use.  The ship will enter a cooldown after using this function, during which it cannot execute certain actions.
+     * Scan Ships Scan for nearby ships, retrieving information for all ships in range.  Requires a
+     * ship to have the &#x60;Sensor Array&#x60; mount installed to use.  The ship will enter a
+     * cooldown after using this function, during which it cannot execute certain actions.
      *
      * @param shipSymbol The ship symbol. (required)
      * @return CreateShipShipScan201Response
-     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
+     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the
+     *                      response body
      * @http.response.details <table border="1">
      * <caption>Response Details</caption>
      * <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
      * <tr><td> 201 </td><td> Successfully scanned for nearby ships. </td><td>  -  </td></tr>
      * </table>
      */
-    public CreateShipShipScan201Response createShipShipScan(@javax.annotation.Nonnull String shipSymbol) throws ApiException {
-        ApiResponse<CreateShipShipScan201Response> localVarResp = createShipShipScanWithHttpInfo(shipSymbol);
+    public CreateShipShipScan201Response createShipShipScan(
+        @javax.annotation.Nonnull String shipSymbol) throws ApiException {
+        ApiResponse<CreateShipShipScan201Response> localVarResp = createShipShipScanWithHttpInfo(
+            shipSymbol);
         return localVarResp.data();
     }
 
     /**
-     * Scan Ships
-     * Scan for nearby ships, retrieving information for all ships in range.  Requires a ship to have the &#x60;Sensor Array&#x60; mount installed to use.  The ship will enter a cooldown after using this function, during which it cannot execute certain actions.
+     * Scan Ships Scan for nearby ships, retrieving information for all ships in range.  Requires a
+     * ship to have the &#x60;Sensor Array&#x60; mount installed to use.  The ship will enter a
+     * cooldown after using this function, during which it cannot execute certain actions.
      *
      * @param shipSymbol The ship symbol. (required)
      * @return ApiResponse&lt;CreateShipShipScan201Response&gt;
-     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
+     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the
+     *                      response body
      * @http.response.details <table border="1">
      * <caption>Response Details</caption>
      * <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
      * <tr><td> 201 </td><td> Successfully scanned for nearby ships. </td><td>  -  </td></tr>
      * </table>
      */
-    public ApiResponse<CreateShipShipScan201Response> createShipShipScanWithHttpInfo(@javax.annotation.Nonnull String shipSymbol) throws ApiException {
+    public ApiResponse<CreateShipShipScan201Response> createShipShipScanWithHttpInfo(
+        @javax.annotation.Nonnull String shipSymbol) throws ApiException {
         okhttp3.Call localVarCall = createShipShipScanValidateBeforeCall(shipSymbol, null);
         Type localVarReturnType = new TypeToken<CreateShipShipScan201Response>() {
         }.getType();
@@ -298,20 +393,24 @@ public class FleetApi {
     }
 
     /**
-     * Scan Ships (asynchronously)
-     * Scan for nearby ships, retrieving information for all ships in range.  Requires a ship to have the &#x60;Sensor Array&#x60; mount installed to use.  The ship will enter a cooldown after using this function, during which it cannot execute certain actions.
+     * Scan Ships (asynchronously) Scan for nearby ships, retrieving information for all ships in
+     * range.  Requires a ship to have the &#x60;Sensor Array&#x60; mount installed to use.  The
+     * ship will enter a cooldown after using this function, during which it cannot execute certain
+     * actions.
      *
      * @param shipSymbol The ship symbol. (required)
      * @param _callback  The callback to be executed when the API call finishes
      * @return The request call
-     * @throws ApiException If fail to process the API call, e.g. serializing the request body object
+     * @throws ApiException If fail to process the API call, e.g. serializing the request body
+     *                      object
      * @http.response.details <table border="1">
      * <caption>Response Details</caption>
      * <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
      * <tr><td> 201 </td><td> Successfully scanned for nearby ships. </td><td>  -  </td></tr>
      * </table>
      */
-    public okhttp3.Call createShipShipScanAsync(@javax.annotation.Nonnull String shipSymbol, final ApiCallback<CreateShipShipScan201Response> _callback) throws ApiException {
+    public okhttp3.Call createShipShipScanAsync(@javax.annotation.Nonnull String shipSymbol,
+        final ApiCallback<CreateShipShipScan201Response> _callback) throws ApiException {
 
         okhttp3.Call localVarCall = createShipShipScanValidateBeforeCall(shipSymbol, _callback);
         Type localVarReturnType = new TypeToken<CreateShipShipScan201Response>() {
@@ -333,7 +432,8 @@ public class FleetApi {
      * <tr><td> 201 </td><td> Successfully scanned for nearby systems. </td><td>  -  </td></tr>
      * </table>
      */
-    public okhttp3.Call createShipSystemScanCall(@javax.annotation.Nonnull String shipSymbol, final ApiCallback _callback) throws ApiException {
+    public okhttp3.Call createShipSystemScanCall(@javax.annotation.Nonnull String shipSymbol,
+        final ApiCallback _callback) throws ApiException {
         String basePath = null;
         // Operation Servers
         String[] localBasePaths = new String[]{};
@@ -351,7 +451,7 @@ public class FleetApi {
 
         // create path and map variables
         String localVarPath = "/my/ships/{shipSymbol}/scan/systems"
-                .replace("{" + "shipSymbol" + "}", localVarApiClient.escapeString(shipSymbol));
+            .replace("{" + "shipSymbol" + "}", localVarApiClient.escapeString(shipSymbol));
 
         List<Pair> localVarQueryParams = new ArrayList<Pair>();
         List<Pair> localVarCollectionQueryParams = new ArrayList<Pair>();
@@ -360,7 +460,7 @@ public class FleetApi {
         Map<String, Object> localVarFormParams = new HashMap<String, Object>();
 
         final String[] localVarAccepts = {
-                "application/json"
+            "application/json"
         };
         final String localVarAccept = localVarApiClient.selectHeaderAccept(localVarAccepts);
         if (localVarAccept != null) {
@@ -369,20 +469,26 @@ public class FleetApi {
 
         final String[] localVarContentTypes = {
         };
-        final String localVarContentType = localVarApiClient.selectHeaderContentType(localVarContentTypes);
+        final String localVarContentType = localVarApiClient.selectHeaderContentType(
+            localVarContentTypes);
         if (localVarContentType != null) {
             localVarHeaderParams.put("Content-Type", localVarContentType);
         }
 
         String[] localVarAuthNames = new String[]{"AgentToken"};
-        return localVarApiClient.buildCall(basePath, localVarPath, "POST", localVarQueryParams, localVarCollectionQueryParams, localVarPostBody, localVarHeaderParams, localVarCookieParams, localVarFormParams, localVarAuthNames, _callback);
+        return localVarApiClient.buildCall(basePath, localVarPath, "POST", localVarQueryParams,
+            localVarCollectionQueryParams, localVarPostBody, localVarHeaderParams,
+            localVarCookieParams, localVarFormParams, localVarAuthNames, _callback);
     }
 
     @SuppressWarnings("rawtypes")
-    private okhttp3.Call createShipSystemScanValidateBeforeCall(@javax.annotation.Nonnull String shipSymbol, final ApiCallback _callback) throws ApiException {
+    private okhttp3.Call createShipSystemScanValidateBeforeCall(
+        @javax.annotation.Nonnull String shipSymbol, final ApiCallback _callback)
+        throws ApiException {
         // verify the required parameter 'shipSymbol' is set
         if (shipSymbol == null) {
-            throw new ApiException("Missing the required parameter 'shipSymbol' when calling createShipSystemScan(Async)");
+            throw new ApiException(
+                "Missing the required parameter 'shipSymbol' when calling createShipSystemScan(Async)");
         }
 
         return createShipSystemScanCall(shipSymbol, _callback);
@@ -390,37 +496,46 @@ public class FleetApi {
     }
 
     /**
-     * Scan Systems
-     * Scan for nearby systems, retrieving information on the systems&#39; distance from the ship and their waypoints. Requires a ship to have the &#x60;Sensor Array&#x60; mount installed to use.  The ship will enter a cooldown after using this function, during which it cannot execute certain actions.
+     * Scan Systems Scan for nearby systems, retrieving information on the systems&#39; distance
+     * from the ship and their waypoints. Requires a ship to have the &#x60;Sensor Array&#x60; mount
+     * installed to use.  The ship will enter a cooldown after using this function, during which it
+     * cannot execute certain actions.
      *
      * @param shipSymbol The ship symbol. (required)
      * @return CreateShipSystemScan201Response
-     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
+     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the
+     *                      response body
      * @http.response.details <table border="1">
      * <caption>Response Details</caption>
      * <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
      * <tr><td> 201 </td><td> Successfully scanned for nearby systems. </td><td>  -  </td></tr>
      * </table>
      */
-    public CreateShipSystemScan201Response createShipSystemScan(@javax.annotation.Nonnull String shipSymbol) throws ApiException {
-        ApiResponse<CreateShipSystemScan201Response> localVarResp = createShipSystemScanWithHttpInfo(shipSymbol);
+    public CreateShipSystemScan201Response createShipSystemScan(
+        @javax.annotation.Nonnull String shipSymbol) throws ApiException {
+        ApiResponse<CreateShipSystemScan201Response> localVarResp = createShipSystemScanWithHttpInfo(
+            shipSymbol);
         return localVarResp.data();
     }
 
     /**
-     * Scan Systems
-     * Scan for nearby systems, retrieving information on the systems&#39; distance from the ship and their waypoints. Requires a ship to have the &#x60;Sensor Array&#x60; mount installed to use.  The ship will enter a cooldown after using this function, during which it cannot execute certain actions.
+     * Scan Systems Scan for nearby systems, retrieving information on the systems&#39; distance
+     * from the ship and their waypoints. Requires a ship to have the &#x60;Sensor Array&#x60; mount
+     * installed to use.  The ship will enter a cooldown after using this function, during which it
+     * cannot execute certain actions.
      *
      * @param shipSymbol The ship symbol. (required)
      * @return ApiResponse&lt;CreateShipSystemScan201Response&gt;
-     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
+     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the
+     *                      response body
      * @http.response.details <table border="1">
      * <caption>Response Details</caption>
      * <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
      * <tr><td> 201 </td><td> Successfully scanned for nearby systems. </td><td>  -  </td></tr>
      * </table>
      */
-    public ApiResponse<CreateShipSystemScan201Response> createShipSystemScanWithHttpInfo(@javax.annotation.Nonnull String shipSymbol) throws ApiException {
+    public ApiResponse<CreateShipSystemScan201Response> createShipSystemScanWithHttpInfo(
+        @javax.annotation.Nonnull String shipSymbol) throws ApiException {
         okhttp3.Call localVarCall = createShipSystemScanValidateBeforeCall(shipSymbol, null);
         Type localVarReturnType = new TypeToken<CreateShipSystemScan201Response>() {
         }.getType();
@@ -428,20 +543,24 @@ public class FleetApi {
     }
 
     /**
-     * Scan Systems (asynchronously)
-     * Scan for nearby systems, retrieving information on the systems&#39; distance from the ship and their waypoints. Requires a ship to have the &#x60;Sensor Array&#x60; mount installed to use.  The ship will enter a cooldown after using this function, during which it cannot execute certain actions.
+     * Scan Systems (asynchronously) Scan for nearby systems, retrieving information on the
+     * systems&#39; distance from the ship and their waypoints. Requires a ship to have the
+     * &#x60;Sensor Array&#x60; mount installed to use.  The ship will enter a cooldown after using
+     * this function, during which it cannot execute certain actions.
      *
      * @param shipSymbol The ship symbol. (required)
      * @param _callback  The callback to be executed when the API call finishes
      * @return The request call
-     * @throws ApiException If fail to process the API call, e.g. serializing the request body object
+     * @throws ApiException If fail to process the API call, e.g. serializing the request body
+     *                      object
      * @http.response.details <table border="1">
      * <caption>Response Details</caption>
      * <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
      * <tr><td> 201 </td><td> Successfully scanned for nearby systems. </td><td>  -  </td></tr>
      * </table>
      */
-    public okhttp3.Call createShipSystemScanAsync(@javax.annotation.Nonnull String shipSymbol, final ApiCallback<CreateShipSystemScan201Response> _callback) throws ApiException {
+    public okhttp3.Call createShipSystemScanAsync(@javax.annotation.Nonnull String shipSymbol,
+        final ApiCallback<CreateShipSystemScan201Response> _callback) throws ApiException {
 
         okhttp3.Call localVarCall = createShipSystemScanValidateBeforeCall(shipSymbol, _callback);
         Type localVarReturnType = new TypeToken<CreateShipSystemScan201Response>() {
@@ -463,7 +582,8 @@ public class FleetApi {
      * <tr><td> 201 </td><td> Successfully scanned for nearby waypoints. </td><td>  -  </td></tr>
      * </table>
      */
-    public okhttp3.Call createShipWaypointScanCall(@javax.annotation.Nonnull String shipSymbol, final ApiCallback _callback) throws ApiException {
+    public okhttp3.Call createShipWaypointScanCall(@javax.annotation.Nonnull String shipSymbol,
+        final ApiCallback _callback) throws ApiException {
         String basePath = null;
         // Operation Servers
         String[] localBasePaths = new String[]{};
@@ -481,7 +601,7 @@ public class FleetApi {
 
         // create path and map variables
         String localVarPath = "/my/ships/{shipSymbol}/scan/waypoints"
-                .replace("{" + "shipSymbol" + "}", localVarApiClient.escapeString(shipSymbol));
+            .replace("{" + "shipSymbol" + "}", localVarApiClient.escapeString(shipSymbol));
 
         List<Pair> localVarQueryParams = new ArrayList<Pair>();
         List<Pair> localVarCollectionQueryParams = new ArrayList<Pair>();
@@ -490,7 +610,7 @@ public class FleetApi {
         Map<String, Object> localVarFormParams = new HashMap<String, Object>();
 
         final String[] localVarAccepts = {
-                "application/json"
+            "application/json"
         };
         final String localVarAccept = localVarApiClient.selectHeaderAccept(localVarAccepts);
         if (localVarAccept != null) {
@@ -499,20 +619,26 @@ public class FleetApi {
 
         final String[] localVarContentTypes = {
         };
-        final String localVarContentType = localVarApiClient.selectHeaderContentType(localVarContentTypes);
+        final String localVarContentType = localVarApiClient.selectHeaderContentType(
+            localVarContentTypes);
         if (localVarContentType != null) {
             localVarHeaderParams.put("Content-Type", localVarContentType);
         }
 
         String[] localVarAuthNames = new String[]{"AgentToken"};
-        return localVarApiClient.buildCall(basePath, localVarPath, "POST", localVarQueryParams, localVarCollectionQueryParams, localVarPostBody, localVarHeaderParams, localVarCookieParams, localVarFormParams, localVarAuthNames, _callback);
+        return localVarApiClient.buildCall(basePath, localVarPath, "POST", localVarQueryParams,
+            localVarCollectionQueryParams, localVarPostBody, localVarHeaderParams,
+            localVarCookieParams, localVarFormParams, localVarAuthNames, _callback);
     }
 
     @SuppressWarnings("rawtypes")
-    private okhttp3.Call createShipWaypointScanValidateBeforeCall(@javax.annotation.Nonnull String shipSymbol, final ApiCallback _callback) throws ApiException {
+    private okhttp3.Call createShipWaypointScanValidateBeforeCall(
+        @javax.annotation.Nonnull String shipSymbol, final ApiCallback _callback)
+        throws ApiException {
         // verify the required parameter 'shipSymbol' is set
         if (shipSymbol == null) {
-            throw new ApiException("Missing the required parameter 'shipSymbol' when calling createShipWaypointScan(Async)");
+            throw new ApiException(
+                "Missing the required parameter 'shipSymbol' when calling createShipWaypointScan(Async)");
         }
 
         return createShipWaypointScanCall(shipSymbol, _callback);
@@ -520,37 +646,48 @@ public class FleetApi {
     }
 
     /**
-     * Scan Waypoints
-     * Scan for nearby waypoints, retrieving detailed information on each waypoint in range. Scanning uncharted waypoints will allow you to ignore their uncharted state and will list the waypoints&#39; traits.  Requires a ship to have the &#x60;Sensor Array&#x60; mount installed to use.  The ship will enter a cooldown after using this function, during which it cannot execute certain actions.
+     * Scan Waypoints Scan for nearby waypoints, retrieving detailed information on each waypoint in
+     * range. Scanning uncharted waypoints will allow you to ignore their uncharted state and will
+     * list the waypoints&#39; traits.  Requires a ship to have the &#x60;Sensor Array&#x60; mount
+     * installed to use.  The ship will enter a cooldown after using this function, during which it
+     * cannot execute certain actions.
      *
      * @param shipSymbol The ship symbol. (required)
      * @return CreateShipWaypointScan201Response
-     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
+     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the
+     *                      response body
      * @http.response.details <table border="1">
      * <caption>Response Details</caption>
      * <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
      * <tr><td> 201 </td><td> Successfully scanned for nearby waypoints. </td><td>  -  </td></tr>
      * </table>
      */
-    public CreateShipWaypointScan201Response createShipWaypointScan(@javax.annotation.Nonnull String shipSymbol) throws ApiException {
-        ApiResponse<CreateShipWaypointScan201Response> localVarResp = createShipWaypointScanWithHttpInfo(shipSymbol);
+    public CreateShipWaypointScan201Response createShipWaypointScan(
+        @javax.annotation.Nonnull String shipSymbol) throws ApiException {
+        ApiResponse<CreateShipWaypointScan201Response> localVarResp = createShipWaypointScanWithHttpInfo(
+            shipSymbol);
         return localVarResp.data();
     }
 
     /**
-     * Scan Waypoints
-     * Scan for nearby waypoints, retrieving detailed information on each waypoint in range. Scanning uncharted waypoints will allow you to ignore their uncharted state and will list the waypoints&#39; traits.  Requires a ship to have the &#x60;Sensor Array&#x60; mount installed to use.  The ship will enter a cooldown after using this function, during which it cannot execute certain actions.
+     * Scan Waypoints Scan for nearby waypoints, retrieving detailed information on each waypoint in
+     * range. Scanning uncharted waypoints will allow you to ignore their uncharted state and will
+     * list the waypoints&#39; traits.  Requires a ship to have the &#x60;Sensor Array&#x60; mount
+     * installed to use.  The ship will enter a cooldown after using this function, during which it
+     * cannot execute certain actions.
      *
      * @param shipSymbol The ship symbol. (required)
      * @return ApiResponse&lt;CreateShipWaypointScan201Response&gt;
-     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
+     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the
+     *                      response body
      * @http.response.details <table border="1">
      * <caption>Response Details</caption>
      * <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
      * <tr><td> 201 </td><td> Successfully scanned for nearby waypoints. </td><td>  -  </td></tr>
      * </table>
      */
-    public ApiResponse<CreateShipWaypointScan201Response> createShipWaypointScanWithHttpInfo(@javax.annotation.Nonnull String shipSymbol) throws ApiException {
+    public ApiResponse<CreateShipWaypointScan201Response> createShipWaypointScanWithHttpInfo(
+        @javax.annotation.Nonnull String shipSymbol) throws ApiException {
         okhttp3.Call localVarCall = createShipWaypointScanValidateBeforeCall(shipSymbol, null);
         Type localVarReturnType = new TypeToken<CreateShipWaypointScan201Response>() {
         }.getType();
@@ -558,20 +695,25 @@ public class FleetApi {
     }
 
     /**
-     * Scan Waypoints (asynchronously)
-     * Scan for nearby waypoints, retrieving detailed information on each waypoint in range. Scanning uncharted waypoints will allow you to ignore their uncharted state and will list the waypoints&#39; traits.  Requires a ship to have the &#x60;Sensor Array&#x60; mount installed to use.  The ship will enter a cooldown after using this function, during which it cannot execute certain actions.
+     * Scan Waypoints (asynchronously) Scan for nearby waypoints, retrieving detailed information on
+     * each waypoint in range. Scanning uncharted waypoints will allow you to ignore their uncharted
+     * state and will list the waypoints&#39; traits.  Requires a ship to have the &#x60;Sensor
+     * Array&#x60; mount installed to use.  The ship will enter a cooldown after using this
+     * function, during which it cannot execute certain actions.
      *
      * @param shipSymbol The ship symbol. (required)
      * @param _callback  The callback to be executed when the API call finishes
      * @return The request call
-     * @throws ApiException If fail to process the API call, e.g. serializing the request body object
+     * @throws ApiException If fail to process the API call, e.g. serializing the request body
+     *                      object
      * @http.response.details <table border="1">
      * <caption>Response Details</caption>
      * <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
      * <tr><td> 201 </td><td> Successfully scanned for nearby waypoints. </td><td>  -  </td></tr>
      * </table>
      */
-    public okhttp3.Call createShipWaypointScanAsync(@javax.annotation.Nonnull String shipSymbol, final ApiCallback<CreateShipWaypointScan201Response> _callback) throws ApiException {
+    public okhttp3.Call createShipWaypointScanAsync(@javax.annotation.Nonnull String shipSymbol,
+        final ApiCallback<CreateShipWaypointScan201Response> _callback) throws ApiException {
 
         okhttp3.Call localVarCall = createShipWaypointScanValidateBeforeCall(shipSymbol, _callback);
         Type localVarReturnType = new TypeToken<CreateShipWaypointScan201Response>() {
@@ -593,7 +735,8 @@ public class FleetApi {
      * <tr><td> 201 </td><td> Surveys has been created. </td><td>  -  </td></tr>
      * </table>
      */
-    public okhttp3.Call createSurveyCall(@javax.annotation.Nonnull String shipSymbol, final ApiCallback _callback) throws ApiException {
+    public okhttp3.Call createSurveyCall(@javax.annotation.Nonnull String shipSymbol,
+        final ApiCallback _callback) throws ApiException {
         String basePath = null;
         // Operation Servers
         String[] localBasePaths = new String[]{};
@@ -611,7 +754,7 @@ public class FleetApi {
 
         // create path and map variables
         String localVarPath = "/my/ships/{shipSymbol}/survey"
-                .replace("{" + "shipSymbol" + "}", localVarApiClient.escapeString(shipSymbol));
+            .replace("{" + "shipSymbol" + "}", localVarApiClient.escapeString(shipSymbol));
 
         List<Pair> localVarQueryParams = new ArrayList<Pair>();
         List<Pair> localVarCollectionQueryParams = new ArrayList<Pair>();
@@ -620,7 +763,7 @@ public class FleetApi {
         Map<String, Object> localVarFormParams = new HashMap<String, Object>();
 
         final String[] localVarAccepts = {
-                "application/json"
+            "application/json"
         };
         final String localVarAccept = localVarApiClient.selectHeaderAccept(localVarAccepts);
         if (localVarAccept != null) {
@@ -629,20 +772,25 @@ public class FleetApi {
 
         final String[] localVarContentTypes = {
         };
-        final String localVarContentType = localVarApiClient.selectHeaderContentType(localVarContentTypes);
+        final String localVarContentType = localVarApiClient.selectHeaderContentType(
+            localVarContentTypes);
         if (localVarContentType != null) {
             localVarHeaderParams.put("Content-Type", localVarContentType);
         }
 
         String[] localVarAuthNames = new String[]{"AgentToken"};
-        return localVarApiClient.buildCall(basePath, localVarPath, "POST", localVarQueryParams, localVarCollectionQueryParams, localVarPostBody, localVarHeaderParams, localVarCookieParams, localVarFormParams, localVarAuthNames, _callback);
+        return localVarApiClient.buildCall(basePath, localVarPath, "POST", localVarQueryParams,
+            localVarCollectionQueryParams, localVarPostBody, localVarHeaderParams,
+            localVarCookieParams, localVarFormParams, localVarAuthNames, _callback);
     }
 
     @SuppressWarnings("rawtypes")
-    private okhttp3.Call createSurveyValidateBeforeCall(@javax.annotation.Nonnull String shipSymbol, final ApiCallback _callback) throws ApiException {
+    private okhttp3.Call createSurveyValidateBeforeCall(@javax.annotation.Nonnull String shipSymbol,
+        final ApiCallback _callback) throws ApiException {
         // verify the required parameter 'shipSymbol' is set
         if (shipSymbol == null) {
-            throw new ApiException("Missing the required parameter 'shipSymbol' when calling createSurvey(Async)");
+            throw new ApiException(
+                "Missing the required parameter 'shipSymbol' when calling createSurvey(Async)");
         }
 
         return createSurveyCall(shipSymbol, _callback);
@@ -650,37 +798,57 @@ public class FleetApi {
     }
 
     /**
-     * Create Survey
-     * Create surveys on a waypoint that can be extracted such as asteroid fields. A survey focuses on specific types of deposits from the extracted location. When ships extract using this survey, they are guaranteed to procure a high amount of one of the goods in the survey.  In order to use a survey, send the entire survey details in the body of the extract request.  Each survey may have multiple deposits, and if a symbol shows up more than once, that indicates a higher chance of extracting that resource.  Your ship will enter a cooldown after surveying in which it is unable to perform certain actions. Surveys will eventually expire after a period of time or will be exhausted after being extracted several times based on the survey&#39;s size. Multiple ships can use the same survey for extraction.  A ship must have the &#x60;Surveyor&#x60; mount installed in order to use this function.
+     * Create Survey Create surveys on a waypoint that can be extracted such as asteroid fields. A
+     * survey focuses on specific types of deposits from the extracted location. When ships extract
+     * using this survey, they are guaranteed to procure a high amount of one of the goods in the
+     * survey.  In order to use a survey, send the entire survey details in the body of the extract
+     * request.  Each survey may have multiple deposits, and if a symbol shows up more than once,
+     * that indicates a higher chance of extracting that resource.  Your ship will enter a cooldown
+     * after surveying in which it is unable to perform certain actions. Surveys will eventually
+     * expire after a period of time or will be exhausted after being extracted several times based
+     * on the survey&#39;s size. Multiple ships can use the same survey for extraction.  A ship must
+     * have the &#x60;Surveyor&#x60; mount installed in order to use this function.
      *
      * @param shipSymbol The symbol of the ship. (required)
      * @return CreateSurvey201Response
-     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
+     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the
+     *                      response body
      * @http.response.details <table border="1">
      * <caption>Response Details</caption>
      * <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
      * <tr><td> 201 </td><td> Surveys has been created. </td><td>  -  </td></tr>
      * </table>
      */
-    public CreateSurvey201Response createSurvey(@javax.annotation.Nonnull String shipSymbol) throws ApiException {
+    public CreateSurvey201Response createSurvey(@javax.annotation.Nonnull String shipSymbol)
+        throws ApiException {
         ApiResponse<CreateSurvey201Response> localVarResp = createSurveyWithHttpInfo(shipSymbol);
         return localVarResp.data();
     }
 
     /**
-     * Create Survey
-     * Create surveys on a waypoint that can be extracted such as asteroid fields. A survey focuses on specific types of deposits from the extracted location. When ships extract using this survey, they are guaranteed to procure a high amount of one of the goods in the survey.  In order to use a survey, send the entire survey details in the body of the extract request.  Each survey may have multiple deposits, and if a symbol shows up more than once, that indicates a higher chance of extracting that resource.  Your ship will enter a cooldown after surveying in which it is unable to perform certain actions. Surveys will eventually expire after a period of time or will be exhausted after being extracted several times based on the survey&#39;s size. Multiple ships can use the same survey for extraction.  A ship must have the &#x60;Surveyor&#x60; mount installed in order to use this function.
+     * Create Survey Create surveys on a waypoint that can be extracted such as asteroid fields. A
+     * survey focuses on specific types of deposits from the extracted location. When ships extract
+     * using this survey, they are guaranteed to procure a high amount of one of the goods in the
+     * survey.  In order to use a survey, send the entire survey details in the body of the extract
+     * request.  Each survey may have multiple deposits, and if a symbol shows up more than once,
+     * that indicates a higher chance of extracting that resource.  Your ship will enter a cooldown
+     * after surveying in which it is unable to perform certain actions. Surveys will eventually
+     * expire after a period of time or will be exhausted after being extracted several times based
+     * on the survey&#39;s size. Multiple ships can use the same survey for extraction.  A ship must
+     * have the &#x60;Surveyor&#x60; mount installed in order to use this function.
      *
      * @param shipSymbol The symbol of the ship. (required)
      * @return ApiResponse&lt;CreateSurvey201Response&gt;
-     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
+     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the
+     *                      response body
      * @http.response.details <table border="1">
      * <caption>Response Details</caption>
      * <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
      * <tr><td> 201 </td><td> Surveys has been created. </td><td>  -  </td></tr>
      * </table>
      */
-    public ApiResponse<CreateSurvey201Response> createSurveyWithHttpInfo(@javax.annotation.Nonnull String shipSymbol) throws ApiException {
+    public ApiResponse<CreateSurvey201Response> createSurveyWithHttpInfo(
+        @javax.annotation.Nonnull String shipSymbol) throws ApiException {
         okhttp3.Call localVarCall = createSurveyValidateBeforeCall(shipSymbol, null);
         Type localVarReturnType = new TypeToken<CreateSurvey201Response>() {
         }.getType();
@@ -688,20 +856,31 @@ public class FleetApi {
     }
 
     /**
-     * Create Survey (asynchronously)
-     * Create surveys on a waypoint that can be extracted such as asteroid fields. A survey focuses on specific types of deposits from the extracted location. When ships extract using this survey, they are guaranteed to procure a high amount of one of the goods in the survey.  In order to use a survey, send the entire survey details in the body of the extract request.  Each survey may have multiple deposits, and if a symbol shows up more than once, that indicates a higher chance of extracting that resource.  Your ship will enter a cooldown after surveying in which it is unable to perform certain actions. Surveys will eventually expire after a period of time or will be exhausted after being extracted several times based on the survey&#39;s size. Multiple ships can use the same survey for extraction.  A ship must have the &#x60;Surveyor&#x60; mount installed in order to use this function.
+     * Create Survey (asynchronously) Create surveys on a waypoint that can be extracted such as
+     * asteroid fields. A survey focuses on specific types of deposits from the extracted location.
+     * When ships extract using this survey, they are guaranteed to procure a high amount of one of
+     * the goods in the survey.  In order to use a survey, send the entire survey details in the
+     * body of the extract request.  Each survey may have multiple deposits, and if a symbol shows
+     * up more than once, that indicates a higher chance of extracting that resource.  Your ship
+     * will enter a cooldown after surveying in which it is unable to perform certain actions.
+     * Surveys will eventually expire after a period of time or will be exhausted after being
+     * extracted several times based on the survey&#39;s size. Multiple ships can use the same
+     * survey for extraction.  A ship must have the &#x60;Surveyor&#x60; mount installed in order to
+     * use this function.
      *
      * @param shipSymbol The symbol of the ship. (required)
      * @param _callback  The callback to be executed when the API call finishes
      * @return The request call
-     * @throws ApiException If fail to process the API call, e.g. serializing the request body object
+     * @throws ApiException If fail to process the API call, e.g. serializing the request body
+     *                      object
      * @http.response.details <table border="1">
      * <caption>Response Details</caption>
      * <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
      * <tr><td> 201 </td><td> Surveys has been created. </td><td>  -  </td></tr>
      * </table>
      */
-    public okhttp3.Call createSurveyAsync(@javax.annotation.Nonnull String shipSymbol, final ApiCallback<CreateSurvey201Response> _callback) throws ApiException {
+    public okhttp3.Call createSurveyAsync(@javax.annotation.Nonnull String shipSymbol,
+        final ApiCallback<CreateSurvey201Response> _callback) throws ApiException {
 
         okhttp3.Call localVarCall = createSurveyValidateBeforeCall(shipSymbol, _callback);
         Type localVarReturnType = new TypeToken<CreateSurvey201Response>() {
@@ -720,10 +899,13 @@ public class FleetApi {
      * @http.response.details <table border="1">
      * <caption>Response Details</caption>
      * <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-     * <tr><td> 200 </td><td> The ship has successfully docked at its current location. </td><td>  -  </td></tr>
+     * <tr><td> 200 </td><td> The ship has successfully docked at its current location. </td><td>
+     * -
+     * </td></tr>
      * </table>
      */
-    public okhttp3.Call dockShipCall(@javax.annotation.Nonnull String shipSymbol, final ApiCallback _callback) throws ApiException {
+    public okhttp3.Call dockShipCall(@javax.annotation.Nonnull String shipSymbol,
+        final ApiCallback _callback) throws ApiException {
         String basePath = null;
         // Operation Servers
         String[] localBasePaths = new String[]{};
@@ -741,7 +923,7 @@ public class FleetApi {
 
         // create path and map variables
         String localVarPath = "/my/ships/{shipSymbol}/dock"
-                .replace("{" + "shipSymbol" + "}", localVarApiClient.escapeString(shipSymbol));
+            .replace("{" + "shipSymbol" + "}", localVarApiClient.escapeString(shipSymbol));
 
         List<Pair> localVarQueryParams = new ArrayList<Pair>();
         List<Pair> localVarCollectionQueryParams = new ArrayList<Pair>();
@@ -750,7 +932,7 @@ public class FleetApi {
         Map<String, Object> localVarFormParams = new HashMap<String, Object>();
 
         final String[] localVarAccepts = {
-                "application/json"
+            "application/json"
         };
         final String localVarAccept = localVarApiClient.selectHeaderAccept(localVarAccepts);
         if (localVarAccept != null) {
@@ -759,20 +941,25 @@ public class FleetApi {
 
         final String[] localVarContentTypes = {
         };
-        final String localVarContentType = localVarApiClient.selectHeaderContentType(localVarContentTypes);
+        final String localVarContentType = localVarApiClient.selectHeaderContentType(
+            localVarContentTypes);
         if (localVarContentType != null) {
             localVarHeaderParams.put("Content-Type", localVarContentType);
         }
 
         String[] localVarAuthNames = new String[]{"AgentToken"};
-        return localVarApiClient.buildCall(basePath, localVarPath, "POST", localVarQueryParams, localVarCollectionQueryParams, localVarPostBody, localVarHeaderParams, localVarCookieParams, localVarFormParams, localVarAuthNames, _callback);
+        return localVarApiClient.buildCall(basePath, localVarPath, "POST", localVarQueryParams,
+            localVarCollectionQueryParams, localVarPostBody, localVarHeaderParams,
+            localVarCookieParams, localVarFormParams, localVarAuthNames, _callback);
     }
 
     @SuppressWarnings("rawtypes")
-    private okhttp3.Call dockShipValidateBeforeCall(@javax.annotation.Nonnull String shipSymbol, final ApiCallback _callback) throws ApiException {
+    private okhttp3.Call dockShipValidateBeforeCall(@javax.annotation.Nonnull String shipSymbol,
+        final ApiCallback _callback) throws ApiException {
         // verify the required parameter 'shipSymbol' is set
         if (shipSymbol == null) {
-            throw new ApiException("Missing the required parameter 'shipSymbol' when calling dockShip(Async)");
+            throw new ApiException(
+                "Missing the required parameter 'shipSymbol' when calling dockShip(Async)");
         }
 
         return dockShipCall(shipSymbol, _callback);
@@ -780,37 +967,51 @@ public class FleetApi {
     }
 
     /**
-     * Dock Ship
-     * Attempt to dock your ship at its current location. Docking will only succeed if your ship is capable of docking at the time of the request.  Docked ships can access elements in their current location, such as the market or a shipyard, but cannot do actions that require the ship to be above surface such as navigating or extracting.  The endpoint is idempotent - successive calls will succeed even if the ship is already docked.
+     * Dock Ship Attempt to dock your ship at its current location. Docking will only succeed if
+     * your ship is capable of docking at the time of the request.  Docked ships can access elements
+     * in their current location, such as the market or a shipyard, but cannot do actions that
+     * require the ship to be above surface such as navigating or extracting.  The endpoint is
+     * idempotent - successive calls will succeed even if the ship is already docked.
      *
      * @param shipSymbol The symbol of the ship. (required)
      * @return DockShip200Response
-     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
+     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the
+     *                      response body
      * @http.response.details <table border="1">
      * <caption>Response Details</caption>
      * <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-     * <tr><td> 200 </td><td> The ship has successfully docked at its current location. </td><td>  -  </td></tr>
+     * <tr><td> 200 </td><td> The ship has successfully docked at its current location. </td><td>
+     * -
+     * </td></tr>
      * </table>
      */
-    public DockShip200Response dockShip(@javax.annotation.Nonnull String shipSymbol) throws ApiException {
+    public DockShip200Response dockShip(@javax.annotation.Nonnull String shipSymbol)
+        throws ApiException {
         ApiResponse<DockShip200Response> localVarResp = dockShipWithHttpInfo(shipSymbol);
         return localVarResp.data();
     }
 
     /**
-     * Dock Ship
-     * Attempt to dock your ship at its current location. Docking will only succeed if your ship is capable of docking at the time of the request.  Docked ships can access elements in their current location, such as the market or a shipyard, but cannot do actions that require the ship to be above surface such as navigating or extracting.  The endpoint is idempotent - successive calls will succeed even if the ship is already docked.
+     * Dock Ship Attempt to dock your ship at its current location. Docking will only succeed if
+     * your ship is capable of docking at the time of the request.  Docked ships can access elements
+     * in their current location, such as the market or a shipyard, but cannot do actions that
+     * require the ship to be above surface such as navigating or extracting.  The endpoint is
+     * idempotent - successive calls will succeed even if the ship is already docked.
      *
      * @param shipSymbol The symbol of the ship. (required)
      * @return ApiResponse&lt;DockShip200Response&gt;
-     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
+     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the
+     *                      response body
      * @http.response.details <table border="1">
      * <caption>Response Details</caption>
      * <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-     * <tr><td> 200 </td><td> The ship has successfully docked at its current location. </td><td>  -  </td></tr>
+     * <tr><td> 200 </td><td> The ship has successfully docked at its current location. </td><td>
+     * -
+     * </td></tr>
      * </table>
      */
-    public ApiResponse<DockShip200Response> dockShipWithHttpInfo(@javax.annotation.Nonnull String shipSymbol) throws ApiException {
+    public ApiResponse<DockShip200Response> dockShipWithHttpInfo(
+        @javax.annotation.Nonnull String shipSymbol) throws ApiException {
         okhttp3.Call localVarCall = dockShipValidateBeforeCall(shipSymbol, null);
         Type localVarReturnType = new TypeToken<DockShip200Response>() {
         }.getType();
@@ -818,20 +1019,27 @@ public class FleetApi {
     }
 
     /**
-     * Dock Ship (asynchronously)
-     * Attempt to dock your ship at its current location. Docking will only succeed if your ship is capable of docking at the time of the request.  Docked ships can access elements in their current location, such as the market or a shipyard, but cannot do actions that require the ship to be above surface such as navigating or extracting.  The endpoint is idempotent - successive calls will succeed even if the ship is already docked.
+     * Dock Ship (asynchronously) Attempt to dock your ship at its current location. Docking will
+     * only succeed if your ship is capable of docking at the time of the request.  Docked ships can
+     * access elements in their current location, such as the market or a shipyard, but cannot do
+     * actions that require the ship to be above surface such as navigating or extracting.  The
+     * endpoint is idempotent - successive calls will succeed even if the ship is already docked.
      *
      * @param shipSymbol The symbol of the ship. (required)
      * @param _callback  The callback to be executed when the API call finishes
      * @return The request call
-     * @throws ApiException If fail to process the API call, e.g. serializing the request body object
+     * @throws ApiException If fail to process the API call, e.g. serializing the request body
+     *                      object
      * @http.response.details <table border="1">
      * <caption>Response Details</caption>
      * <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-     * <tr><td> 200 </td><td> The ship has successfully docked at its current location. </td><td>  -  </td></tr>
+     * <tr><td> 200 </td><td> The ship has successfully docked at its current location. </td><td>
+     * -
+     * </td></tr>
      * </table>
      */
-    public okhttp3.Call dockShipAsync(@javax.annotation.Nonnull String shipSymbol, final ApiCallback<DockShip200Response> _callback) throws ApiException {
+    public okhttp3.Call dockShipAsync(@javax.annotation.Nonnull String shipSymbol,
+        final ApiCallback<DockShip200Response> _callback) throws ApiException {
 
         okhttp3.Call localVarCall = dockShipValidateBeforeCall(shipSymbol, _callback);
         Type localVarReturnType = new TypeToken<DockShip200Response>() {
@@ -854,7 +1062,9 @@ public class FleetApi {
      * <tr><td> 201 </td><td> Extracted successfully. </td><td>  -  </td></tr>
      * </table>
      */
-    public okhttp3.Call extractResourcesCall(@javax.annotation.Nonnull String shipSymbol, @javax.annotation.Nullable ExtractResourcesRequest extractResourcesRequest, final ApiCallback _callback) throws ApiException {
+    public okhttp3.Call extractResourcesCall(@javax.annotation.Nonnull String shipSymbol,
+        @javax.annotation.Nullable ExtractResourcesRequest extractResourcesRequest,
+        final ApiCallback _callback) throws ApiException {
         String basePath = null;
         // Operation Servers
         String[] localBasePaths = new String[]{};
@@ -872,7 +1082,7 @@ public class FleetApi {
 
         // create path and map variables
         String localVarPath = "/my/ships/{shipSymbol}/extract"
-                .replace("{" + "shipSymbol" + "}", localVarApiClient.escapeString(shipSymbol));
+            .replace("{" + "shipSymbol" + "}", localVarApiClient.escapeString(shipSymbol));
 
         List<Pair> localVarQueryParams = new ArrayList<Pair>();
         List<Pair> localVarCollectionQueryParams = new ArrayList<Pair>();
@@ -881,7 +1091,7 @@ public class FleetApi {
         Map<String, Object> localVarFormParams = new HashMap<String, Object>();
 
         final String[] localVarAccepts = {
-                "application/json"
+            "application/json"
         };
         final String localVarAccept = localVarApiClient.selectHeaderAccept(localVarAccepts);
         if (localVarAccept != null) {
@@ -889,22 +1099,29 @@ public class FleetApi {
         }
 
         final String[] localVarContentTypes = {
-                "application/json"
+            "application/json"
         };
-        final String localVarContentType = localVarApiClient.selectHeaderContentType(localVarContentTypes);
+        final String localVarContentType = localVarApiClient.selectHeaderContentType(
+            localVarContentTypes);
         if (localVarContentType != null) {
             localVarHeaderParams.put("Content-Type", localVarContentType);
         }
 
         String[] localVarAuthNames = new String[]{"AgentToken"};
-        return localVarApiClient.buildCall(basePath, localVarPath, "POST", localVarQueryParams, localVarCollectionQueryParams, localVarPostBody, localVarHeaderParams, localVarCookieParams, localVarFormParams, localVarAuthNames, _callback);
+        return localVarApiClient.buildCall(basePath, localVarPath, "POST", localVarQueryParams,
+            localVarCollectionQueryParams, localVarPostBody, localVarHeaderParams,
+            localVarCookieParams, localVarFormParams, localVarAuthNames, _callback);
     }
 
     @SuppressWarnings("rawtypes")
-    private okhttp3.Call extractResourcesValidateBeforeCall(@javax.annotation.Nonnull String shipSymbol, @javax.annotation.Nullable ExtractResourcesRequest extractResourcesRequest, final ApiCallback _callback) throws ApiException {
+    private okhttp3.Call extractResourcesValidateBeforeCall(
+        @javax.annotation.Nonnull String shipSymbol,
+        @javax.annotation.Nullable ExtractResourcesRequest extractResourcesRequest,
+        final ApiCallback _callback) throws ApiException {
         // verify the required parameter 'shipSymbol' is set
         if (shipSymbol == null) {
-            throw new ApiException("Missing the required parameter 'shipSymbol' when calling extractResources(Async)");
+            throw new ApiException(
+                "Missing the required parameter 'shipSymbol' when calling extractResources(Async)");
         }
 
         return extractResourcesCall(shipSymbol, extractResourcesRequest, _callback);
@@ -912,63 +1129,88 @@ public class FleetApi {
     }
 
     /**
-     * Extract Resources
-     * Extract resources from a waypoint that can be extracted, such as asteroid fields, into your ship. Send an optional survey as the payload to target specific yields.  The ship must be in orbit to be able to extract and must have mining equipments installed that can extract goods, such as the &#x60;Gas Siphon&#x60; mount for gas-based goods or &#x60;Mining Laser&#x60; mount for ore-based goods.  The survey property is now deprecated. See the &#x60;extract/survey&#x60; endpoint for more details.
+     * Extract Resources Extract resources from a waypoint that can be extracted, such as asteroid
+     * fields, into your ship. Send an optional survey as the payload to target specific yields. The
+     * ship must be in orbit to be able to extract and must have mining equipments installed that
+     * can extract goods, such as the &#x60;Gas Siphon&#x60; mount for gas-based goods or
+     * &#x60;Mining Laser&#x60; mount for ore-based goods.  The survey property is now deprecated.
+     * See the &#x60;extract/survey&#x60; endpoint for more details.
      *
      * @param shipSymbol              The ship symbol. (required)
      * @param extractResourcesRequest (optional)
      * @return ExtractResources201Response
-     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
+     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the
+     *                      response body
      * @http.response.details <table border="1">
      * <caption>Response Details</caption>
      * <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
      * <tr><td> 201 </td><td> Extracted successfully. </td><td>  -  </td></tr>
      * </table>
      */
-    public ExtractResources201Response extractResources(@javax.annotation.Nonnull String shipSymbol, @javax.annotation.Nullable ExtractResourcesRequest extractResourcesRequest) throws ApiException {
-        ApiResponse<ExtractResources201Response> localVarResp = extractResourcesWithHttpInfo(shipSymbol, extractResourcesRequest);
+    public ExtractResources201Response extractResources(@javax.annotation.Nonnull String shipSymbol,
+        @javax.annotation.Nullable ExtractResourcesRequest extractResourcesRequest)
+        throws ApiException {
+        ApiResponse<ExtractResources201Response> localVarResp = extractResourcesWithHttpInfo(
+            shipSymbol, extractResourcesRequest);
         return localVarResp.data();
     }
 
     /**
-     * Extract Resources
-     * Extract resources from a waypoint that can be extracted, such as asteroid fields, into your ship. Send an optional survey as the payload to target specific yields.  The ship must be in orbit to be able to extract and must have mining equipments installed that can extract goods, such as the &#x60;Gas Siphon&#x60; mount for gas-based goods or &#x60;Mining Laser&#x60; mount for ore-based goods.  The survey property is now deprecated. See the &#x60;extract/survey&#x60; endpoint for more details.
+     * Extract Resources Extract resources from a waypoint that can be extracted, such as asteroid
+     * fields, into your ship. Send an optional survey as the payload to target specific yields. The
+     * ship must be in orbit to be able to extract and must have mining equipments installed that
+     * can extract goods, such as the &#x60;Gas Siphon&#x60; mount for gas-based goods or
+     * &#x60;Mining Laser&#x60; mount for ore-based goods.  The survey property is now deprecated.
+     * See the &#x60;extract/survey&#x60; endpoint for more details.
      *
      * @param shipSymbol              The ship symbol. (required)
      * @param extractResourcesRequest (optional)
      * @return ApiResponse&lt;ExtractResources201Response&gt;
-     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
+     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the
+     *                      response body
      * @http.response.details <table border="1">
      * <caption>Response Details</caption>
      * <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
      * <tr><td> 201 </td><td> Extracted successfully. </td><td>  -  </td></tr>
      * </table>
      */
-    public ApiResponse<ExtractResources201Response> extractResourcesWithHttpInfo(@javax.annotation.Nonnull String shipSymbol, @javax.annotation.Nullable ExtractResourcesRequest extractResourcesRequest) throws ApiException {
-        okhttp3.Call localVarCall = extractResourcesValidateBeforeCall(shipSymbol, extractResourcesRequest, null);
+    public ApiResponse<ExtractResources201Response> extractResourcesWithHttpInfo(
+        @javax.annotation.Nonnull String shipSymbol,
+        @javax.annotation.Nullable ExtractResourcesRequest extractResourcesRequest)
+        throws ApiException {
+        okhttp3.Call localVarCall = extractResourcesValidateBeforeCall(shipSymbol,
+            extractResourcesRequest, null);
         Type localVarReturnType = new TypeToken<ExtractResources201Response>() {
         }.getType();
         return localVarApiClient.execute(localVarCall, localVarReturnType);
     }
 
     /**
-     * Extract Resources (asynchronously)
-     * Extract resources from a waypoint that can be extracted, such as asteroid fields, into your ship. Send an optional survey as the payload to target specific yields.  The ship must be in orbit to be able to extract and must have mining equipments installed that can extract goods, such as the &#x60;Gas Siphon&#x60; mount for gas-based goods or &#x60;Mining Laser&#x60; mount for ore-based goods.  The survey property is now deprecated. See the &#x60;extract/survey&#x60; endpoint for more details.
+     * Extract Resources (asynchronously) Extract resources from a waypoint that can be extracted,
+     * such as asteroid fields, into your ship. Send an optional survey as the payload to target
+     * specific yields.  The ship must be in orbit to be able to extract and must have mining
+     * equipments installed that can extract goods, such as the &#x60;Gas Siphon&#x60; mount for
+     * gas-based goods or &#x60;Mining Laser&#x60; mount for ore-based goods.  The survey property
+     * is now deprecated. See the &#x60;extract/survey&#x60; endpoint for more details.
      *
      * @param shipSymbol              The ship symbol. (required)
      * @param extractResourcesRequest (optional)
      * @param _callback               The callback to be executed when the API call finishes
      * @return The request call
-     * @throws ApiException If fail to process the API call, e.g. serializing the request body object
+     * @throws ApiException If fail to process the API call, e.g. serializing the request body
+     *                      object
      * @http.response.details <table border="1">
      * <caption>Response Details</caption>
      * <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
      * <tr><td> 201 </td><td> Extracted successfully. </td><td>  -  </td></tr>
      * </table>
      */
-    public okhttp3.Call extractResourcesAsync(@javax.annotation.Nonnull String shipSymbol, @javax.annotation.Nullable ExtractResourcesRequest extractResourcesRequest, final ApiCallback<ExtractResources201Response> _callback) throws ApiException {
+    public okhttp3.Call extractResourcesAsync(@javax.annotation.Nonnull String shipSymbol,
+        @javax.annotation.Nullable ExtractResourcesRequest extractResourcesRequest,
+        final ApiCallback<ExtractResources201Response> _callback) throws ApiException {
 
-        okhttp3.Call localVarCall = extractResourcesValidateBeforeCall(shipSymbol, extractResourcesRequest, _callback);
+        okhttp3.Call localVarCall = extractResourcesValidateBeforeCall(shipSymbol,
+            extractResourcesRequest, _callback);
         Type localVarReturnType = new TypeToken<ExtractResources201Response>() {
         }.getType();
         localVarApiClient.executeAsync(localVarCall, localVarReturnType, _callback);
@@ -989,7 +1231,8 @@ public class FleetApi {
      * <tr><td> 201 </td><td> Extracted successfully. </td><td>  -  </td></tr>
      * </table>
      */
-    public okhttp3.Call extractResourcesWithSurveyCall(@javax.annotation.Nonnull String shipSymbol, @javax.annotation.Nullable Survey survey, final ApiCallback _callback) throws ApiException {
+    public okhttp3.Call extractResourcesWithSurveyCall(@javax.annotation.Nonnull String shipSymbol,
+        @javax.annotation.Nullable Survey survey, final ApiCallback _callback) throws ApiException {
         String basePath = null;
         // Operation Servers
         String[] localBasePaths = new String[]{};
@@ -1007,7 +1250,7 @@ public class FleetApi {
 
         // create path and map variables
         String localVarPath = "/my/ships/{shipSymbol}/extract/survey"
-                .replace("{" + "shipSymbol" + "}", localVarApiClient.escapeString(shipSymbol));
+            .replace("{" + "shipSymbol" + "}", localVarApiClient.escapeString(shipSymbol));
 
         List<Pair> localVarQueryParams = new ArrayList<Pair>();
         List<Pair> localVarCollectionQueryParams = new ArrayList<Pair>();
@@ -1016,7 +1259,7 @@ public class FleetApi {
         Map<String, Object> localVarFormParams = new HashMap<String, Object>();
 
         final String[] localVarAccepts = {
-                "application/json"
+            "application/json"
         };
         final String localVarAccept = localVarApiClient.selectHeaderAccept(localVarAccepts);
         if (localVarAccept != null) {
@@ -1024,22 +1267,28 @@ public class FleetApi {
         }
 
         final String[] localVarContentTypes = {
-                "application/json"
+            "application/json"
         };
-        final String localVarContentType = localVarApiClient.selectHeaderContentType(localVarContentTypes);
+        final String localVarContentType = localVarApiClient.selectHeaderContentType(
+            localVarContentTypes);
         if (localVarContentType != null) {
             localVarHeaderParams.put("Content-Type", localVarContentType);
         }
 
         String[] localVarAuthNames = new String[]{"AgentToken"};
-        return localVarApiClient.buildCall(basePath, localVarPath, "POST", localVarQueryParams, localVarCollectionQueryParams, localVarPostBody, localVarHeaderParams, localVarCookieParams, localVarFormParams, localVarAuthNames, _callback);
+        return localVarApiClient.buildCall(basePath, localVarPath, "POST", localVarQueryParams,
+            localVarCollectionQueryParams, localVarPostBody, localVarHeaderParams,
+            localVarCookieParams, localVarFormParams, localVarAuthNames, _callback);
     }
 
     @SuppressWarnings("rawtypes")
-    private okhttp3.Call extractResourcesWithSurveyValidateBeforeCall(@javax.annotation.Nonnull String shipSymbol, @javax.annotation.Nullable Survey survey, final ApiCallback _callback) throws ApiException {
+    private okhttp3.Call extractResourcesWithSurveyValidateBeforeCall(
+        @javax.annotation.Nonnull String shipSymbol, @javax.annotation.Nullable Survey survey,
+        final ApiCallback _callback) throws ApiException {
         // verify the required parameter 'shipSymbol' is set
         if (shipSymbol == null) {
-            throw new ApiException("Missing the required parameter 'shipSymbol' when calling extractResourcesWithSurvey(Async)");
+            throw new ApiException(
+                "Missing the required parameter 'shipSymbol' when calling extractResourcesWithSurvey(Async)");
         }
 
         return extractResourcesWithSurveyCall(shipSymbol, survey, _callback);
@@ -1047,63 +1296,84 @@ public class FleetApi {
     }
 
     /**
-     * Extract Resources with Survey
-     * Use a survey when extracting resources from a waypoint. This endpoint requires a survey as the payload, which allows your ship to extract specific yields.  Send the full survey object as the payload which will be validated according to the signature. If the signature is invalid, or any properties of the survey are changed, the request will fail.
+     * Extract Resources with Survey Use a survey when extracting resources from a waypoint. This
+     * endpoint requires a survey as the payload, which allows your ship to extract specific yields.
+     * Send the full survey object as the payload which will be validated according to the
+     * signature. If the signature is invalid, or any properties of the survey are changed, the
+     * request will fail.
      *
      * @param shipSymbol The ship symbol. (required)
      * @param survey     (optional)
      * @return ExtractResourcesWithSurvey201Response
-     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
+     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the
+     *                      response body
      * @http.response.details <table border="1">
      * <caption>Response Details</caption>
      * <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
      * <tr><td> 201 </td><td> Extracted successfully. </td><td>  -  </td></tr>
      * </table>
      */
-    public ExtractResourcesWithSurvey201Response extractResourcesWithSurvey(@javax.annotation.Nonnull String shipSymbol, @javax.annotation.Nullable Survey survey) throws ApiException {
-        ApiResponse<ExtractResourcesWithSurvey201Response> localVarResp = extractResourcesWithSurveyWithHttpInfo(shipSymbol, survey);
+    public ExtractResourcesWithSurvey201Response extractResourcesWithSurvey(
+        @javax.annotation.Nonnull String shipSymbol, @javax.annotation.Nullable Survey survey)
+        throws ApiException {
+        ApiResponse<ExtractResourcesWithSurvey201Response> localVarResp = extractResourcesWithSurveyWithHttpInfo(
+            shipSymbol, survey);
         return localVarResp.data();
     }
 
     /**
-     * Extract Resources with Survey
-     * Use a survey when extracting resources from a waypoint. This endpoint requires a survey as the payload, which allows your ship to extract specific yields.  Send the full survey object as the payload which will be validated according to the signature. If the signature is invalid, or any properties of the survey are changed, the request will fail.
+     * Extract Resources with Survey Use a survey when extracting resources from a waypoint. This
+     * endpoint requires a survey as the payload, which allows your ship to extract specific yields.
+     * Send the full survey object as the payload which will be validated according to the
+     * signature. If the signature is invalid, or any properties of the survey are changed, the
+     * request will fail.
      *
      * @param shipSymbol The ship symbol. (required)
      * @param survey     (optional)
      * @return ApiResponse&lt;ExtractResourcesWithSurvey201Response&gt;
-     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
+     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the
+     *                      response body
      * @http.response.details <table border="1">
      * <caption>Response Details</caption>
      * <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
      * <tr><td> 201 </td><td> Extracted successfully. </td><td>  -  </td></tr>
      * </table>
      */
-    public ApiResponse<ExtractResourcesWithSurvey201Response> extractResourcesWithSurveyWithHttpInfo(@javax.annotation.Nonnull String shipSymbol, @javax.annotation.Nullable Survey survey) throws ApiException {
-        okhttp3.Call localVarCall = extractResourcesWithSurveyValidateBeforeCall(shipSymbol, survey, null);
+    public ApiResponse<ExtractResourcesWithSurvey201Response> extractResourcesWithSurveyWithHttpInfo(
+        @javax.annotation.Nonnull String shipSymbol, @javax.annotation.Nullable Survey survey)
+        throws ApiException {
+        okhttp3.Call localVarCall = extractResourcesWithSurveyValidateBeforeCall(shipSymbol, survey,
+            null);
         Type localVarReturnType = new TypeToken<ExtractResourcesWithSurvey201Response>() {
         }.getType();
         return localVarApiClient.execute(localVarCall, localVarReturnType);
     }
 
     /**
-     * Extract Resources with Survey (asynchronously)
-     * Use a survey when extracting resources from a waypoint. This endpoint requires a survey as the payload, which allows your ship to extract specific yields.  Send the full survey object as the payload which will be validated according to the signature. If the signature is invalid, or any properties of the survey are changed, the request will fail.
+     * Extract Resources with Survey (asynchronously) Use a survey when extracting resources from a
+     * waypoint. This endpoint requires a survey as the payload, which allows your ship to extract
+     * specific yields.  Send the full survey object as the payload which will be validated
+     * according to the signature. If the signature is invalid, or any properties of the survey are
+     * changed, the request will fail.
      *
      * @param shipSymbol The ship symbol. (required)
      * @param survey     (optional)
      * @param _callback  The callback to be executed when the API call finishes
      * @return The request call
-     * @throws ApiException If fail to process the API call, e.g. serializing the request body object
+     * @throws ApiException If fail to process the API call, e.g. serializing the request body
+     *                      object
      * @http.response.details <table border="1">
      * <caption>Response Details</caption>
      * <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
      * <tr><td> 201 </td><td> Extracted successfully. </td><td>  -  </td></tr>
      * </table>
      */
-    public okhttp3.Call extractResourcesWithSurveyAsync(@javax.annotation.Nonnull String shipSymbol, @javax.annotation.Nullable Survey survey, final ApiCallback<ExtractResourcesWithSurvey201Response> _callback) throws ApiException {
+    public okhttp3.Call extractResourcesWithSurveyAsync(@javax.annotation.Nonnull String shipSymbol,
+        @javax.annotation.Nullable Survey survey,
+        final ApiCallback<ExtractResourcesWithSurvey201Response> _callback) throws ApiException {
 
-        okhttp3.Call localVarCall = extractResourcesWithSurveyValidateBeforeCall(shipSymbol, survey, _callback);
+        okhttp3.Call localVarCall = extractResourcesWithSurveyValidateBeforeCall(shipSymbol, survey,
+            _callback);
         Type localVarReturnType = new TypeToken<ExtractResourcesWithSurvey201Response>() {
         }.getType();
         localVarApiClient.executeAsync(localVarCall, localVarReturnType, _callback);
@@ -1123,7 +1393,8 @@ public class FleetApi {
      * <tr><td> 200 </td><td> Got installed mounts. </td><td>  -  </td></tr>
      * </table>
      */
-    public okhttp3.Call getMountsCall(@javax.annotation.Nonnull String shipSymbol, final ApiCallback _callback) throws ApiException {
+    public okhttp3.Call getMountsCall(@javax.annotation.Nonnull String shipSymbol,
+        final ApiCallback _callback) throws ApiException {
         String basePath = null;
         // Operation Servers
         String[] localBasePaths = new String[]{};
@@ -1141,7 +1412,7 @@ public class FleetApi {
 
         // create path and map variables
         String localVarPath = "/my/ships/{shipSymbol}/mounts"
-                .replace("{" + "shipSymbol" + "}", localVarApiClient.escapeString(shipSymbol));
+            .replace("{" + "shipSymbol" + "}", localVarApiClient.escapeString(shipSymbol));
 
         List<Pair> localVarQueryParams = new ArrayList<Pair>();
         List<Pair> localVarCollectionQueryParams = new ArrayList<Pair>();
@@ -1150,7 +1421,7 @@ public class FleetApi {
         Map<String, Object> localVarFormParams = new HashMap<String, Object>();
 
         final String[] localVarAccepts = {
-                "application/json"
+            "application/json"
         };
         final String localVarAccept = localVarApiClient.selectHeaderAccept(localVarAccepts);
         if (localVarAccept != null) {
@@ -1159,20 +1430,25 @@ public class FleetApi {
 
         final String[] localVarContentTypes = {
         };
-        final String localVarContentType = localVarApiClient.selectHeaderContentType(localVarContentTypes);
+        final String localVarContentType = localVarApiClient.selectHeaderContentType(
+            localVarContentTypes);
         if (localVarContentType != null) {
             localVarHeaderParams.put("Content-Type", localVarContentType);
         }
 
         String[] localVarAuthNames = new String[]{"AgentToken"};
-        return localVarApiClient.buildCall(basePath, localVarPath, "GET", localVarQueryParams, localVarCollectionQueryParams, localVarPostBody, localVarHeaderParams, localVarCookieParams, localVarFormParams, localVarAuthNames, _callback);
+        return localVarApiClient.buildCall(basePath, localVarPath, "GET", localVarQueryParams,
+            localVarCollectionQueryParams, localVarPostBody, localVarHeaderParams,
+            localVarCookieParams, localVarFormParams, localVarAuthNames, _callback);
     }
 
     @SuppressWarnings("rawtypes")
-    private okhttp3.Call getMountsValidateBeforeCall(@javax.annotation.Nonnull String shipSymbol, final ApiCallback _callback) throws ApiException {
+    private okhttp3.Call getMountsValidateBeforeCall(@javax.annotation.Nonnull String shipSymbol,
+        final ApiCallback _callback) throws ApiException {
         // verify the required parameter 'shipSymbol' is set
         if (shipSymbol == null) {
-            throw new ApiException("Missing the required parameter 'shipSymbol' when calling getMounts(Async)");
+            throw new ApiException(
+                "Missing the required parameter 'shipSymbol' when calling getMounts(Async)");
         }
 
         return getMountsCall(shipSymbol, _callback);
@@ -1180,37 +1456,39 @@ public class FleetApi {
     }
 
     /**
-     * Get Mounts
-     * Get the mounts installed on a ship.
+     * Get Mounts Get the mounts installed on a ship.
      *
      * @param shipSymbol The ship&#39;s symbol. (required)
      * @return GetMounts200Response
-     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
+     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the
+     *                      response body
      * @http.response.details <table border="1">
      * <caption>Response Details</caption>
      * <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
      * <tr><td> 200 </td><td> Got installed mounts. </td><td>  -  </td></tr>
      * </table>
      */
-    public GetMounts200Response getMounts(@javax.annotation.Nonnull String shipSymbol) throws ApiException {
+    public GetMounts200Response getMounts(@javax.annotation.Nonnull String shipSymbol)
+        throws ApiException {
         ApiResponse<GetMounts200Response> localVarResp = getMountsWithHttpInfo(shipSymbol);
         return localVarResp.data();
     }
 
     /**
-     * Get Mounts
-     * Get the mounts installed on a ship.
+     * Get Mounts Get the mounts installed on a ship.
      *
      * @param shipSymbol The ship&#39;s symbol. (required)
      * @return ApiResponse&lt;GetMounts200Response&gt;
-     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
+     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the
+     *                      response body
      * @http.response.details <table border="1">
      * <caption>Response Details</caption>
      * <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
      * <tr><td> 200 </td><td> Got installed mounts. </td><td>  -  </td></tr>
      * </table>
      */
-    public ApiResponse<GetMounts200Response> getMountsWithHttpInfo(@javax.annotation.Nonnull String shipSymbol) throws ApiException {
+    public ApiResponse<GetMounts200Response> getMountsWithHttpInfo(
+        @javax.annotation.Nonnull String shipSymbol) throws ApiException {
         okhttp3.Call localVarCall = getMountsValidateBeforeCall(shipSymbol, null);
         Type localVarReturnType = new TypeToken<GetMounts200Response>() {
         }.getType();
@@ -1218,20 +1496,21 @@ public class FleetApi {
     }
 
     /**
-     * Get Mounts (asynchronously)
-     * Get the mounts installed on a ship.
+     * Get Mounts (asynchronously) Get the mounts installed on a ship.
      *
      * @param shipSymbol The ship&#39;s symbol. (required)
      * @param _callback  The callback to be executed when the API call finishes
      * @return The request call
-     * @throws ApiException If fail to process the API call, e.g. serializing the request body object
+     * @throws ApiException If fail to process the API call, e.g. serializing the request body
+     *                      object
      * @http.response.details <table border="1">
      * <caption>Response Details</caption>
      * <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
      * <tr><td> 200 </td><td> Got installed mounts. </td><td>  -  </td></tr>
      * </table>
      */
-    public okhttp3.Call getMountsAsync(@javax.annotation.Nonnull String shipSymbol, final ApiCallback<GetMounts200Response> _callback) throws ApiException {
+    public okhttp3.Call getMountsAsync(@javax.annotation.Nonnull String shipSymbol,
+        final ApiCallback<GetMounts200Response> _callback) throws ApiException {
 
         okhttp3.Call localVarCall = getMountsValidateBeforeCall(shipSymbol, _callback);
         Type localVarReturnType = new TypeToken<GetMounts200Response>() {
@@ -1253,7 +1532,8 @@ public class FleetApi {
      * <tr><td> 200 </td><td> Successfully fetched ship. </td><td>  -  </td></tr>
      * </table>
      */
-    public okhttp3.Call getMyShipCall(@javax.annotation.Nonnull String shipSymbol, final ApiCallback _callback) throws ApiException {
+    public okhttp3.Call getMyShipCall(@javax.annotation.Nonnull String shipSymbol,
+        final ApiCallback _callback) throws ApiException {
         String basePath = null;
         // Operation Servers
         String[] localBasePaths = new String[]{};
@@ -1271,7 +1551,7 @@ public class FleetApi {
 
         // create path and map variables
         String localVarPath = "/my/ships/{shipSymbol}"
-                .replace("{" + "shipSymbol" + "}", localVarApiClient.escapeString(shipSymbol));
+            .replace("{" + "shipSymbol" + "}", localVarApiClient.escapeString(shipSymbol));
 
         List<Pair> localVarQueryParams = new ArrayList<Pair>();
         List<Pair> localVarCollectionQueryParams = new ArrayList<Pair>();
@@ -1280,7 +1560,7 @@ public class FleetApi {
         Map<String, Object> localVarFormParams = new HashMap<String, Object>();
 
         final String[] localVarAccepts = {
-                "application/json"
+            "application/json"
         };
         final String localVarAccept = localVarApiClient.selectHeaderAccept(localVarAccepts);
         if (localVarAccept != null) {
@@ -1289,20 +1569,25 @@ public class FleetApi {
 
         final String[] localVarContentTypes = {
         };
-        final String localVarContentType = localVarApiClient.selectHeaderContentType(localVarContentTypes);
+        final String localVarContentType = localVarApiClient.selectHeaderContentType(
+            localVarContentTypes);
         if (localVarContentType != null) {
             localVarHeaderParams.put("Content-Type", localVarContentType);
         }
 
         String[] localVarAuthNames = new String[]{"AgentToken"};
-        return localVarApiClient.buildCall(basePath, localVarPath, "GET", localVarQueryParams, localVarCollectionQueryParams, localVarPostBody, localVarHeaderParams, localVarCookieParams, localVarFormParams, localVarAuthNames, _callback);
+        return localVarApiClient.buildCall(basePath, localVarPath, "GET", localVarQueryParams,
+            localVarCollectionQueryParams, localVarPostBody, localVarHeaderParams,
+            localVarCookieParams, localVarFormParams, localVarAuthNames, _callback);
     }
 
     @SuppressWarnings("rawtypes")
-    private okhttp3.Call getMyShipValidateBeforeCall(@javax.annotation.Nonnull String shipSymbol, final ApiCallback _callback) throws ApiException {
+    private okhttp3.Call getMyShipValidateBeforeCall(@javax.annotation.Nonnull String shipSymbol,
+        final ApiCallback _callback) throws ApiException {
         // verify the required parameter 'shipSymbol' is set
         if (shipSymbol == null) {
-            throw new ApiException("Missing the required parameter 'shipSymbol' when calling getMyShip(Async)");
+            throw new ApiException(
+                "Missing the required parameter 'shipSymbol' when calling getMyShip(Async)");
         }
 
         return getMyShipCall(shipSymbol, _callback);
@@ -1310,37 +1595,39 @@ public class FleetApi {
     }
 
     /**
-     * Get Ship
-     * Retrieve the details of a ship under your agent&#39;s ownership.
+     * Get Ship Retrieve the details of a ship under your agent&#39;s ownership.
      *
      * @param shipSymbol The symbol of the ship. (required)
      * @return GetMyShip200Response
-     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
+     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the
+     *                      response body
      * @http.response.details <table border="1">
      * <caption>Response Details</caption>
      * <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
      * <tr><td> 200 </td><td> Successfully fetched ship. </td><td>  -  </td></tr>
      * </table>
      */
-    public GetMyShip200Response getMyShip(@javax.annotation.Nonnull String shipSymbol) throws ApiException {
+    public GetMyShip200Response getMyShip(@javax.annotation.Nonnull String shipSymbol)
+        throws ApiException {
         ApiResponse<GetMyShip200Response> localVarResp = getMyShipWithHttpInfo(shipSymbol);
         return localVarResp.data();
     }
 
     /**
-     * Get Ship
-     * Retrieve the details of a ship under your agent&#39;s ownership.
+     * Get Ship Retrieve the details of a ship under your agent&#39;s ownership.
      *
      * @param shipSymbol The symbol of the ship. (required)
      * @return ApiResponse&lt;GetMyShip200Response&gt;
-     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
+     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the
+     *                      response body
      * @http.response.details <table border="1">
      * <caption>Response Details</caption>
      * <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
      * <tr><td> 200 </td><td> Successfully fetched ship. </td><td>  -  </td></tr>
      * </table>
      */
-    public ApiResponse<GetMyShip200Response> getMyShipWithHttpInfo(@javax.annotation.Nonnull String shipSymbol) throws ApiException {
+    public ApiResponse<GetMyShip200Response> getMyShipWithHttpInfo(
+        @javax.annotation.Nonnull String shipSymbol) throws ApiException {
         okhttp3.Call localVarCall = getMyShipValidateBeforeCall(shipSymbol, null);
         Type localVarReturnType = new TypeToken<GetMyShip200Response>() {
         }.getType();
@@ -1348,20 +1635,21 @@ public class FleetApi {
     }
 
     /**
-     * Get Ship (asynchronously)
-     * Retrieve the details of a ship under your agent&#39;s ownership.
+     * Get Ship (asynchronously) Retrieve the details of a ship under your agent&#39;s ownership.
      *
      * @param shipSymbol The symbol of the ship. (required)
      * @param _callback  The callback to be executed when the API call finishes
      * @return The request call
-     * @throws ApiException If fail to process the API call, e.g. serializing the request body object
+     * @throws ApiException If fail to process the API call, e.g. serializing the request body
+     *                      object
      * @http.response.details <table border="1">
      * <caption>Response Details</caption>
      * <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
      * <tr><td> 200 </td><td> Successfully fetched ship. </td><td>  -  </td></tr>
      * </table>
      */
-    public okhttp3.Call getMyShipAsync(@javax.annotation.Nonnull String shipSymbol, final ApiCallback<GetMyShip200Response> _callback) throws ApiException {
+    public okhttp3.Call getMyShipAsync(@javax.annotation.Nonnull String shipSymbol,
+        final ApiCallback<GetMyShip200Response> _callback) throws ApiException {
 
         okhttp3.Call localVarCall = getMyShipValidateBeforeCall(shipSymbol, _callback);
         Type localVarReturnType = new TypeToken<GetMyShip200Response>() {
@@ -1383,7 +1671,8 @@ public class FleetApi {
      * <tr><td> 200 </td><td> Successfully fetched ship&#39;s cargo. </td><td>  -  </td></tr>
      * </table>
      */
-    public okhttp3.Call getMyShipCargoCall(@javax.annotation.Nonnull String shipSymbol, final ApiCallback _callback) throws ApiException {
+    public okhttp3.Call getMyShipCargoCall(@javax.annotation.Nonnull String shipSymbol,
+        final ApiCallback _callback) throws ApiException {
         String basePath = null;
         // Operation Servers
         String[] localBasePaths = new String[]{};
@@ -1401,7 +1690,7 @@ public class FleetApi {
 
         // create path and map variables
         String localVarPath = "/my/ships/{shipSymbol}/cargo"
-                .replace("{" + "shipSymbol" + "}", localVarApiClient.escapeString(shipSymbol));
+            .replace("{" + "shipSymbol" + "}", localVarApiClient.escapeString(shipSymbol));
 
         List<Pair> localVarQueryParams = new ArrayList<Pair>();
         List<Pair> localVarCollectionQueryParams = new ArrayList<Pair>();
@@ -1410,7 +1699,7 @@ public class FleetApi {
         Map<String, Object> localVarFormParams = new HashMap<String, Object>();
 
         final String[] localVarAccepts = {
-                "application/json"
+            "application/json"
         };
         final String localVarAccept = localVarApiClient.selectHeaderAccept(localVarAccepts);
         if (localVarAccept != null) {
@@ -1419,20 +1708,26 @@ public class FleetApi {
 
         final String[] localVarContentTypes = {
         };
-        final String localVarContentType = localVarApiClient.selectHeaderContentType(localVarContentTypes);
+        final String localVarContentType = localVarApiClient.selectHeaderContentType(
+            localVarContentTypes);
         if (localVarContentType != null) {
             localVarHeaderParams.put("Content-Type", localVarContentType);
         }
 
         String[] localVarAuthNames = new String[]{"AgentToken"};
-        return localVarApiClient.buildCall(basePath, localVarPath, "GET", localVarQueryParams, localVarCollectionQueryParams, localVarPostBody, localVarHeaderParams, localVarCookieParams, localVarFormParams, localVarAuthNames, _callback);
+        return localVarApiClient.buildCall(basePath, localVarPath, "GET", localVarQueryParams,
+            localVarCollectionQueryParams, localVarPostBody, localVarHeaderParams,
+            localVarCookieParams, localVarFormParams, localVarAuthNames, _callback);
     }
 
     @SuppressWarnings("rawtypes")
-    private okhttp3.Call getMyShipCargoValidateBeforeCall(@javax.annotation.Nonnull String shipSymbol, final ApiCallback _callback) throws ApiException {
+    private okhttp3.Call getMyShipCargoValidateBeforeCall(
+        @javax.annotation.Nonnull String shipSymbol, final ApiCallback _callback)
+        throws ApiException {
         // verify the required parameter 'shipSymbol' is set
         if (shipSymbol == null) {
-            throw new ApiException("Missing the required parameter 'shipSymbol' when calling getMyShipCargo(Async)");
+            throw new ApiException(
+                "Missing the required parameter 'shipSymbol' when calling getMyShipCargo(Async)");
         }
 
         return getMyShipCargoCall(shipSymbol, _callback);
@@ -1440,37 +1735,40 @@ public class FleetApi {
     }
 
     /**
-     * Get Ship Cargo
-     * Retrieve the cargo of a ship under your agent&#39;s ownership.
+     * Get Ship Cargo Retrieve the cargo of a ship under your agent&#39;s ownership.
      *
      * @param shipSymbol The symbol of the ship. (required)
      * @return GetMyShipCargo200Response
-     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
+     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the
+     *                      response body
      * @http.response.details <table border="1">
      * <caption>Response Details</caption>
      * <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
      * <tr><td> 200 </td><td> Successfully fetched ship&#39;s cargo. </td><td>  -  </td></tr>
      * </table>
      */
-    public GetMyShipCargo200Response getMyShipCargo(@javax.annotation.Nonnull String shipSymbol) throws ApiException {
-        ApiResponse<GetMyShipCargo200Response> localVarResp = getMyShipCargoWithHttpInfo(shipSymbol);
+    public GetMyShipCargo200Response getMyShipCargo(@javax.annotation.Nonnull String shipSymbol)
+        throws ApiException {
+        ApiResponse<GetMyShipCargo200Response> localVarResp = getMyShipCargoWithHttpInfo(
+            shipSymbol);
         return localVarResp.data();
     }
 
     /**
-     * Get Ship Cargo
-     * Retrieve the cargo of a ship under your agent&#39;s ownership.
+     * Get Ship Cargo Retrieve the cargo of a ship under your agent&#39;s ownership.
      *
      * @param shipSymbol The symbol of the ship. (required)
      * @return ApiResponse&lt;GetMyShipCargo200Response&gt;
-     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
+     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the
+     *                      response body
      * @http.response.details <table border="1">
      * <caption>Response Details</caption>
      * <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
      * <tr><td> 200 </td><td> Successfully fetched ship&#39;s cargo. </td><td>  -  </td></tr>
      * </table>
      */
-    public ApiResponse<GetMyShipCargo200Response> getMyShipCargoWithHttpInfo(@javax.annotation.Nonnull String shipSymbol) throws ApiException {
+    public ApiResponse<GetMyShipCargo200Response> getMyShipCargoWithHttpInfo(
+        @javax.annotation.Nonnull String shipSymbol) throws ApiException {
         okhttp3.Call localVarCall = getMyShipCargoValidateBeforeCall(shipSymbol, null);
         Type localVarReturnType = new TypeToken<GetMyShipCargo200Response>() {
         }.getType();
@@ -1478,20 +1776,22 @@ public class FleetApi {
     }
 
     /**
-     * Get Ship Cargo (asynchronously)
-     * Retrieve the cargo of a ship under your agent&#39;s ownership.
+     * Get Ship Cargo (asynchronously) Retrieve the cargo of a ship under your agent&#39;s
+     * ownership.
      *
      * @param shipSymbol The symbol of the ship. (required)
      * @param _callback  The callback to be executed when the API call finishes
      * @return The request call
-     * @throws ApiException If fail to process the API call, e.g. serializing the request body object
+     * @throws ApiException If fail to process the API call, e.g. serializing the request body
+     *                      object
      * @http.response.details <table border="1">
      * <caption>Response Details</caption>
      * <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
      * <tr><td> 200 </td><td> Successfully fetched ship&#39;s cargo. </td><td>  -  </td></tr>
      * </table>
      */
-    public okhttp3.Call getMyShipCargoAsync(@javax.annotation.Nonnull String shipSymbol, final ApiCallback<GetMyShipCargo200Response> _callback) throws ApiException {
+    public okhttp3.Call getMyShipCargoAsync(@javax.annotation.Nonnull String shipSymbol,
+        final ApiCallback<GetMyShipCargo200Response> _callback) throws ApiException {
 
         okhttp3.Call localVarCall = getMyShipCargoValidateBeforeCall(shipSymbol, _callback);
         Type localVarReturnType = new TypeToken<GetMyShipCargo200Response>() {
@@ -1514,7 +1814,8 @@ public class FleetApi {
      * <tr><td> 200 </td><td> Successfully listed ships. </td><td>  -  </td></tr>
      * </table>
      */
-    public okhttp3.Call getMyShipsCall(@javax.annotation.Nullable Integer page, @javax.annotation.Nullable Integer limit, final ApiCallback _callback) throws ApiException {
+    public okhttp3.Call getMyShipsCall(@javax.annotation.Nullable Integer page,
+        @javax.annotation.Nullable Integer limit, final ApiCallback _callback) throws ApiException {
         String basePath = null;
         // Operation Servers
         String[] localBasePaths = new String[]{};
@@ -1548,7 +1849,7 @@ public class FleetApi {
         }
 
         final String[] localVarAccepts = {
-                "application/json"
+            "application/json"
         };
         final String localVarAccept = localVarApiClient.selectHeaderAccept(localVarAccepts);
         if (localVarAccept != null) {
@@ -1557,55 +1858,62 @@ public class FleetApi {
 
         final String[] localVarContentTypes = {
         };
-        final String localVarContentType = localVarApiClient.selectHeaderContentType(localVarContentTypes);
+        final String localVarContentType = localVarApiClient.selectHeaderContentType(
+            localVarContentTypes);
         if (localVarContentType != null) {
             localVarHeaderParams.put("Content-Type", localVarContentType);
         }
 
         String[] localVarAuthNames = new String[]{"AgentToken"};
-        return localVarApiClient.buildCall(basePath, localVarPath, "GET", localVarQueryParams, localVarCollectionQueryParams, localVarPostBody, localVarHeaderParams, localVarCookieParams, localVarFormParams, localVarAuthNames, _callback);
+        return localVarApiClient.buildCall(basePath, localVarPath, "GET", localVarQueryParams,
+            localVarCollectionQueryParams, localVarPostBody, localVarHeaderParams,
+            localVarCookieParams, localVarFormParams, localVarAuthNames, _callback);
     }
 
     @SuppressWarnings("rawtypes")
-    private okhttp3.Call getMyShipsValidateBeforeCall(@javax.annotation.Nullable Integer page, @javax.annotation.Nullable Integer limit, final ApiCallback _callback) throws ApiException {
+    private okhttp3.Call getMyShipsValidateBeforeCall(@javax.annotation.Nullable Integer page,
+        @javax.annotation.Nullable Integer limit, final ApiCallback _callback) throws ApiException {
         return getMyShipsCall(page, limit, _callback);
 
     }
 
     /**
-     * List Ships
-     * Return a paginated list of all of ships under your agent&#39;s ownership.
+     * List Ships Return a paginated list of all of ships under your agent&#39;s ownership.
      *
      * @param page  What entry offset to request (optional, default to 1)
      * @param limit How many entries to return per page (optional, default to 10)
      * @return GetMyShips200Response
-     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
+     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the
+     *                      response body
      * @http.response.details <table border="1">
      * <caption>Response Details</caption>
      * <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
      * <tr><td> 200 </td><td> Successfully listed ships. </td><td>  -  </td></tr>
      * </table>
      */
-    public GetMyShips200Response getMyShips(@javax.annotation.Nullable Integer page, @javax.annotation.Nullable Integer limit) throws ApiException {
+    public GetMyShips200Response getMyShips(@javax.annotation.Nullable Integer page,
+        @javax.annotation.Nullable Integer limit) throws ApiException {
         ApiResponse<GetMyShips200Response> localVarResp = getMyShipsWithHttpInfo(page, limit);
         return localVarResp.data();
     }
 
     /**
-     * List Ships
-     * Return a paginated list of all of ships under your agent&#39;s ownership.
+     * List Ships Return a paginated list of all of ships under your agent&#39;s ownership.
      *
      * @param page  What entry offset to request (optional, default to 1)
      * @param limit How many entries to return per page (optional, default to 10)
      * @return ApiResponse&lt;GetMyShips200Response&gt;
-     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
+     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the
+     *                      response body
      * @http.response.details <table border="1">
      * <caption>Response Details</caption>
      * <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
      * <tr><td> 200 </td><td> Successfully listed ships. </td><td>  -  </td></tr>
      * </table>
      */
-    public ApiResponse<GetMyShips200Response> getMyShipsWithHttpInfo(@javax.annotation.Nullable Integer page, @javax.annotation.Nullable Integer limit) throws ApiException {
+    public ApiResponse<GetMyShips200Response> getMyShipsWithHttpInfo(
+        @javax.annotation.Nullable Integer page, @javax.annotation.Nullable Integer limit)
+        throws ApiException {
         okhttp3.Call localVarCall = getMyShipsValidateBeforeCall(page, limit, null);
         Type localVarReturnType = new TypeToken<GetMyShips200Response>() {
         }.getType();
@@ -1613,21 +1921,24 @@ public class FleetApi {
     }
 
     /**
-     * List Ships (asynchronously)
-     * Return a paginated list of all of ships under your agent&#39;s ownership.
+     * List Ships (asynchronously) Return a paginated list of all of ships under your agent&#39;s
+     * ownership.
      *
      * @param page      What entry offset to request (optional, default to 1)
      * @param limit     How many entries to return per page (optional, default to 10)
      * @param _callback The callback to be executed when the API call finishes
      * @return The request call
-     * @throws ApiException If fail to process the API call, e.g. serializing the request body object
+     * @throws ApiException If fail to process the API call, e.g. serializing the request body
+     *                      object
      * @http.response.details <table border="1">
      * <caption>Response Details</caption>
      * <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
      * <tr><td> 200 </td><td> Successfully listed ships. </td><td>  -  </td></tr>
      * </table>
      */
-    public okhttp3.Call getMyShipsAsync(@javax.annotation.Nullable Integer page, @javax.annotation.Nullable Integer limit, final ApiCallback<GetMyShips200Response> _callback) throws ApiException {
+    public okhttp3.Call getMyShipsAsync(@javax.annotation.Nullable Integer page,
+        @javax.annotation.Nullable Integer limit,
+        final ApiCallback<GetMyShips200Response> _callback) throws ApiException {
 
         okhttp3.Call localVarCall = getMyShipsValidateBeforeCall(page, limit, _callback);
         Type localVarReturnType = new TypeToken<GetMyShips200Response>() {
@@ -1646,10 +1957,12 @@ public class FleetApi {
      * @http.response.details <table border="1">
      * <caption>Response Details</caption>
      * <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-     * <tr><td> 200 </td><td> Successfully retrieved the cost of repairing a ship. </td><td>  -  </td></tr>
+     * <tr><td> 200 </td><td> Successfully retrieved the cost of repairing a ship. </td><td>  -
+     * </td></tr>
      * </table>
      */
-    public okhttp3.Call getRepairShipCall(@javax.annotation.Nonnull String shipSymbol, final ApiCallback _callback) throws ApiException {
+    public okhttp3.Call getRepairShipCall(@javax.annotation.Nonnull String shipSymbol,
+        final ApiCallback _callback) throws ApiException {
         String basePath = null;
         // Operation Servers
         String[] localBasePaths = new String[]{};
@@ -1667,7 +1980,7 @@ public class FleetApi {
 
         // create path and map variables
         String localVarPath = "/my/ships/{shipSymbol}/repair"
-                .replace("{" + "shipSymbol" + "}", localVarApiClient.escapeString(shipSymbol));
+            .replace("{" + "shipSymbol" + "}", localVarApiClient.escapeString(shipSymbol));
 
         List<Pair> localVarQueryParams = new ArrayList<Pair>();
         List<Pair> localVarCollectionQueryParams = new ArrayList<Pair>();
@@ -1676,7 +1989,7 @@ public class FleetApi {
         Map<String, Object> localVarFormParams = new HashMap<String, Object>();
 
         final String[] localVarAccepts = {
-                "application/json"
+            "application/json"
         };
         final String localVarAccept = localVarApiClient.selectHeaderAccept(localVarAccepts);
         if (localVarAccept != null) {
@@ -1685,20 +1998,26 @@ public class FleetApi {
 
         final String[] localVarContentTypes = {
         };
-        final String localVarContentType = localVarApiClient.selectHeaderContentType(localVarContentTypes);
+        final String localVarContentType = localVarApiClient.selectHeaderContentType(
+            localVarContentTypes);
         if (localVarContentType != null) {
             localVarHeaderParams.put("Content-Type", localVarContentType);
         }
 
         String[] localVarAuthNames = new String[]{"AgentToken"};
-        return localVarApiClient.buildCall(basePath, localVarPath, "GET", localVarQueryParams, localVarCollectionQueryParams, localVarPostBody, localVarHeaderParams, localVarCookieParams, localVarFormParams, localVarAuthNames, _callback);
+        return localVarApiClient.buildCall(basePath, localVarPath, "GET", localVarQueryParams,
+            localVarCollectionQueryParams, localVarPostBody, localVarHeaderParams,
+            localVarCookieParams, localVarFormParams, localVarAuthNames, _callback);
     }
 
     @SuppressWarnings("rawtypes")
-    private okhttp3.Call getRepairShipValidateBeforeCall(@javax.annotation.Nonnull String shipSymbol, final ApiCallback _callback) throws ApiException {
+    private okhttp3.Call getRepairShipValidateBeforeCall(
+        @javax.annotation.Nonnull String shipSymbol, final ApiCallback _callback)
+        throws ApiException {
         // verify the required parameter 'shipSymbol' is set
         if (shipSymbol == null) {
-            throw new ApiException("Missing the required parameter 'shipSymbol' when calling getRepairShip(Async)");
+            throw new ApiException(
+                "Missing the required parameter 'shipSymbol' when calling getRepairShip(Async)");
         }
 
         return getRepairShipCall(shipSymbol, _callback);
@@ -1706,37 +2025,41 @@ public class FleetApi {
     }
 
     /**
-     * Get Repair Ship
-     * Get the cost of repairing a ship.
+     * Get Repair Ship Get the cost of repairing a ship.
      *
      * @param shipSymbol The ship symbol. (required)
      * @return GetRepairShip200Response
-     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
+     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the
+     *                      response body
      * @http.response.details <table border="1">
      * <caption>Response Details</caption>
      * <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-     * <tr><td> 200 </td><td> Successfully retrieved the cost of repairing a ship. </td><td>  -  </td></tr>
+     * <tr><td> 200 </td><td> Successfully retrieved the cost of repairing a ship. </td><td>  -
+     * </td></tr>
      * </table>
      */
-    public GetRepairShip200Response getRepairShip(@javax.annotation.Nonnull String shipSymbol) throws ApiException {
+    public GetRepairShip200Response getRepairShip(@javax.annotation.Nonnull String shipSymbol)
+        throws ApiException {
         ApiResponse<GetRepairShip200Response> localVarResp = getRepairShipWithHttpInfo(shipSymbol);
         return localVarResp.data();
     }
 
     /**
-     * Get Repair Ship
-     * Get the cost of repairing a ship.
+     * Get Repair Ship Get the cost of repairing a ship.
      *
      * @param shipSymbol The ship symbol. (required)
      * @return ApiResponse&lt;GetRepairShip200Response&gt;
-     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
+     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the
+     *                      response body
      * @http.response.details <table border="1">
      * <caption>Response Details</caption>
      * <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-     * <tr><td> 200 </td><td> Successfully retrieved the cost of repairing a ship. </td><td>  -  </td></tr>
+     * <tr><td> 200 </td><td> Successfully retrieved the cost of repairing a ship. </td><td>  -
+     * </td></tr>
      * </table>
      */
-    public ApiResponse<GetRepairShip200Response> getRepairShipWithHttpInfo(@javax.annotation.Nonnull String shipSymbol) throws ApiException {
+    public ApiResponse<GetRepairShip200Response> getRepairShipWithHttpInfo(
+        @javax.annotation.Nonnull String shipSymbol) throws ApiException {
         okhttp3.Call localVarCall = getRepairShipValidateBeforeCall(shipSymbol, null);
         Type localVarReturnType = new TypeToken<GetRepairShip200Response>() {
         }.getType();
@@ -1744,20 +2067,22 @@ public class FleetApi {
     }
 
     /**
-     * Get Repair Ship (asynchronously)
-     * Get the cost of repairing a ship.
+     * Get Repair Ship (asynchronously) Get the cost of repairing a ship.
      *
      * @param shipSymbol The ship symbol. (required)
      * @param _callback  The callback to be executed when the API call finishes
      * @return The request call
-     * @throws ApiException If fail to process the API call, e.g. serializing the request body object
+     * @throws ApiException If fail to process the API call, e.g. serializing the request body
+     *                      object
      * @http.response.details <table border="1">
      * <caption>Response Details</caption>
      * <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-     * <tr><td> 200 </td><td> Successfully retrieved the cost of repairing a ship. </td><td>  -  </td></tr>
+     * <tr><td> 200 </td><td> Successfully retrieved the cost of repairing a ship. </td><td>  -
+     * </td></tr>
      * </table>
      */
-    public okhttp3.Call getRepairShipAsync(@javax.annotation.Nonnull String shipSymbol, final ApiCallback<GetRepairShip200Response> _callback) throws ApiException {
+    public okhttp3.Call getRepairShipAsync(@javax.annotation.Nonnull String shipSymbol,
+        final ApiCallback<GetRepairShip200Response> _callback) throws ApiException {
 
         okhttp3.Call localVarCall = getRepairShipValidateBeforeCall(shipSymbol, _callback);
         Type localVarReturnType = new TypeToken<GetRepairShip200Response>() {
@@ -1776,10 +2101,12 @@ public class FleetApi {
      * @http.response.details <table border="1">
      * <caption>Response Details</caption>
      * <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-     * <tr><td> 200 </td><td> Successfully retrieved the amount of value that will be returned when scrapping a ship. </td><td>  -  </td></tr>
+     * <tr><td> 200 </td><td> Successfully retrieved the amount of value that will be returned when
+     * scrapping a ship. </td><td>  -  </td></tr>
      * </table>
      */
-    public okhttp3.Call getScrapShipCall(@javax.annotation.Nonnull String shipSymbol, final ApiCallback _callback) throws ApiException {
+    public okhttp3.Call getScrapShipCall(@javax.annotation.Nonnull String shipSymbol,
+        final ApiCallback _callback) throws ApiException {
         String basePath = null;
         // Operation Servers
         String[] localBasePaths = new String[]{};
@@ -1797,7 +2124,7 @@ public class FleetApi {
 
         // create path and map variables
         String localVarPath = "/my/ships/{shipSymbol}/scrap"
-                .replace("{" + "shipSymbol" + "}", localVarApiClient.escapeString(shipSymbol));
+            .replace("{" + "shipSymbol" + "}", localVarApiClient.escapeString(shipSymbol));
 
         List<Pair> localVarQueryParams = new ArrayList<Pair>();
         List<Pair> localVarCollectionQueryParams = new ArrayList<Pair>();
@@ -1806,7 +2133,7 @@ public class FleetApi {
         Map<String, Object> localVarFormParams = new HashMap<String, Object>();
 
         final String[] localVarAccepts = {
-                "application/json"
+            "application/json"
         };
         final String localVarAccept = localVarApiClient.selectHeaderAccept(localVarAccepts);
         if (localVarAccept != null) {
@@ -1815,20 +2142,25 @@ public class FleetApi {
 
         final String[] localVarContentTypes = {
         };
-        final String localVarContentType = localVarApiClient.selectHeaderContentType(localVarContentTypes);
+        final String localVarContentType = localVarApiClient.selectHeaderContentType(
+            localVarContentTypes);
         if (localVarContentType != null) {
             localVarHeaderParams.put("Content-Type", localVarContentType);
         }
 
         String[] localVarAuthNames = new String[]{"AgentToken"};
-        return localVarApiClient.buildCall(basePath, localVarPath, "GET", localVarQueryParams, localVarCollectionQueryParams, localVarPostBody, localVarHeaderParams, localVarCookieParams, localVarFormParams, localVarAuthNames, _callback);
+        return localVarApiClient.buildCall(basePath, localVarPath, "GET", localVarQueryParams,
+            localVarCollectionQueryParams, localVarPostBody, localVarHeaderParams,
+            localVarCookieParams, localVarFormParams, localVarAuthNames, _callback);
     }
 
     @SuppressWarnings("rawtypes")
-    private okhttp3.Call getScrapShipValidateBeforeCall(@javax.annotation.Nonnull String shipSymbol, final ApiCallback _callback) throws ApiException {
+    private okhttp3.Call getScrapShipValidateBeforeCall(@javax.annotation.Nonnull String shipSymbol,
+        final ApiCallback _callback) throws ApiException {
         // verify the required parameter 'shipSymbol' is set
         if (shipSymbol == null) {
-            throw new ApiException("Missing the required parameter 'shipSymbol' when calling getScrapShip(Async)");
+            throw new ApiException(
+                "Missing the required parameter 'shipSymbol' when calling getScrapShip(Async)");
         }
 
         return getScrapShipCall(shipSymbol, _callback);
@@ -1836,37 +2168,41 @@ public class FleetApi {
     }
 
     /**
-     * Get Scrap Ship
-     * Get the amount of value that will be returned when scrapping a ship.
+     * Get Scrap Ship Get the amount of value that will be returned when scrapping a ship.
      *
      * @param shipSymbol The ship symbol. (required)
      * @return GetScrapShip200Response
-     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
+     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the
+     *                      response body
      * @http.response.details <table border="1">
      * <caption>Response Details</caption>
      * <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-     * <tr><td> 200 </td><td> Successfully retrieved the amount of value that will be returned when scrapping a ship. </td><td>  -  </td></tr>
+     * <tr><td> 200 </td><td> Successfully retrieved the amount of value that will be returned when
+     * scrapping a ship. </td><td>  -  </td></tr>
      * </table>
      */
-    public GetScrapShip200Response getScrapShip(@javax.annotation.Nonnull String shipSymbol) throws ApiException {
+    public GetScrapShip200Response getScrapShip(@javax.annotation.Nonnull String shipSymbol)
+        throws ApiException {
         ApiResponse<GetScrapShip200Response> localVarResp = getScrapShipWithHttpInfo(shipSymbol);
         return localVarResp.data();
     }
 
     /**
-     * Get Scrap Ship
-     * Get the amount of value that will be returned when scrapping a ship.
+     * Get Scrap Ship Get the amount of value that will be returned when scrapping a ship.
      *
      * @param shipSymbol The ship symbol. (required)
      * @return ApiResponse&lt;GetScrapShip200Response&gt;
-     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
+     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the
+     *                      response body
      * @http.response.details <table border="1">
      * <caption>Response Details</caption>
      * <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-     * <tr><td> 200 </td><td> Successfully retrieved the amount of value that will be returned when scrapping a ship. </td><td>  -  </td></tr>
+     * <tr><td> 200 </td><td> Successfully retrieved the amount of value that will be returned when
+     * scrapping a ship. </td><td>  -  </td></tr>
      * </table>
      */
-    public ApiResponse<GetScrapShip200Response> getScrapShipWithHttpInfo(@javax.annotation.Nonnull String shipSymbol) throws ApiException {
+    public ApiResponse<GetScrapShip200Response> getScrapShipWithHttpInfo(
+        @javax.annotation.Nonnull String shipSymbol) throws ApiException {
         okhttp3.Call localVarCall = getScrapShipValidateBeforeCall(shipSymbol, null);
         Type localVarReturnType = new TypeToken<GetScrapShip200Response>() {
         }.getType();
@@ -1874,20 +2210,23 @@ public class FleetApi {
     }
 
     /**
-     * Get Scrap Ship (asynchronously)
-     * Get the amount of value that will be returned when scrapping a ship.
+     * Get Scrap Ship (asynchronously) Get the amount of value that will be returned when scrapping
+     * a ship.
      *
      * @param shipSymbol The ship symbol. (required)
      * @param _callback  The callback to be executed when the API call finishes
      * @return The request call
-     * @throws ApiException If fail to process the API call, e.g. serializing the request body object
+     * @throws ApiException If fail to process the API call, e.g. serializing the request body
+     *                      object
      * @http.response.details <table border="1">
      * <caption>Response Details</caption>
      * <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-     * <tr><td> 200 </td><td> Successfully retrieved the amount of value that will be returned when scrapping a ship. </td><td>  -  </td></tr>
+     * <tr><td> 200 </td><td> Successfully retrieved the amount of value that will be returned when
+     * scrapping a ship. </td><td>  -  </td></tr>
      * </table>
      */
-    public okhttp3.Call getScrapShipAsync(@javax.annotation.Nonnull String shipSymbol, final ApiCallback<GetScrapShip200Response> _callback) throws ApiException {
+    public okhttp3.Call getScrapShipAsync(@javax.annotation.Nonnull String shipSymbol,
+        final ApiCallback<GetScrapShip200Response> _callback) throws ApiException {
 
         okhttp3.Call localVarCall = getScrapShipValidateBeforeCall(shipSymbol, _callback);
         Type localVarReturnType = new TypeToken<GetScrapShip200Response>() {
@@ -1910,7 +2249,8 @@ public class FleetApi {
      * <tr><td> 204 </td><td> No cooldown. </td><td>  -  </td></tr>
      * </table>
      */
-    public okhttp3.Call getShipCooldownCall(@javax.annotation.Nonnull String shipSymbol, final ApiCallback _callback) throws ApiException {
+    public okhttp3.Call getShipCooldownCall(@javax.annotation.Nonnull String shipSymbol,
+        final ApiCallback _callback) throws ApiException {
         String basePath = null;
         // Operation Servers
         String[] localBasePaths = new String[]{};
@@ -1928,7 +2268,7 @@ public class FleetApi {
 
         // create path and map variables
         String localVarPath = "/my/ships/{shipSymbol}/cooldown"
-                .replace("{" + "shipSymbol" + "}", localVarApiClient.escapeString(shipSymbol));
+            .replace("{" + "shipSymbol" + "}", localVarApiClient.escapeString(shipSymbol));
 
         List<Pair> localVarQueryParams = new ArrayList<Pair>();
         List<Pair> localVarCollectionQueryParams = new ArrayList<Pair>();
@@ -1937,7 +2277,7 @@ public class FleetApi {
         Map<String, Object> localVarFormParams = new HashMap<String, Object>();
 
         final String[] localVarAccepts = {
-                "application/json"
+            "application/json"
         };
         final String localVarAccept = localVarApiClient.selectHeaderAccept(localVarAccepts);
         if (localVarAccept != null) {
@@ -1946,20 +2286,26 @@ public class FleetApi {
 
         final String[] localVarContentTypes = {
         };
-        final String localVarContentType = localVarApiClient.selectHeaderContentType(localVarContentTypes);
+        final String localVarContentType = localVarApiClient.selectHeaderContentType(
+            localVarContentTypes);
         if (localVarContentType != null) {
             localVarHeaderParams.put("Content-Type", localVarContentType);
         }
 
         String[] localVarAuthNames = new String[]{"AgentToken"};
-        return localVarApiClient.buildCall(basePath, localVarPath, "GET", localVarQueryParams, localVarCollectionQueryParams, localVarPostBody, localVarHeaderParams, localVarCookieParams, localVarFormParams, localVarAuthNames, _callback);
+        return localVarApiClient.buildCall(basePath, localVarPath, "GET", localVarQueryParams,
+            localVarCollectionQueryParams, localVarPostBody, localVarHeaderParams,
+            localVarCookieParams, localVarFormParams, localVarAuthNames, _callback);
     }
 
     @SuppressWarnings("rawtypes")
-    private okhttp3.Call getShipCooldownValidateBeforeCall(@javax.annotation.Nonnull String shipSymbol, final ApiCallback _callback) throws ApiException {
+    private okhttp3.Call getShipCooldownValidateBeforeCall(
+        @javax.annotation.Nonnull String shipSymbol, final ApiCallback _callback)
+        throws ApiException {
         // verify the required parameter 'shipSymbol' is set
         if (shipSymbol == null) {
-            throw new ApiException("Missing the required parameter 'shipSymbol' when calling getShipCooldown(Async)");
+            throw new ApiException(
+                "Missing the required parameter 'shipSymbol' when calling getShipCooldown(Async)");
         }
 
         return getShipCooldownCall(shipSymbol, _callback);
@@ -1967,12 +2313,17 @@ public class FleetApi {
     }
 
     /**
-     * Get Ship Cooldown
-     * Retrieve the details of your ship&#39;s reactor cooldown. Some actions such as activating your jump drive, scanning, or extracting resources taxes your reactor and results in a cooldown.  Your ship cannot perform additional actions until your cooldown has expired. The duration of your cooldown is relative to the power consumption of the related modules or mounts for the action taken.  Response returns a 204 status code (no-content) when the ship has no cooldown.
+     * Get Ship Cooldown Retrieve the details of your ship&#39;s reactor cooldown. Some actions such
+     * as activating your jump drive, scanning, or extracting resources taxes your reactor and
+     * results in a cooldown.  Your ship cannot perform additional actions until your cooldown has
+     * expired. The duration of your cooldown is relative to the power consumption of the related
+     * modules or mounts for the action taken.  Response returns a 204 status code (no-content) when
+     * the ship has no cooldown.
      *
      * @param shipSymbol The symbol of the ship. (required)
      * @return GetShipCooldown200Response
-     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
+     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the
+     *                      response body
      * @http.response.details <table border="1">
      * <caption>Response Details</caption>
      * <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
@@ -1980,18 +2331,25 @@ public class FleetApi {
      * <tr><td> 204 </td><td> No cooldown. </td><td>  -  </td></tr>
      * </table>
      */
-    public GetShipCooldown200Response getShipCooldown(@javax.annotation.Nonnull String shipSymbol) throws ApiException {
-        ApiResponse<GetShipCooldown200Response> localVarResp = getShipCooldownWithHttpInfo(shipSymbol);
+    public GetShipCooldown200Response getShipCooldown(@javax.annotation.Nonnull String shipSymbol)
+        throws ApiException {
+        ApiResponse<GetShipCooldown200Response> localVarResp = getShipCooldownWithHttpInfo(
+            shipSymbol);
         return localVarResp.data();
     }
 
     /**
-     * Get Ship Cooldown
-     * Retrieve the details of your ship&#39;s reactor cooldown. Some actions such as activating your jump drive, scanning, or extracting resources taxes your reactor and results in a cooldown.  Your ship cannot perform additional actions until your cooldown has expired. The duration of your cooldown is relative to the power consumption of the related modules or mounts for the action taken.  Response returns a 204 status code (no-content) when the ship has no cooldown.
+     * Get Ship Cooldown Retrieve the details of your ship&#39;s reactor cooldown. Some actions such
+     * as activating your jump drive, scanning, or extracting resources taxes your reactor and
+     * results in a cooldown.  Your ship cannot perform additional actions until your cooldown has
+     * expired. The duration of your cooldown is relative to the power consumption of the related
+     * modules or mounts for the action taken.  Response returns a 204 status code (no-content) when
+     * the ship has no cooldown.
      *
      * @param shipSymbol The symbol of the ship. (required)
      * @return ApiResponse&lt;GetShipCooldown200Response&gt;
-     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
+     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the
+     *                      response body
      * @http.response.details <table border="1">
      * <caption>Response Details</caption>
      * <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
@@ -1999,7 +2357,8 @@ public class FleetApi {
      * <tr><td> 204 </td><td> No cooldown. </td><td>  -  </td></tr>
      * </table>
      */
-    public ApiResponse<GetShipCooldown200Response> getShipCooldownWithHttpInfo(@javax.annotation.Nonnull String shipSymbol) throws ApiException {
+    public ApiResponse<GetShipCooldown200Response> getShipCooldownWithHttpInfo(
+        @javax.annotation.Nonnull String shipSymbol) throws ApiException {
         okhttp3.Call localVarCall = getShipCooldownValidateBeforeCall(shipSymbol, null);
         Type localVarReturnType = new TypeToken<GetShipCooldown200Response>() {
         }.getType();
@@ -2007,13 +2366,18 @@ public class FleetApi {
     }
 
     /**
-     * Get Ship Cooldown (asynchronously)
-     * Retrieve the details of your ship&#39;s reactor cooldown. Some actions such as activating your jump drive, scanning, or extracting resources taxes your reactor and results in a cooldown.  Your ship cannot perform additional actions until your cooldown has expired. The duration of your cooldown is relative to the power consumption of the related modules or mounts for the action taken.  Response returns a 204 status code (no-content) when the ship has no cooldown.
+     * Get Ship Cooldown (asynchronously) Retrieve the details of your ship&#39;s reactor cooldown.
+     * Some actions such as activating your jump drive, scanning, or extracting resources taxes your
+     * reactor and results in a cooldown.  Your ship cannot perform additional actions until your
+     * cooldown has expired. The duration of your cooldown is relative to the power consumption of
+     * the related modules or mounts for the action taken.  Response returns a 204 status code
+     * (no-content) when the ship has no cooldown.
      *
      * @param shipSymbol The symbol of the ship. (required)
      * @param _callback  The callback to be executed when the API call finishes
      * @return The request call
-     * @throws ApiException If fail to process the API call, e.g. serializing the request body object
+     * @throws ApiException If fail to process the API call, e.g. serializing the request body
+     *                      object
      * @http.response.details <table border="1">
      * <caption>Response Details</caption>
      * <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
@@ -2021,7 +2385,8 @@ public class FleetApi {
      * <tr><td> 204 </td><td> No cooldown. </td><td>  -  </td></tr>
      * </table>
      */
-    public okhttp3.Call getShipCooldownAsync(@javax.annotation.Nonnull String shipSymbol, final ApiCallback<GetShipCooldown200Response> _callback) throws ApiException {
+    public okhttp3.Call getShipCooldownAsync(@javax.annotation.Nonnull String shipSymbol,
+        final ApiCallback<GetShipCooldown200Response> _callback) throws ApiException {
 
         okhttp3.Call localVarCall = getShipCooldownValidateBeforeCall(shipSymbol, _callback);
         Type localVarReturnType = new TypeToken<GetShipCooldown200Response>() {
@@ -2043,7 +2408,8 @@ public class FleetApi {
      * <tr><td> 200 </td><td> Successfully retrieved ship modules. </td><td>  -  </td></tr>
      * </table>
      */
-    public okhttp3.Call getShipModulesCall(@javax.annotation.Nonnull String shipSymbol, final ApiCallback _callback) throws ApiException {
+    public okhttp3.Call getShipModulesCall(@javax.annotation.Nonnull String shipSymbol,
+        final ApiCallback _callback) throws ApiException {
         String basePath = null;
         // Operation Servers
         String[] localBasePaths = new String[]{};
@@ -2061,7 +2427,7 @@ public class FleetApi {
 
         // create path and map variables
         String localVarPath = "/my/ships/{shipSymbol}/modules"
-                .replace("{" + "shipSymbol" + "}", localVarApiClient.escapeString(shipSymbol));
+            .replace("{" + "shipSymbol" + "}", localVarApiClient.escapeString(shipSymbol));
 
         List<Pair> localVarQueryParams = new ArrayList<Pair>();
         List<Pair> localVarCollectionQueryParams = new ArrayList<Pair>();
@@ -2070,7 +2436,7 @@ public class FleetApi {
         Map<String, Object> localVarFormParams = new HashMap<String, Object>();
 
         final String[] localVarAccepts = {
-                "application/json"
+            "application/json"
         };
         final String localVarAccept = localVarApiClient.selectHeaderAccept(localVarAccepts);
         if (localVarAccept != null) {
@@ -2079,20 +2445,26 @@ public class FleetApi {
 
         final String[] localVarContentTypes = {
         };
-        final String localVarContentType = localVarApiClient.selectHeaderContentType(localVarContentTypes);
+        final String localVarContentType = localVarApiClient.selectHeaderContentType(
+            localVarContentTypes);
         if (localVarContentType != null) {
             localVarHeaderParams.put("Content-Type", localVarContentType);
         }
 
         String[] localVarAuthNames = new String[]{"AccountToken", "AgentToken"};
-        return localVarApiClient.buildCall(basePath, localVarPath, "GET", localVarQueryParams, localVarCollectionQueryParams, localVarPostBody, localVarHeaderParams, localVarCookieParams, localVarFormParams, localVarAuthNames, _callback);
+        return localVarApiClient.buildCall(basePath, localVarPath, "GET", localVarQueryParams,
+            localVarCollectionQueryParams, localVarPostBody, localVarHeaderParams,
+            localVarCookieParams, localVarFormParams, localVarAuthNames, _callback);
     }
 
     @SuppressWarnings("rawtypes")
-    private okhttp3.Call getShipModulesValidateBeforeCall(@javax.annotation.Nonnull String shipSymbol, final ApiCallback _callback) throws ApiException {
+    private okhttp3.Call getShipModulesValidateBeforeCall(
+        @javax.annotation.Nonnull String shipSymbol, final ApiCallback _callback)
+        throws ApiException {
         // verify the required parameter 'shipSymbol' is set
         if (shipSymbol == null) {
-            throw new ApiException("Missing the required parameter 'shipSymbol' when calling getShipModules(Async)");
+            throw new ApiException(
+                "Missing the required parameter 'shipSymbol' when calling getShipModules(Async)");
         }
 
         return getShipModulesCall(shipSymbol, _callback);
@@ -2100,37 +2472,40 @@ public class FleetApi {
     }
 
     /**
-     * Get Ship Modules
-     * Get the modules installed on a ship.
+     * Get Ship Modules Get the modules installed on a ship.
      *
      * @param shipSymbol The symbol of the ship (required)
      * @return GetShipModules200Response
-     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
+     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the
+     *                      response body
      * @http.response.details <table border="1">
      * <caption>Response Details</caption>
      * <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
      * <tr><td> 200 </td><td> Successfully retrieved ship modules. </td><td>  -  </td></tr>
      * </table>
      */
-    public GetShipModules200Response getShipModules(@javax.annotation.Nonnull String shipSymbol) throws ApiException {
-        ApiResponse<GetShipModules200Response> localVarResp = getShipModulesWithHttpInfo(shipSymbol);
+    public GetShipModules200Response getShipModules(@javax.annotation.Nonnull String shipSymbol)
+        throws ApiException {
+        ApiResponse<GetShipModules200Response> localVarResp = getShipModulesWithHttpInfo(
+            shipSymbol);
         return localVarResp.data();
     }
 
     /**
-     * Get Ship Modules
-     * Get the modules installed on a ship.
+     * Get Ship Modules Get the modules installed on a ship.
      *
      * @param shipSymbol The symbol of the ship (required)
      * @return ApiResponse&lt;GetShipModules200Response&gt;
-     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
+     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the
+     *                      response body
      * @http.response.details <table border="1">
      * <caption>Response Details</caption>
      * <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
      * <tr><td> 200 </td><td> Successfully retrieved ship modules. </td><td>  -  </td></tr>
      * </table>
      */
-    public ApiResponse<GetShipModules200Response> getShipModulesWithHttpInfo(@javax.annotation.Nonnull String shipSymbol) throws ApiException {
+    public ApiResponse<GetShipModules200Response> getShipModulesWithHttpInfo(
+        @javax.annotation.Nonnull String shipSymbol) throws ApiException {
         okhttp3.Call localVarCall = getShipModulesValidateBeforeCall(shipSymbol, null);
         Type localVarReturnType = new TypeToken<GetShipModules200Response>() {
         }.getType();
@@ -2138,20 +2513,21 @@ public class FleetApi {
     }
 
     /**
-     * Get Ship Modules (asynchronously)
-     * Get the modules installed on a ship.
+     * Get Ship Modules (asynchronously) Get the modules installed on a ship.
      *
      * @param shipSymbol The symbol of the ship (required)
      * @param _callback  The callback to be executed when the API call finishes
      * @return The request call
-     * @throws ApiException If fail to process the API call, e.g. serializing the request body object
+     * @throws ApiException If fail to process the API call, e.g. serializing the request body
+     *                      object
      * @http.response.details <table border="1">
      * <caption>Response Details</caption>
      * <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
      * <tr><td> 200 </td><td> Successfully retrieved ship modules. </td><td>  -  </td></tr>
      * </table>
      */
-    public okhttp3.Call getShipModulesAsync(@javax.annotation.Nonnull String shipSymbol, final ApiCallback<GetShipModules200Response> _callback) throws ApiException {
+    public okhttp3.Call getShipModulesAsync(@javax.annotation.Nonnull String shipSymbol,
+        final ApiCallback<GetShipModules200Response> _callback) throws ApiException {
 
         okhttp3.Call localVarCall = getShipModulesValidateBeforeCall(shipSymbol, _callback);
         Type localVarReturnType = new TypeToken<GetShipModules200Response>() {
@@ -2173,7 +2549,8 @@ public class FleetApi {
      * <tr><td> 200 </td><td> The current nav status of the ship. </td><td>  -  </td></tr>
      * </table>
      */
-    public okhttp3.Call getShipNavCall(@javax.annotation.Nonnull String shipSymbol, final ApiCallback _callback) throws ApiException {
+    public okhttp3.Call getShipNavCall(@javax.annotation.Nonnull String shipSymbol,
+        final ApiCallback _callback) throws ApiException {
         String basePath = null;
         // Operation Servers
         String[] localBasePaths = new String[]{};
@@ -2191,7 +2568,7 @@ public class FleetApi {
 
         // create path and map variables
         String localVarPath = "/my/ships/{shipSymbol}/nav"
-                .replace("{" + "shipSymbol" + "}", localVarApiClient.escapeString(shipSymbol));
+            .replace("{" + "shipSymbol" + "}", localVarApiClient.escapeString(shipSymbol));
 
         List<Pair> localVarQueryParams = new ArrayList<Pair>();
         List<Pair> localVarCollectionQueryParams = new ArrayList<Pair>();
@@ -2200,7 +2577,7 @@ public class FleetApi {
         Map<String, Object> localVarFormParams = new HashMap<String, Object>();
 
         final String[] localVarAccepts = {
-                "application/json"
+            "application/json"
         };
         final String localVarAccept = localVarApiClient.selectHeaderAccept(localVarAccepts);
         if (localVarAccept != null) {
@@ -2209,20 +2586,25 @@ public class FleetApi {
 
         final String[] localVarContentTypes = {
         };
-        final String localVarContentType = localVarApiClient.selectHeaderContentType(localVarContentTypes);
+        final String localVarContentType = localVarApiClient.selectHeaderContentType(
+            localVarContentTypes);
         if (localVarContentType != null) {
             localVarHeaderParams.put("Content-Type", localVarContentType);
         }
 
         String[] localVarAuthNames = new String[]{"AgentToken"};
-        return localVarApiClient.buildCall(basePath, localVarPath, "GET", localVarQueryParams, localVarCollectionQueryParams, localVarPostBody, localVarHeaderParams, localVarCookieParams, localVarFormParams, localVarAuthNames, _callback);
+        return localVarApiClient.buildCall(basePath, localVarPath, "GET", localVarQueryParams,
+            localVarCollectionQueryParams, localVarPostBody, localVarHeaderParams,
+            localVarCookieParams, localVarFormParams, localVarAuthNames, _callback);
     }
 
     @SuppressWarnings("rawtypes")
-    private okhttp3.Call getShipNavValidateBeforeCall(@javax.annotation.Nonnull String shipSymbol, final ApiCallback _callback) throws ApiException {
+    private okhttp3.Call getShipNavValidateBeforeCall(@javax.annotation.Nonnull String shipSymbol,
+        final ApiCallback _callback) throws ApiException {
         // verify the required parameter 'shipSymbol' is set
         if (shipSymbol == null) {
-            throw new ApiException("Missing the required parameter 'shipSymbol' when calling getShipNav(Async)");
+            throw new ApiException(
+                "Missing the required parameter 'shipSymbol' when calling getShipNav(Async)");
         }
 
         return getShipNavCall(shipSymbol, _callback);
@@ -2230,37 +2612,39 @@ public class FleetApi {
     }
 
     /**
-     * Get Ship Nav
-     * Get the current nav status of a ship.
+     * Get Ship Nav Get the current nav status of a ship.
      *
      * @param shipSymbol The ship symbol. (required)
      * @return GetShipNav200Response
-     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
+     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the
+     *                      response body
      * @http.response.details <table border="1">
      * <caption>Response Details</caption>
      * <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
      * <tr><td> 200 </td><td> The current nav status of the ship. </td><td>  -  </td></tr>
      * </table>
      */
-    public GetShipNav200Response getShipNav(@javax.annotation.Nonnull String shipSymbol) throws ApiException {
+    public GetShipNav200Response getShipNav(@javax.annotation.Nonnull String shipSymbol)
+        throws ApiException {
         ApiResponse<GetShipNav200Response> localVarResp = getShipNavWithHttpInfo(shipSymbol);
         return localVarResp.data();
     }
 
     /**
-     * Get Ship Nav
-     * Get the current nav status of a ship.
+     * Get Ship Nav Get the current nav status of a ship.
      *
      * @param shipSymbol The ship symbol. (required)
      * @return ApiResponse&lt;GetShipNav200Response&gt;
-     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
+     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the
+     *                      response body
      * @http.response.details <table border="1">
      * <caption>Response Details</caption>
      * <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
      * <tr><td> 200 </td><td> The current nav status of the ship. </td><td>  -  </td></tr>
      * </table>
      */
-    public ApiResponse<GetShipNav200Response> getShipNavWithHttpInfo(@javax.annotation.Nonnull String shipSymbol) throws ApiException {
+    public ApiResponse<GetShipNav200Response> getShipNavWithHttpInfo(
+        @javax.annotation.Nonnull String shipSymbol) throws ApiException {
         okhttp3.Call localVarCall = getShipNavValidateBeforeCall(shipSymbol, null);
         Type localVarReturnType = new TypeToken<GetShipNav200Response>() {
         }.getType();
@@ -2268,20 +2652,21 @@ public class FleetApi {
     }
 
     /**
-     * Get Ship Nav (asynchronously)
-     * Get the current nav status of a ship.
+     * Get Ship Nav (asynchronously) Get the current nav status of a ship.
      *
      * @param shipSymbol The ship symbol. (required)
      * @param _callback  The callback to be executed when the API call finishes
      * @return The request call
-     * @throws ApiException If fail to process the API call, e.g. serializing the request body object
+     * @throws ApiException If fail to process the API call, e.g. serializing the request body
+     *                      object
      * @http.response.details <table border="1">
      * <caption>Response Details</caption>
      * <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
      * <tr><td> 200 </td><td> The current nav status of the ship. </td><td>  -  </td></tr>
      * </table>
      */
-    public okhttp3.Call getShipNavAsync(@javax.annotation.Nonnull String shipSymbol, final ApiCallback<GetShipNav200Response> _callback) throws ApiException {
+    public okhttp3.Call getShipNavAsync(@javax.annotation.Nonnull String shipSymbol,
+        final ApiCallback<GetShipNav200Response> _callback) throws ApiException {
 
         okhttp3.Call localVarCall = getShipNavValidateBeforeCall(shipSymbol, _callback);
         Type localVarReturnType = new TypeToken<GetShipNav200Response>() {
@@ -2304,7 +2689,9 @@ public class FleetApi {
      * <tr><td> 201 </td><td> Successfully installed the mount. </td><td>  -  </td></tr>
      * </table>
      */
-    public okhttp3.Call installMountCall(@javax.annotation.Nonnull String shipSymbol, @javax.annotation.Nullable InstallMountRequest installMountRequest, final ApiCallback _callback) throws ApiException {
+    public okhttp3.Call installMountCall(@javax.annotation.Nonnull String shipSymbol,
+        @javax.annotation.Nullable InstallMountRequest installMountRequest,
+        final ApiCallback _callback) throws ApiException {
         String basePath = null;
         // Operation Servers
         String[] localBasePaths = new String[]{};
@@ -2322,7 +2709,7 @@ public class FleetApi {
 
         // create path and map variables
         String localVarPath = "/my/ships/{shipSymbol}/mounts/install"
-                .replace("{" + "shipSymbol" + "}", localVarApiClient.escapeString(shipSymbol));
+            .replace("{" + "shipSymbol" + "}", localVarApiClient.escapeString(shipSymbol));
 
         List<Pair> localVarQueryParams = new ArrayList<Pair>();
         List<Pair> localVarCollectionQueryParams = new ArrayList<Pair>();
@@ -2331,7 +2718,7 @@ public class FleetApi {
         Map<String, Object> localVarFormParams = new HashMap<String, Object>();
 
         final String[] localVarAccepts = {
-                "application/json"
+            "application/json"
         };
         final String localVarAccept = localVarApiClient.selectHeaderAccept(localVarAccepts);
         if (localVarAccept != null) {
@@ -2339,22 +2726,28 @@ public class FleetApi {
         }
 
         final String[] localVarContentTypes = {
-                "application/json"
+            "application/json"
         };
-        final String localVarContentType = localVarApiClient.selectHeaderContentType(localVarContentTypes);
+        final String localVarContentType = localVarApiClient.selectHeaderContentType(
+            localVarContentTypes);
         if (localVarContentType != null) {
             localVarHeaderParams.put("Content-Type", localVarContentType);
         }
 
         String[] localVarAuthNames = new String[]{"AgentToken"};
-        return localVarApiClient.buildCall(basePath, localVarPath, "POST", localVarQueryParams, localVarCollectionQueryParams, localVarPostBody, localVarHeaderParams, localVarCookieParams, localVarFormParams, localVarAuthNames, _callback);
+        return localVarApiClient.buildCall(basePath, localVarPath, "POST", localVarQueryParams,
+            localVarCollectionQueryParams, localVarPostBody, localVarHeaderParams,
+            localVarCookieParams, localVarFormParams, localVarAuthNames, _callback);
     }
 
     @SuppressWarnings("rawtypes")
-    private okhttp3.Call installMountValidateBeforeCall(@javax.annotation.Nonnull String shipSymbol, @javax.annotation.Nullable InstallMountRequest installMountRequest, final ApiCallback _callback) throws ApiException {
+    private okhttp3.Call installMountValidateBeforeCall(@javax.annotation.Nonnull String shipSymbol,
+        @javax.annotation.Nullable InstallMountRequest installMountRequest,
+        final ApiCallback _callback) throws ApiException {
         // verify the required parameter 'shipSymbol' is set
         if (shipSymbol == null) {
-            throw new ApiException("Missing the required parameter 'shipSymbol' when calling installMount(Async)");
+            throw new ApiException(
+                "Missing the required parameter 'shipSymbol' when calling installMount(Async)");
         }
 
         return installMountCall(shipSymbol, installMountRequest, _callback);
@@ -2362,63 +2755,80 @@ public class FleetApi {
     }
 
     /**
-     * Install Mount
-     * Install a mount on a ship.  In order to install a mount, the ship must be docked and located in a waypoint that has a &#x60;Shipyard&#x60; trait. The ship also must have the mount to install in its cargo hold.  An installation fee will be deduced by the Shipyard for installing the mount on the ship.
+     * Install Mount Install a mount on a ship.  In order to install a mount, the ship must be
+     * docked and located in a waypoint that has a &#x60;Shipyard&#x60; trait. The ship also must
+     * have the mount to install in its cargo hold.  An installation fee will be deduced by the
+     * Shipyard for installing the mount on the ship.
      *
      * @param shipSymbol          The ship&#39;s symbol. (required)
      * @param installMountRequest (optional)
      * @return InstallMount201Response
-     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
+     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the
+     *                      response body
      * @http.response.details <table border="1">
      * <caption>Response Details</caption>
      * <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
      * <tr><td> 201 </td><td> Successfully installed the mount. </td><td>  -  </td></tr>
      * </table>
      */
-    public InstallMount201Response installMount(@javax.annotation.Nonnull String shipSymbol, @javax.annotation.Nullable InstallMountRequest installMountRequest) throws ApiException {
-        ApiResponse<InstallMount201Response> localVarResp = installMountWithHttpInfo(shipSymbol, installMountRequest);
+    public InstallMount201Response installMount(@javax.annotation.Nonnull String shipSymbol,
+        @javax.annotation.Nullable InstallMountRequest installMountRequest) throws ApiException {
+        ApiResponse<InstallMount201Response> localVarResp = installMountWithHttpInfo(shipSymbol,
+            installMountRequest);
         return localVarResp.data();
     }
 
     /**
-     * Install Mount
-     * Install a mount on a ship.  In order to install a mount, the ship must be docked and located in a waypoint that has a &#x60;Shipyard&#x60; trait. The ship also must have the mount to install in its cargo hold.  An installation fee will be deduced by the Shipyard for installing the mount on the ship.
+     * Install Mount Install a mount on a ship.  In order to install a mount, the ship must be
+     * docked and located in a waypoint that has a &#x60;Shipyard&#x60; trait. The ship also must
+     * have the mount to install in its cargo hold.  An installation fee will be deduced by the
+     * Shipyard for installing the mount on the ship.
      *
      * @param shipSymbol          The ship&#39;s symbol. (required)
      * @param installMountRequest (optional)
      * @return ApiResponse&lt;InstallMount201Response&gt;
-     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
+     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the
+     *                      response body
      * @http.response.details <table border="1">
      * <caption>Response Details</caption>
      * <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
      * <tr><td> 201 </td><td> Successfully installed the mount. </td><td>  -  </td></tr>
      * </table>
      */
-    public ApiResponse<InstallMount201Response> installMountWithHttpInfo(@javax.annotation.Nonnull String shipSymbol, @javax.annotation.Nullable InstallMountRequest installMountRequest) throws ApiException {
-        okhttp3.Call localVarCall = installMountValidateBeforeCall(shipSymbol, installMountRequest, null);
+    public ApiResponse<InstallMount201Response> installMountWithHttpInfo(
+        @javax.annotation.Nonnull String shipSymbol,
+        @javax.annotation.Nullable InstallMountRequest installMountRequest) throws ApiException {
+        okhttp3.Call localVarCall = installMountValidateBeforeCall(shipSymbol, installMountRequest,
+            null);
         Type localVarReturnType = new TypeToken<InstallMount201Response>() {
         }.getType();
         return localVarApiClient.execute(localVarCall, localVarReturnType);
     }
 
     /**
-     * Install Mount (asynchronously)
-     * Install a mount on a ship.  In order to install a mount, the ship must be docked and located in a waypoint that has a &#x60;Shipyard&#x60; trait. The ship also must have the mount to install in its cargo hold.  An installation fee will be deduced by the Shipyard for installing the mount on the ship.
+     * Install Mount (asynchronously) Install a mount on a ship.  In order to install a mount, the
+     * ship must be docked and located in a waypoint that has a &#x60;Shipyard&#x60; trait. The ship
+     * also must have the mount to install in its cargo hold.  An installation fee will be deduced
+     * by the Shipyard for installing the mount on the ship.
      *
      * @param shipSymbol          The ship&#39;s symbol. (required)
      * @param installMountRequest (optional)
      * @param _callback           The callback to be executed when the API call finishes
      * @return The request call
-     * @throws ApiException If fail to process the API call, e.g. serializing the request body object
+     * @throws ApiException If fail to process the API call, e.g. serializing the request body
+     *                      object
      * @http.response.details <table border="1">
      * <caption>Response Details</caption>
      * <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
      * <tr><td> 201 </td><td> Successfully installed the mount. </td><td>  -  </td></tr>
      * </table>
      */
-    public okhttp3.Call installMountAsync(@javax.annotation.Nonnull String shipSymbol, @javax.annotation.Nullable InstallMountRequest installMountRequest, final ApiCallback<InstallMount201Response> _callback) throws ApiException {
+    public okhttp3.Call installMountAsync(@javax.annotation.Nonnull String shipSymbol,
+        @javax.annotation.Nullable InstallMountRequest installMountRequest,
+        final ApiCallback<InstallMount201Response> _callback) throws ApiException {
 
-        okhttp3.Call localVarCall = installMountValidateBeforeCall(shipSymbol, installMountRequest, _callback);
+        okhttp3.Call localVarCall = installMountValidateBeforeCall(shipSymbol, installMountRequest,
+            _callback);
         Type localVarReturnType = new TypeToken<InstallMount201Response>() {
         }.getType();
         localVarApiClient.executeAsync(localVarCall, localVarReturnType, _callback);
@@ -2436,10 +2846,13 @@ public class FleetApi {
      * @http.response.details <table border="1">
      * <caption>Response Details</caption>
      * <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-     * <tr><td> 201 </td><td> Successfully installed the module on the ship. </td><td>  -  </td></tr>
+     * <tr><td> 201 </td><td> Successfully installed the module on the ship. </td><td>  -
+     * </td></tr>
      * </table>
      */
-    public okhttp3.Call installShipModuleCall(@javax.annotation.Nonnull String shipSymbol, @javax.annotation.Nullable InstallShipModuleRequest installShipModuleRequest, final ApiCallback _callback) throws ApiException {
+    public okhttp3.Call installShipModuleCall(@javax.annotation.Nonnull String shipSymbol,
+        @javax.annotation.Nullable InstallShipModuleRequest installShipModuleRequest,
+        final ApiCallback _callback) throws ApiException {
         String basePath = null;
         // Operation Servers
         String[] localBasePaths = new String[]{};
@@ -2457,7 +2870,7 @@ public class FleetApi {
 
         // create path and map variables
         String localVarPath = "/my/ships/{shipSymbol}/modules/install"
-                .replace("{" + "shipSymbol" + "}", localVarApiClient.escapeString(shipSymbol));
+            .replace("{" + "shipSymbol" + "}", localVarApiClient.escapeString(shipSymbol));
 
         List<Pair> localVarQueryParams = new ArrayList<Pair>();
         List<Pair> localVarCollectionQueryParams = new ArrayList<Pair>();
@@ -2466,7 +2879,7 @@ public class FleetApi {
         Map<String, Object> localVarFormParams = new HashMap<String, Object>();
 
         final String[] localVarAccepts = {
-                "application/json"
+            "application/json"
         };
         final String localVarAccept = localVarApiClient.selectHeaderAccept(localVarAccepts);
         if (localVarAccept != null) {
@@ -2474,22 +2887,29 @@ public class FleetApi {
         }
 
         final String[] localVarContentTypes = {
-                "application/json"
+            "application/json"
         };
-        final String localVarContentType = localVarApiClient.selectHeaderContentType(localVarContentTypes);
+        final String localVarContentType = localVarApiClient.selectHeaderContentType(
+            localVarContentTypes);
         if (localVarContentType != null) {
             localVarHeaderParams.put("Content-Type", localVarContentType);
         }
 
         String[] localVarAuthNames = new String[]{"AccountToken", "AgentToken"};
-        return localVarApiClient.buildCall(basePath, localVarPath, "POST", localVarQueryParams, localVarCollectionQueryParams, localVarPostBody, localVarHeaderParams, localVarCookieParams, localVarFormParams, localVarAuthNames, _callback);
+        return localVarApiClient.buildCall(basePath, localVarPath, "POST", localVarQueryParams,
+            localVarCollectionQueryParams, localVarPostBody, localVarHeaderParams,
+            localVarCookieParams, localVarFormParams, localVarAuthNames, _callback);
     }
 
     @SuppressWarnings("rawtypes")
-    private okhttp3.Call installShipModuleValidateBeforeCall(@javax.annotation.Nonnull String shipSymbol, @javax.annotation.Nullable InstallShipModuleRequest installShipModuleRequest, final ApiCallback _callback) throws ApiException {
+    private okhttp3.Call installShipModuleValidateBeforeCall(
+        @javax.annotation.Nonnull String shipSymbol,
+        @javax.annotation.Nullable InstallShipModuleRequest installShipModuleRequest,
+        final ApiCallback _callback) throws ApiException {
         // verify the required parameter 'shipSymbol' is set
         if (shipSymbol == null) {
-            throw new ApiException("Missing the required parameter 'shipSymbol' when calling installShipModule(Async)");
+            throw new ApiException(
+                "Missing the required parameter 'shipSymbol' when calling installShipModule(Async)");
         }
 
         return installShipModuleCall(shipSymbol, installShipModuleRequest, _callback);
@@ -2497,63 +2917,78 @@ public class FleetApi {
     }
 
     /**
-     * Install Ship Module
-     * Install a module on a ship. The module must be in your cargo.
+     * Install Ship Module Install a module on a ship. The module must be in your cargo.
      *
      * @param shipSymbol               The symbol of the ship (required)
      * @param installShipModuleRequest (optional)
      * @return InstallShipModule201Response
-     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
+     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the
+     *                      response body
      * @http.response.details <table border="1">
      * <caption>Response Details</caption>
      * <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-     * <tr><td> 201 </td><td> Successfully installed the module on the ship. </td><td>  -  </td></tr>
+     * <tr><td> 201 </td><td> Successfully installed the module on the ship. </td><td>  -
+     * </td></tr>
      * </table>
      */
-    public InstallShipModule201Response installShipModule(@javax.annotation.Nonnull String shipSymbol, @javax.annotation.Nullable InstallShipModuleRequest installShipModuleRequest) throws ApiException {
-        ApiResponse<InstallShipModule201Response> localVarResp = installShipModuleWithHttpInfo(shipSymbol, installShipModuleRequest);
+    public InstallShipModule201Response installShipModule(
+        @javax.annotation.Nonnull String shipSymbol,
+        @javax.annotation.Nullable InstallShipModuleRequest installShipModuleRequest)
+        throws ApiException {
+        ApiResponse<InstallShipModule201Response> localVarResp = installShipModuleWithHttpInfo(
+            shipSymbol, installShipModuleRequest);
         return localVarResp.data();
     }
 
     /**
-     * Install Ship Module
-     * Install a module on a ship. The module must be in your cargo.
+     * Install Ship Module Install a module on a ship. The module must be in your cargo.
      *
      * @param shipSymbol               The symbol of the ship (required)
      * @param installShipModuleRequest (optional)
      * @return ApiResponse&lt;InstallShipModule201Response&gt;
-     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
+     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the
+     *                      response body
      * @http.response.details <table border="1">
      * <caption>Response Details</caption>
      * <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-     * <tr><td> 201 </td><td> Successfully installed the module on the ship. </td><td>  -  </td></tr>
+     * <tr><td> 201 </td><td> Successfully installed the module on the ship. </td><td>  -
+     * </td></tr>
      * </table>
      */
-    public ApiResponse<InstallShipModule201Response> installShipModuleWithHttpInfo(@javax.annotation.Nonnull String shipSymbol, @javax.annotation.Nullable InstallShipModuleRequest installShipModuleRequest) throws ApiException {
-        okhttp3.Call localVarCall = installShipModuleValidateBeforeCall(shipSymbol, installShipModuleRequest, null);
+    public ApiResponse<InstallShipModule201Response> installShipModuleWithHttpInfo(
+        @javax.annotation.Nonnull String shipSymbol,
+        @javax.annotation.Nullable InstallShipModuleRequest installShipModuleRequest)
+        throws ApiException {
+        okhttp3.Call localVarCall = installShipModuleValidateBeforeCall(shipSymbol,
+            installShipModuleRequest, null);
         Type localVarReturnType = new TypeToken<InstallShipModule201Response>() {
         }.getType();
         return localVarApiClient.execute(localVarCall, localVarReturnType);
     }
 
     /**
-     * Install Ship Module (asynchronously)
-     * Install a module on a ship. The module must be in your cargo.
+     * Install Ship Module (asynchronously) Install a module on a ship. The module must be in your
+     * cargo.
      *
      * @param shipSymbol               The symbol of the ship (required)
      * @param installShipModuleRequest (optional)
      * @param _callback                The callback to be executed when the API call finishes
      * @return The request call
-     * @throws ApiException If fail to process the API call, e.g. serializing the request body object
+     * @throws ApiException If fail to process the API call, e.g. serializing the request body
+     *                      object
      * @http.response.details <table border="1">
      * <caption>Response Details</caption>
      * <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-     * <tr><td> 201 </td><td> Successfully installed the module on the ship. </td><td>  -  </td></tr>
+     * <tr><td> 201 </td><td> Successfully installed the module on the ship. </td><td>  -
+     * </td></tr>
      * </table>
      */
-    public okhttp3.Call installShipModuleAsync(@javax.annotation.Nonnull String shipSymbol, @javax.annotation.Nullable InstallShipModuleRequest installShipModuleRequest, final ApiCallback<InstallShipModule201Response> _callback) throws ApiException {
+    public okhttp3.Call installShipModuleAsync(@javax.annotation.Nonnull String shipSymbol,
+        @javax.annotation.Nullable InstallShipModuleRequest installShipModuleRequest,
+        final ApiCallback<InstallShipModule201Response> _callback) throws ApiException {
 
-        okhttp3.Call localVarCall = installShipModuleValidateBeforeCall(shipSymbol, installShipModuleRequest, _callback);
+        okhttp3.Call localVarCall = installShipModuleValidateBeforeCall(shipSymbol,
+            installShipModuleRequest, _callback);
         Type localVarReturnType = new TypeToken<InstallShipModule201Response>() {
         }.getType();
         localVarApiClient.executeAsync(localVarCall, localVarReturnType, _callback);
@@ -2574,7 +3009,9 @@ public class FleetApi {
      * <tr><td> 200 </td><td> Jettison successful. </td><td>  -  </td></tr>
      * </table>
      */
-    public okhttp3.Call jettisonCall(@javax.annotation.Nonnull String shipSymbol, @javax.annotation.Nullable JettisonRequest jettisonRequest, final ApiCallback _callback) throws ApiException {
+    public okhttp3.Call jettisonCall(@javax.annotation.Nonnull String shipSymbol,
+        @javax.annotation.Nullable JettisonRequest jettisonRequest, final ApiCallback _callback)
+        throws ApiException {
         String basePath = null;
         // Operation Servers
         String[] localBasePaths = new String[]{};
@@ -2592,7 +3029,7 @@ public class FleetApi {
 
         // create path and map variables
         String localVarPath = "/my/ships/{shipSymbol}/jettison"
-                .replace("{" + "shipSymbol" + "}", localVarApiClient.escapeString(shipSymbol));
+            .replace("{" + "shipSymbol" + "}", localVarApiClient.escapeString(shipSymbol));
 
         List<Pair> localVarQueryParams = new ArrayList<Pair>();
         List<Pair> localVarCollectionQueryParams = new ArrayList<Pair>();
@@ -2601,7 +3038,7 @@ public class FleetApi {
         Map<String, Object> localVarFormParams = new HashMap<String, Object>();
 
         final String[] localVarAccepts = {
-                "application/json"
+            "application/json"
         };
         final String localVarAccept = localVarApiClient.selectHeaderAccept(localVarAccepts);
         if (localVarAccept != null) {
@@ -2609,22 +3046,28 @@ public class FleetApi {
         }
 
         final String[] localVarContentTypes = {
-                "application/json"
+            "application/json"
         };
-        final String localVarContentType = localVarApiClient.selectHeaderContentType(localVarContentTypes);
+        final String localVarContentType = localVarApiClient.selectHeaderContentType(
+            localVarContentTypes);
         if (localVarContentType != null) {
             localVarHeaderParams.put("Content-Type", localVarContentType);
         }
 
         String[] localVarAuthNames = new String[]{"AgentToken"};
-        return localVarApiClient.buildCall(basePath, localVarPath, "POST", localVarQueryParams, localVarCollectionQueryParams, localVarPostBody, localVarHeaderParams, localVarCookieParams, localVarFormParams, localVarAuthNames, _callback);
+        return localVarApiClient.buildCall(basePath, localVarPath, "POST", localVarQueryParams,
+            localVarCollectionQueryParams, localVarPostBody, localVarHeaderParams,
+            localVarCookieParams, localVarFormParams, localVarAuthNames, _callback);
     }
 
     @SuppressWarnings("rawtypes")
-    private okhttp3.Call jettisonValidateBeforeCall(@javax.annotation.Nonnull String shipSymbol, @javax.annotation.Nullable JettisonRequest jettisonRequest, final ApiCallback _callback) throws ApiException {
+    private okhttp3.Call jettisonValidateBeforeCall(@javax.annotation.Nonnull String shipSymbol,
+        @javax.annotation.Nullable JettisonRequest jettisonRequest, final ApiCallback _callback)
+        throws ApiException {
         // verify the required parameter 'shipSymbol' is set
         if (shipSymbol == null) {
-            throw new ApiException("Missing the required parameter 'shipSymbol' when calling jettison(Async)");
+            throw new ApiException(
+                "Missing the required parameter 'shipSymbol' when calling jettison(Async)");
         }
 
         return jettisonCall(shipSymbol, jettisonRequest, _callback);
@@ -2632,39 +3075,43 @@ public class FleetApi {
     }
 
     /**
-     * Jettison Cargo
-     * Jettison cargo from your ship&#39;s cargo hold.
+     * Jettison Cargo Jettison cargo from your ship&#39;s cargo hold.
      *
      * @param shipSymbol      The ship symbol. (required)
      * @param jettisonRequest (optional)
      * @return Jettison200Response
-     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
+     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the
+     *                      response body
      * @http.response.details <table border="1">
      * <caption>Response Details</caption>
      * <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
      * <tr><td> 200 </td><td> Jettison successful. </td><td>  -  </td></tr>
      * </table>
      */
-    public Jettison200Response jettison(@javax.annotation.Nonnull String shipSymbol, @javax.annotation.Nullable JettisonRequest jettisonRequest) throws ApiException {
-        ApiResponse<Jettison200Response> localVarResp = jettisonWithHttpInfo(shipSymbol, jettisonRequest);
+    public Jettison200Response jettison(@javax.annotation.Nonnull String shipSymbol,
+        @javax.annotation.Nullable JettisonRequest jettisonRequest) throws ApiException {
+        ApiResponse<Jettison200Response> localVarResp = jettisonWithHttpInfo(shipSymbol,
+            jettisonRequest);
         return localVarResp.data();
     }
 
     /**
-     * Jettison Cargo
-     * Jettison cargo from your ship&#39;s cargo hold.
+     * Jettison Cargo Jettison cargo from your ship&#39;s cargo hold.
      *
      * @param shipSymbol      The ship symbol. (required)
      * @param jettisonRequest (optional)
      * @return ApiResponse&lt;Jettison200Response&gt;
-     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
+     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the
+     *                      response body
      * @http.response.details <table border="1">
      * <caption>Response Details</caption>
      * <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
      * <tr><td> 200 </td><td> Jettison successful. </td><td>  -  </td></tr>
      * </table>
      */
-    public ApiResponse<Jettison200Response> jettisonWithHttpInfo(@javax.annotation.Nonnull String shipSymbol, @javax.annotation.Nullable JettisonRequest jettisonRequest) throws ApiException {
+    public ApiResponse<Jettison200Response> jettisonWithHttpInfo(
+        @javax.annotation.Nonnull String shipSymbol,
+        @javax.annotation.Nullable JettisonRequest jettisonRequest) throws ApiException {
         okhttp3.Call localVarCall = jettisonValidateBeforeCall(shipSymbol, jettisonRequest, null);
         Type localVarReturnType = new TypeToken<Jettison200Response>() {
         }.getType();
@@ -2672,23 +3119,26 @@ public class FleetApi {
     }
 
     /**
-     * Jettison Cargo (asynchronously)
-     * Jettison cargo from your ship&#39;s cargo hold.
+     * Jettison Cargo (asynchronously) Jettison cargo from your ship&#39;s cargo hold.
      *
      * @param shipSymbol      The ship symbol. (required)
      * @param jettisonRequest (optional)
      * @param _callback       The callback to be executed when the API call finishes
      * @return The request call
-     * @throws ApiException If fail to process the API call, e.g. serializing the request body object
+     * @throws ApiException If fail to process the API call, e.g. serializing the request body
+     *                      object
      * @http.response.details <table border="1">
      * <caption>Response Details</caption>
      * <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
      * <tr><td> 200 </td><td> Jettison successful. </td><td>  -  </td></tr>
      * </table>
      */
-    public okhttp3.Call jettisonAsync(@javax.annotation.Nonnull String shipSymbol, @javax.annotation.Nullable JettisonRequest jettisonRequest, final ApiCallback<Jettison200Response> _callback) throws ApiException {
+    public okhttp3.Call jettisonAsync(@javax.annotation.Nonnull String shipSymbol,
+        @javax.annotation.Nullable JettisonRequest jettisonRequest,
+        final ApiCallback<Jettison200Response> _callback) throws ApiException {
 
-        okhttp3.Call localVarCall = jettisonValidateBeforeCall(shipSymbol, jettisonRequest, _callback);
+        okhttp3.Call localVarCall = jettisonValidateBeforeCall(shipSymbol, jettisonRequest,
+            _callback);
         Type localVarReturnType = new TypeToken<Jettison200Response>() {
         }.getType();
         localVarApiClient.executeAsync(localVarCall, localVarReturnType, _callback);
@@ -2709,7 +3159,9 @@ public class FleetApi {
      * <tr><td> 200 </td><td> Jump successful. </td><td>  -  </td></tr>
      * </table>
      */
-    public okhttp3.Call jumpShipCall(@javax.annotation.Nonnull String shipSymbol, @javax.annotation.Nullable JumpShipRequest jumpShipRequest, final ApiCallback _callback) throws ApiException {
+    public okhttp3.Call jumpShipCall(@javax.annotation.Nonnull String shipSymbol,
+        @javax.annotation.Nullable JumpShipRequest jumpShipRequest, final ApiCallback _callback)
+        throws ApiException {
         String basePath = null;
         // Operation Servers
         String[] localBasePaths = new String[]{};
@@ -2727,7 +3179,7 @@ public class FleetApi {
 
         // create path and map variables
         String localVarPath = "/my/ships/{shipSymbol}/jump"
-                .replace("{" + "shipSymbol" + "}", localVarApiClient.escapeString(shipSymbol));
+            .replace("{" + "shipSymbol" + "}", localVarApiClient.escapeString(shipSymbol));
 
         List<Pair> localVarQueryParams = new ArrayList<Pair>();
         List<Pair> localVarCollectionQueryParams = new ArrayList<Pair>();
@@ -2736,7 +3188,7 @@ public class FleetApi {
         Map<String, Object> localVarFormParams = new HashMap<String, Object>();
 
         final String[] localVarAccepts = {
-                "application/json"
+            "application/json"
         };
         final String localVarAccept = localVarApiClient.selectHeaderAccept(localVarAccepts);
         if (localVarAccept != null) {
@@ -2744,22 +3196,28 @@ public class FleetApi {
         }
 
         final String[] localVarContentTypes = {
-                "application/json"
+            "application/json"
         };
-        final String localVarContentType = localVarApiClient.selectHeaderContentType(localVarContentTypes);
+        final String localVarContentType = localVarApiClient.selectHeaderContentType(
+            localVarContentTypes);
         if (localVarContentType != null) {
             localVarHeaderParams.put("Content-Type", localVarContentType);
         }
 
         String[] localVarAuthNames = new String[]{"AgentToken"};
-        return localVarApiClient.buildCall(basePath, localVarPath, "POST", localVarQueryParams, localVarCollectionQueryParams, localVarPostBody, localVarHeaderParams, localVarCookieParams, localVarFormParams, localVarAuthNames, _callback);
+        return localVarApiClient.buildCall(basePath, localVarPath, "POST", localVarQueryParams,
+            localVarCollectionQueryParams, localVarPostBody, localVarHeaderParams,
+            localVarCookieParams, localVarFormParams, localVarAuthNames, _callback);
     }
 
     @SuppressWarnings("rawtypes")
-    private okhttp3.Call jumpShipValidateBeforeCall(@javax.annotation.Nonnull String shipSymbol, @javax.annotation.Nullable JumpShipRequest jumpShipRequest, final ApiCallback _callback) throws ApiException {
+    private okhttp3.Call jumpShipValidateBeforeCall(@javax.annotation.Nonnull String shipSymbol,
+        @javax.annotation.Nullable JumpShipRequest jumpShipRequest, final ApiCallback _callback)
+        throws ApiException {
         // verify the required parameter 'shipSymbol' is set
         if (shipSymbol == null) {
-            throw new ApiException("Missing the required parameter 'shipSymbol' when calling jumpShip(Async)");
+            throw new ApiException(
+                "Missing the required parameter 'shipSymbol' when calling jumpShip(Async)");
         }
 
         return jumpShipCall(shipSymbol, jumpShipRequest, _callback);
@@ -2767,39 +3225,49 @@ public class FleetApi {
     }
 
     /**
-     * Jump Ship
-     * Jump your ship instantly to a target connected waypoint. The ship must be in orbit to execute a jump.  A unit of antimatter is purchased and consumed from the market when jumping. The price of antimatter is determined by the market and is subject to change. A ship can only jump to connected waypoints
+     * Jump Ship Jump your ship instantly to a target connected waypoint. The ship must be in orbit
+     * to execute a jump.  A unit of antimatter is purchased and consumed from the market when
+     * jumping. The price of antimatter is determined by the market and is subject to change. A ship
+     * can only jump to connected waypoints
      *
      * @param shipSymbol      The ship symbol. (required)
      * @param jumpShipRequest (optional)
      * @return JumpShip200Response
-     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
+     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the
+     *                      response body
      * @http.response.details <table border="1">
      * <caption>Response Details</caption>
      * <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
      * <tr><td> 200 </td><td> Jump successful. </td><td>  -  </td></tr>
      * </table>
      */
-    public JumpShip200Response jumpShip(@javax.annotation.Nonnull String shipSymbol, @javax.annotation.Nullable JumpShipRequest jumpShipRequest) throws ApiException {
-        ApiResponse<JumpShip200Response> localVarResp = jumpShipWithHttpInfo(shipSymbol, jumpShipRequest);
+    public JumpShip200Response jumpShip(@javax.annotation.Nonnull String shipSymbol,
+        @javax.annotation.Nullable JumpShipRequest jumpShipRequest) throws ApiException {
+        ApiResponse<JumpShip200Response> localVarResp = jumpShipWithHttpInfo(shipSymbol,
+            jumpShipRequest);
         return localVarResp.data();
     }
 
     /**
-     * Jump Ship
-     * Jump your ship instantly to a target connected waypoint. The ship must be in orbit to execute a jump.  A unit of antimatter is purchased and consumed from the market when jumping. The price of antimatter is determined by the market and is subject to change. A ship can only jump to connected waypoints
+     * Jump Ship Jump your ship instantly to a target connected waypoint. The ship must be in orbit
+     * to execute a jump.  A unit of antimatter is purchased and consumed from the market when
+     * jumping. The price of antimatter is determined by the market and is subject to change. A ship
+     * can only jump to connected waypoints
      *
      * @param shipSymbol      The ship symbol. (required)
      * @param jumpShipRequest (optional)
      * @return ApiResponse&lt;JumpShip200Response&gt;
-     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
+     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the
+     *                      response body
      * @http.response.details <table border="1">
      * <caption>Response Details</caption>
      * <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
      * <tr><td> 200 </td><td> Jump successful. </td><td>  -  </td></tr>
      * </table>
      */
-    public ApiResponse<JumpShip200Response> jumpShipWithHttpInfo(@javax.annotation.Nonnull String shipSymbol, @javax.annotation.Nullable JumpShipRequest jumpShipRequest) throws ApiException {
+    public ApiResponse<JumpShip200Response> jumpShipWithHttpInfo(
+        @javax.annotation.Nonnull String shipSymbol,
+        @javax.annotation.Nullable JumpShipRequest jumpShipRequest) throws ApiException {
         okhttp3.Call localVarCall = jumpShipValidateBeforeCall(shipSymbol, jumpShipRequest, null);
         Type localVarReturnType = new TypeToken<JumpShip200Response>() {
         }.getType();
@@ -2807,23 +3275,29 @@ public class FleetApi {
     }
 
     /**
-     * Jump Ship (asynchronously)
-     * Jump your ship instantly to a target connected waypoint. The ship must be in orbit to execute a jump.  A unit of antimatter is purchased and consumed from the market when jumping. The price of antimatter is determined by the market and is subject to change. A ship can only jump to connected waypoints
+     * Jump Ship (asynchronously) Jump your ship instantly to a target connected waypoint. The ship
+     * must be in orbit to execute a jump.  A unit of antimatter is purchased and consumed from the
+     * market when jumping. The price of antimatter is determined by the market and is subject to
+     * change. A ship can only jump to connected waypoints
      *
      * @param shipSymbol      The ship symbol. (required)
      * @param jumpShipRequest (optional)
      * @param _callback       The callback to be executed when the API call finishes
      * @return The request call
-     * @throws ApiException If fail to process the API call, e.g. serializing the request body object
+     * @throws ApiException If fail to process the API call, e.g. serializing the request body
+     *                      object
      * @http.response.details <table border="1">
      * <caption>Response Details</caption>
      * <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
      * <tr><td> 200 </td><td> Jump successful. </td><td>  -  </td></tr>
      * </table>
      */
-    public okhttp3.Call jumpShipAsync(@javax.annotation.Nonnull String shipSymbol, @javax.annotation.Nullable JumpShipRequest jumpShipRequest, final ApiCallback<JumpShip200Response> _callback) throws ApiException {
+    public okhttp3.Call jumpShipAsync(@javax.annotation.Nonnull String shipSymbol,
+        @javax.annotation.Nullable JumpShipRequest jumpShipRequest,
+        final ApiCallback<JumpShip200Response> _callback) throws ApiException {
 
-        okhttp3.Call localVarCall = jumpShipValidateBeforeCall(shipSymbol, jumpShipRequest, _callback);
+        okhttp3.Call localVarCall = jumpShipValidateBeforeCall(shipSymbol, jumpShipRequest,
+            _callback);
         Type localVarReturnType = new TypeToken<JumpShip200Response>() {
         }.getType();
         localVarApiClient.executeAsync(localVarCall, localVarReturnType, _callback);
@@ -2841,10 +3315,14 @@ public class FleetApi {
      * @http.response.details <table border="1">
      * <caption>Response Details</caption>
      * <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-     * <tr><td> 200 </td><td> The successful transit information including the route details and changes to ship fuel. The route includes the expected time of arrival. </td><td>  -  </td></tr>
+     * <tr><td> 200 </td><td> The successful transit information including the route details and
+     * changes to ship fuel. The route includes the expected time of arrival. </td><td>  -
+     * </td></tr>
      * </table>
      */
-    public okhttp3.Call navigateShipCall(@javax.annotation.Nonnull String shipSymbol, @javax.annotation.Nullable NavigateShipRequest navigateShipRequest, final ApiCallback _callback) throws ApiException {
+    public okhttp3.Call navigateShipCall(@javax.annotation.Nonnull String shipSymbol,
+        @javax.annotation.Nullable NavigateShipRequest navigateShipRequest,
+        final ApiCallback _callback) throws ApiException {
         String basePath = null;
         // Operation Servers
         String[] localBasePaths = new String[]{};
@@ -2862,7 +3340,7 @@ public class FleetApi {
 
         // create path and map variables
         String localVarPath = "/my/ships/{shipSymbol}/navigate"
-                .replace("{" + "shipSymbol" + "}", localVarApiClient.escapeString(shipSymbol));
+            .replace("{" + "shipSymbol" + "}", localVarApiClient.escapeString(shipSymbol));
 
         List<Pair> localVarQueryParams = new ArrayList<Pair>();
         List<Pair> localVarCollectionQueryParams = new ArrayList<Pair>();
@@ -2871,7 +3349,7 @@ public class FleetApi {
         Map<String, Object> localVarFormParams = new HashMap<String, Object>();
 
         final String[] localVarAccepts = {
-                "application/json"
+            "application/json"
         };
         final String localVarAccept = localVarApiClient.selectHeaderAccept(localVarAccepts);
         if (localVarAccept != null) {
@@ -2879,22 +3357,28 @@ public class FleetApi {
         }
 
         final String[] localVarContentTypes = {
-                "application/json"
+            "application/json"
         };
-        final String localVarContentType = localVarApiClient.selectHeaderContentType(localVarContentTypes);
+        final String localVarContentType = localVarApiClient.selectHeaderContentType(
+            localVarContentTypes);
         if (localVarContentType != null) {
             localVarHeaderParams.put("Content-Type", localVarContentType);
         }
 
         String[] localVarAuthNames = new String[]{"AgentToken"};
-        return localVarApiClient.buildCall(basePath, localVarPath, "POST", localVarQueryParams, localVarCollectionQueryParams, localVarPostBody, localVarHeaderParams, localVarCookieParams, localVarFormParams, localVarAuthNames, _callback);
+        return localVarApiClient.buildCall(basePath, localVarPath, "POST", localVarQueryParams,
+            localVarCollectionQueryParams, localVarPostBody, localVarHeaderParams,
+            localVarCookieParams, localVarFormParams, localVarAuthNames, _callback);
     }
 
     @SuppressWarnings("rawtypes")
-    private okhttp3.Call navigateShipValidateBeforeCall(@javax.annotation.Nonnull String shipSymbol, @javax.annotation.Nullable NavigateShipRequest navigateShipRequest, final ApiCallback _callback) throws ApiException {
+    private okhttp3.Call navigateShipValidateBeforeCall(@javax.annotation.Nonnull String shipSymbol,
+        @javax.annotation.Nullable NavigateShipRequest navigateShipRequest,
+        final ApiCallback _callback) throws ApiException {
         // verify the required parameter 'shipSymbol' is set
         if (shipSymbol == null) {
-            throw new ApiException("Missing the required parameter 'shipSymbol' when calling navigateShip(Async)");
+            throw new ApiException(
+                "Missing the required parameter 'shipSymbol' when calling navigateShip(Async)");
         }
 
         return navigateShipCall(shipSymbol, navigateShipRequest, _callback);
@@ -2902,63 +3386,95 @@ public class FleetApi {
     }
 
     /**
-     * Navigate Ship
-     * Navigate to a target destination. The ship must be in orbit to use this function. The destination waypoint must be within the same system as the ship&#39;s current location. Navigating will consume the necessary fuel from the ship&#39;s manifest based on the distance to the target waypoint.  The returned response will detail the route information including the expected time of arrival. Most ship actions are unavailable until the ship has arrived at it&#39;s destination.  To travel between systems, see the ship&#39;s Warp or Jump actions.
+     * Navigate Ship Navigate to a target destination. The ship must be in orbit to use this
+     * function. The destination waypoint must be within the same system as the ship&#39;s current
+     * location. Navigating will consume the necessary fuel from the ship&#39;s manifest based on
+     * the distance to the target waypoint.  The returned response will detail the route information
+     * including the expected time of arrival. Most ship actions are unavailable until the ship has
+     * arrived at it&#39;s destination.  To travel between systems, see the ship&#39;s Warp or Jump
+     * actions.
      *
      * @param shipSymbol          The ship symbol. (required)
      * @param navigateShipRequest (optional)
      * @return NavigateShip200Response
-     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
+     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the
+     *                      response body
      * @http.response.details <table border="1">
      * <caption>Response Details</caption>
      * <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-     * <tr><td> 200 </td><td> The successful transit information including the route details and changes to ship fuel. The route includes the expected time of arrival. </td><td>  -  </td></tr>
+     * <tr><td> 200 </td><td> The successful transit information including the route details and
+     * changes to ship fuel. The route includes the expected time of arrival. </td><td>  -
+     * </td></tr>
      * </table>
      */
-    public NavigateShip200Response navigateShip(@javax.annotation.Nonnull String shipSymbol, @javax.annotation.Nullable NavigateShipRequest navigateShipRequest) throws ApiException {
-        ApiResponse<NavigateShip200Response> localVarResp = navigateShipWithHttpInfo(shipSymbol, navigateShipRequest);
+    public NavigateShip200Response navigateShip(@javax.annotation.Nonnull String shipSymbol,
+        @javax.annotation.Nullable NavigateShipRequest navigateShipRequest) throws ApiException {
+        ApiResponse<NavigateShip200Response> localVarResp = navigateShipWithHttpInfo(shipSymbol,
+            navigateShipRequest);
         return localVarResp.data();
     }
 
     /**
-     * Navigate Ship
-     * Navigate to a target destination. The ship must be in orbit to use this function. The destination waypoint must be within the same system as the ship&#39;s current location. Navigating will consume the necessary fuel from the ship&#39;s manifest based on the distance to the target waypoint.  The returned response will detail the route information including the expected time of arrival. Most ship actions are unavailable until the ship has arrived at it&#39;s destination.  To travel between systems, see the ship&#39;s Warp or Jump actions.
+     * Navigate Ship Navigate to a target destination. The ship must be in orbit to use this
+     * function. The destination waypoint must be within the same system as the ship&#39;s current
+     * location. Navigating will consume the necessary fuel from the ship&#39;s manifest based on
+     * the distance to the target waypoint.  The returned response will detail the route information
+     * including the expected time of arrival. Most ship actions are unavailable until the ship has
+     * arrived at it&#39;s destination.  To travel between systems, see the ship&#39;s Warp or Jump
+     * actions.
      *
      * @param shipSymbol          The ship symbol. (required)
      * @param navigateShipRequest (optional)
      * @return ApiResponse&lt;NavigateShip200Response&gt;
-     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
+     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the
+     *                      response body
      * @http.response.details <table border="1">
      * <caption>Response Details</caption>
      * <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-     * <tr><td> 200 </td><td> The successful transit information including the route details and changes to ship fuel. The route includes the expected time of arrival. </td><td>  -  </td></tr>
+     * <tr><td> 200 </td><td> The successful transit information including the route details and
+     * changes to ship fuel. The route includes the expected time of arrival. </td><td>  -
+     * </td></tr>
      * </table>
      */
-    public ApiResponse<NavigateShip200Response> navigateShipWithHttpInfo(@javax.annotation.Nonnull String shipSymbol, @javax.annotation.Nullable NavigateShipRequest navigateShipRequest) throws ApiException {
-        okhttp3.Call localVarCall = navigateShipValidateBeforeCall(shipSymbol, navigateShipRequest, null);
+    public ApiResponse<NavigateShip200Response> navigateShipWithHttpInfo(
+        @javax.annotation.Nonnull String shipSymbol,
+        @javax.annotation.Nullable NavigateShipRequest navigateShipRequest) throws ApiException {
+        okhttp3.Call localVarCall = navigateShipValidateBeforeCall(shipSymbol, navigateShipRequest,
+            null);
         Type localVarReturnType = new TypeToken<NavigateShip200Response>() {
         }.getType();
         return localVarApiClient.execute(localVarCall, localVarReturnType);
     }
 
     /**
-     * Navigate Ship (asynchronously)
-     * Navigate to a target destination. The ship must be in orbit to use this function. The destination waypoint must be within the same system as the ship&#39;s current location. Navigating will consume the necessary fuel from the ship&#39;s manifest based on the distance to the target waypoint.  The returned response will detail the route information including the expected time of arrival. Most ship actions are unavailable until the ship has arrived at it&#39;s destination.  To travel between systems, see the ship&#39;s Warp or Jump actions.
+     * Navigate Ship (asynchronously) Navigate to a target destination. The ship must be in orbit to
+     * use this function. The destination waypoint must be within the same system as the ship&#39;s
+     * current location. Navigating will consume the necessary fuel from the ship&#39;s manifest
+     * based on the distance to the target waypoint.  The returned response will detail the route
+     * information including the expected time of arrival. Most ship actions are unavailable until
+     * the ship has arrived at it&#39;s destination.  To travel between systems, see the ship&#39;s
+     * Warp or Jump actions.
      *
      * @param shipSymbol          The ship symbol. (required)
      * @param navigateShipRequest (optional)
      * @param _callback           The callback to be executed when the API call finishes
      * @return The request call
-     * @throws ApiException If fail to process the API call, e.g. serializing the request body object
+     * @throws ApiException If fail to process the API call, e.g. serializing the request body
+     *                      object
      * @http.response.details <table border="1">
      * <caption>Response Details</caption>
      * <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-     * <tr><td> 200 </td><td> The successful transit information including the route details and changes to ship fuel. The route includes the expected time of arrival. </td><td>  -  </td></tr>
+     * <tr><td> 200 </td><td> The successful transit information including the route details and
+     * changes to ship fuel. The route includes the expected time of arrival. </td><td>  -
+     * </td></tr>
      * </table>
      */
-    public okhttp3.Call navigateShipAsync(@javax.annotation.Nonnull String shipSymbol, @javax.annotation.Nullable NavigateShipRequest navigateShipRequest, final ApiCallback<NavigateShip200Response> _callback) throws ApiException {
+    public okhttp3.Call navigateShipAsync(@javax.annotation.Nonnull String shipSymbol,
+        @javax.annotation.Nullable NavigateShipRequest navigateShipRequest,
+        final ApiCallback<NavigateShip200Response> _callback) throws ApiException {
 
-        okhttp3.Call localVarCall = navigateShipValidateBeforeCall(shipSymbol, navigateShipRequest, _callback);
+        okhttp3.Call localVarCall = navigateShipValidateBeforeCall(shipSymbol, navigateShipRequest,
+            _callback);
         Type localVarReturnType = new TypeToken<NavigateShip200Response>() {
         }.getType();
         localVarApiClient.executeAsync(localVarCall, localVarReturnType, _callback);
@@ -2978,7 +3494,8 @@ public class FleetApi {
      * <tr><td> 201 </td><td> Successfully negotiated a new contract. </td><td>  -  </td></tr>
      * </table>
      */
-    public okhttp3.Call negotiateContractCall(@javax.annotation.Nonnull String shipSymbol, final ApiCallback _callback) throws ApiException {
+    public okhttp3.Call negotiateContractCall(@javax.annotation.Nonnull String shipSymbol,
+        final ApiCallback _callback) throws ApiException {
         String basePath = null;
         // Operation Servers
         String[] localBasePaths = new String[]{};
@@ -2996,7 +3513,7 @@ public class FleetApi {
 
         // create path and map variables
         String localVarPath = "/my/ships/{shipSymbol}/negotiate/contract"
-                .replace("{" + "shipSymbol" + "}", localVarApiClient.escapeString(shipSymbol));
+            .replace("{" + "shipSymbol" + "}", localVarApiClient.escapeString(shipSymbol));
 
         List<Pair> localVarQueryParams = new ArrayList<Pair>();
         List<Pair> localVarCollectionQueryParams = new ArrayList<Pair>();
@@ -3005,7 +3522,7 @@ public class FleetApi {
         Map<String, Object> localVarFormParams = new HashMap<String, Object>();
 
         final String[] localVarAccepts = {
-                "application/json"
+            "application/json"
         };
         final String localVarAccept = localVarApiClient.selectHeaderAccept(localVarAccepts);
         if (localVarAccept != null) {
@@ -3014,20 +3531,26 @@ public class FleetApi {
 
         final String[] localVarContentTypes = {
         };
-        final String localVarContentType = localVarApiClient.selectHeaderContentType(localVarContentTypes);
+        final String localVarContentType = localVarApiClient.selectHeaderContentType(
+            localVarContentTypes);
         if (localVarContentType != null) {
             localVarHeaderParams.put("Content-Type", localVarContentType);
         }
 
         String[] localVarAuthNames = new String[]{"AgentToken"};
-        return localVarApiClient.buildCall(basePath, localVarPath, "POST", localVarQueryParams, localVarCollectionQueryParams, localVarPostBody, localVarHeaderParams, localVarCookieParams, localVarFormParams, localVarAuthNames, _callback);
+        return localVarApiClient.buildCall(basePath, localVarPath, "POST", localVarQueryParams,
+            localVarCollectionQueryParams, localVarPostBody, localVarHeaderParams,
+            localVarCookieParams, localVarFormParams, localVarAuthNames, _callback);
     }
 
     @SuppressWarnings("rawtypes")
-    private okhttp3.Call negotiateContractValidateBeforeCall(@javax.annotation.Nonnull String shipSymbol, final ApiCallback _callback) throws ApiException {
+    private okhttp3.Call negotiateContractValidateBeforeCall(
+        @javax.annotation.Nonnull String shipSymbol, final ApiCallback _callback)
+        throws ApiException {
         // verify the required parameter 'shipSymbol' is set
         if (shipSymbol == null) {
-            throw new ApiException("Missing the required parameter 'shipSymbol' when calling negotiateContract(Async)");
+            throw new ApiException(
+                "Missing the required parameter 'shipSymbol' when calling negotiateContract(Async)");
         }
 
         return negotiateContractCall(shipSymbol, _callback);
@@ -3035,37 +3558,50 @@ public class FleetApi {
     }
 
     /**
-     * Negotiate Contract
-     * Negotiate a new contract with the HQ.  In order to negotiate a new contract, an agent must not have ongoing or offered contracts over the allowed maximum amount. Currently the maximum contracts an agent can have at a time is 1.  Once a contract is negotiated, it is added to the list of contracts offered to the agent, which the agent can then accept.   The ship must be present at any waypoint with a faction present to negotiate a contract with that faction.
+     * Negotiate Contract Negotiate a new contract with the HQ.  In order to negotiate a new
+     * contract, an agent must not have ongoing or offered contracts over the allowed maximum
+     * amount. Currently the maximum contracts an agent can have at a time is 1.  Once a contract is
+     * negotiated, it is added to the list of contracts offered to the agent, which the agent can
+     * then accept.   The ship must be present at any waypoint with a faction present to negotiate a
+     * contract with that faction.
      *
      * @param shipSymbol The ship&#39;s symbol. (required)
      * @return NegotiateContract200Response
-     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
+     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the
+     *                      response body
      * @http.response.details <table border="1">
      * <caption>Response Details</caption>
      * <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
      * <tr><td> 201 </td><td> Successfully negotiated a new contract. </td><td>  -  </td></tr>
      * </table>
      */
-    public NegotiateContract200Response negotiateContract(@javax.annotation.Nonnull String shipSymbol) throws ApiException {
-        ApiResponse<NegotiateContract200Response> localVarResp = negotiateContractWithHttpInfo(shipSymbol);
+    public NegotiateContract200Response negotiateContract(
+        @javax.annotation.Nonnull String shipSymbol) throws ApiException {
+        ApiResponse<NegotiateContract200Response> localVarResp = negotiateContractWithHttpInfo(
+            shipSymbol);
         return localVarResp.data();
     }
 
     /**
-     * Negotiate Contract
-     * Negotiate a new contract with the HQ.  In order to negotiate a new contract, an agent must not have ongoing or offered contracts over the allowed maximum amount. Currently the maximum contracts an agent can have at a time is 1.  Once a contract is negotiated, it is added to the list of contracts offered to the agent, which the agent can then accept.   The ship must be present at any waypoint with a faction present to negotiate a contract with that faction.
+     * Negotiate Contract Negotiate a new contract with the HQ.  In order to negotiate a new
+     * contract, an agent must not have ongoing or offered contracts over the allowed maximum
+     * amount. Currently the maximum contracts an agent can have at a time is 1.  Once a contract is
+     * negotiated, it is added to the list of contracts offered to the agent, which the agent can
+     * then accept.   The ship must be present at any waypoint with a faction present to negotiate a
+     * contract with that faction.
      *
      * @param shipSymbol The ship&#39;s symbol. (required)
      * @return ApiResponse&lt;NegotiateContract200Response&gt;
-     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
+     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the
+     *                      response body
      * @http.response.details <table border="1">
      * <caption>Response Details</caption>
      * <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
      * <tr><td> 201 </td><td> Successfully negotiated a new contract. </td><td>  -  </td></tr>
      * </table>
      */
-    public ApiResponse<NegotiateContract200Response> negotiateContractWithHttpInfo(@javax.annotation.Nonnull String shipSymbol) throws ApiException {
+    public ApiResponse<NegotiateContract200Response> negotiateContractWithHttpInfo(
+        @javax.annotation.Nonnull String shipSymbol) throws ApiException {
         okhttp3.Call localVarCall = negotiateContractValidateBeforeCall(shipSymbol, null);
         Type localVarReturnType = new TypeToken<NegotiateContract200Response>() {
         }.getType();
@@ -3073,20 +3609,26 @@ public class FleetApi {
     }
 
     /**
-     * Negotiate Contract (asynchronously)
-     * Negotiate a new contract with the HQ.  In order to negotiate a new contract, an agent must not have ongoing or offered contracts over the allowed maximum amount. Currently the maximum contracts an agent can have at a time is 1.  Once a contract is negotiated, it is added to the list of contracts offered to the agent, which the agent can then accept.   The ship must be present at any waypoint with a faction present to negotiate a contract with that faction.
+     * Negotiate Contract (asynchronously) Negotiate a new contract with the HQ.  In order to
+     * negotiate a new contract, an agent must not have ongoing or offered contracts over the
+     * allowed maximum amount. Currently the maximum contracts an agent can have at a time is 1.
+     * Once a contract is negotiated, it is added to the list of contracts offered to the agent,
+     * which the agent can then accept.   The ship must be present at any waypoint with a faction
+     * present to negotiate a contract with that faction.
      *
      * @param shipSymbol The ship&#39;s symbol. (required)
      * @param _callback  The callback to be executed when the API call finishes
      * @return The request call
-     * @throws ApiException If fail to process the API call, e.g. serializing the request body object
+     * @throws ApiException If fail to process the API call, e.g. serializing the request body
+     *                      object
      * @http.response.details <table border="1">
      * <caption>Response Details</caption>
      * <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
      * <tr><td> 201 </td><td> Successfully negotiated a new contract. </td><td>  -  </td></tr>
      * </table>
      */
-    public okhttp3.Call negotiateContractAsync(@javax.annotation.Nonnull String shipSymbol, final ApiCallback<NegotiateContract200Response> _callback) throws ApiException {
+    public okhttp3.Call negotiateContractAsync(@javax.annotation.Nonnull String shipSymbol,
+        final ApiCallback<NegotiateContract200Response> _callback) throws ApiException {
 
         okhttp3.Call localVarCall = negotiateContractValidateBeforeCall(shipSymbol, _callback);
         Type localVarReturnType = new TypeToken<NegotiateContract200Response>() {
@@ -3105,10 +3647,12 @@ public class FleetApi {
      * @http.response.details <table border="1">
      * <caption>Response Details</caption>
      * <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-     * <tr><td> 200 </td><td> The ship has successfully moved into orbit at its current location. </td><td>  -  </td></tr>
+     * <tr><td> 200 </td><td> The ship has successfully moved into orbit at its current location.
+     * </td><td>  -  </td></tr>
      * </table>
      */
-    public okhttp3.Call orbitShipCall(@javax.annotation.Nonnull String shipSymbol, final ApiCallback _callback) throws ApiException {
+    public okhttp3.Call orbitShipCall(@javax.annotation.Nonnull String shipSymbol,
+        final ApiCallback _callback) throws ApiException {
         String basePath = null;
         // Operation Servers
         String[] localBasePaths = new String[]{};
@@ -3126,7 +3670,7 @@ public class FleetApi {
 
         // create path and map variables
         String localVarPath = "/my/ships/{shipSymbol}/orbit"
-                .replace("{" + "shipSymbol" + "}", localVarApiClient.escapeString(shipSymbol));
+            .replace("{" + "shipSymbol" + "}", localVarApiClient.escapeString(shipSymbol));
 
         List<Pair> localVarQueryParams = new ArrayList<Pair>();
         List<Pair> localVarCollectionQueryParams = new ArrayList<Pair>();
@@ -3135,7 +3679,7 @@ public class FleetApi {
         Map<String, Object> localVarFormParams = new HashMap<String, Object>();
 
         final String[] localVarAccepts = {
-                "application/json"
+            "application/json"
         };
         final String localVarAccept = localVarApiClient.selectHeaderAccept(localVarAccepts);
         if (localVarAccept != null) {
@@ -3144,20 +3688,25 @@ public class FleetApi {
 
         final String[] localVarContentTypes = {
         };
-        final String localVarContentType = localVarApiClient.selectHeaderContentType(localVarContentTypes);
+        final String localVarContentType = localVarApiClient.selectHeaderContentType(
+            localVarContentTypes);
         if (localVarContentType != null) {
             localVarHeaderParams.put("Content-Type", localVarContentType);
         }
 
         String[] localVarAuthNames = new String[]{"AgentToken"};
-        return localVarApiClient.buildCall(basePath, localVarPath, "POST", localVarQueryParams, localVarCollectionQueryParams, localVarPostBody, localVarHeaderParams, localVarCookieParams, localVarFormParams, localVarAuthNames, _callback);
+        return localVarApiClient.buildCall(basePath, localVarPath, "POST", localVarQueryParams,
+            localVarCollectionQueryParams, localVarPostBody, localVarHeaderParams,
+            localVarCookieParams, localVarFormParams, localVarAuthNames, _callback);
     }
 
     @SuppressWarnings("rawtypes")
-    private okhttp3.Call orbitShipValidateBeforeCall(@javax.annotation.Nonnull String shipSymbol, final ApiCallback _callback) throws ApiException {
+    private okhttp3.Call orbitShipValidateBeforeCall(@javax.annotation.Nonnull String shipSymbol,
+        final ApiCallback _callback) throws ApiException {
         // verify the required parameter 'shipSymbol' is set
         if (shipSymbol == null) {
-            throw new ApiException("Missing the required parameter 'shipSymbol' when calling orbitShip(Async)");
+            throw new ApiException(
+                "Missing the required parameter 'shipSymbol' when calling orbitShip(Async)");
         }
 
         return orbitShipCall(shipSymbol, _callback);
@@ -3165,37 +3714,51 @@ public class FleetApi {
     }
 
     /**
-     * Orbit Ship
-     * Attempt to move your ship into orbit at its current location. The request will only succeed if your ship is capable of moving into orbit at the time of the request.  Orbiting ships are able to do actions that require the ship to be above surface such as navigating or extracting, but cannot access elements in their current waypoint, such as the market or a shipyard.  The endpoint is idempotent - successive calls will succeed even if the ship is already in orbit.
+     * Orbit Ship Attempt to move your ship into orbit at its current location. The request will
+     * only succeed if your ship is capable of moving into orbit at the time of the request.
+     * Orbiting ships are able to do actions that require the ship to be above surface such as
+     * navigating or extracting, but cannot access elements in their current waypoint, such as the
+     * market or a shipyard.  The endpoint is idempotent - successive calls will succeed even if the
+     * ship is already in orbit.
      *
      * @param shipSymbol The symbol of the ship. (required)
      * @return OrbitShip200Response
-     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
+     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the
+     *                      response body
      * @http.response.details <table border="1">
      * <caption>Response Details</caption>
      * <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-     * <tr><td> 200 </td><td> The ship has successfully moved into orbit at its current location. </td><td>  -  </td></tr>
+     * <tr><td> 200 </td><td> The ship has successfully moved into orbit at its current location.
+     * </td><td>  -  </td></tr>
      * </table>
      */
-    public OrbitShip200Response orbitShip(@javax.annotation.Nonnull String shipSymbol) throws ApiException {
+    public OrbitShip200Response orbitShip(@javax.annotation.Nonnull String shipSymbol)
+        throws ApiException {
         ApiResponse<OrbitShip200Response> localVarResp = orbitShipWithHttpInfo(shipSymbol);
         return localVarResp.data();
     }
 
     /**
-     * Orbit Ship
-     * Attempt to move your ship into orbit at its current location. The request will only succeed if your ship is capable of moving into orbit at the time of the request.  Orbiting ships are able to do actions that require the ship to be above surface such as navigating or extracting, but cannot access elements in their current waypoint, such as the market or a shipyard.  The endpoint is idempotent - successive calls will succeed even if the ship is already in orbit.
+     * Orbit Ship Attempt to move your ship into orbit at its current location. The request will
+     * only succeed if your ship is capable of moving into orbit at the time of the request.
+     * Orbiting ships are able to do actions that require the ship to be above surface such as
+     * navigating or extracting, but cannot access elements in their current waypoint, such as the
+     * market or a shipyard.  The endpoint is idempotent - successive calls will succeed even if the
+     * ship is already in orbit.
      *
      * @param shipSymbol The symbol of the ship. (required)
      * @return ApiResponse&lt;OrbitShip200Response&gt;
-     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
+     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the
+     *                      response body
      * @http.response.details <table border="1">
      * <caption>Response Details</caption>
      * <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-     * <tr><td> 200 </td><td> The ship has successfully moved into orbit at its current location. </td><td>  -  </td></tr>
+     * <tr><td> 200 </td><td> The ship has successfully moved into orbit at its current location.
+     * </td><td>  -  </td></tr>
      * </table>
      */
-    public ApiResponse<OrbitShip200Response> orbitShipWithHttpInfo(@javax.annotation.Nonnull String shipSymbol) throws ApiException {
+    public ApiResponse<OrbitShip200Response> orbitShipWithHttpInfo(
+        @javax.annotation.Nonnull String shipSymbol) throws ApiException {
         okhttp3.Call localVarCall = orbitShipValidateBeforeCall(shipSymbol, null);
         Type localVarReturnType = new TypeToken<OrbitShip200Response>() {
         }.getType();
@@ -3203,20 +3766,27 @@ public class FleetApi {
     }
 
     /**
-     * Orbit Ship (asynchronously)
-     * Attempt to move your ship into orbit at its current location. The request will only succeed if your ship is capable of moving into orbit at the time of the request.  Orbiting ships are able to do actions that require the ship to be above surface such as navigating or extracting, but cannot access elements in their current waypoint, such as the market or a shipyard.  The endpoint is idempotent - successive calls will succeed even if the ship is already in orbit.
+     * Orbit Ship (asynchronously) Attempt to move your ship into orbit at its current location. The
+     * request will only succeed if your ship is capable of moving into orbit at the time of the
+     * request.  Orbiting ships are able to do actions that require the ship to be above surface
+     * such as navigating or extracting, but cannot access elements in their current waypoint, such
+     * as the market or a shipyard.  The endpoint is idempotent - successive calls will succeed even
+     * if the ship is already in orbit.
      *
      * @param shipSymbol The symbol of the ship. (required)
      * @param _callback  The callback to be executed when the API call finishes
      * @return The request call
-     * @throws ApiException If fail to process the API call, e.g. serializing the request body object
+     * @throws ApiException If fail to process the API call, e.g. serializing the request body
+     *                      object
      * @http.response.details <table border="1">
      * <caption>Response Details</caption>
      * <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-     * <tr><td> 200 </td><td> The ship has successfully moved into orbit at its current location. </td><td>  -  </td></tr>
+     * <tr><td> 200 </td><td> The ship has successfully moved into orbit at its current location.
+     * </td><td>  -  </td></tr>
      * </table>
      */
-    public okhttp3.Call orbitShipAsync(@javax.annotation.Nonnull String shipSymbol, final ApiCallback<OrbitShip200Response> _callback) throws ApiException {
+    public okhttp3.Call orbitShipAsync(@javax.annotation.Nonnull String shipSymbol,
+        final ApiCallback<OrbitShip200Response> _callback) throws ApiException {
 
         okhttp3.Call localVarCall = orbitShipValidateBeforeCall(shipSymbol, _callback);
         Type localVarReturnType = new TypeToken<OrbitShip200Response>() {
@@ -3239,7 +3809,9 @@ public class FleetApi {
      * <tr><td> 200 </td><td> The updated data of the ship. </td><td>  -  </td></tr>
      * </table>
      */
-    public okhttp3.Call patchShipNavCall(@javax.annotation.Nonnull String shipSymbol, @javax.annotation.Nullable PatchShipNavRequest patchShipNavRequest, final ApiCallback _callback) throws ApiException {
+    public okhttp3.Call patchShipNavCall(@javax.annotation.Nonnull String shipSymbol,
+        @javax.annotation.Nullable PatchShipNavRequest patchShipNavRequest,
+        final ApiCallback _callback) throws ApiException {
         String basePath = null;
         // Operation Servers
         String[] localBasePaths = new String[]{};
@@ -3257,7 +3829,7 @@ public class FleetApi {
 
         // create path and map variables
         String localVarPath = "/my/ships/{shipSymbol}/nav"
-                .replace("{" + "shipSymbol" + "}", localVarApiClient.escapeString(shipSymbol));
+            .replace("{" + "shipSymbol" + "}", localVarApiClient.escapeString(shipSymbol));
 
         List<Pair> localVarQueryParams = new ArrayList<Pair>();
         List<Pair> localVarCollectionQueryParams = new ArrayList<Pair>();
@@ -3266,7 +3838,7 @@ public class FleetApi {
         Map<String, Object> localVarFormParams = new HashMap<String, Object>();
 
         final String[] localVarAccepts = {
-                "application/json"
+            "application/json"
         };
         final String localVarAccept = localVarApiClient.selectHeaderAccept(localVarAccepts);
         if (localVarAccept != null) {
@@ -3274,22 +3846,28 @@ public class FleetApi {
         }
 
         final String[] localVarContentTypes = {
-                "application/json"
+            "application/json"
         };
-        final String localVarContentType = localVarApiClient.selectHeaderContentType(localVarContentTypes);
+        final String localVarContentType = localVarApiClient.selectHeaderContentType(
+            localVarContentTypes);
         if (localVarContentType != null) {
             localVarHeaderParams.put("Content-Type", localVarContentType);
         }
 
         String[] localVarAuthNames = new String[]{"AgentToken"};
-        return localVarApiClient.buildCall(basePath, localVarPath, "PATCH", localVarQueryParams, localVarCollectionQueryParams, localVarPostBody, localVarHeaderParams, localVarCookieParams, localVarFormParams, localVarAuthNames, _callback);
+        return localVarApiClient.buildCall(basePath, localVarPath, "PATCH", localVarQueryParams,
+            localVarCollectionQueryParams, localVarPostBody, localVarHeaderParams,
+            localVarCookieParams, localVarFormParams, localVarAuthNames, _callback);
     }
 
     @SuppressWarnings("rawtypes")
-    private okhttp3.Call patchShipNavValidateBeforeCall(@javax.annotation.Nonnull String shipSymbol, @javax.annotation.Nullable PatchShipNavRequest patchShipNavRequest, final ApiCallback _callback) throws ApiException {
+    private okhttp3.Call patchShipNavValidateBeforeCall(@javax.annotation.Nonnull String shipSymbol,
+        @javax.annotation.Nullable PatchShipNavRequest patchShipNavRequest,
+        final ApiCallback _callback) throws ApiException {
         // verify the required parameter 'shipSymbol' is set
         if (shipSymbol == null) {
-            throw new ApiException("Missing the required parameter 'shipSymbol' when calling patchShipNav(Async)");
+            throw new ApiException(
+                "Missing the required parameter 'shipSymbol' when calling patchShipNav(Async)");
         }
 
         return patchShipNavCall(shipSymbol, patchShipNavRequest, _callback);
@@ -3297,63 +3875,75 @@ public class FleetApi {
     }
 
     /**
-     * Patch Ship Nav
-     * Update the nav configuration of a ship.  Currently only supports configuring the Flight Mode of the ship, which affects its speed and fuel consumption.
+     * Patch Ship Nav Update the nav configuration of a ship.  Currently only supports configuring
+     * the Flight Mode of the ship, which affects its speed and fuel consumption.
      *
      * @param shipSymbol          The ship symbol. (required)
      * @param patchShipNavRequest (optional)
      * @return PatchShipNav200Response
-     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
+     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the
+     *                      response body
      * @http.response.details <table border="1">
      * <caption>Response Details</caption>
      * <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
      * <tr><td> 200 </td><td> The updated data of the ship. </td><td>  -  </td></tr>
      * </table>
      */
-    public PatchShipNav200Response patchShipNav(@javax.annotation.Nonnull String shipSymbol, @javax.annotation.Nullable PatchShipNavRequest patchShipNavRequest) throws ApiException {
-        ApiResponse<PatchShipNav200Response> localVarResp = patchShipNavWithHttpInfo(shipSymbol, patchShipNavRequest);
+    public PatchShipNav200Response patchShipNav(@javax.annotation.Nonnull String shipSymbol,
+        @javax.annotation.Nullable PatchShipNavRequest patchShipNavRequest) throws ApiException {
+        ApiResponse<PatchShipNav200Response> localVarResp = patchShipNavWithHttpInfo(shipSymbol,
+            patchShipNavRequest);
         return localVarResp.data();
     }
 
     /**
-     * Patch Ship Nav
-     * Update the nav configuration of a ship.  Currently only supports configuring the Flight Mode of the ship, which affects its speed and fuel consumption.
+     * Patch Ship Nav Update the nav configuration of a ship.  Currently only supports configuring
+     * the Flight Mode of the ship, which affects its speed and fuel consumption.
      *
      * @param shipSymbol          The ship symbol. (required)
      * @param patchShipNavRequest (optional)
      * @return ApiResponse&lt;PatchShipNav200Response&gt;
-     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
+     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the
+     *                      response body
      * @http.response.details <table border="1">
      * <caption>Response Details</caption>
      * <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
      * <tr><td> 200 </td><td> The updated data of the ship. </td><td>  -  </td></tr>
      * </table>
      */
-    public ApiResponse<PatchShipNav200Response> patchShipNavWithHttpInfo(@javax.annotation.Nonnull String shipSymbol, @javax.annotation.Nullable PatchShipNavRequest patchShipNavRequest) throws ApiException {
-        okhttp3.Call localVarCall = patchShipNavValidateBeforeCall(shipSymbol, patchShipNavRequest, null);
+    public ApiResponse<PatchShipNav200Response> patchShipNavWithHttpInfo(
+        @javax.annotation.Nonnull String shipSymbol,
+        @javax.annotation.Nullable PatchShipNavRequest patchShipNavRequest) throws ApiException {
+        okhttp3.Call localVarCall = patchShipNavValidateBeforeCall(shipSymbol, patchShipNavRequest,
+            null);
         Type localVarReturnType = new TypeToken<PatchShipNav200Response>() {
         }.getType();
         return localVarApiClient.execute(localVarCall, localVarReturnType);
     }
 
     /**
-     * Patch Ship Nav (asynchronously)
-     * Update the nav configuration of a ship.  Currently only supports configuring the Flight Mode of the ship, which affects its speed and fuel consumption.
+     * Patch Ship Nav (asynchronously) Update the nav configuration of a ship.  Currently only
+     * supports configuring the Flight Mode of the ship, which affects its speed and fuel
+     * consumption.
      *
      * @param shipSymbol          The ship symbol. (required)
      * @param patchShipNavRequest (optional)
      * @param _callback           The callback to be executed when the API call finishes
      * @return The request call
-     * @throws ApiException If fail to process the API call, e.g. serializing the request body object
+     * @throws ApiException If fail to process the API call, e.g. serializing the request body
+     *                      object
      * @http.response.details <table border="1">
      * <caption>Response Details</caption>
      * <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
      * <tr><td> 200 </td><td> The updated data of the ship. </td><td>  -  </td></tr>
      * </table>
      */
-    public okhttp3.Call patchShipNavAsync(@javax.annotation.Nonnull String shipSymbol, @javax.annotation.Nullable PatchShipNavRequest patchShipNavRequest, final ApiCallback<PatchShipNav200Response> _callback) throws ApiException {
+    public okhttp3.Call patchShipNavAsync(@javax.annotation.Nonnull String shipSymbol,
+        @javax.annotation.Nullable PatchShipNavRequest patchShipNavRequest,
+        final ApiCallback<PatchShipNav200Response> _callback) throws ApiException {
 
-        okhttp3.Call localVarCall = patchShipNavValidateBeforeCall(shipSymbol, patchShipNavRequest, _callback);
+        okhttp3.Call localVarCall = patchShipNavValidateBeforeCall(shipSymbol, patchShipNavRequest,
+            _callback);
         Type localVarReturnType = new TypeToken<PatchShipNav200Response>() {
         }.getType();
         localVarApiClient.executeAsync(localVarCall, localVarReturnType, _callback);
@@ -3374,7 +3964,9 @@ public class FleetApi {
      * <tr><td> 201 </td><td> Purchased goods successfully. </td><td>  -  </td></tr>
      * </table>
      */
-    public okhttp3.Call purchaseCargoCall(@javax.annotation.Nonnull String shipSymbol, @javax.annotation.Nullable PurchaseCargoRequest purchaseCargoRequest, final ApiCallback _callback) throws ApiException {
+    public okhttp3.Call purchaseCargoCall(@javax.annotation.Nonnull String shipSymbol,
+        @javax.annotation.Nullable PurchaseCargoRequest purchaseCargoRequest,
+        final ApiCallback _callback) throws ApiException {
         String basePath = null;
         // Operation Servers
         String[] localBasePaths = new String[]{};
@@ -3392,7 +3984,7 @@ public class FleetApi {
 
         // create path and map variables
         String localVarPath = "/my/ships/{shipSymbol}/purchase"
-                .replace("{" + "shipSymbol" + "}", localVarApiClient.escapeString(shipSymbol));
+            .replace("{" + "shipSymbol" + "}", localVarApiClient.escapeString(shipSymbol));
 
         List<Pair> localVarQueryParams = new ArrayList<Pair>();
         List<Pair> localVarCollectionQueryParams = new ArrayList<Pair>();
@@ -3401,7 +3993,7 @@ public class FleetApi {
         Map<String, Object> localVarFormParams = new HashMap<String, Object>();
 
         final String[] localVarAccepts = {
-                "application/json"
+            "application/json"
         };
         final String localVarAccept = localVarApiClient.selectHeaderAccept(localVarAccepts);
         if (localVarAccept != null) {
@@ -3409,22 +4001,29 @@ public class FleetApi {
         }
 
         final String[] localVarContentTypes = {
-                "application/json"
+            "application/json"
         };
-        final String localVarContentType = localVarApiClient.selectHeaderContentType(localVarContentTypes);
+        final String localVarContentType = localVarApiClient.selectHeaderContentType(
+            localVarContentTypes);
         if (localVarContentType != null) {
             localVarHeaderParams.put("Content-Type", localVarContentType);
         }
 
         String[] localVarAuthNames = new String[]{"AgentToken"};
-        return localVarApiClient.buildCall(basePath, localVarPath, "POST", localVarQueryParams, localVarCollectionQueryParams, localVarPostBody, localVarHeaderParams, localVarCookieParams, localVarFormParams, localVarAuthNames, _callback);
+        return localVarApiClient.buildCall(basePath, localVarPath, "POST", localVarQueryParams,
+            localVarCollectionQueryParams, localVarPostBody, localVarHeaderParams,
+            localVarCookieParams, localVarFormParams, localVarAuthNames, _callback);
     }
 
     @SuppressWarnings("rawtypes")
-    private okhttp3.Call purchaseCargoValidateBeforeCall(@javax.annotation.Nonnull String shipSymbol, @javax.annotation.Nullable PurchaseCargoRequest purchaseCargoRequest, final ApiCallback _callback) throws ApiException {
+    private okhttp3.Call purchaseCargoValidateBeforeCall(
+        @javax.annotation.Nonnull String shipSymbol,
+        @javax.annotation.Nullable PurchaseCargoRequest purchaseCargoRequest,
+        final ApiCallback _callback) throws ApiException {
         // verify the required parameter 'shipSymbol' is set
         if (shipSymbol == null) {
-            throw new ApiException("Missing the required parameter 'shipSymbol' when calling purchaseCargo(Async)");
+            throw new ApiException(
+                "Missing the required parameter 'shipSymbol' when calling purchaseCargo(Async)");
         }
 
         return purchaseCargoCall(shipSymbol, purchaseCargoRequest, _callback);
@@ -3432,63 +4031,83 @@ public class FleetApi {
     }
 
     /**
-     * Purchase Cargo
-     * Purchase cargo from a market.  The ship must be docked in a waypoint that has &#x60;Marketplace&#x60; trait, and the market must be selling a good to be able to purchase it.  The maximum amount of units of a good that can be purchased in each transaction are denoted by the &#x60;tradeVolume&#x60; value of the good, which can be viewed by using the Get Market action.  Purchased goods are added to the ship&#39;s cargo hold.
+     * Purchase Cargo Purchase cargo from a market.  The ship must be docked in a waypoint that has
+     * &#x60;Marketplace&#x60; trait, and the market must be selling a good to be able to purchase
+     * it.  The maximum amount of units of a good that can be purchased in each transaction are
+     * denoted by the &#x60;tradeVolume&#x60; value of the good, which can be viewed by using the
+     * Get Market action.  Purchased goods are added to the ship&#39;s cargo hold.
      *
      * @param shipSymbol           The ship&#39;s symbol. (required)
      * @param purchaseCargoRequest (optional)
      * @return PurchaseCargo201Response
-     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
+     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the
+     *                      response body
      * @http.response.details <table border="1">
      * <caption>Response Details</caption>
      * <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
      * <tr><td> 201 </td><td> Purchased goods successfully. </td><td>  -  </td></tr>
      * </table>
      */
-    public PurchaseCargo201Response purchaseCargo(@javax.annotation.Nonnull String shipSymbol, @javax.annotation.Nullable PurchaseCargoRequest purchaseCargoRequest) throws ApiException {
-        ApiResponse<PurchaseCargo201Response> localVarResp = purchaseCargoWithHttpInfo(shipSymbol, purchaseCargoRequest);
+    public PurchaseCargo201Response purchaseCargo(@javax.annotation.Nonnull String shipSymbol,
+        @javax.annotation.Nullable PurchaseCargoRequest purchaseCargoRequest) throws ApiException {
+        ApiResponse<PurchaseCargo201Response> localVarResp = purchaseCargoWithHttpInfo(shipSymbol,
+            purchaseCargoRequest);
         return localVarResp.data();
     }
 
     /**
-     * Purchase Cargo
-     * Purchase cargo from a market.  The ship must be docked in a waypoint that has &#x60;Marketplace&#x60; trait, and the market must be selling a good to be able to purchase it.  The maximum amount of units of a good that can be purchased in each transaction are denoted by the &#x60;tradeVolume&#x60; value of the good, which can be viewed by using the Get Market action.  Purchased goods are added to the ship&#39;s cargo hold.
+     * Purchase Cargo Purchase cargo from a market.  The ship must be docked in a waypoint that has
+     * &#x60;Marketplace&#x60; trait, and the market must be selling a good to be able to purchase
+     * it.  The maximum amount of units of a good that can be purchased in each transaction are
+     * denoted by the &#x60;tradeVolume&#x60; value of the good, which can be viewed by using the
+     * Get Market action.  Purchased goods are added to the ship&#39;s cargo hold.
      *
      * @param shipSymbol           The ship&#39;s symbol. (required)
      * @param purchaseCargoRequest (optional)
      * @return ApiResponse&lt;PurchaseCargo201Response&gt;
-     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
+     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the
+     *                      response body
      * @http.response.details <table border="1">
      * <caption>Response Details</caption>
      * <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
      * <tr><td> 201 </td><td> Purchased goods successfully. </td><td>  -  </td></tr>
      * </table>
      */
-    public ApiResponse<PurchaseCargo201Response> purchaseCargoWithHttpInfo(@javax.annotation.Nonnull String shipSymbol, @javax.annotation.Nullable PurchaseCargoRequest purchaseCargoRequest) throws ApiException {
-        okhttp3.Call localVarCall = purchaseCargoValidateBeforeCall(shipSymbol, purchaseCargoRequest, null);
+    public ApiResponse<PurchaseCargo201Response> purchaseCargoWithHttpInfo(
+        @javax.annotation.Nonnull String shipSymbol,
+        @javax.annotation.Nullable PurchaseCargoRequest purchaseCargoRequest) throws ApiException {
+        okhttp3.Call localVarCall = purchaseCargoValidateBeforeCall(shipSymbol,
+            purchaseCargoRequest, null);
         Type localVarReturnType = new TypeToken<PurchaseCargo201Response>() {
         }.getType();
         return localVarApiClient.execute(localVarCall, localVarReturnType);
     }
 
     /**
-     * Purchase Cargo (asynchronously)
-     * Purchase cargo from a market.  The ship must be docked in a waypoint that has &#x60;Marketplace&#x60; trait, and the market must be selling a good to be able to purchase it.  The maximum amount of units of a good that can be purchased in each transaction are denoted by the &#x60;tradeVolume&#x60; value of the good, which can be viewed by using the Get Market action.  Purchased goods are added to the ship&#39;s cargo hold.
+     * Purchase Cargo (asynchronously) Purchase cargo from a market.  The ship must be docked in a
+     * waypoint that has &#x60;Marketplace&#x60; trait, and the market must be selling a good to be
+     * able to purchase it.  The maximum amount of units of a good that can be purchased in each
+     * transaction are denoted by the &#x60;tradeVolume&#x60; value of the good, which can be viewed
+     * by using the Get Market action.  Purchased goods are added to the ship&#39;s cargo hold.
      *
      * @param shipSymbol           The ship&#39;s symbol. (required)
      * @param purchaseCargoRequest (optional)
      * @param _callback            The callback to be executed when the API call finishes
      * @return The request call
-     * @throws ApiException If fail to process the API call, e.g. serializing the request body object
+     * @throws ApiException If fail to process the API call, e.g. serializing the request body
+     *                      object
      * @http.response.details <table border="1">
      * <caption>Response Details</caption>
      * <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
      * <tr><td> 201 </td><td> Purchased goods successfully. </td><td>  -  </td></tr>
      * </table>
      */
-    public okhttp3.Call purchaseCargoAsync(@javax.annotation.Nonnull String shipSymbol, @javax.annotation.Nullable PurchaseCargoRequest purchaseCargoRequest, final ApiCallback<PurchaseCargo201Response> _callback) throws ApiException {
+    public okhttp3.Call purchaseCargoAsync(@javax.annotation.Nonnull String shipSymbol,
+        @javax.annotation.Nullable PurchaseCargoRequest purchaseCargoRequest,
+        final ApiCallback<PurchaseCargo201Response> _callback) throws ApiException {
 
-        okhttp3.Call localVarCall = purchaseCargoValidateBeforeCall(shipSymbol, purchaseCargoRequest, _callback);
+        okhttp3.Call localVarCall = purchaseCargoValidateBeforeCall(shipSymbol,
+            purchaseCargoRequest, _callback);
         Type localVarReturnType = new TypeToken<PurchaseCargo201Response>() {
         }.getType();
         localVarApiClient.executeAsync(localVarCall, localVarReturnType, _callback);
@@ -3508,7 +4127,9 @@ public class FleetApi {
      * <tr><td> 201 </td><td> Purchased ship successfully. </td><td>  -  </td></tr>
      * </table>
      */
-    public okhttp3.Call purchaseShipCall(@javax.annotation.Nullable PurchaseShipRequest purchaseShipRequest, final ApiCallback _callback) throws ApiException {
+    public okhttp3.Call purchaseShipCall(
+        @javax.annotation.Nullable PurchaseShipRequest purchaseShipRequest,
+        final ApiCallback _callback) throws ApiException {
         String basePath = null;
         // Operation Servers
         String[] localBasePaths = new String[]{};
@@ -3534,7 +4155,7 @@ public class FleetApi {
         Map<String, Object> localVarFormParams = new HashMap<String, Object>();
 
         final String[] localVarAccepts = {
-                "application/json"
+            "application/json"
         };
         final String localVarAccept = localVarApiClient.selectHeaderAccept(localVarAccepts);
         if (localVarAccept != null) {
@@ -3542,55 +4163,71 @@ public class FleetApi {
         }
 
         final String[] localVarContentTypes = {
-                "application/json"
+            "application/json"
         };
-        final String localVarContentType = localVarApiClient.selectHeaderContentType(localVarContentTypes);
+        final String localVarContentType = localVarApiClient.selectHeaderContentType(
+            localVarContentTypes);
         if (localVarContentType != null) {
             localVarHeaderParams.put("Content-Type", localVarContentType);
         }
 
         String[] localVarAuthNames = new String[]{"AgentToken"};
-        return localVarApiClient.buildCall(basePath, localVarPath, "POST", localVarQueryParams, localVarCollectionQueryParams, localVarPostBody, localVarHeaderParams, localVarCookieParams, localVarFormParams, localVarAuthNames, _callback);
+        return localVarApiClient.buildCall(basePath, localVarPath, "POST", localVarQueryParams,
+            localVarCollectionQueryParams, localVarPostBody, localVarHeaderParams,
+            localVarCookieParams, localVarFormParams, localVarAuthNames, _callback);
     }
 
     @SuppressWarnings("rawtypes")
-    private okhttp3.Call purchaseShipValidateBeforeCall(@javax.annotation.Nullable PurchaseShipRequest purchaseShipRequest, final ApiCallback _callback) throws ApiException {
+    private okhttp3.Call purchaseShipValidateBeforeCall(
+        @javax.annotation.Nullable PurchaseShipRequest purchaseShipRequest,
+        final ApiCallback _callback) throws ApiException {
         return purchaseShipCall(purchaseShipRequest, _callback);
 
     }
 
     /**
-     * Purchase Ship
-     * Purchase a ship from a Shipyard. In order to use this function, a ship under your agent&#39;s ownership must be in a waypoint that has the &#x60;Shipyard&#x60; trait, and the Shipyard must sell the type of the desired ship.  Shipyards typically offer ship types, which are predefined templates of ships that have dedicated roles. A template comes with a preset of an engine, a reactor, and a frame. It may also include a few modules and mounts.
+     * Purchase Ship Purchase a ship from a Shipyard. In order to use this function, a ship under
+     * your agent&#39;s ownership must be in a waypoint that has the &#x60;Shipyard&#x60; trait, and
+     * the Shipyard must sell the type of the desired ship.  Shipyards typically offer ship types,
+     * which are predefined templates of ships that have dedicated roles. A template comes with a
+     * preset of an engine, a reactor, and a frame. It may also include a few modules and mounts.
      *
      * @param purchaseShipRequest (optional)
      * @return PurchaseShip201Response
-     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
+     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the
+     *                      response body
      * @http.response.details <table border="1">
      * <caption>Response Details</caption>
      * <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
      * <tr><td> 201 </td><td> Purchased ship successfully. </td><td>  -  </td></tr>
      * </table>
      */
-    public PurchaseShip201Response purchaseShip(@javax.annotation.Nullable PurchaseShipRequest purchaseShipRequest) throws ApiException {
-        ApiResponse<PurchaseShip201Response> localVarResp = purchaseShipWithHttpInfo(purchaseShipRequest);
+    public PurchaseShip201Response purchaseShip(
+        @javax.annotation.Nullable PurchaseShipRequest purchaseShipRequest) throws ApiException {
+        ApiResponse<PurchaseShip201Response> localVarResp = purchaseShipWithHttpInfo(
+            purchaseShipRequest);
         return localVarResp.data();
     }
 
     /**
-     * Purchase Ship
-     * Purchase a ship from a Shipyard. In order to use this function, a ship under your agent&#39;s ownership must be in a waypoint that has the &#x60;Shipyard&#x60; trait, and the Shipyard must sell the type of the desired ship.  Shipyards typically offer ship types, which are predefined templates of ships that have dedicated roles. A template comes with a preset of an engine, a reactor, and a frame. It may also include a few modules and mounts.
+     * Purchase Ship Purchase a ship from a Shipyard. In order to use this function, a ship under
+     * your agent&#39;s ownership must be in a waypoint that has the &#x60;Shipyard&#x60; trait, and
+     * the Shipyard must sell the type of the desired ship.  Shipyards typically offer ship types,
+     * which are predefined templates of ships that have dedicated roles. A template comes with a
+     * preset of an engine, a reactor, and a frame. It may also include a few modules and mounts.
      *
      * @param purchaseShipRequest (optional)
      * @return ApiResponse&lt;PurchaseShip201Response&gt;
-     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
+     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the
+     *                      response body
      * @http.response.details <table border="1">
      * <caption>Response Details</caption>
      * <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
      * <tr><td> 201 </td><td> Purchased ship successfully. </td><td>  -  </td></tr>
      * </table>
      */
-    public ApiResponse<PurchaseShip201Response> purchaseShipWithHttpInfo(@javax.annotation.Nullable PurchaseShipRequest purchaseShipRequest) throws ApiException {
+    public ApiResponse<PurchaseShip201Response> purchaseShipWithHttpInfo(
+        @javax.annotation.Nullable PurchaseShipRequest purchaseShipRequest) throws ApiException {
         okhttp3.Call localVarCall = purchaseShipValidateBeforeCall(purchaseShipRequest, null);
         Type localVarReturnType = new TypeToken<PurchaseShip201Response>() {
         }.getType();
@@ -3598,20 +4235,27 @@ public class FleetApi {
     }
 
     /**
-     * Purchase Ship (asynchronously)
-     * Purchase a ship from a Shipyard. In order to use this function, a ship under your agent&#39;s ownership must be in a waypoint that has the &#x60;Shipyard&#x60; trait, and the Shipyard must sell the type of the desired ship.  Shipyards typically offer ship types, which are predefined templates of ships that have dedicated roles. A template comes with a preset of an engine, a reactor, and a frame. It may also include a few modules and mounts.
+     * Purchase Ship (asynchronously) Purchase a ship from a Shipyard. In order to use this
+     * function, a ship under your agent&#39;s ownership must be in a waypoint that has the
+     * &#x60;Shipyard&#x60; trait, and the Shipyard must sell the type of the desired ship.
+     * Shipyards typically offer ship types, which are predefined templates of ships that have
+     * dedicated roles. A template comes with a preset of an engine, a reactor, and a frame. It may
+     * also include a few modules and mounts.
      *
      * @param purchaseShipRequest (optional)
      * @param _callback           The callback to be executed when the API call finishes
      * @return The request call
-     * @throws ApiException If fail to process the API call, e.g. serializing the request body object
+     * @throws ApiException If fail to process the API call, e.g. serializing the request body
+     *                      object
      * @http.response.details <table border="1">
      * <caption>Response Details</caption>
      * <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
      * <tr><td> 201 </td><td> Purchased ship successfully. </td><td>  -  </td></tr>
      * </table>
      */
-    public okhttp3.Call purchaseShipAsync(@javax.annotation.Nullable PurchaseShipRequest purchaseShipRequest, final ApiCallback<PurchaseShip201Response> _callback) throws ApiException {
+    public okhttp3.Call purchaseShipAsync(
+        @javax.annotation.Nullable PurchaseShipRequest purchaseShipRequest,
+        final ApiCallback<PurchaseShip201Response> _callback) throws ApiException {
 
         okhttp3.Call localVarCall = purchaseShipValidateBeforeCall(purchaseShipRequest, _callback);
         Type localVarReturnType = new TypeToken<PurchaseShip201Response>() {
@@ -3634,7 +4278,9 @@ public class FleetApi {
      * <tr><td> 200 </td><td> Refueled successfully. </td><td>  -  </td></tr>
      * </table>
      */
-    public okhttp3.Call refuelShipCall(@javax.annotation.Nonnull String shipSymbol, @javax.annotation.Nullable RefuelShipRequest refuelShipRequest, final ApiCallback _callback) throws ApiException {
+    public okhttp3.Call refuelShipCall(@javax.annotation.Nonnull String shipSymbol,
+        @javax.annotation.Nullable RefuelShipRequest refuelShipRequest, final ApiCallback _callback)
+        throws ApiException {
         String basePath = null;
         // Operation Servers
         String[] localBasePaths = new String[]{};
@@ -3652,7 +4298,7 @@ public class FleetApi {
 
         // create path and map variables
         String localVarPath = "/my/ships/{shipSymbol}/refuel"
-                .replace("{" + "shipSymbol" + "}", localVarApiClient.escapeString(shipSymbol));
+            .replace("{" + "shipSymbol" + "}", localVarApiClient.escapeString(shipSymbol));
 
         List<Pair> localVarQueryParams = new ArrayList<Pair>();
         List<Pair> localVarCollectionQueryParams = new ArrayList<Pair>();
@@ -3661,7 +4307,7 @@ public class FleetApi {
         Map<String, Object> localVarFormParams = new HashMap<String, Object>();
 
         final String[] localVarAccepts = {
-                "application/json"
+            "application/json"
         };
         final String localVarAccept = localVarApiClient.selectHeaderAccept(localVarAccepts);
         if (localVarAccept != null) {
@@ -3669,22 +4315,28 @@ public class FleetApi {
         }
 
         final String[] localVarContentTypes = {
-                "application/json"
+            "application/json"
         };
-        final String localVarContentType = localVarApiClient.selectHeaderContentType(localVarContentTypes);
+        final String localVarContentType = localVarApiClient.selectHeaderContentType(
+            localVarContentTypes);
         if (localVarContentType != null) {
             localVarHeaderParams.put("Content-Type", localVarContentType);
         }
 
         String[] localVarAuthNames = new String[]{"AgentToken"};
-        return localVarApiClient.buildCall(basePath, localVarPath, "POST", localVarQueryParams, localVarCollectionQueryParams, localVarPostBody, localVarHeaderParams, localVarCookieParams, localVarFormParams, localVarAuthNames, _callback);
+        return localVarApiClient.buildCall(basePath, localVarPath, "POST", localVarQueryParams,
+            localVarCollectionQueryParams, localVarPostBody, localVarHeaderParams,
+            localVarCookieParams, localVarFormParams, localVarAuthNames, _callback);
     }
 
     @SuppressWarnings("rawtypes")
-    private okhttp3.Call refuelShipValidateBeforeCall(@javax.annotation.Nonnull String shipSymbol, @javax.annotation.Nullable RefuelShipRequest refuelShipRequest, final ApiCallback _callback) throws ApiException {
+    private okhttp3.Call refuelShipValidateBeforeCall(@javax.annotation.Nonnull String shipSymbol,
+        @javax.annotation.Nullable RefuelShipRequest refuelShipRequest, final ApiCallback _callback)
+        throws ApiException {
         // verify the required parameter 'shipSymbol' is set
         if (shipSymbol == null) {
-            throw new ApiException("Missing the required parameter 'shipSymbol' when calling refuelShip(Async)");
+            throw new ApiException(
+                "Missing the required parameter 'shipSymbol' when calling refuelShip(Async)");
         }
 
         return refuelShipCall(shipSymbol, refuelShipRequest, _callback);
@@ -3692,63 +4344,83 @@ public class FleetApi {
     }
 
     /**
-     * Refuel Ship
-     * Refuel your ship by buying fuel from the local market.  Requires the ship to be docked in a waypoint that has the &#x60;Marketplace&#x60; trait, and the market must be selling fuel in order to refuel.  Each fuel bought from the market replenishes 100 units in your ship&#39;s fuel.  Ships will always be refuel to their frame&#39;s maximum fuel capacity when using this action.
+     * Refuel Ship Refuel your ship by buying fuel from the local market.  Requires the ship to be
+     * docked in a waypoint that has the &#x60;Marketplace&#x60; trait, and the market must be
+     * selling fuel in order to refuel.  Each fuel bought from the market replenishes 100 units in
+     * your ship&#39;s fuel.  Ships will always be refuel to their frame&#39;s maximum fuel capacity
+     * when using this action.
      *
      * @param shipSymbol        The ship symbol. (required)
      * @param refuelShipRequest (optional)
      * @return RefuelShip200Response
-     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
+     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the
+     *                      response body
      * @http.response.details <table border="1">
      * <caption>Response Details</caption>
      * <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
      * <tr><td> 200 </td><td> Refueled successfully. </td><td>  -  </td></tr>
      * </table>
      */
-    public RefuelShip200Response refuelShip(@javax.annotation.Nonnull String shipSymbol, @javax.annotation.Nullable RefuelShipRequest refuelShipRequest) throws ApiException {
-        ApiResponse<RefuelShip200Response> localVarResp = refuelShipWithHttpInfo(shipSymbol, refuelShipRequest);
+    public RefuelShip200Response refuelShip(@javax.annotation.Nonnull String shipSymbol,
+        @javax.annotation.Nullable RefuelShipRequest refuelShipRequest) throws ApiException {
+        ApiResponse<RefuelShip200Response> localVarResp = refuelShipWithHttpInfo(shipSymbol,
+            refuelShipRequest);
         return localVarResp.data();
     }
 
     /**
-     * Refuel Ship
-     * Refuel your ship by buying fuel from the local market.  Requires the ship to be docked in a waypoint that has the &#x60;Marketplace&#x60; trait, and the market must be selling fuel in order to refuel.  Each fuel bought from the market replenishes 100 units in your ship&#39;s fuel.  Ships will always be refuel to their frame&#39;s maximum fuel capacity when using this action.
+     * Refuel Ship Refuel your ship by buying fuel from the local market.  Requires the ship to be
+     * docked in a waypoint that has the &#x60;Marketplace&#x60; trait, and the market must be
+     * selling fuel in order to refuel.  Each fuel bought from the market replenishes 100 units in
+     * your ship&#39;s fuel.  Ships will always be refuel to their frame&#39;s maximum fuel capacity
+     * when using this action.
      *
      * @param shipSymbol        The ship symbol. (required)
      * @param refuelShipRequest (optional)
      * @return ApiResponse&lt;RefuelShip200Response&gt;
-     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
+     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the
+     *                      response body
      * @http.response.details <table border="1">
      * <caption>Response Details</caption>
      * <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
      * <tr><td> 200 </td><td> Refueled successfully. </td><td>  -  </td></tr>
      * </table>
      */
-    public ApiResponse<RefuelShip200Response> refuelShipWithHttpInfo(@javax.annotation.Nonnull String shipSymbol, @javax.annotation.Nullable RefuelShipRequest refuelShipRequest) throws ApiException {
-        okhttp3.Call localVarCall = refuelShipValidateBeforeCall(shipSymbol, refuelShipRequest, null);
+    public ApiResponse<RefuelShip200Response> refuelShipWithHttpInfo(
+        @javax.annotation.Nonnull String shipSymbol,
+        @javax.annotation.Nullable RefuelShipRequest refuelShipRequest) throws ApiException {
+        okhttp3.Call localVarCall = refuelShipValidateBeforeCall(shipSymbol, refuelShipRequest,
+            null);
         Type localVarReturnType = new TypeToken<RefuelShip200Response>() {
         }.getType();
         return localVarApiClient.execute(localVarCall, localVarReturnType);
     }
 
     /**
-     * Refuel Ship (asynchronously)
-     * Refuel your ship by buying fuel from the local market.  Requires the ship to be docked in a waypoint that has the &#x60;Marketplace&#x60; trait, and the market must be selling fuel in order to refuel.  Each fuel bought from the market replenishes 100 units in your ship&#39;s fuel.  Ships will always be refuel to their frame&#39;s maximum fuel capacity when using this action.
+     * Refuel Ship (asynchronously) Refuel your ship by buying fuel from the local market.  Requires
+     * the ship to be docked in a waypoint that has the &#x60;Marketplace&#x60; trait, and the
+     * market must be selling fuel in order to refuel.  Each fuel bought from the market replenishes
+     * 100 units in your ship&#39;s fuel.  Ships will always be refuel to their frame&#39;s maximum
+     * fuel capacity when using this action.
      *
      * @param shipSymbol        The ship symbol. (required)
      * @param refuelShipRequest (optional)
      * @param _callback         The callback to be executed when the API call finishes
      * @return The request call
-     * @throws ApiException If fail to process the API call, e.g. serializing the request body object
+     * @throws ApiException If fail to process the API call, e.g. serializing the request body
+     *                      object
      * @http.response.details <table border="1">
      * <caption>Response Details</caption>
      * <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
      * <tr><td> 200 </td><td> Refueled successfully. </td><td>  -  </td></tr>
      * </table>
      */
-    public okhttp3.Call refuelShipAsync(@javax.annotation.Nonnull String shipSymbol, @javax.annotation.Nullable RefuelShipRequest refuelShipRequest, final ApiCallback<RefuelShip200Response> _callback) throws ApiException {
+    public okhttp3.Call refuelShipAsync(@javax.annotation.Nonnull String shipSymbol,
+        @javax.annotation.Nullable RefuelShipRequest refuelShipRequest,
+        final ApiCallback<RefuelShip200Response> _callback) throws ApiException {
 
-        okhttp3.Call localVarCall = refuelShipValidateBeforeCall(shipSymbol, refuelShipRequest, _callback);
+        okhttp3.Call localVarCall = refuelShipValidateBeforeCall(shipSymbol, refuelShipRequest,
+            _callback);
         Type localVarReturnType = new TypeToken<RefuelShip200Response>() {
         }.getType();
         localVarApiClient.executeAsync(localVarCall, localVarReturnType, _callback);
@@ -3769,7 +4441,9 @@ public class FleetApi {
      * <tr><td> 201 </td><td> Successfully removed the mount. </td><td>  -  </td></tr>
      * </table>
      */
-    public okhttp3.Call removeMountCall(@javax.annotation.Nonnull String shipSymbol, @javax.annotation.Nullable RemoveMountRequest removeMountRequest, final ApiCallback _callback) throws ApiException {
+    public okhttp3.Call removeMountCall(@javax.annotation.Nonnull String shipSymbol,
+        @javax.annotation.Nullable RemoveMountRequest removeMountRequest,
+        final ApiCallback _callback) throws ApiException {
         String basePath = null;
         // Operation Servers
         String[] localBasePaths = new String[]{};
@@ -3787,7 +4461,7 @@ public class FleetApi {
 
         // create path and map variables
         String localVarPath = "/my/ships/{shipSymbol}/mounts/remove"
-                .replace("{" + "shipSymbol" + "}", localVarApiClient.escapeString(shipSymbol));
+            .replace("{" + "shipSymbol" + "}", localVarApiClient.escapeString(shipSymbol));
 
         List<Pair> localVarQueryParams = new ArrayList<Pair>();
         List<Pair> localVarCollectionQueryParams = new ArrayList<Pair>();
@@ -3796,7 +4470,7 @@ public class FleetApi {
         Map<String, Object> localVarFormParams = new HashMap<String, Object>();
 
         final String[] localVarAccepts = {
-                "application/json"
+            "application/json"
         };
         final String localVarAccept = localVarApiClient.selectHeaderAccept(localVarAccepts);
         if (localVarAccept != null) {
@@ -3804,22 +4478,28 @@ public class FleetApi {
         }
 
         final String[] localVarContentTypes = {
-                "application/json"
+            "application/json"
         };
-        final String localVarContentType = localVarApiClient.selectHeaderContentType(localVarContentTypes);
+        final String localVarContentType = localVarApiClient.selectHeaderContentType(
+            localVarContentTypes);
         if (localVarContentType != null) {
             localVarHeaderParams.put("Content-Type", localVarContentType);
         }
 
         String[] localVarAuthNames = new String[]{"AgentToken"};
-        return localVarApiClient.buildCall(basePath, localVarPath, "POST", localVarQueryParams, localVarCollectionQueryParams, localVarPostBody, localVarHeaderParams, localVarCookieParams, localVarFormParams, localVarAuthNames, _callback);
+        return localVarApiClient.buildCall(basePath, localVarPath, "POST", localVarQueryParams,
+            localVarCollectionQueryParams, localVarPostBody, localVarHeaderParams,
+            localVarCookieParams, localVarFormParams, localVarAuthNames, _callback);
     }
 
     @SuppressWarnings("rawtypes")
-    private okhttp3.Call removeMountValidateBeforeCall(@javax.annotation.Nonnull String shipSymbol, @javax.annotation.Nullable RemoveMountRequest removeMountRequest, final ApiCallback _callback) throws ApiException {
+    private okhttp3.Call removeMountValidateBeforeCall(@javax.annotation.Nonnull String shipSymbol,
+        @javax.annotation.Nullable RemoveMountRequest removeMountRequest,
+        final ApiCallback _callback) throws ApiException {
         // verify the required parameter 'shipSymbol' is set
         if (shipSymbol == null) {
-            throw new ApiException("Missing the required parameter 'shipSymbol' when calling removeMount(Async)");
+            throw new ApiException(
+                "Missing the required parameter 'shipSymbol' when calling removeMount(Async)");
         }
 
         return removeMountCall(shipSymbol, removeMountRequest, _callback);
@@ -3827,63 +4507,77 @@ public class FleetApi {
     }
 
     /**
-     * Remove Mount
-     * Remove a mount from a ship.  The ship must be docked in a waypoint that has the &#x60;Shipyard&#x60; trait, and must have the desired mount that it wish to remove installed.  A removal fee will be deduced from the agent by the Shipyard.
+     * Remove Mount Remove a mount from a ship.  The ship must be docked in a waypoint that has the
+     * &#x60;Shipyard&#x60; trait, and must have the desired mount that it wish to remove installed.
+     * A removal fee will be deduced from the agent by the Shipyard.
      *
      * @param shipSymbol         The ship&#39;s symbol. (required)
      * @param removeMountRequest (optional)
      * @return RemoveMount201Response
-     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
+     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the
+     *                      response body
      * @http.response.details <table border="1">
      * <caption>Response Details</caption>
      * <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
      * <tr><td> 201 </td><td> Successfully removed the mount. </td><td>  -  </td></tr>
      * </table>
      */
-    public RemoveMount201Response removeMount(@javax.annotation.Nonnull String shipSymbol, @javax.annotation.Nullable RemoveMountRequest removeMountRequest) throws ApiException {
-        ApiResponse<RemoveMount201Response> localVarResp = removeMountWithHttpInfo(shipSymbol, removeMountRequest);
+    public RemoveMount201Response removeMount(@javax.annotation.Nonnull String shipSymbol,
+        @javax.annotation.Nullable RemoveMountRequest removeMountRequest) throws ApiException {
+        ApiResponse<RemoveMount201Response> localVarResp = removeMountWithHttpInfo(shipSymbol,
+            removeMountRequest);
         return localVarResp.data();
     }
 
     /**
-     * Remove Mount
-     * Remove a mount from a ship.  The ship must be docked in a waypoint that has the &#x60;Shipyard&#x60; trait, and must have the desired mount that it wish to remove installed.  A removal fee will be deduced from the agent by the Shipyard.
+     * Remove Mount Remove a mount from a ship.  The ship must be docked in a waypoint that has the
+     * &#x60;Shipyard&#x60; trait, and must have the desired mount that it wish to remove installed.
+     * A removal fee will be deduced from the agent by the Shipyard.
      *
      * @param shipSymbol         The ship&#39;s symbol. (required)
      * @param removeMountRequest (optional)
      * @return ApiResponse&lt;RemoveMount201Response&gt;
-     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
+     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the
+     *                      response body
      * @http.response.details <table border="1">
      * <caption>Response Details</caption>
      * <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
      * <tr><td> 201 </td><td> Successfully removed the mount. </td><td>  -  </td></tr>
      * </table>
      */
-    public ApiResponse<RemoveMount201Response> removeMountWithHttpInfo(@javax.annotation.Nonnull String shipSymbol, @javax.annotation.Nullable RemoveMountRequest removeMountRequest) throws ApiException {
-        okhttp3.Call localVarCall = removeMountValidateBeforeCall(shipSymbol, removeMountRequest, null);
+    public ApiResponse<RemoveMount201Response> removeMountWithHttpInfo(
+        @javax.annotation.Nonnull String shipSymbol,
+        @javax.annotation.Nullable RemoveMountRequest removeMountRequest) throws ApiException {
+        okhttp3.Call localVarCall = removeMountValidateBeforeCall(shipSymbol, removeMountRequest,
+            null);
         Type localVarReturnType = new TypeToken<RemoveMount201Response>() {
         }.getType();
         return localVarApiClient.execute(localVarCall, localVarReturnType);
     }
 
     /**
-     * Remove Mount (asynchronously)
-     * Remove a mount from a ship.  The ship must be docked in a waypoint that has the &#x60;Shipyard&#x60; trait, and must have the desired mount that it wish to remove installed.  A removal fee will be deduced from the agent by the Shipyard.
+     * Remove Mount (asynchronously) Remove a mount from a ship.  The ship must be docked in a
+     * waypoint that has the &#x60;Shipyard&#x60; trait, and must have the desired mount that it
+     * wish to remove installed.  A removal fee will be deduced from the agent by the Shipyard.
      *
      * @param shipSymbol         The ship&#39;s symbol. (required)
      * @param removeMountRequest (optional)
      * @param _callback          The callback to be executed when the API call finishes
      * @return The request call
-     * @throws ApiException If fail to process the API call, e.g. serializing the request body object
+     * @throws ApiException If fail to process the API call, e.g. serializing the request body
+     *                      object
      * @http.response.details <table border="1">
      * <caption>Response Details</caption>
      * <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
      * <tr><td> 201 </td><td> Successfully removed the mount. </td><td>  -  </td></tr>
      * </table>
      */
-    public okhttp3.Call removeMountAsync(@javax.annotation.Nonnull String shipSymbol, @javax.annotation.Nullable RemoveMountRequest removeMountRequest, final ApiCallback<RemoveMount201Response> _callback) throws ApiException {
+    public okhttp3.Call removeMountAsync(@javax.annotation.Nonnull String shipSymbol,
+        @javax.annotation.Nullable RemoveMountRequest removeMountRequest,
+        final ApiCallback<RemoveMount201Response> _callback) throws ApiException {
 
-        okhttp3.Call localVarCall = removeMountValidateBeforeCall(shipSymbol, removeMountRequest, _callback);
+        okhttp3.Call localVarCall = removeMountValidateBeforeCall(shipSymbol, removeMountRequest,
+            _callback);
         Type localVarReturnType = new TypeToken<RemoveMount201Response>() {
         }.getType();
         localVarApiClient.executeAsync(localVarCall, localVarReturnType, _callback);
@@ -3901,10 +4595,13 @@ public class FleetApi {
      * @http.response.details <table border="1">
      * <caption>Response Details</caption>
      * <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-     * <tr><td> 201 </td><td> Successfully removed the module from the ship. </td><td>  -  </td></tr>
+     * <tr><td> 201 </td><td> Successfully removed the module from the ship. </td><td>  -
+     * </td></tr>
      * </table>
      */
-    public okhttp3.Call removeShipModuleCall(@javax.annotation.Nonnull String shipSymbol, @javax.annotation.Nullable RemoveShipModuleRequest removeShipModuleRequest, final ApiCallback _callback) throws ApiException {
+    public okhttp3.Call removeShipModuleCall(@javax.annotation.Nonnull String shipSymbol,
+        @javax.annotation.Nullable RemoveShipModuleRequest removeShipModuleRequest,
+        final ApiCallback _callback) throws ApiException {
         String basePath = null;
         // Operation Servers
         String[] localBasePaths = new String[]{};
@@ -3922,7 +4619,7 @@ public class FleetApi {
 
         // create path and map variables
         String localVarPath = "/my/ships/{shipSymbol}/modules/remove"
-                .replace("{" + "shipSymbol" + "}", localVarApiClient.escapeString(shipSymbol));
+            .replace("{" + "shipSymbol" + "}", localVarApiClient.escapeString(shipSymbol));
 
         List<Pair> localVarQueryParams = new ArrayList<Pair>();
         List<Pair> localVarCollectionQueryParams = new ArrayList<Pair>();
@@ -3931,7 +4628,7 @@ public class FleetApi {
         Map<String, Object> localVarFormParams = new HashMap<String, Object>();
 
         final String[] localVarAccepts = {
-                "application/json"
+            "application/json"
         };
         final String localVarAccept = localVarApiClient.selectHeaderAccept(localVarAccepts);
         if (localVarAccept != null) {
@@ -3939,22 +4636,29 @@ public class FleetApi {
         }
 
         final String[] localVarContentTypes = {
-                "application/json"
+            "application/json"
         };
-        final String localVarContentType = localVarApiClient.selectHeaderContentType(localVarContentTypes);
+        final String localVarContentType = localVarApiClient.selectHeaderContentType(
+            localVarContentTypes);
         if (localVarContentType != null) {
             localVarHeaderParams.put("Content-Type", localVarContentType);
         }
 
         String[] localVarAuthNames = new String[]{"AccountToken", "AgentToken"};
-        return localVarApiClient.buildCall(basePath, localVarPath, "POST", localVarQueryParams, localVarCollectionQueryParams, localVarPostBody, localVarHeaderParams, localVarCookieParams, localVarFormParams, localVarAuthNames, _callback);
+        return localVarApiClient.buildCall(basePath, localVarPath, "POST", localVarQueryParams,
+            localVarCollectionQueryParams, localVarPostBody, localVarHeaderParams,
+            localVarCookieParams, localVarFormParams, localVarAuthNames, _callback);
     }
 
     @SuppressWarnings("rawtypes")
-    private okhttp3.Call removeShipModuleValidateBeforeCall(@javax.annotation.Nonnull String shipSymbol, @javax.annotation.Nullable RemoveShipModuleRequest removeShipModuleRequest, final ApiCallback _callback) throws ApiException {
+    private okhttp3.Call removeShipModuleValidateBeforeCall(
+        @javax.annotation.Nonnull String shipSymbol,
+        @javax.annotation.Nullable RemoveShipModuleRequest removeShipModuleRequest,
+        final ApiCallback _callback) throws ApiException {
         // verify the required parameter 'shipSymbol' is set
         if (shipSymbol == null) {
-            throw new ApiException("Missing the required parameter 'shipSymbol' when calling removeShipModule(Async)");
+            throw new ApiException(
+                "Missing the required parameter 'shipSymbol' when calling removeShipModule(Async)");
         }
 
         return removeShipModuleCall(shipSymbol, removeShipModuleRequest, _callback);
@@ -3962,63 +4666,77 @@ public class FleetApi {
     }
 
     /**
-     * Remove Ship Module
-     * Remove a module from a ship. The module will be placed in cargo.
+     * Remove Ship Module Remove a module from a ship. The module will be placed in cargo.
      *
      * @param shipSymbol              The symbol of the ship (required)
      * @param removeShipModuleRequest (optional)
      * @return RemoveModule201Response
-     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
+     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the
+     *                      response body
      * @http.response.details <table border="1">
      * <caption>Response Details</caption>
      * <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-     * <tr><td> 201 </td><td> Successfully removed the module from the ship. </td><td>  -  </td></tr>
+     * <tr><td> 201 </td><td> Successfully removed the module from the ship. </td><td>  -
+     * </td></tr>
      * </table>
      */
-    public RemoveModule201Response removeShipModule(@javax.annotation.Nonnull String shipSymbol, @javax.annotation.Nullable RemoveShipModuleRequest removeShipModuleRequest) throws ApiException {
-        ApiResponse<RemoveModule201Response> localVarResp = removeShipModuleWithHttpInfo(shipSymbol, removeShipModuleRequest);
+    public RemoveModule201Response removeShipModule(@javax.annotation.Nonnull String shipSymbol,
+        @javax.annotation.Nullable RemoveShipModuleRequest removeShipModuleRequest)
+        throws ApiException {
+        ApiResponse<RemoveModule201Response> localVarResp = removeShipModuleWithHttpInfo(shipSymbol,
+            removeShipModuleRequest);
         return localVarResp.data();
     }
 
     /**
-     * Remove Ship Module
-     * Remove a module from a ship. The module will be placed in cargo.
+     * Remove Ship Module Remove a module from a ship. The module will be placed in cargo.
      *
      * @param shipSymbol              The symbol of the ship (required)
      * @param removeShipModuleRequest (optional)
      * @return ApiResponse&lt;RemoveModule201Response&gt;
-     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
+     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the
+     *                      response body
      * @http.response.details <table border="1">
      * <caption>Response Details</caption>
      * <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-     * <tr><td> 201 </td><td> Successfully removed the module from the ship. </td><td>  -  </td></tr>
+     * <tr><td> 201 </td><td> Successfully removed the module from the ship. </td><td>  -
+     * </td></tr>
      * </table>
      */
-    public ApiResponse<RemoveModule201Response> removeShipModuleWithHttpInfo(@javax.annotation.Nonnull String shipSymbol, @javax.annotation.Nullable RemoveShipModuleRequest removeShipModuleRequest) throws ApiException {
-        okhttp3.Call localVarCall = removeShipModuleValidateBeforeCall(shipSymbol, removeShipModuleRequest, null);
+    public ApiResponse<RemoveModule201Response> removeShipModuleWithHttpInfo(
+        @javax.annotation.Nonnull String shipSymbol,
+        @javax.annotation.Nullable RemoveShipModuleRequest removeShipModuleRequest)
+        throws ApiException {
+        okhttp3.Call localVarCall = removeShipModuleValidateBeforeCall(shipSymbol,
+            removeShipModuleRequest, null);
         Type localVarReturnType = new TypeToken<RemoveModule201Response>() {
         }.getType();
         return localVarApiClient.execute(localVarCall, localVarReturnType);
     }
 
     /**
-     * Remove Ship Module (asynchronously)
-     * Remove a module from a ship. The module will be placed in cargo.
+     * Remove Ship Module (asynchronously) Remove a module from a ship. The module will be placed in
+     * cargo.
      *
      * @param shipSymbol              The symbol of the ship (required)
      * @param removeShipModuleRequest (optional)
      * @param _callback               The callback to be executed when the API call finishes
      * @return The request call
-     * @throws ApiException If fail to process the API call, e.g. serializing the request body object
+     * @throws ApiException If fail to process the API call, e.g. serializing the request body
+     *                      object
      * @http.response.details <table border="1">
      * <caption>Response Details</caption>
      * <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-     * <tr><td> 201 </td><td> Successfully removed the module from the ship. </td><td>  -  </td></tr>
+     * <tr><td> 201 </td><td> Successfully removed the module from the ship. </td><td>  -
+     * </td></tr>
      * </table>
      */
-    public okhttp3.Call removeShipModuleAsync(@javax.annotation.Nonnull String shipSymbol, @javax.annotation.Nullable RemoveShipModuleRequest removeShipModuleRequest, final ApiCallback<RemoveModule201Response> _callback) throws ApiException {
+    public okhttp3.Call removeShipModuleAsync(@javax.annotation.Nonnull String shipSymbol,
+        @javax.annotation.Nullable RemoveShipModuleRequest removeShipModuleRequest,
+        final ApiCallback<RemoveModule201Response> _callback) throws ApiException {
 
-        okhttp3.Call localVarCall = removeShipModuleValidateBeforeCall(shipSymbol, removeShipModuleRequest, _callback);
+        okhttp3.Call localVarCall = removeShipModuleValidateBeforeCall(shipSymbol,
+            removeShipModuleRequest, _callback);
         Type localVarReturnType = new TypeToken<RemoveModule201Response>() {
         }.getType();
         localVarApiClient.executeAsync(localVarCall, localVarReturnType, _callback);
@@ -4038,7 +4756,8 @@ public class FleetApi {
      * <tr><td> 200 </td><td> Ship repaired successfully. </td><td>  -  </td></tr>
      * </table>
      */
-    public okhttp3.Call repairShipCall(@javax.annotation.Nonnull String shipSymbol, final ApiCallback _callback) throws ApiException {
+    public okhttp3.Call repairShipCall(@javax.annotation.Nonnull String shipSymbol,
+        final ApiCallback _callback) throws ApiException {
         String basePath = null;
         // Operation Servers
         String[] localBasePaths = new String[]{};
@@ -4056,7 +4775,7 @@ public class FleetApi {
 
         // create path and map variables
         String localVarPath = "/my/ships/{shipSymbol}/repair"
-                .replace("{" + "shipSymbol" + "}", localVarApiClient.escapeString(shipSymbol));
+            .replace("{" + "shipSymbol" + "}", localVarApiClient.escapeString(shipSymbol));
 
         List<Pair> localVarQueryParams = new ArrayList<Pair>();
         List<Pair> localVarCollectionQueryParams = new ArrayList<Pair>();
@@ -4065,7 +4784,7 @@ public class FleetApi {
         Map<String, Object> localVarFormParams = new HashMap<String, Object>();
 
         final String[] localVarAccepts = {
-                "application/json"
+            "application/json"
         };
         final String localVarAccept = localVarApiClient.selectHeaderAccept(localVarAccepts);
         if (localVarAccept != null) {
@@ -4074,20 +4793,25 @@ public class FleetApi {
 
         final String[] localVarContentTypes = {
         };
-        final String localVarContentType = localVarApiClient.selectHeaderContentType(localVarContentTypes);
+        final String localVarContentType = localVarApiClient.selectHeaderContentType(
+            localVarContentTypes);
         if (localVarContentType != null) {
             localVarHeaderParams.put("Content-Type", localVarContentType);
         }
 
         String[] localVarAuthNames = new String[]{"AgentToken"};
-        return localVarApiClient.buildCall(basePath, localVarPath, "POST", localVarQueryParams, localVarCollectionQueryParams, localVarPostBody, localVarHeaderParams, localVarCookieParams, localVarFormParams, localVarAuthNames, _callback);
+        return localVarApiClient.buildCall(basePath, localVarPath, "POST", localVarQueryParams,
+            localVarCollectionQueryParams, localVarPostBody, localVarHeaderParams,
+            localVarCookieParams, localVarFormParams, localVarAuthNames, _callback);
     }
 
     @SuppressWarnings("rawtypes")
-    private okhttp3.Call repairShipValidateBeforeCall(@javax.annotation.Nonnull String shipSymbol, final ApiCallback _callback) throws ApiException {
+    private okhttp3.Call repairShipValidateBeforeCall(@javax.annotation.Nonnull String shipSymbol,
+        final ApiCallback _callback) throws ApiException {
         // verify the required parameter 'shipSymbol' is set
         if (shipSymbol == null) {
-            throw new ApiException("Missing the required parameter 'shipSymbol' when calling repairShip(Async)");
+            throw new ApiException(
+                "Missing the required parameter 'shipSymbol' when calling repairShip(Async)");
         }
 
         return repairShipCall(shipSymbol, _callback);
@@ -4095,37 +4819,43 @@ public class FleetApi {
     }
 
     /**
-     * Repair Ship
-     * Repair a ship, restoring the ship to maximum condition. The ship must be docked at a waypoint that has the &#x60;Shipyard&#x60; trait in order to use this function. To preview the cost of repairing the ship, use the Get action.
+     * Repair Ship Repair a ship, restoring the ship to maximum condition. The ship must be docked
+     * at a waypoint that has the &#x60;Shipyard&#x60; trait in order to use this function. To
+     * preview the cost of repairing the ship, use the Get action.
      *
      * @param shipSymbol The ship symbol. (required)
      * @return RepairShip200Response
-     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
+     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the
+     *                      response body
      * @http.response.details <table border="1">
      * <caption>Response Details</caption>
      * <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
      * <tr><td> 200 </td><td> Ship repaired successfully. </td><td>  -  </td></tr>
      * </table>
      */
-    public RepairShip200Response repairShip(@javax.annotation.Nonnull String shipSymbol) throws ApiException {
+    public RepairShip200Response repairShip(@javax.annotation.Nonnull String shipSymbol)
+        throws ApiException {
         ApiResponse<RepairShip200Response> localVarResp = repairShipWithHttpInfo(shipSymbol);
         return localVarResp.data();
     }
 
     /**
-     * Repair Ship
-     * Repair a ship, restoring the ship to maximum condition. The ship must be docked at a waypoint that has the &#x60;Shipyard&#x60; trait in order to use this function. To preview the cost of repairing the ship, use the Get action.
+     * Repair Ship Repair a ship, restoring the ship to maximum condition. The ship must be docked
+     * at a waypoint that has the &#x60;Shipyard&#x60; trait in order to use this function. To
+     * preview the cost of repairing the ship, use the Get action.
      *
      * @param shipSymbol The ship symbol. (required)
      * @return ApiResponse&lt;RepairShip200Response&gt;
-     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
+     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the
+     *                      response body
      * @http.response.details <table border="1">
      * <caption>Response Details</caption>
      * <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
      * <tr><td> 200 </td><td> Ship repaired successfully. </td><td>  -  </td></tr>
      * </table>
      */
-    public ApiResponse<RepairShip200Response> repairShipWithHttpInfo(@javax.annotation.Nonnull String shipSymbol) throws ApiException {
+    public ApiResponse<RepairShip200Response> repairShipWithHttpInfo(
+        @javax.annotation.Nonnull String shipSymbol) throws ApiException {
         okhttp3.Call localVarCall = repairShipValidateBeforeCall(shipSymbol, null);
         Type localVarReturnType = new TypeToken<RepairShip200Response>() {
         }.getType();
@@ -4133,20 +4863,23 @@ public class FleetApi {
     }
 
     /**
-     * Repair Ship (asynchronously)
-     * Repair a ship, restoring the ship to maximum condition. The ship must be docked at a waypoint that has the &#x60;Shipyard&#x60; trait in order to use this function. To preview the cost of repairing the ship, use the Get action.
+     * Repair Ship (asynchronously) Repair a ship, restoring the ship to maximum condition. The ship
+     * must be docked at a waypoint that has the &#x60;Shipyard&#x60; trait in order to use this
+     * function. To preview the cost of repairing the ship, use the Get action.
      *
      * @param shipSymbol The ship symbol. (required)
      * @param _callback  The callback to be executed when the API call finishes
      * @return The request call
-     * @throws ApiException If fail to process the API call, e.g. serializing the request body object
+     * @throws ApiException If fail to process the API call, e.g. serializing the request body
+     *                      object
      * @http.response.details <table border="1">
      * <caption>Response Details</caption>
      * <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
      * <tr><td> 200 </td><td> Ship repaired successfully. </td><td>  -  </td></tr>
      * </table>
      */
-    public okhttp3.Call repairShipAsync(@javax.annotation.Nonnull String shipSymbol, final ApiCallback<RepairShip200Response> _callback) throws ApiException {
+    public okhttp3.Call repairShipAsync(@javax.annotation.Nonnull String shipSymbol,
+        final ApiCallback<RepairShip200Response> _callback) throws ApiException {
 
         okhttp3.Call localVarCall = repairShipValidateBeforeCall(shipSymbol, _callback);
         Type localVarReturnType = new TypeToken<RepairShip200Response>() {
@@ -4168,7 +4901,8 @@ public class FleetApi {
      * <tr><td> 200 </td><td> Ship scrapped successfully. </td><td>  -  </td></tr>
      * </table>
      */
-    public okhttp3.Call scrapShipCall(@javax.annotation.Nonnull String shipSymbol, final ApiCallback _callback) throws ApiException {
+    public okhttp3.Call scrapShipCall(@javax.annotation.Nonnull String shipSymbol,
+        final ApiCallback _callback) throws ApiException {
         String basePath = null;
         // Operation Servers
         String[] localBasePaths = new String[]{};
@@ -4186,7 +4920,7 @@ public class FleetApi {
 
         // create path and map variables
         String localVarPath = "/my/ships/{shipSymbol}/scrap"
-                .replace("{" + "shipSymbol" + "}", localVarApiClient.escapeString(shipSymbol));
+            .replace("{" + "shipSymbol" + "}", localVarApiClient.escapeString(shipSymbol));
 
         List<Pair> localVarQueryParams = new ArrayList<Pair>();
         List<Pair> localVarCollectionQueryParams = new ArrayList<Pair>();
@@ -4195,7 +4929,7 @@ public class FleetApi {
         Map<String, Object> localVarFormParams = new HashMap<String, Object>();
 
         final String[] localVarAccepts = {
-                "application/json"
+            "application/json"
         };
         final String localVarAccept = localVarApiClient.selectHeaderAccept(localVarAccepts);
         if (localVarAccept != null) {
@@ -4204,20 +4938,25 @@ public class FleetApi {
 
         final String[] localVarContentTypes = {
         };
-        final String localVarContentType = localVarApiClient.selectHeaderContentType(localVarContentTypes);
+        final String localVarContentType = localVarApiClient.selectHeaderContentType(
+            localVarContentTypes);
         if (localVarContentType != null) {
             localVarHeaderParams.put("Content-Type", localVarContentType);
         }
 
         String[] localVarAuthNames = new String[]{"AgentToken"};
-        return localVarApiClient.buildCall(basePath, localVarPath, "POST", localVarQueryParams, localVarCollectionQueryParams, localVarPostBody, localVarHeaderParams, localVarCookieParams, localVarFormParams, localVarAuthNames, _callback);
+        return localVarApiClient.buildCall(basePath, localVarPath, "POST", localVarQueryParams,
+            localVarCollectionQueryParams, localVarPostBody, localVarHeaderParams,
+            localVarCookieParams, localVarFormParams, localVarAuthNames, _callback);
     }
 
     @SuppressWarnings("rawtypes")
-    private okhttp3.Call scrapShipValidateBeforeCall(@javax.annotation.Nonnull String shipSymbol, final ApiCallback _callback) throws ApiException {
+    private okhttp3.Call scrapShipValidateBeforeCall(@javax.annotation.Nonnull String shipSymbol,
+        final ApiCallback _callback) throws ApiException {
         // verify the required parameter 'shipSymbol' is set
         if (shipSymbol == null) {
-            throw new ApiException("Missing the required parameter 'shipSymbol' when calling scrapShip(Async)");
+            throw new ApiException(
+                "Missing the required parameter 'shipSymbol' when calling scrapShip(Async)");
         }
 
         return scrapShipCall(shipSymbol, _callback);
@@ -4225,37 +4964,45 @@ public class FleetApi {
     }
 
     /**
-     * Scrap Ship
-     * Scrap a ship, removing it from the game and returning a portion of the ship&#39;s value to the agent. The ship must be docked in a waypoint that has the &#x60;Shipyard&#x60; trait in order to use this function. To preview the amount of value that will be returned, use the Get Ship action.
+     * Scrap Ship Scrap a ship, removing it from the game and returning a portion of the ship&#39;s
+     * value to the agent. The ship must be docked in a waypoint that has the &#x60;Shipyard&#x60;
+     * trait in order to use this function. To preview the amount of value that will be returned,
+     * use the Get Ship action.
      *
      * @param shipSymbol The ship symbol. (required)
      * @return ScrapShip200Response
-     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
+     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the
+     *                      response body
      * @http.response.details <table border="1">
      * <caption>Response Details</caption>
      * <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
      * <tr><td> 200 </td><td> Ship scrapped successfully. </td><td>  -  </td></tr>
      * </table>
      */
-    public ScrapShip200Response scrapShip(@javax.annotation.Nonnull String shipSymbol) throws ApiException {
+    public ScrapShip200Response scrapShip(@javax.annotation.Nonnull String shipSymbol)
+        throws ApiException {
         ApiResponse<ScrapShip200Response> localVarResp = scrapShipWithHttpInfo(shipSymbol);
         return localVarResp.data();
     }
 
     /**
-     * Scrap Ship
-     * Scrap a ship, removing it from the game and returning a portion of the ship&#39;s value to the agent. The ship must be docked in a waypoint that has the &#x60;Shipyard&#x60; trait in order to use this function. To preview the amount of value that will be returned, use the Get Ship action.
+     * Scrap Ship Scrap a ship, removing it from the game and returning a portion of the ship&#39;s
+     * value to the agent. The ship must be docked in a waypoint that has the &#x60;Shipyard&#x60;
+     * trait in order to use this function. To preview the amount of value that will be returned,
+     * use the Get Ship action.
      *
      * @param shipSymbol The ship symbol. (required)
      * @return ApiResponse&lt;ScrapShip200Response&gt;
-     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
+     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the
+     *                      response body
      * @http.response.details <table border="1">
      * <caption>Response Details</caption>
      * <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
      * <tr><td> 200 </td><td> Ship scrapped successfully. </td><td>  -  </td></tr>
      * </table>
      */
-    public ApiResponse<ScrapShip200Response> scrapShipWithHttpInfo(@javax.annotation.Nonnull String shipSymbol) throws ApiException {
+    public ApiResponse<ScrapShip200Response> scrapShipWithHttpInfo(
+        @javax.annotation.Nonnull String shipSymbol) throws ApiException {
         okhttp3.Call localVarCall = scrapShipValidateBeforeCall(shipSymbol, null);
         Type localVarReturnType = new TypeToken<ScrapShip200Response>() {
         }.getType();
@@ -4263,20 +5010,24 @@ public class FleetApi {
     }
 
     /**
-     * Scrap Ship (asynchronously)
-     * Scrap a ship, removing it from the game and returning a portion of the ship&#39;s value to the agent. The ship must be docked in a waypoint that has the &#x60;Shipyard&#x60; trait in order to use this function. To preview the amount of value that will be returned, use the Get Ship action.
+     * Scrap Ship (asynchronously) Scrap a ship, removing it from the game and returning a portion
+     * of the ship&#39;s value to the agent. The ship must be docked in a waypoint that has the
+     * &#x60;Shipyard&#x60; trait in order to use this function. To preview the amount of value that
+     * will be returned, use the Get Ship action.
      *
      * @param shipSymbol The ship symbol. (required)
      * @param _callback  The callback to be executed when the API call finishes
      * @return The request call
-     * @throws ApiException If fail to process the API call, e.g. serializing the request body object
+     * @throws ApiException If fail to process the API call, e.g. serializing the request body
+     *                      object
      * @http.response.details <table border="1">
      * <caption>Response Details</caption>
      * <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
      * <tr><td> 200 </td><td> Ship scrapped successfully. </td><td>  -  </td></tr>
      * </table>
      */
-    public okhttp3.Call scrapShipAsync(@javax.annotation.Nonnull String shipSymbol, final ApiCallback<ScrapShip200Response> _callback) throws ApiException {
+    public okhttp3.Call scrapShipAsync(@javax.annotation.Nonnull String shipSymbol,
+        final ApiCallback<ScrapShip200Response> _callback) throws ApiException {
 
         okhttp3.Call localVarCall = scrapShipValidateBeforeCall(shipSymbol, _callback);
         Type localVarReturnType = new TypeToken<ScrapShip200Response>() {
@@ -4299,7 +5050,9 @@ public class FleetApi {
      * <tr><td> 201 </td><td> Cargo was successfully sold. </td><td>  -  </td></tr>
      * </table>
      */
-    public okhttp3.Call sellCargoCall(@javax.annotation.Nonnull String shipSymbol, @javax.annotation.Nullable SellCargoRequest sellCargoRequest, final ApiCallback _callback) throws ApiException {
+    public okhttp3.Call sellCargoCall(@javax.annotation.Nonnull String shipSymbol,
+        @javax.annotation.Nullable SellCargoRequest sellCargoRequest, final ApiCallback _callback)
+        throws ApiException {
         String basePath = null;
         // Operation Servers
         String[] localBasePaths = new String[]{};
@@ -4317,7 +5070,7 @@ public class FleetApi {
 
         // create path and map variables
         String localVarPath = "/my/ships/{shipSymbol}/sell"
-                .replace("{" + "shipSymbol" + "}", localVarApiClient.escapeString(shipSymbol));
+            .replace("{" + "shipSymbol" + "}", localVarApiClient.escapeString(shipSymbol));
 
         List<Pair> localVarQueryParams = new ArrayList<Pair>();
         List<Pair> localVarCollectionQueryParams = new ArrayList<Pair>();
@@ -4326,7 +5079,7 @@ public class FleetApi {
         Map<String, Object> localVarFormParams = new HashMap<String, Object>();
 
         final String[] localVarAccepts = {
-                "application/json"
+            "application/json"
         };
         final String localVarAccept = localVarApiClient.selectHeaderAccept(localVarAccepts);
         if (localVarAccept != null) {
@@ -4334,22 +5087,28 @@ public class FleetApi {
         }
 
         final String[] localVarContentTypes = {
-                "application/json"
+            "application/json"
         };
-        final String localVarContentType = localVarApiClient.selectHeaderContentType(localVarContentTypes);
+        final String localVarContentType = localVarApiClient.selectHeaderContentType(
+            localVarContentTypes);
         if (localVarContentType != null) {
             localVarHeaderParams.put("Content-Type", localVarContentType);
         }
 
         String[] localVarAuthNames = new String[]{"AgentToken"};
-        return localVarApiClient.buildCall(basePath, localVarPath, "POST", localVarQueryParams, localVarCollectionQueryParams, localVarPostBody, localVarHeaderParams, localVarCookieParams, localVarFormParams, localVarAuthNames, _callback);
+        return localVarApiClient.buildCall(basePath, localVarPath, "POST", localVarQueryParams,
+            localVarCollectionQueryParams, localVarPostBody, localVarHeaderParams,
+            localVarCookieParams, localVarFormParams, localVarAuthNames, _callback);
     }
 
     @SuppressWarnings("rawtypes")
-    private okhttp3.Call sellCargoValidateBeforeCall(@javax.annotation.Nonnull String shipSymbol, @javax.annotation.Nullable SellCargoRequest sellCargoRequest, final ApiCallback _callback) throws ApiException {
+    private okhttp3.Call sellCargoValidateBeforeCall(@javax.annotation.Nonnull String shipSymbol,
+        @javax.annotation.Nullable SellCargoRequest sellCargoRequest, final ApiCallback _callback)
+        throws ApiException {
         // verify the required parameter 'shipSymbol' is set
         if (shipSymbol == null) {
-            throw new ApiException("Missing the required parameter 'shipSymbol' when calling sellCargo(Async)");
+            throw new ApiException(
+                "Missing the required parameter 'shipSymbol' when calling sellCargo(Async)");
         }
 
         return sellCargoCall(shipSymbol, sellCargoRequest, _callback);
@@ -4357,39 +5116,47 @@ public class FleetApi {
     }
 
     /**
-     * Sell Cargo
-     * Sell cargo in your ship to a market that trades this cargo. The ship must be docked in a waypoint that has the &#x60;Marketplace&#x60; trait in order to use this function.
+     * Sell Cargo Sell cargo in your ship to a market that trades this cargo. The ship must be
+     * docked in a waypoint that has the &#x60;Marketplace&#x60; trait in order to use this
+     * function.
      *
      * @param shipSymbol       Symbol of a ship. (required)
      * @param sellCargoRequest (optional)
      * @return SellCargo201Response
-     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
+     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the
+     *                      response body
      * @http.response.details <table border="1">
      * <caption>Response Details</caption>
      * <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
      * <tr><td> 201 </td><td> Cargo was successfully sold. </td><td>  -  </td></tr>
      * </table>
      */
-    public SellCargo201Response sellCargo(@javax.annotation.Nonnull String shipSymbol, @javax.annotation.Nullable SellCargoRequest sellCargoRequest) throws ApiException {
-        ApiResponse<SellCargo201Response> localVarResp = sellCargoWithHttpInfo(shipSymbol, sellCargoRequest);
+    public SellCargo201Response sellCargo(@javax.annotation.Nonnull String shipSymbol,
+        @javax.annotation.Nullable SellCargoRequest sellCargoRequest) throws ApiException {
+        ApiResponse<SellCargo201Response> localVarResp = sellCargoWithHttpInfo(shipSymbol,
+            sellCargoRequest);
         return localVarResp.data();
     }
 
     /**
-     * Sell Cargo
-     * Sell cargo in your ship to a market that trades this cargo. The ship must be docked in a waypoint that has the &#x60;Marketplace&#x60; trait in order to use this function.
+     * Sell Cargo Sell cargo in your ship to a market that trades this cargo. The ship must be
+     * docked in a waypoint that has the &#x60;Marketplace&#x60; trait in order to use this
+     * function.
      *
      * @param shipSymbol       Symbol of a ship. (required)
      * @param sellCargoRequest (optional)
      * @return ApiResponse&lt;SellCargo201Response&gt;
-     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
+     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the
+     *                      response body
      * @http.response.details <table border="1">
      * <caption>Response Details</caption>
      * <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
      * <tr><td> 201 </td><td> Cargo was successfully sold. </td><td>  -  </td></tr>
      * </table>
      */
-    public ApiResponse<SellCargo201Response> sellCargoWithHttpInfo(@javax.annotation.Nonnull String shipSymbol, @javax.annotation.Nullable SellCargoRequest sellCargoRequest) throws ApiException {
+    public ApiResponse<SellCargo201Response> sellCargoWithHttpInfo(
+        @javax.annotation.Nonnull String shipSymbol,
+        @javax.annotation.Nullable SellCargoRequest sellCargoRequest) throws ApiException {
         okhttp3.Call localVarCall = sellCargoValidateBeforeCall(shipSymbol, sellCargoRequest, null);
         Type localVarReturnType = new TypeToken<SellCargo201Response>() {
         }.getType();
@@ -4397,23 +5164,28 @@ public class FleetApi {
     }
 
     /**
-     * Sell Cargo (asynchronously)
-     * Sell cargo in your ship to a market that trades this cargo. The ship must be docked in a waypoint that has the &#x60;Marketplace&#x60; trait in order to use this function.
+     * Sell Cargo (asynchronously) Sell cargo in your ship to a market that trades this cargo. The
+     * ship must be docked in a waypoint that has the &#x60;Marketplace&#x60; trait in order to use
+     * this function.
      *
      * @param shipSymbol       Symbol of a ship. (required)
      * @param sellCargoRequest (optional)
      * @param _callback        The callback to be executed when the API call finishes
      * @return The request call
-     * @throws ApiException If fail to process the API call, e.g. serializing the request body object
+     * @throws ApiException If fail to process the API call, e.g. serializing the request body
+     *                      object
      * @http.response.details <table border="1">
      * <caption>Response Details</caption>
      * <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
      * <tr><td> 201 </td><td> Cargo was successfully sold. </td><td>  -  </td></tr>
      * </table>
      */
-    public okhttp3.Call sellCargoAsync(@javax.annotation.Nonnull String shipSymbol, @javax.annotation.Nullable SellCargoRequest sellCargoRequest, final ApiCallback<SellCargo201Response> _callback) throws ApiException {
+    public okhttp3.Call sellCargoAsync(@javax.annotation.Nonnull String shipSymbol,
+        @javax.annotation.Nullable SellCargoRequest sellCargoRequest,
+        final ApiCallback<SellCargo201Response> _callback) throws ApiException {
 
-        okhttp3.Call localVarCall = sellCargoValidateBeforeCall(shipSymbol, sellCargoRequest, _callback);
+        okhttp3.Call localVarCall = sellCargoValidateBeforeCall(shipSymbol, sellCargoRequest,
+            _callback);
         Type localVarReturnType = new TypeToken<SellCargo201Response>() {
         }.getType();
         localVarApiClient.executeAsync(localVarCall, localVarReturnType, _callback);
@@ -4434,7 +5206,9 @@ public class FleetApi {
      * <tr><td> 201 </td><td> The ship has successfully refined goods. </td><td>  -  </td></tr>
      * </table>
      */
-    public okhttp3.Call shipRefineCall(@javax.annotation.Nonnull String shipSymbol, @javax.annotation.Nullable ShipRefineRequest shipRefineRequest, final ApiCallback _callback) throws ApiException {
+    public okhttp3.Call shipRefineCall(@javax.annotation.Nonnull String shipSymbol,
+        @javax.annotation.Nullable ShipRefineRequest shipRefineRequest, final ApiCallback _callback)
+        throws ApiException {
         String basePath = null;
         // Operation Servers
         String[] localBasePaths = new String[]{};
@@ -4452,7 +5226,7 @@ public class FleetApi {
 
         // create path and map variables
         String localVarPath = "/my/ships/{shipSymbol}/refine"
-                .replace("{" + "shipSymbol" + "}", localVarApiClient.escapeString(shipSymbol));
+            .replace("{" + "shipSymbol" + "}", localVarApiClient.escapeString(shipSymbol));
 
         List<Pair> localVarQueryParams = new ArrayList<Pair>();
         List<Pair> localVarCollectionQueryParams = new ArrayList<Pair>();
@@ -4461,7 +5235,7 @@ public class FleetApi {
         Map<String, Object> localVarFormParams = new HashMap<String, Object>();
 
         final String[] localVarAccepts = {
-                "application/json"
+            "application/json"
         };
         final String localVarAccept = localVarApiClient.selectHeaderAccept(localVarAccepts);
         if (localVarAccept != null) {
@@ -4469,22 +5243,28 @@ public class FleetApi {
         }
 
         final String[] localVarContentTypes = {
-                "application/json"
+            "application/json"
         };
-        final String localVarContentType = localVarApiClient.selectHeaderContentType(localVarContentTypes);
+        final String localVarContentType = localVarApiClient.selectHeaderContentType(
+            localVarContentTypes);
         if (localVarContentType != null) {
             localVarHeaderParams.put("Content-Type", localVarContentType);
         }
 
         String[] localVarAuthNames = new String[]{"AgentToken"};
-        return localVarApiClient.buildCall(basePath, localVarPath, "POST", localVarQueryParams, localVarCollectionQueryParams, localVarPostBody, localVarHeaderParams, localVarCookieParams, localVarFormParams, localVarAuthNames, _callback);
+        return localVarApiClient.buildCall(basePath, localVarPath, "POST", localVarQueryParams,
+            localVarCollectionQueryParams, localVarPostBody, localVarHeaderParams,
+            localVarCookieParams, localVarFormParams, localVarAuthNames, _callback);
     }
 
     @SuppressWarnings("rawtypes")
-    private okhttp3.Call shipRefineValidateBeforeCall(@javax.annotation.Nonnull String shipSymbol, @javax.annotation.Nullable ShipRefineRequest shipRefineRequest, final ApiCallback _callback) throws ApiException {
+    private okhttp3.Call shipRefineValidateBeforeCall(@javax.annotation.Nonnull String shipSymbol,
+        @javax.annotation.Nullable ShipRefineRequest shipRefineRequest, final ApiCallback _callback)
+        throws ApiException {
         // verify the required parameter 'shipSymbol' is set
         if (shipSymbol == null) {
-            throw new ApiException("Missing the required parameter 'shipSymbol' when calling shipRefine(Async)");
+            throw new ApiException(
+                "Missing the required parameter 'shipSymbol' when calling shipRefine(Async)");
         }
 
         return shipRefineCall(shipSymbol, shipRefineRequest, _callback);
@@ -4492,63 +5272,83 @@ public class FleetApi {
     }
 
     /**
-     * Ship Refine
-     * Attempt to refine the raw materials on your ship. The request will only succeed if your ship is capable of refining at the time of the request. In order to be able to refine, a ship must have goods that can be refined and have installed a &#x60;Refinery&#x60; module that can refine it.  When refining, 100 basic goods will be converted into 10 processed goods.
+     * Ship Refine Attempt to refine the raw materials on your ship. The request will only succeed
+     * if your ship is capable of refining at the time of the request. In order to be able to
+     * refine, a ship must have goods that can be refined and have installed a &#x60;Refinery&#x60;
+     * module that can refine it.  When refining, 100 basic goods will be converted into 10
+     * processed goods.
      *
      * @param shipSymbol        The symbol of the ship. (required)
      * @param shipRefineRequest (optional)
      * @return ShipRefine201Response
-     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
+     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the
+     *                      response body
      * @http.response.details <table border="1">
      * <caption>Response Details</caption>
      * <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
      * <tr><td> 201 </td><td> The ship has successfully refined goods. </td><td>  -  </td></tr>
      * </table>
      */
-    public ShipRefine201Response shipRefine(@javax.annotation.Nonnull String shipSymbol, @javax.annotation.Nullable ShipRefineRequest shipRefineRequest) throws ApiException {
-        ApiResponse<ShipRefine201Response> localVarResp = shipRefineWithHttpInfo(shipSymbol, shipRefineRequest);
+    public ShipRefine201Response shipRefine(@javax.annotation.Nonnull String shipSymbol,
+        @javax.annotation.Nullable ShipRefineRequest shipRefineRequest) throws ApiException {
+        ApiResponse<ShipRefine201Response> localVarResp = shipRefineWithHttpInfo(shipSymbol,
+            shipRefineRequest);
         return localVarResp.data();
     }
 
     /**
-     * Ship Refine
-     * Attempt to refine the raw materials on your ship. The request will only succeed if your ship is capable of refining at the time of the request. In order to be able to refine, a ship must have goods that can be refined and have installed a &#x60;Refinery&#x60; module that can refine it.  When refining, 100 basic goods will be converted into 10 processed goods.
+     * Ship Refine Attempt to refine the raw materials on your ship. The request will only succeed
+     * if your ship is capable of refining at the time of the request. In order to be able to
+     * refine, a ship must have goods that can be refined and have installed a &#x60;Refinery&#x60;
+     * module that can refine it.  When refining, 100 basic goods will be converted into 10
+     * processed goods.
      *
      * @param shipSymbol        The symbol of the ship. (required)
      * @param shipRefineRequest (optional)
      * @return ApiResponse&lt;ShipRefine201Response&gt;
-     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
+     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the
+     *                      response body
      * @http.response.details <table border="1">
      * <caption>Response Details</caption>
      * <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
      * <tr><td> 201 </td><td> The ship has successfully refined goods. </td><td>  -  </td></tr>
      * </table>
      */
-    public ApiResponse<ShipRefine201Response> shipRefineWithHttpInfo(@javax.annotation.Nonnull String shipSymbol, @javax.annotation.Nullable ShipRefineRequest shipRefineRequest) throws ApiException {
-        okhttp3.Call localVarCall = shipRefineValidateBeforeCall(shipSymbol, shipRefineRequest, null);
+    public ApiResponse<ShipRefine201Response> shipRefineWithHttpInfo(
+        @javax.annotation.Nonnull String shipSymbol,
+        @javax.annotation.Nullable ShipRefineRequest shipRefineRequest) throws ApiException {
+        okhttp3.Call localVarCall = shipRefineValidateBeforeCall(shipSymbol, shipRefineRequest,
+            null);
         Type localVarReturnType = new TypeToken<ShipRefine201Response>() {
         }.getType();
         return localVarApiClient.execute(localVarCall, localVarReturnType);
     }
 
     /**
-     * Ship Refine (asynchronously)
-     * Attempt to refine the raw materials on your ship. The request will only succeed if your ship is capable of refining at the time of the request. In order to be able to refine, a ship must have goods that can be refined and have installed a &#x60;Refinery&#x60; module that can refine it.  When refining, 100 basic goods will be converted into 10 processed goods.
+     * Ship Refine (asynchronously) Attempt to refine the raw materials on your ship. The request
+     * will only succeed if your ship is capable of refining at the time of the request. In order to
+     * be able to refine, a ship must have goods that can be refined and have installed a
+     * &#x60;Refinery&#x60; module that can refine it.  When refining, 100 basic goods will be
+     * converted into 10 processed goods.
      *
      * @param shipSymbol        The symbol of the ship. (required)
      * @param shipRefineRequest (optional)
      * @param _callback         The callback to be executed when the API call finishes
      * @return The request call
-     * @throws ApiException If fail to process the API call, e.g. serializing the request body object
+     * @throws ApiException If fail to process the API call, e.g. serializing the request body
+     *                      object
      * @http.response.details <table border="1">
      * <caption>Response Details</caption>
      * <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
      * <tr><td> 201 </td><td> The ship has successfully refined goods. </td><td>  -  </td></tr>
      * </table>
      */
-    public okhttp3.Call shipRefineAsync(@javax.annotation.Nonnull String shipSymbol, @javax.annotation.Nullable ShipRefineRequest shipRefineRequest, final ApiCallback<ShipRefine201Response> _callback) throws ApiException {
+    public okhttp3.Call shipRefineAsync(@javax.annotation.Nonnull String shipSymbol,
+        @javax.annotation.Nullable ShipRefineRequest shipRefineRequest,
+        final ApiCallback<ShipRefine201Response> _callback) throws ApiException {
 
-        okhttp3.Call localVarCall = shipRefineValidateBeforeCall(shipSymbol, shipRefineRequest, _callback);
+        okhttp3.Call localVarCall = shipRefineValidateBeforeCall(shipSymbol, shipRefineRequest,
+            _callback);
         Type localVarReturnType = new TypeToken<ShipRefine201Response>() {
         }.getType();
         localVarApiClient.executeAsync(localVarCall, localVarReturnType, _callback);
@@ -4568,7 +5368,8 @@ public class FleetApi {
      * <tr><td> 201 </td><td> Siphon successful. </td><td>  -  </td></tr>
      * </table>
      */
-    public okhttp3.Call siphonResourcesCall(@javax.annotation.Nonnull String shipSymbol, final ApiCallback _callback) throws ApiException {
+    public okhttp3.Call siphonResourcesCall(@javax.annotation.Nonnull String shipSymbol,
+        final ApiCallback _callback) throws ApiException {
         String basePath = null;
         // Operation Servers
         String[] localBasePaths = new String[]{};
@@ -4586,7 +5387,7 @@ public class FleetApi {
 
         // create path and map variables
         String localVarPath = "/my/ships/{shipSymbol}/siphon"
-                .replace("{" + "shipSymbol" + "}", localVarApiClient.escapeString(shipSymbol));
+            .replace("{" + "shipSymbol" + "}", localVarApiClient.escapeString(shipSymbol));
 
         List<Pair> localVarQueryParams = new ArrayList<Pair>();
         List<Pair> localVarCollectionQueryParams = new ArrayList<Pair>();
@@ -4595,7 +5396,7 @@ public class FleetApi {
         Map<String, Object> localVarFormParams = new HashMap<String, Object>();
 
         final String[] localVarAccepts = {
-                "application/json"
+            "application/json"
         };
         final String localVarAccept = localVarApiClient.selectHeaderAccept(localVarAccepts);
         if (localVarAccept != null) {
@@ -4604,20 +5405,26 @@ public class FleetApi {
 
         final String[] localVarContentTypes = {
         };
-        final String localVarContentType = localVarApiClient.selectHeaderContentType(localVarContentTypes);
+        final String localVarContentType = localVarApiClient.selectHeaderContentType(
+            localVarContentTypes);
         if (localVarContentType != null) {
             localVarHeaderParams.put("Content-Type", localVarContentType);
         }
 
         String[] localVarAuthNames = new String[]{"AgentToken"};
-        return localVarApiClient.buildCall(basePath, localVarPath, "POST", localVarQueryParams, localVarCollectionQueryParams, localVarPostBody, localVarHeaderParams, localVarCookieParams, localVarFormParams, localVarAuthNames, _callback);
+        return localVarApiClient.buildCall(basePath, localVarPath, "POST", localVarQueryParams,
+            localVarCollectionQueryParams, localVarPostBody, localVarHeaderParams,
+            localVarCookieParams, localVarFormParams, localVarAuthNames, _callback);
     }
 
     @SuppressWarnings("rawtypes")
-    private okhttp3.Call siphonResourcesValidateBeforeCall(@javax.annotation.Nonnull String shipSymbol, final ApiCallback _callback) throws ApiException {
+    private okhttp3.Call siphonResourcesValidateBeforeCall(
+        @javax.annotation.Nonnull String shipSymbol, final ApiCallback _callback)
+        throws ApiException {
         // verify the required parameter 'shipSymbol' is set
         if (shipSymbol == null) {
-            throw new ApiException("Missing the required parameter 'shipSymbol' when calling siphonResources(Async)");
+            throw new ApiException(
+                "Missing the required parameter 'shipSymbol' when calling siphonResources(Async)");
         }
 
         return siphonResourcesCall(shipSymbol, _callback);
@@ -4625,37 +5432,42 @@ public class FleetApi {
     }
 
     /**
-     * Siphon Resources
-     * Siphon gases or other resources from gas giants.  The ship must be in orbit to be able to siphon and must have siphon mounts and a gas processor installed.
+     * Siphon Resources Siphon gases or other resources from gas giants.  The ship must be in orbit
+     * to be able to siphon and must have siphon mounts and a gas processor installed.
      *
      * @param shipSymbol The ship symbol. (required)
      * @return SiphonResources201Response
-     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
+     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the
+     *                      response body
      * @http.response.details <table border="1">
      * <caption>Response Details</caption>
      * <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
      * <tr><td> 201 </td><td> Siphon successful. </td><td>  -  </td></tr>
      * </table>
      */
-    public SiphonResources201Response siphonResources(@javax.annotation.Nonnull String shipSymbol) throws ApiException {
-        ApiResponse<SiphonResources201Response> localVarResp = siphonResourcesWithHttpInfo(shipSymbol);
+    public SiphonResources201Response siphonResources(@javax.annotation.Nonnull String shipSymbol)
+        throws ApiException {
+        ApiResponse<SiphonResources201Response> localVarResp = siphonResourcesWithHttpInfo(
+            shipSymbol);
         return localVarResp.data();
     }
 
     /**
-     * Siphon Resources
-     * Siphon gases or other resources from gas giants.  The ship must be in orbit to be able to siphon and must have siphon mounts and a gas processor installed.
+     * Siphon Resources Siphon gases or other resources from gas giants.  The ship must be in orbit
+     * to be able to siphon and must have siphon mounts and a gas processor installed.
      *
      * @param shipSymbol The ship symbol. (required)
      * @return ApiResponse&lt;SiphonResources201Response&gt;
-     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
+     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the
+     *                      response body
      * @http.response.details <table border="1">
      * <caption>Response Details</caption>
      * <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
      * <tr><td> 201 </td><td> Siphon successful. </td><td>  -  </td></tr>
      * </table>
      */
-    public ApiResponse<SiphonResources201Response> siphonResourcesWithHttpInfo(@javax.annotation.Nonnull String shipSymbol) throws ApiException {
+    public ApiResponse<SiphonResources201Response> siphonResourcesWithHttpInfo(
+        @javax.annotation.Nonnull String shipSymbol) throws ApiException {
         okhttp3.Call localVarCall = siphonResourcesValidateBeforeCall(shipSymbol, null);
         Type localVarReturnType = new TypeToken<SiphonResources201Response>() {
         }.getType();
@@ -4663,20 +5475,23 @@ public class FleetApi {
     }
 
     /**
-     * Siphon Resources (asynchronously)
-     * Siphon gases or other resources from gas giants.  The ship must be in orbit to be able to siphon and must have siphon mounts and a gas processor installed.
+     * Siphon Resources (asynchronously) Siphon gases or other resources from gas giants.  The ship
+     * must be in orbit to be able to siphon and must have siphon mounts and a gas processor
+     * installed.
      *
      * @param shipSymbol The ship symbol. (required)
      * @param _callback  The callback to be executed when the API call finishes
      * @return The request call
-     * @throws ApiException If fail to process the API call, e.g. serializing the request body object
+     * @throws ApiException If fail to process the API call, e.g. serializing the request body
+     *                      object
      * @http.response.details <table border="1">
      * <caption>Response Details</caption>
      * <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
      * <tr><td> 201 </td><td> Siphon successful. </td><td>  -  </td></tr>
      * </table>
      */
-    public okhttp3.Call siphonResourcesAsync(@javax.annotation.Nonnull String shipSymbol, final ApiCallback<SiphonResources201Response> _callback) throws ApiException {
+    public okhttp3.Call siphonResourcesAsync(@javax.annotation.Nonnull String shipSymbol,
+        final ApiCallback<SiphonResources201Response> _callback) throws ApiException {
 
         okhttp3.Call localVarCall = siphonResourcesValidateBeforeCall(shipSymbol, _callback);
         Type localVarReturnType = new TypeToken<SiphonResources201Response>() {
@@ -4699,7 +5514,9 @@ public class FleetApi {
      * <tr><td> 200 </td><td> Transfer successful. </td><td>  -  </td></tr>
      * </table>
      */
-    public okhttp3.Call transferCargoCall(@javax.annotation.Nonnull String shipSymbol, @javax.annotation.Nullable TransferCargoRequest transferCargoRequest, final ApiCallback _callback) throws ApiException {
+    public okhttp3.Call transferCargoCall(@javax.annotation.Nonnull String shipSymbol,
+        @javax.annotation.Nullable TransferCargoRequest transferCargoRequest,
+        final ApiCallback _callback) throws ApiException {
         String basePath = null;
         // Operation Servers
         String[] localBasePaths = new String[]{};
@@ -4717,7 +5534,7 @@ public class FleetApi {
 
         // create path and map variables
         String localVarPath = "/my/ships/{shipSymbol}/transfer"
-                .replace("{" + "shipSymbol" + "}", localVarApiClient.escapeString(shipSymbol));
+            .replace("{" + "shipSymbol" + "}", localVarApiClient.escapeString(shipSymbol));
 
         List<Pair> localVarQueryParams = new ArrayList<Pair>();
         List<Pair> localVarCollectionQueryParams = new ArrayList<Pair>();
@@ -4726,7 +5543,7 @@ public class FleetApi {
         Map<String, Object> localVarFormParams = new HashMap<String, Object>();
 
         final String[] localVarAccepts = {
-                "application/json"
+            "application/json"
         };
         final String localVarAccept = localVarApiClient.selectHeaderAccept(localVarAccepts);
         if (localVarAccept != null) {
@@ -4734,22 +5551,29 @@ public class FleetApi {
         }
 
         final String[] localVarContentTypes = {
-                "application/json"
+            "application/json"
         };
-        final String localVarContentType = localVarApiClient.selectHeaderContentType(localVarContentTypes);
+        final String localVarContentType = localVarApiClient.selectHeaderContentType(
+            localVarContentTypes);
         if (localVarContentType != null) {
             localVarHeaderParams.put("Content-Type", localVarContentType);
         }
 
         String[] localVarAuthNames = new String[]{"AgentToken"};
-        return localVarApiClient.buildCall(basePath, localVarPath, "POST", localVarQueryParams, localVarCollectionQueryParams, localVarPostBody, localVarHeaderParams, localVarCookieParams, localVarFormParams, localVarAuthNames, _callback);
+        return localVarApiClient.buildCall(basePath, localVarPath, "POST", localVarQueryParams,
+            localVarCollectionQueryParams, localVarPostBody, localVarHeaderParams,
+            localVarCookieParams, localVarFormParams, localVarAuthNames, _callback);
     }
 
     @SuppressWarnings("rawtypes")
-    private okhttp3.Call transferCargoValidateBeforeCall(@javax.annotation.Nonnull String shipSymbol, @javax.annotation.Nullable TransferCargoRequest transferCargoRequest, final ApiCallback _callback) throws ApiException {
+    private okhttp3.Call transferCargoValidateBeforeCall(
+        @javax.annotation.Nonnull String shipSymbol,
+        @javax.annotation.Nullable TransferCargoRequest transferCargoRequest,
+        final ApiCallback _callback) throws ApiException {
         // verify the required parameter 'shipSymbol' is set
         if (shipSymbol == null) {
-            throw new ApiException("Missing the required parameter 'shipSymbol' when calling transferCargo(Async)");
+            throw new ApiException(
+                "Missing the required parameter 'shipSymbol' when calling transferCargo(Async)");
         }
 
         return transferCargoCall(shipSymbol, transferCargoRequest, _callback);
@@ -4757,63 +5581,83 @@ public class FleetApi {
     }
 
     /**
-     * Transfer Cargo
-     * Transfer cargo between ships.  The receiving ship must be in the same waypoint as the transferring ship, and it must able to hold the additional cargo after the transfer is complete. Both ships also must be in the same state, either both are docked or both are orbiting.  The response body&#39;s cargo shows the cargo of the transferring ship after the transfer is complete.
+     * Transfer Cargo Transfer cargo between ships.  The receiving ship must be in the same waypoint
+     * as the transferring ship, and it must able to hold the additional cargo after the transfer is
+     * complete. Both ships also must be in the same state, either both are docked or both are
+     * orbiting.  The response body&#39;s cargo shows the cargo of the transferring ship after the
+     * transfer is complete.
      *
      * @param shipSymbol           The transferring ship&#39;s symbol. (required)
      * @param transferCargoRequest (optional)
      * @return TransferCargo200Response
-     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
+     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the
+     *                      response body
      * @http.response.details <table border="1">
      * <caption>Response Details</caption>
      * <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
      * <tr><td> 200 </td><td> Transfer successful. </td><td>  -  </td></tr>
      * </table>
      */
-    public TransferCargo200Response transferCargo(@javax.annotation.Nonnull String shipSymbol, @javax.annotation.Nullable TransferCargoRequest transferCargoRequest) throws ApiException {
-        ApiResponse<TransferCargo200Response> localVarResp = transferCargoWithHttpInfo(shipSymbol, transferCargoRequest);
+    public TransferCargo200Response transferCargo(@javax.annotation.Nonnull String shipSymbol,
+        @javax.annotation.Nullable TransferCargoRequest transferCargoRequest) throws ApiException {
+        ApiResponse<TransferCargo200Response> localVarResp = transferCargoWithHttpInfo(shipSymbol,
+            transferCargoRequest);
         return localVarResp.data();
     }
 
     /**
-     * Transfer Cargo
-     * Transfer cargo between ships.  The receiving ship must be in the same waypoint as the transferring ship, and it must able to hold the additional cargo after the transfer is complete. Both ships also must be in the same state, either both are docked or both are orbiting.  The response body&#39;s cargo shows the cargo of the transferring ship after the transfer is complete.
+     * Transfer Cargo Transfer cargo between ships.  The receiving ship must be in the same waypoint
+     * as the transferring ship, and it must able to hold the additional cargo after the transfer is
+     * complete. Both ships also must be in the same state, either both are docked or both are
+     * orbiting.  The response body&#39;s cargo shows the cargo of the transferring ship after the
+     * transfer is complete.
      *
      * @param shipSymbol           The transferring ship&#39;s symbol. (required)
      * @param transferCargoRequest (optional)
      * @return ApiResponse&lt;TransferCargo200Response&gt;
-     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
+     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the
+     *                      response body
      * @http.response.details <table border="1">
      * <caption>Response Details</caption>
      * <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
      * <tr><td> 200 </td><td> Transfer successful. </td><td>  -  </td></tr>
      * </table>
      */
-    public ApiResponse<TransferCargo200Response> transferCargoWithHttpInfo(@javax.annotation.Nonnull String shipSymbol, @javax.annotation.Nullable TransferCargoRequest transferCargoRequest) throws ApiException {
-        okhttp3.Call localVarCall = transferCargoValidateBeforeCall(shipSymbol, transferCargoRequest, null);
+    public ApiResponse<TransferCargo200Response> transferCargoWithHttpInfo(
+        @javax.annotation.Nonnull String shipSymbol,
+        @javax.annotation.Nullable TransferCargoRequest transferCargoRequest) throws ApiException {
+        okhttp3.Call localVarCall = transferCargoValidateBeforeCall(shipSymbol,
+            transferCargoRequest, null);
         Type localVarReturnType = new TypeToken<TransferCargo200Response>() {
         }.getType();
         return localVarApiClient.execute(localVarCall, localVarReturnType);
     }
 
     /**
-     * Transfer Cargo (asynchronously)
-     * Transfer cargo between ships.  The receiving ship must be in the same waypoint as the transferring ship, and it must able to hold the additional cargo after the transfer is complete. Both ships also must be in the same state, either both are docked or both are orbiting.  The response body&#39;s cargo shows the cargo of the transferring ship after the transfer is complete.
+     * Transfer Cargo (asynchronously) Transfer cargo between ships.  The receiving ship must be in
+     * the same waypoint as the transferring ship, and it must able to hold the additional cargo
+     * after the transfer is complete. Both ships also must be in the same state, either both are
+     * docked or both are orbiting.  The response body&#39;s cargo shows the cargo of the
+     * transferring ship after the transfer is complete.
      *
      * @param shipSymbol           The transferring ship&#39;s symbol. (required)
      * @param transferCargoRequest (optional)
      * @param _callback            The callback to be executed when the API call finishes
      * @return The request call
-     * @throws ApiException If fail to process the API call, e.g. serializing the request body object
+     * @throws ApiException If fail to process the API call, e.g. serializing the request body
+     *                      object
      * @http.response.details <table border="1">
      * <caption>Response Details</caption>
      * <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
      * <tr><td> 200 </td><td> Transfer successful. </td><td>  -  </td></tr>
      * </table>
      */
-    public okhttp3.Call transferCargoAsync(@javax.annotation.Nonnull String shipSymbol, @javax.annotation.Nullable TransferCargoRequest transferCargoRequest, final ApiCallback<TransferCargo200Response> _callback) throws ApiException {
+    public okhttp3.Call transferCargoAsync(@javax.annotation.Nonnull String shipSymbol,
+        @javax.annotation.Nullable TransferCargoRequest transferCargoRequest,
+        final ApiCallback<TransferCargo200Response> _callback) throws ApiException {
 
-        okhttp3.Call localVarCall = transferCargoValidateBeforeCall(shipSymbol, transferCargoRequest, _callback);
+        okhttp3.Call localVarCall = transferCargoValidateBeforeCall(shipSymbol,
+            transferCargoRequest, _callback);
         Type localVarReturnType = new TypeToken<TransferCargo200Response>() {
         }.getType();
         localVarApiClient.executeAsync(localVarCall, localVarReturnType, _callback);
@@ -4831,10 +5675,14 @@ public class FleetApi {
      * @http.response.details <table border="1">
      * <caption>Response Details</caption>
      * <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-     * <tr><td> 200 </td><td> The successful transit information including the route details and changes to ship fuel. The route includes the expected time of arrival. </td><td>  -  </td></tr>
+     * <tr><td> 200 </td><td> The successful transit information including the route details and
+     * changes to ship fuel. The route includes the expected time of arrival. </td><td>  -
+     * </td></tr>
      * </table>
      */
-    public okhttp3.Call warpShipCall(@javax.annotation.Nonnull String shipSymbol, @javax.annotation.Nullable NavigateShipRequest navigateShipRequest, final ApiCallback _callback) throws ApiException {
+    public okhttp3.Call warpShipCall(@javax.annotation.Nonnull String shipSymbol,
+        @javax.annotation.Nullable NavigateShipRequest navigateShipRequest,
+        final ApiCallback _callback) throws ApiException {
         String basePath = null;
         // Operation Servers
         String[] localBasePaths = new String[]{};
@@ -4852,7 +5700,7 @@ public class FleetApi {
 
         // create path and map variables
         String localVarPath = "/my/ships/{shipSymbol}/warp"
-                .replace("{" + "shipSymbol" + "}", localVarApiClient.escapeString(shipSymbol));
+            .replace("{" + "shipSymbol" + "}", localVarApiClient.escapeString(shipSymbol));
 
         List<Pair> localVarQueryParams = new ArrayList<Pair>();
         List<Pair> localVarCollectionQueryParams = new ArrayList<Pair>();
@@ -4861,7 +5709,7 @@ public class FleetApi {
         Map<String, Object> localVarFormParams = new HashMap<String, Object>();
 
         final String[] localVarAccepts = {
-                "application/json"
+            "application/json"
         };
         final String localVarAccept = localVarApiClient.selectHeaderAccept(localVarAccepts);
         if (localVarAccept != null) {
@@ -4869,22 +5717,28 @@ public class FleetApi {
         }
 
         final String[] localVarContentTypes = {
-                "application/json"
+            "application/json"
         };
-        final String localVarContentType = localVarApiClient.selectHeaderContentType(localVarContentTypes);
+        final String localVarContentType = localVarApiClient.selectHeaderContentType(
+            localVarContentTypes);
         if (localVarContentType != null) {
             localVarHeaderParams.put("Content-Type", localVarContentType);
         }
 
         String[] localVarAuthNames = new String[]{"AgentToken"};
-        return localVarApiClient.buildCall(basePath, localVarPath, "POST", localVarQueryParams, localVarCollectionQueryParams, localVarPostBody, localVarHeaderParams, localVarCookieParams, localVarFormParams, localVarAuthNames, _callback);
+        return localVarApiClient.buildCall(basePath, localVarPath, "POST", localVarQueryParams,
+            localVarCollectionQueryParams, localVarPostBody, localVarHeaderParams,
+            localVarCookieParams, localVarFormParams, localVarAuthNames, _callback);
     }
 
     @SuppressWarnings("rawtypes")
-    private okhttp3.Call warpShipValidateBeforeCall(@javax.annotation.Nonnull String shipSymbol, @javax.annotation.Nullable NavigateShipRequest navigateShipRequest, final ApiCallback _callback) throws ApiException {
+    private okhttp3.Call warpShipValidateBeforeCall(@javax.annotation.Nonnull String shipSymbol,
+        @javax.annotation.Nullable NavigateShipRequest navigateShipRequest,
+        final ApiCallback _callback) throws ApiException {
         // verify the required parameter 'shipSymbol' is set
         if (shipSymbol == null) {
-            throw new ApiException("Missing the required parameter 'shipSymbol' when calling warpShip(Async)");
+            throw new ApiException(
+                "Missing the required parameter 'shipSymbol' when calling warpShip(Async)");
         }
 
         return warpShipCall(shipSymbol, navigateShipRequest, _callback);
@@ -4892,63 +5746,89 @@ public class FleetApi {
     }
 
     /**
-     * Warp Ship
-     * Warp your ship to a target destination in another system. The ship must be in orbit to use this function and must have the &#x60;Warp Drive&#x60; module installed. Warping will consume the necessary fuel from the ship&#39;s manifest.  The returned response will detail the route information including the expected time of arrival. Most ship actions are unavailable until the ship has arrived at its destination.
+     * Warp Ship Warp your ship to a target destination in another system. The ship must be in orbit
+     * to use this function and must have the &#x60;Warp Drive&#x60; module installed. Warping will
+     * consume the necessary fuel from the ship&#39;s manifest.  The returned response will detail
+     * the route information including the expected time of arrival. Most ship actions are
+     * unavailable until the ship has arrived at its destination.
      *
      * @param shipSymbol          The ship symbol. (required)
      * @param navigateShipRequest (optional)
      * @return WarpShip200Response
-     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
+     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the
+     *                      response body
      * @http.response.details <table border="1">
      * <caption>Response Details</caption>
      * <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-     * <tr><td> 200 </td><td> The successful transit information including the route details and changes to ship fuel. The route includes the expected time of arrival. </td><td>  -  </td></tr>
+     * <tr><td> 200 </td><td> The successful transit information including the route details and
+     * changes to ship fuel. The route includes the expected time of arrival. </td><td>  -
+     * </td></tr>
      * </table>
      */
-    public WarpShip200Response warpShip(@javax.annotation.Nonnull String shipSymbol, @javax.annotation.Nullable NavigateShipRequest navigateShipRequest) throws ApiException {
-        ApiResponse<WarpShip200Response> localVarResp = warpShipWithHttpInfo(shipSymbol, navigateShipRequest);
+    public WarpShip200Response warpShip(@javax.annotation.Nonnull String shipSymbol,
+        @javax.annotation.Nullable NavigateShipRequest navigateShipRequest) throws ApiException {
+        ApiResponse<WarpShip200Response> localVarResp = warpShipWithHttpInfo(shipSymbol,
+            navigateShipRequest);
         return localVarResp.data();
     }
 
     /**
-     * Warp Ship
-     * Warp your ship to a target destination in another system. The ship must be in orbit to use this function and must have the &#x60;Warp Drive&#x60; module installed. Warping will consume the necessary fuel from the ship&#39;s manifest.  The returned response will detail the route information including the expected time of arrival. Most ship actions are unavailable until the ship has arrived at its destination.
+     * Warp Ship Warp your ship to a target destination in another system. The ship must be in orbit
+     * to use this function and must have the &#x60;Warp Drive&#x60; module installed. Warping will
+     * consume the necessary fuel from the ship&#39;s manifest.  The returned response will detail
+     * the route information including the expected time of arrival. Most ship actions are
+     * unavailable until the ship has arrived at its destination.
      *
      * @param shipSymbol          The ship symbol. (required)
      * @param navigateShipRequest (optional)
      * @return ApiResponse&lt;WarpShip200Response&gt;
-     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
+     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the
+     *                      response body
      * @http.response.details <table border="1">
      * <caption>Response Details</caption>
      * <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-     * <tr><td> 200 </td><td> The successful transit information including the route details and changes to ship fuel. The route includes the expected time of arrival. </td><td>  -  </td></tr>
+     * <tr><td> 200 </td><td> The successful transit information including the route details and
+     * changes to ship fuel. The route includes the expected time of arrival. </td><td>  -
+     * </td></tr>
      * </table>
      */
-    public ApiResponse<WarpShip200Response> warpShipWithHttpInfo(@javax.annotation.Nonnull String shipSymbol, @javax.annotation.Nullable NavigateShipRequest navigateShipRequest) throws ApiException {
-        okhttp3.Call localVarCall = warpShipValidateBeforeCall(shipSymbol, navigateShipRequest, null);
+    public ApiResponse<WarpShip200Response> warpShipWithHttpInfo(
+        @javax.annotation.Nonnull String shipSymbol,
+        @javax.annotation.Nullable NavigateShipRequest navigateShipRequest) throws ApiException {
+        okhttp3.Call localVarCall = warpShipValidateBeforeCall(shipSymbol, navigateShipRequest,
+            null);
         Type localVarReturnType = new TypeToken<WarpShip200Response>() {
         }.getType();
         return localVarApiClient.execute(localVarCall, localVarReturnType);
     }
 
     /**
-     * Warp Ship (asynchronously)
-     * Warp your ship to a target destination in another system. The ship must be in orbit to use this function and must have the &#x60;Warp Drive&#x60; module installed. Warping will consume the necessary fuel from the ship&#39;s manifest.  The returned response will detail the route information including the expected time of arrival. Most ship actions are unavailable until the ship has arrived at its destination.
+     * Warp Ship (asynchronously) Warp your ship to a target destination in another system. The ship
+     * must be in orbit to use this function and must have the &#x60;Warp Drive&#x60; module
+     * installed. Warping will consume the necessary fuel from the ship&#39;s manifest.  The
+     * returned response will detail the route information including the expected time of arrival.
+     * Most ship actions are unavailable until the ship has arrived at its destination.
      *
      * @param shipSymbol          The ship symbol. (required)
      * @param navigateShipRequest (optional)
      * @param _callback           The callback to be executed when the API call finishes
      * @return The request call
-     * @throws ApiException If fail to process the API call, e.g. serializing the request body object
+     * @throws ApiException If fail to process the API call, e.g. serializing the request body
+     *                      object
      * @http.response.details <table border="1">
      * <caption>Response Details</caption>
      * <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-     * <tr><td> 200 </td><td> The successful transit information including the route details and changes to ship fuel. The route includes the expected time of arrival. </td><td>  -  </td></tr>
+     * <tr><td> 200 </td><td> The successful transit information including the route details and
+     * changes to ship fuel. The route includes the expected time of arrival. </td><td>  -
+     * </td></tr>
      * </table>
      */
-    public okhttp3.Call warpShipAsync(@javax.annotation.Nonnull String shipSymbol, @javax.annotation.Nullable NavigateShipRequest navigateShipRequest, final ApiCallback<WarpShip200Response> _callback) throws ApiException {
+    public okhttp3.Call warpShipAsync(@javax.annotation.Nonnull String shipSymbol,
+        @javax.annotation.Nullable NavigateShipRequest navigateShipRequest,
+        final ApiCallback<WarpShip200Response> _callback) throws ApiException {
 
-        okhttp3.Call localVarCall = warpShipValidateBeforeCall(shipSymbol, navigateShipRequest, _callback);
+        okhttp3.Call localVarCall = warpShipValidateBeforeCall(shipSymbol, navigateShipRequest,
+            _callback);
         Type localVarReturnType = new TypeToken<WarpShip200Response>() {
         }.getType();
         localVarApiClient.executeAsync(localVarCall, localVarReturnType, _callback);

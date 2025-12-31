@@ -13,21 +13,29 @@
 
 package xyz.faria.space.spaceapi.model;
 
-import com.google.gson.*;
+import com.google.gson.Gson;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.TypeAdapter;
+import com.google.gson.TypeAdapterFactory;
 import com.google.gson.annotations.SerializedName;
 import com.google.gson.reflect.TypeToken;
 import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonWriter;
-import xyz.faria.space.spaceapi.client.JSON;
-
 import java.io.IOException;
-import java.util.*;
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Objects;
+import java.util.Set;
+import xyz.faria.space.spaceapi.client.JSON;
 
 /**
  * RegisterRequest
  */
 
 public class RegisterRequest {
+
     public static final String SERIALIZED_NAME_FACTION = "faction";
     @SerializedName(SERIALIZED_NAME_FACTION)
     @javax.annotation.Nonnull
@@ -72,13 +80,53 @@ public class RegisterRequest {
     }
 
     /**
-     * Your desired agent symbol. This will be a unique name used to represent your agent, and will be the prefix for your ships.
+     * Validates the JSON Element and throws an exception if issues found
      *
-     * @return symbol
+     * @param jsonElement JSON Element
+     * @throws IOException if the JSON Element is invalid with respect to RegisterRequest
      */
-    @javax.annotation.Nonnull
-    public String getSymbol() {
-        return symbol;
+    public static void validateJsonElement(JsonElement jsonElement) throws IOException {
+        if (jsonElement == null) {
+            if (!RegisterRequest.openapiRequiredFields.isEmpty()) { // has required fields but JSON element is null
+                throw new IllegalArgumentException(String.format(java.util.Locale.ROOT,
+                    "The required field(s) %s in RegisterRequest is not found in the empty JSON string",
+                    RegisterRequest.openapiRequiredFields));
+            }
+        }
+
+        Set<Map.Entry<String, JsonElement>> entries = jsonElement.getAsJsonObject().entrySet();
+        // check to see if the JSON string contains additional fields
+        for (Map.Entry<String, JsonElement> entry : entries) {
+            if (!RegisterRequest.openapiFields.contains(entry.getKey())) {
+                throw new IllegalArgumentException(String.format(java.util.Locale.ROOT,
+                    "The field `%s` in the JSON string is not defined in the `RegisterRequest` properties. JSON: %s",
+                    entry.getKey(), jsonElement));
+            }
+        }
+
+        // check to make sure all required properties/fields are present in the JSON string
+        for (String requiredField : RegisterRequest.openapiRequiredFields) {
+            if (jsonElement.getAsJsonObject().get(requiredField) == null) {
+                throw new IllegalArgumentException(String.format(java.util.Locale.ROOT,
+                    "The required field `%s` is not found in the JSON string: %s",
+                    requiredField,
+                    jsonElement));
+            }
+        }
+        JsonObject jsonObj = jsonElement.getAsJsonObject();
+        // validate the required field `faction`
+        FactionSymbol.validateJsonElement(jsonObj.get("faction"));
+        if (!jsonObj.get("symbol").isJsonPrimitive()) {
+            throw new IllegalArgumentException(String.format(java.util.Locale.ROOT,
+                "Expected the field `symbol` to be a primitive type in the JSON string but got `%s`",
+                jsonObj.get("symbol").toString()));
+        }
+        if ((jsonObj.get("email") != null && !jsonObj.get("email").isJsonNull()) && !jsonObj.get(
+            "email").isJsonPrimitive()) {
+            throw new IllegalArgumentException(String.format(java.util.Locale.ROOT,
+                "Expected the field `email` to be a primitive type in the JSON string but got `%s`",
+                jsonObj.get("email").toString()));
+        }
     }
 
     public void setSymbol(@javax.annotation.Nonnull String symbol) {
@@ -105,6 +153,21 @@ public class RegisterRequest {
         this.email = email;
     }
 
+    /**
+     * Your desired agent symbol. This will be a unique name used to represent your agent, and will
+     * be the prefix for your ships.
+     *
+     * @return symbol
+     */
+    @javax.annotation.Nonnull
+    public String getSymbol() {
+        return symbol;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(faction, symbol, email);
+    }
 
     @Override
     public boolean equals(Object o) {
@@ -116,34 +179,18 @@ public class RegisterRequest {
         }
         RegisterRequest registerRequest = (RegisterRequest) o;
         return Objects.equals(this.faction, registerRequest.faction) &&
-                Objects.equals(this.symbol, registerRequest.symbol) &&
-                Objects.equals(this.email, registerRequest.email);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(faction, symbol, email);
+            Objects.equals(this.symbol, registerRequest.symbol) &&
+            Objects.equals(this.email, registerRequest.email);
     }
 
     @Override
     public String toString() {
         String sb = "class RegisterRequest {\n" +
-                "    faction: " + toIndentedString(faction) + "\n" +
-                "    symbol: " + toIndentedString(symbol) + "\n" +
-                "    email: " + toIndentedString(email) + "\n" +
-                "}";
+            "    faction: " + toIndentedString(faction) + "\n" +
+            "    symbol: " + toIndentedString(symbol) + "\n" +
+            "    email: " + toIndentedString(email) + "\n" +
+            "}";
         return sb;
-    }
-
-    /**
-     * Convert the given object to string with each line indented by 4 spaces
-     * (except the first line).
-     */
-    private String toIndentedString(Object o) {
-        if (o == null) {
-            return "null";
-        }
-        return o.toString().replace("\n", "\n    ");
     }
 
 
@@ -159,44 +206,18 @@ public class RegisterRequest {
     }
 
     /**
-     * Validates the JSON Element and throws an exception if issues found
-     *
-     * @param jsonElement JSON Element
-     * @throws IOException if the JSON Element is invalid with respect to RegisterRequest
+     * Convert the given object to string with each line indented by 4 spaces (except the first
+     * line).
      */
-    public static void validateJsonElement(JsonElement jsonElement) throws IOException {
-        if (jsonElement == null) {
-            if (!RegisterRequest.openapiRequiredFields.isEmpty()) { // has required fields but JSON element is null
-                throw new IllegalArgumentException(String.format(java.util.Locale.ROOT, "The required field(s) %s in RegisterRequest is not found in the empty JSON string", RegisterRequest.openapiRequiredFields));
-            }
+    private String toIndentedString(Object o) {
+        if (o == null) {
+            return "null";
         }
-
-        Set<Map.Entry<String, JsonElement>> entries = jsonElement.getAsJsonObject().entrySet();
-        // check to see if the JSON string contains additional fields
-        for (Map.Entry<String, JsonElement> entry : entries) {
-            if (!RegisterRequest.openapiFields.contains(entry.getKey())) {
-                throw new IllegalArgumentException(String.format(java.util.Locale.ROOT, "The field `%s` in the JSON string is not defined in the `RegisterRequest` properties. JSON: %s", entry.getKey(), jsonElement));
-            }
-        }
-
-        // check to make sure all required properties/fields are present in the JSON string
-        for (String requiredField : RegisterRequest.openapiRequiredFields) {
-            if (jsonElement.getAsJsonObject().get(requiredField) == null) {
-                throw new IllegalArgumentException(String.format(java.util.Locale.ROOT, "The required field `%s` is not found in the JSON string: %s", requiredField, jsonElement));
-            }
-        }
-        JsonObject jsonObj = jsonElement.getAsJsonObject();
-        // validate the required field `faction`
-        FactionSymbol.validateJsonElement(jsonObj.get("faction"));
-        if (!jsonObj.get("symbol").isJsonPrimitive()) {
-            throw new IllegalArgumentException(String.format(java.util.Locale.ROOT, "Expected the field `symbol` to be a primitive type in the JSON string but got `%s`", jsonObj.get("symbol").toString()));
-        }
-        if ((jsonObj.get("email") != null && !jsonObj.get("email").isJsonNull()) && !jsonObj.get("email").isJsonPrimitive()) {
-            throw new IllegalArgumentException(String.format(java.util.Locale.ROOT, "Expected the field `email` to be a primitive type in the JSON string but got `%s`", jsonObj.get("email").toString()));
-        }
+        return o.toString().replace("\n", "\n    ");
     }
 
     public static class CustomTypeAdapterFactory implements TypeAdapterFactory {
+
         @SuppressWarnings("unchecked")
         @Override
         public <T> TypeAdapter<T> create(Gson gson, TypeToken<T> type) {
@@ -205,7 +226,7 @@ public class RegisterRequest {
             }
             final TypeAdapter<JsonElement> elementAdapter = gson.getAdapter(JsonElement.class);
             final TypeAdapter<RegisterRequest> thisAdapter
-                    = gson.getDelegateAdapter(this, TypeToken.get(RegisterRequest.class));
+                = gson.getDelegateAdapter(this, TypeToken.get(RegisterRequest.class));
 
             return (TypeAdapter<T>) new TypeAdapter<RegisterRequest>() {
                 @Override

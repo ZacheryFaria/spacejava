@@ -14,16 +14,21 @@
 package xyz.faria.space.spaceapi.api;
 
 import com.google.gson.reflect.TypeToken;
-import xyz.faria.space.spaceapi.client.*;
-import xyz.faria.space.spaceapi.model.GetSupplyChain200Response;
-
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import xyz.faria.space.spaceapi.client.ApiCallback;
+import xyz.faria.space.spaceapi.client.ApiClient;
+import xyz.faria.space.spaceapi.client.ApiException;
+import xyz.faria.space.spaceapi.client.ApiResponse;
+import xyz.faria.space.spaceapi.client.Configuration;
+import xyz.faria.space.spaceapi.client.Pair;
+import xyz.faria.space.spaceapi.model.GetSupplyChain200Response;
 
 public class DataApi {
+
     private ApiClient localVarApiClient;
     private int localHostIndex;
     private String localCustomBaseUrl;
@@ -69,7 +74,8 @@ public class DataApi {
      * @http.response.details <table border="1">
      * <caption>Response Details</caption>
      * <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-     * <tr><td> 200 </td><td> Successfully retrieved the supply chain information </td><td>  -  </td></tr>
+     * <tr><td> 200 </td><td> Successfully retrieved the supply chain information </td><td>  -
+     * </td></tr>
      * </table>
      */
     public okhttp3.Call getSupplyChainCall(final ApiCallback _callback) throws ApiException {
@@ -98,7 +104,7 @@ public class DataApi {
         Map<String, Object> localVarFormParams = new HashMap<String, Object>();
 
         final String[] localVarAccepts = {
-                "application/json"
+            "application/json"
         };
         final String localVarAccept = localVarApiClient.selectHeaderAccept(localVarAccepts);
         if (localVarAccept != null) {
@@ -107,31 +113,36 @@ public class DataApi {
 
         final String[] localVarContentTypes = {
         };
-        final String localVarContentType = localVarApiClient.selectHeaderContentType(localVarContentTypes);
+        final String localVarContentType = localVarApiClient.selectHeaderContentType(
+            localVarContentTypes);
         if (localVarContentType != null) {
             localVarHeaderParams.put("Content-Type", localVarContentType);
         }
 
         String[] localVarAuthNames = new String[]{"AgentToken"};
-        return localVarApiClient.buildCall(basePath, localVarPath, "GET", localVarQueryParams, localVarCollectionQueryParams, localVarPostBody, localVarHeaderParams, localVarCookieParams, localVarFormParams, localVarAuthNames, _callback);
+        return localVarApiClient.buildCall(basePath, localVarPath, "GET", localVarQueryParams,
+            localVarCollectionQueryParams, localVarPostBody, localVarHeaderParams,
+            localVarCookieParams, localVarFormParams, localVarAuthNames, _callback);
     }
 
     @SuppressWarnings("rawtypes")
-    private okhttp3.Call getSupplyChainValidateBeforeCall(final ApiCallback _callback) throws ApiException {
+    private okhttp3.Call getSupplyChainValidateBeforeCall(final ApiCallback _callback)
+        throws ApiException {
         return getSupplyChainCall(_callback);
 
     }
 
     /**
-     * Get Supply Chain
-     * Describes which import and exports map to each other.
+     * Get Supply Chain Describes which import and exports map to each other.
      *
      * @return GetSupplyChain200Response
-     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
+     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the
+     *                      response body
      * @http.response.details <table border="1">
      * <caption>Response Details</caption>
      * <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-     * <tr><td> 200 </td><td> Successfully retrieved the supply chain information </td><td>  -  </td></tr>
+     * <tr><td> 200 </td><td> Successfully retrieved the supply chain information </td><td>  -
+     * </td></tr>
      * </table>
      */
     public GetSupplyChain200Response getSupplyChain() throws ApiException {
@@ -140,15 +151,16 @@ public class DataApi {
     }
 
     /**
-     * Get Supply Chain
-     * Describes which import and exports map to each other.
+     * Get Supply Chain Describes which import and exports map to each other.
      *
      * @return ApiResponse&lt;GetSupplyChain200Response&gt;
-     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
+     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the
+     *                      response body
      * @http.response.details <table border="1">
      * <caption>Response Details</caption>
      * <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-     * <tr><td> 200 </td><td> Successfully retrieved the supply chain information </td><td>  -  </td></tr>
+     * <tr><td> 200 </td><td> Successfully retrieved the supply chain information </td><td>  -
+     * </td></tr>
      * </table>
      */
     public ApiResponse<GetSupplyChain200Response> getSupplyChainWithHttpInfo() throws ApiException {
@@ -159,19 +171,21 @@ public class DataApi {
     }
 
     /**
-     * Get Supply Chain (asynchronously)
-     * Describes which import and exports map to each other.
+     * Get Supply Chain (asynchronously) Describes which import and exports map to each other.
      *
      * @param _callback The callback to be executed when the API call finishes
      * @return The request call
-     * @throws ApiException If fail to process the API call, e.g. serializing the request body object
+     * @throws ApiException If fail to process the API call, e.g. serializing the request body
+     *                      object
      * @http.response.details <table border="1">
      * <caption>Response Details</caption>
      * <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-     * <tr><td> 200 </td><td> Successfully retrieved the supply chain information </td><td>  -  </td></tr>
+     * <tr><td> 200 </td><td> Successfully retrieved the supply chain information </td><td>  -
+     * </td></tr>
      * </table>
      */
-    public okhttp3.Call getSupplyChainAsync(final ApiCallback<GetSupplyChain200Response> _callback) throws ApiException {
+    public okhttp3.Call getSupplyChainAsync(final ApiCallback<GetSupplyChain200Response> _callback)
+        throws ApiException {
 
         okhttp3.Call localVarCall = getSupplyChainValidateBeforeCall(_callback);
         Type localVarReturnType = new TypeToken<GetSupplyChain200Response>() {

@@ -13,21 +13,32 @@
 
 package xyz.faria.space.spaceapi.model;
 
-import com.google.gson.*;
+import com.google.gson.Gson;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.TypeAdapter;
+import com.google.gson.TypeAdapterFactory;
 import com.google.gson.annotations.SerializedName;
 import com.google.gson.reflect.TypeToken;
 import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonWriter;
-import xyz.faria.space.spaceapi.client.JSON;
-
 import java.io.IOException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
+import java.util.Set;
+import xyz.faria.space.spaceapi.client.JSON;
 
 /**
  * NavigateShip200ResponseData
  */
 
 public class NavigateShip200ResponseData {
+
     public static final String SERIALIZED_NAME_FUEL = "fuel";
     @SerializedName(SERIALIZED_NAME_FUEL)
     @javax.annotation.Nonnull
@@ -86,9 +97,58 @@ public class NavigateShip200ResponseData {
     }
 
 
-    public NavigateShip200ResponseData events(@javax.annotation.Nonnull List<ShipConditionEvent> events) {
-        this.events = events;
-        return this;
+    /**
+     * Validates the JSON Element and throws an exception if issues found
+     *
+     * @param jsonElement JSON Element
+     * @throws IOException if the JSON Element is invalid with respect to
+     *                     NavigateShip200ResponseData
+     */
+    public static void validateJsonElement(JsonElement jsonElement) throws IOException {
+        if (jsonElement == null) {
+            if (!NavigateShip200ResponseData.openapiRequiredFields.isEmpty()) { // has required fields but JSON element is null
+                throw new IllegalArgumentException(String.format(java.util.Locale.ROOT,
+                    "The required field(s) %s in NavigateShip200ResponseData is not found in the empty JSON string",
+                    NavigateShip200ResponseData.openapiRequiredFields));
+            }
+        }
+
+        Set<Map.Entry<String, JsonElement>> entries = jsonElement.getAsJsonObject().entrySet();
+        // check to see if the JSON string contains additional fields
+        for (Map.Entry<String, JsonElement> entry : entries) {
+            if (!NavigateShip200ResponseData.openapiFields.contains(entry.getKey())) {
+                throw new IllegalArgumentException(String.format(java.util.Locale.ROOT,
+                    "The field `%s` in the JSON string is not defined in the `NavigateShip200ResponseData` properties. JSON: %s",
+                    entry.getKey(), jsonElement));
+            }
+        }
+
+        // check to make sure all required properties/fields are present in the JSON string
+        for (String requiredField : NavigateShip200ResponseData.openapiRequiredFields) {
+            if (jsonElement.getAsJsonObject().get(requiredField) == null) {
+                throw new IllegalArgumentException(String.format(java.util.Locale.ROOT,
+                    "The required field `%s` is not found in the JSON string: %s",
+                    requiredField,
+                    jsonElement));
+            }
+        }
+        JsonObject jsonObj = jsonElement.getAsJsonObject();
+        // validate the required field `fuel`
+        ShipFuel.validateJsonElement(jsonObj.get("fuel"));
+        // validate the required field `nav`
+        ShipNav.validateJsonElement(jsonObj.get("nav"));
+        // ensure the json data is an array
+        if (!jsonObj.get("events").isJsonArray()) {
+            throw new IllegalArgumentException(String.format(java.util.Locale.ROOT,
+                "Expected the field `events` to be an array in the JSON string but got `%s`",
+                jsonObj.get("events").toString()));
+        }
+
+        JsonArray jsonArrayevents = jsonObj.getAsJsonArray("events");
+        // validate the required field `events` (array)
+        for (int i = 0; i < jsonArrayevents.size(); i++) {
+            ShipConditionEvent.validateJsonElement(jsonArrayevents.get(i));
+        }
     }
 
     public NavigateShip200ResponseData addEventsItem(ShipConditionEvent eventsItem) {
@@ -113,6 +173,28 @@ public class NavigateShip200ResponseData {
         this.events = events;
     }
 
+    /**
+     * Create an instance of NavigateShip200ResponseData given an JSON string
+     *
+     * @param jsonString JSON string
+     * @return An instance of NavigateShip200ResponseData
+     * @throws IOException if the JSON string is invalid with respect to
+     *                     NavigateShip200ResponseData
+     */
+    public static NavigateShip200ResponseData fromJson(String jsonString) throws IOException {
+        return JSON.getGson().fromJson(jsonString, NavigateShip200ResponseData.class);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(fuel, nav, events);
+    }
+
+    public NavigateShip200ResponseData events(
+        @javax.annotation.Nonnull List<ShipConditionEvent> events) {
+        this.events = events;
+        return this;
+    }
 
     @Override
     public boolean equals(Object o) {
@@ -124,34 +206,8 @@ public class NavigateShip200ResponseData {
         }
         NavigateShip200ResponseData navigateShip200ResponseData = (NavigateShip200ResponseData) o;
         return Objects.equals(this.fuel, navigateShip200ResponseData.fuel) &&
-                Objects.equals(this.nav, navigateShip200ResponseData.nav) &&
-                Objects.equals(this.events, navigateShip200ResponseData.events);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(fuel, nav, events);
-    }
-
-    @Override
-    public String toString() {
-        String sb = "class NavigateShip200ResponseData {\n" +
-                "    fuel: " + toIndentedString(fuel) + "\n" +
-                "    nav: " + toIndentedString(nav) + "\n" +
-                "    events: " + toIndentedString(events) + "\n" +
-                "}";
-        return sb;
-    }
-
-    /**
-     * Convert the given object to string with each line indented by 4 spaces
-     * (except the first line).
-     */
-    private String toIndentedString(Object o) {
-        if (o == null) {
-            return "null";
-        }
-        return o.toString().replace("\n", "\n    ");
+            Objects.equals(this.nav, navigateShip200ResponseData.nav) &&
+            Objects.equals(this.events, navigateShip200ResponseData.events);
     }
 
 
@@ -166,51 +222,29 @@ public class NavigateShip200ResponseData {
         openapiRequiredFields = new HashSet<String>(Arrays.asList("fuel", "nav", "events"));
     }
 
+    @Override
+    public String toString() {
+        String sb = "class NavigateShip200ResponseData {\n" +
+            "    fuel: " + toIndentedString(fuel) + "\n" +
+            "    nav: " + toIndentedString(nav) + "\n" +
+            "    events: " + toIndentedString(events) + "\n" +
+            "}";
+        return sb;
+    }
+
     /**
-     * Validates the JSON Element and throws an exception if issues found
-     *
-     * @param jsonElement JSON Element
-     * @throws IOException if the JSON Element is invalid with respect to NavigateShip200ResponseData
+     * Convert the given object to string with each line indented by 4 spaces (except the first
+     * line).
      */
-    public static void validateJsonElement(JsonElement jsonElement) throws IOException {
-        if (jsonElement == null) {
-            if (!NavigateShip200ResponseData.openapiRequiredFields.isEmpty()) { // has required fields but JSON element is null
-                throw new IllegalArgumentException(String.format(java.util.Locale.ROOT, "The required field(s) %s in NavigateShip200ResponseData is not found in the empty JSON string", NavigateShip200ResponseData.openapiRequiredFields));
-            }
+    private String toIndentedString(Object o) {
+        if (o == null) {
+            return "null";
         }
-
-        Set<Map.Entry<String, JsonElement>> entries = jsonElement.getAsJsonObject().entrySet();
-        // check to see if the JSON string contains additional fields
-        for (Map.Entry<String, JsonElement> entry : entries) {
-            if (!NavigateShip200ResponseData.openapiFields.contains(entry.getKey())) {
-                throw new IllegalArgumentException(String.format(java.util.Locale.ROOT, "The field `%s` in the JSON string is not defined in the `NavigateShip200ResponseData` properties. JSON: %s", entry.getKey(), jsonElement));
-            }
-        }
-
-        // check to make sure all required properties/fields are present in the JSON string
-        for (String requiredField : NavigateShip200ResponseData.openapiRequiredFields) {
-            if (jsonElement.getAsJsonObject().get(requiredField) == null) {
-                throw new IllegalArgumentException(String.format(java.util.Locale.ROOT, "The required field `%s` is not found in the JSON string: %s", requiredField, jsonElement));
-            }
-        }
-        JsonObject jsonObj = jsonElement.getAsJsonObject();
-        // validate the required field `fuel`
-        ShipFuel.validateJsonElement(jsonObj.get("fuel"));
-        // validate the required field `nav`
-        ShipNav.validateJsonElement(jsonObj.get("nav"));
-        // ensure the json data is an array
-        if (!jsonObj.get("events").isJsonArray()) {
-            throw new IllegalArgumentException(String.format(java.util.Locale.ROOT, "Expected the field `events` to be an array in the JSON string but got `%s`", jsonObj.get("events").toString()));
-        }
-
-        JsonArray jsonArrayevents = jsonObj.getAsJsonArray("events");
-        // validate the required field `events` (array)
-        for (int i = 0; i < jsonArrayevents.size(); i++) {
-            ShipConditionEvent.validateJsonElement(jsonArrayevents.get(i));
-        }
+        return o.toString().replace("\n", "\n    ");
     }
 
     public static class CustomTypeAdapterFactory implements TypeAdapterFactory {
+
         @SuppressWarnings("unchecked")
         @Override
         public <T> TypeAdapter<T> create(Gson gson, TypeToken<T> type) {
@@ -219,11 +253,13 @@ public class NavigateShip200ResponseData {
             }
             final TypeAdapter<JsonElement> elementAdapter = gson.getAdapter(JsonElement.class);
             final TypeAdapter<NavigateShip200ResponseData> thisAdapter
-                    = gson.getDelegateAdapter(this, TypeToken.get(NavigateShip200ResponseData.class));
+                = gson.getDelegateAdapter(this,
+                TypeToken.get(NavigateShip200ResponseData.class));
 
             return (TypeAdapter<T>) new TypeAdapter<NavigateShip200ResponseData>() {
                 @Override
-                public void write(JsonWriter out, NavigateShip200ResponseData value) throws IOException {
+                public void write(JsonWriter out, NavigateShip200ResponseData value)
+                    throws IOException {
                     JsonObject obj = thisAdapter.toJsonTree(value).getAsJsonObject();
                     elementAdapter.write(out, obj);
                 }
@@ -237,17 +273,6 @@ public class NavigateShip200ResponseData {
 
             }.nullSafe();
         }
-    }
-
-    /**
-     * Create an instance of NavigateShip200ResponseData given an JSON string
-     *
-     * @param jsonString JSON string
-     * @return An instance of NavigateShip200ResponseData
-     * @throws IOException if the JSON string is invalid with respect to NavigateShip200ResponseData
-     */
-    public static NavigateShip200ResponseData fromJson(String jsonString) throws IOException {
-        return JSON.getGson().fromJson(jsonString, NavigateShip200ResponseData.class);
     }
 
     /**

@@ -18,6 +18,7 @@ import java.util.Iterator;
 
 
 public class StringUtil {
+
     /**
      * Check if the given array contains the given value (with case-insensitive comparison).
      *
@@ -40,8 +41,8 @@ public class StringUtil {
     /**
      * Join an array of strings with the given separator.
      * <p>
-     * Note: This might be replaced by utility method from commons-lang or guava someday
-     * if one of those libraries is added as dependency.
+     * Note: This might be replaced by utility method from commons-lang or guava someday if one of
+     * those libraries is added as dependency.
      * </p>
      *
      * @param array     The array of strings

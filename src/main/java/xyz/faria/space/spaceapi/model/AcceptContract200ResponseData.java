@@ -13,21 +13,29 @@
 
 package xyz.faria.space.spaceapi.model;
 
-import com.google.gson.*;
+import com.google.gson.Gson;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.TypeAdapter;
+import com.google.gson.TypeAdapterFactory;
 import com.google.gson.annotations.SerializedName;
 import com.google.gson.reflect.TypeToken;
 import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonWriter;
-import xyz.faria.space.spaceapi.client.JSON;
-
 import java.io.IOException;
-import java.util.*;
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Objects;
+import java.util.Set;
+import xyz.faria.space.spaceapi.client.JSON;
 
 /**
  * AcceptContract200ResponseData
  */
 
 public class AcceptContract200ResponseData {
+
     public static final String SERIALIZED_NAME_AGENT = "agent";
     @SerializedName(SERIALIZED_NAME_AGENT)
     @javax.annotation.Nonnull
@@ -81,6 +89,65 @@ public class AcceptContract200ResponseData {
     }
 
 
+    /**
+     * Validates the JSON Element and throws an exception if issues found
+     *
+     * @param jsonElement JSON Element
+     * @throws IOException if the JSON Element is invalid with respect to
+     *                     AcceptContract200ResponseData
+     */
+    public static void validateJsonElement(JsonElement jsonElement) throws IOException {
+        if (jsonElement == null) {
+            if (!AcceptContract200ResponseData.openapiRequiredFields.isEmpty()) { // has required fields but JSON element is null
+                throw new IllegalArgumentException(String.format(java.util.Locale.ROOT,
+                    "The required field(s) %s in AcceptContract200ResponseData is not found in the empty JSON string",
+                    AcceptContract200ResponseData.openapiRequiredFields));
+            }
+        }
+
+        Set<Map.Entry<String, JsonElement>> entries = jsonElement.getAsJsonObject().entrySet();
+        // check to see if the JSON string contains additional fields
+        for (Map.Entry<String, JsonElement> entry : entries) {
+            if (!AcceptContract200ResponseData.openapiFields.contains(entry.getKey())) {
+                throw new IllegalArgumentException(String.format(java.util.Locale.ROOT,
+                    "The field `%s` in the JSON string is not defined in the `AcceptContract200ResponseData` properties. JSON: %s",
+                    entry.getKey(), jsonElement));
+            }
+        }
+
+        // check to make sure all required properties/fields are present in the JSON string
+        for (String requiredField : AcceptContract200ResponseData.openapiRequiredFields) {
+            if (jsonElement.getAsJsonObject().get(requiredField) == null) {
+                throw new IllegalArgumentException(String.format(java.util.Locale.ROOT,
+                    "The required field `%s` is not found in the JSON string: %s",
+                    requiredField,
+                    jsonElement));
+            }
+        }
+        JsonObject jsonObj = jsonElement.getAsJsonObject();
+        // validate the required field `agent`
+        Agent.validateJsonElement(jsonObj.get("agent"));
+        // validate the required field `contract`
+        Contract.validateJsonElement(jsonObj.get("contract"));
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(agent, contract);
+    }
+
+    /**
+     * Create an instance of AcceptContract200ResponseData given an JSON string
+     *
+     * @param jsonString JSON string
+     * @return An instance of AcceptContract200ResponseData
+     * @throws IOException if the JSON string is invalid with respect to
+     *                     AcceptContract200ResponseData
+     */
+    public static AcceptContract200ResponseData fromJson(String jsonString) throws IOException {
+        return JSON.getGson().fromJson(jsonString, AcceptContract200ResponseData.class);
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) {
@@ -91,32 +158,7 @@ public class AcceptContract200ResponseData {
         }
         AcceptContract200ResponseData acceptContract200ResponseData = (AcceptContract200ResponseData) o;
         return Objects.equals(this.agent, acceptContract200ResponseData.agent) &&
-                Objects.equals(this.contract, acceptContract200ResponseData.contract);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(agent, contract);
-    }
-
-    @Override
-    public String toString() {
-        String sb = "class AcceptContract200ResponseData {\n" +
-                "    agent: " + toIndentedString(agent) + "\n" +
-                "    contract: " + toIndentedString(contract) + "\n" +
-                "}";
-        return sb;
-    }
-
-    /**
-     * Convert the given object to string with each line indented by 4 spaces
-     * (except the first line).
-     */
-    private String toIndentedString(Object o) {
-        if (o == null) {
-            return "null";
-        }
-        return o.toString().replace("\n", "\n    ");
+            Objects.equals(this.contract, acceptContract200ResponseData.contract);
     }
 
 
@@ -131,41 +173,28 @@ public class AcceptContract200ResponseData {
         openapiRequiredFields = new HashSet<String>(Arrays.asList("agent", "contract"));
     }
 
+    @Override
+    public String toString() {
+        String sb = "class AcceptContract200ResponseData {\n" +
+            "    agent: " + toIndentedString(agent) + "\n" +
+            "    contract: " + toIndentedString(contract) + "\n" +
+            "}";
+        return sb;
+    }
+
     /**
-     * Validates the JSON Element and throws an exception if issues found
-     *
-     * @param jsonElement JSON Element
-     * @throws IOException if the JSON Element is invalid with respect to AcceptContract200ResponseData
+     * Convert the given object to string with each line indented by 4 spaces (except the first
+     * line).
      */
-    public static void validateJsonElement(JsonElement jsonElement) throws IOException {
-        if (jsonElement == null) {
-            if (!AcceptContract200ResponseData.openapiRequiredFields.isEmpty()) { // has required fields but JSON element is null
-                throw new IllegalArgumentException(String.format(java.util.Locale.ROOT, "The required field(s) %s in AcceptContract200ResponseData is not found in the empty JSON string", AcceptContract200ResponseData.openapiRequiredFields));
-            }
+    private String toIndentedString(Object o) {
+        if (o == null) {
+            return "null";
         }
-
-        Set<Map.Entry<String, JsonElement>> entries = jsonElement.getAsJsonObject().entrySet();
-        // check to see if the JSON string contains additional fields
-        for (Map.Entry<String, JsonElement> entry : entries) {
-            if (!AcceptContract200ResponseData.openapiFields.contains(entry.getKey())) {
-                throw new IllegalArgumentException(String.format(java.util.Locale.ROOT, "The field `%s` in the JSON string is not defined in the `AcceptContract200ResponseData` properties. JSON: %s", entry.getKey(), jsonElement));
-            }
-        }
-
-        // check to make sure all required properties/fields are present in the JSON string
-        for (String requiredField : AcceptContract200ResponseData.openapiRequiredFields) {
-            if (jsonElement.getAsJsonObject().get(requiredField) == null) {
-                throw new IllegalArgumentException(String.format(java.util.Locale.ROOT, "The required field `%s` is not found in the JSON string: %s", requiredField, jsonElement));
-            }
-        }
-        JsonObject jsonObj = jsonElement.getAsJsonObject();
-        // validate the required field `agent`
-        Agent.validateJsonElement(jsonObj.get("agent"));
-        // validate the required field `contract`
-        Contract.validateJsonElement(jsonObj.get("contract"));
+        return o.toString().replace("\n", "\n    ");
     }
 
     public static class CustomTypeAdapterFactory implements TypeAdapterFactory {
+
         @SuppressWarnings("unchecked")
         @Override
         public <T> TypeAdapter<T> create(Gson gson, TypeToken<T> type) {
@@ -174,11 +203,13 @@ public class AcceptContract200ResponseData {
             }
             final TypeAdapter<JsonElement> elementAdapter = gson.getAdapter(JsonElement.class);
             final TypeAdapter<AcceptContract200ResponseData> thisAdapter
-                    = gson.getDelegateAdapter(this, TypeToken.get(AcceptContract200ResponseData.class));
+                = gson.getDelegateAdapter(this,
+                TypeToken.get(AcceptContract200ResponseData.class));
 
             return (TypeAdapter<T>) new TypeAdapter<AcceptContract200ResponseData>() {
                 @Override
-                public void write(JsonWriter out, AcceptContract200ResponseData value) throws IOException {
+                public void write(JsonWriter out, AcceptContract200ResponseData value)
+                    throws IOException {
                     JsonObject obj = thisAdapter.toJsonTree(value).getAsJsonObject();
                     elementAdapter.write(out, obj);
                 }
@@ -192,17 +223,6 @@ public class AcceptContract200ResponseData {
 
             }.nullSafe();
         }
-    }
-
-    /**
-     * Create an instance of AcceptContract200ResponseData given an JSON string
-     *
-     * @param jsonString JSON string
-     * @return An instance of AcceptContract200ResponseData
-     * @throws IOException if the JSON string is invalid with respect to AcceptContract200ResponseData
-     */
-    public static AcceptContract200ResponseData fromJson(String jsonString) throws IOException {
-        return JSON.getGson().fromJson(jsonString, AcceptContract200ResponseData.class);
     }
 
     /**

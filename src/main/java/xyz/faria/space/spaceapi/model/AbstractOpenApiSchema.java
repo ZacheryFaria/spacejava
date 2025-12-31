@@ -63,7 +63,8 @@ public abstract class AbstractOpenApiSchema {
     }
 
     /**
-     * Get the instant recursively when the schemas defined in oneOf/anyof happen to be oneOf/anyOf schema as well
+     * Get the instant recursively when the schemas defined in oneOf/anyof happen to be oneOf/anyOf
+     * schema as well
      *
      * @return an instance of the actual schema/object
      */
@@ -93,16 +94,16 @@ public abstract class AbstractOpenApiSchema {
     @Override
     public String toString() {
         String sb = "class " + getClass() + " {\n" +
-                "    instance: " + toIndentedString(instance) + "\n" +
-                "    isNullable: " + toIndentedString(isNullable) + "\n" +
-                "    schemaType: " + toIndentedString(schemaType) + "\n" +
-                "}";
+            "    instance: " + toIndentedString(instance) + "\n" +
+            "    isNullable: " + toIndentedString(isNullable) + "\n" +
+            "    schemaType: " + toIndentedString(schemaType) + "\n" +
+            "}";
         return sb;
     }
 
     /**
-     * Convert the given object to string with each line indented by 4 spaces
-     * (except the first line).
+     * Convert the given object to string with each line indented by 4 spaces (except the first
+     * line).
      */
     private String toIndentedString(Object o) {
         if (o == null) {
@@ -120,8 +121,8 @@ public abstract class AbstractOpenApiSchema {
         }
         AbstractOpenApiSchema a = (AbstractOpenApiSchema) o;
         return Objects.equals(this.instance, a.instance) &&
-                Objects.equals(this.isNullable, a.isNullable) &&
-                Objects.equals(this.schemaType, a.schemaType);
+            Objects.equals(this.isNullable, a.isNullable) &&
+            Objects.equals(this.schemaType, a.schemaType);
     }
 
     @Override

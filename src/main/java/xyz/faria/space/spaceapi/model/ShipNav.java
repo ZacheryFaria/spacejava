@@ -13,23 +13,31 @@
 
 package xyz.faria.space.spaceapi.model;
 
-import com.google.gson.*;
+import com.google.gson.Gson;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.TypeAdapter;
+import com.google.gson.TypeAdapterFactory;
 import com.google.gson.annotations.SerializedName;
 import com.google.gson.reflect.TypeToken;
 import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonWriter;
 import jakarta.persistence.Embeddable;
 import jakarta.persistence.Embedded;
-import xyz.faria.space.spaceapi.client.JSON;
-
 import java.io.IOException;
-import java.util.*;
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Objects;
+import java.util.Set;
+import xyz.faria.space.spaceapi.client.JSON;
 
 /**
  * The navigation information of the ship.
  */
 @Embeddable
 public class ShipNav {
+
     public static final String SERIALIZED_NAME_SYSTEM_SYMBOL = "systemSymbol";
     @SerializedName(SERIALIZED_NAME_SYSTEM_SYMBOL)
     @javax.annotation.Nonnull
@@ -159,60 +167,19 @@ public class ShipNav {
     }
 
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (o == null || getClass() != o.getClass()) {
-            return false;
-        }
-        ShipNav shipNav = (ShipNav) o;
-        return Objects.equals(this.systemSymbol, shipNav.systemSymbol) &&
-                Objects.equals(this.waypointSymbol, shipNav.waypointSymbol) &&
-                Objects.equals(this.route, shipNav.route) &&
-                Objects.equals(this.status, shipNav.status) &&
-                Objects.equals(this.flightMode, shipNav.flightMode);
+    static {
+        // a set of all properties/fields (JSON key names)
+        openapiFields = new HashSet<String>(
+            Arrays.asList("systemSymbol", "waypointSymbol", "route", "status", "flightMode"));
+
+        // a set of required properties/fields (JSON key names)
+        openapiRequiredFields = new HashSet<String>(
+            Arrays.asList("systemSymbol", "waypointSymbol", "route", "status", "flightMode"));
     }
 
     @Override
     public int hashCode() {
         return Objects.hash(systemSymbol, waypointSymbol, route, status, flightMode);
-    }
-
-    @Override
-    public String toString() {
-        String sb = "class ShipNav {\n" +
-                "    systemSymbol: " + toIndentedString(systemSymbol) + "\n" +
-                "    waypointSymbol: " + toIndentedString(waypointSymbol) + "\n" +
-                "    route: " + toIndentedString(route) + "\n" +
-                "    status: " + toIndentedString(status) + "\n" +
-                "    flightMode: " + toIndentedString(flightMode) + "\n" +
-                "}";
-        return sb;
-    }
-
-    /**
-     * Convert the given object to string with each line indented by 4 spaces
-     * (except the first line).
-     */
-    private String toIndentedString(Object o) {
-        if (o == null) {
-            return "null";
-        }
-        return o.toString().replace("\n", "\n    ");
-    }
-
-
-    public static HashSet<String> openapiFields;
-    public static HashSet<String> openapiRequiredFields;
-
-    static {
-        // a set of all properties/fields (JSON key names)
-        openapiFields = new HashSet<String>(Arrays.asList("systemSymbol", "waypointSymbol", "route", "status", "flightMode"));
-
-        // a set of required properties/fields (JSON key names)
-        openapiRequiredFields = new HashSet<String>(Arrays.asList("systemSymbol", "waypointSymbol", "route", "status", "flightMode"));
     }
 
     /**
@@ -224,7 +191,9 @@ public class ShipNav {
     public static void validateJsonElement(JsonElement jsonElement) throws IOException {
         if (jsonElement == null) {
             if (!ShipNav.openapiRequiredFields.isEmpty()) { // has required fields but JSON element is null
-                throw new IllegalArgumentException(String.format(java.util.Locale.ROOT, "The required field(s) %s in ShipNav is not found in the empty JSON string", ShipNav.openapiRequiredFields));
+                throw new IllegalArgumentException(String.format(java.util.Locale.ROOT,
+                    "The required field(s) %s in ShipNav is not found in the empty JSON string",
+                    ShipNav.openapiRequiredFields));
             }
         }
 
@@ -232,22 +201,30 @@ public class ShipNav {
         // check to see if the JSON string contains additional fields
         for (Map.Entry<String, JsonElement> entry : entries) {
             if (!ShipNav.openapiFields.contains(entry.getKey())) {
-                throw new IllegalArgumentException(String.format(java.util.Locale.ROOT, "The field `%s` in the JSON string is not defined in the `ShipNav` properties. JSON: %s", entry.getKey(), jsonElement));
+                throw new IllegalArgumentException(String.format(java.util.Locale.ROOT,
+                    "The field `%s` in the JSON string is not defined in the `ShipNav` properties. JSON: %s",
+                    entry.getKey(), jsonElement));
             }
         }
 
         // check to make sure all required properties/fields are present in the JSON string
         for (String requiredField : ShipNav.openapiRequiredFields) {
             if (jsonElement.getAsJsonObject().get(requiredField) == null) {
-                throw new IllegalArgumentException(String.format(java.util.Locale.ROOT, "The required field `%s` is not found in the JSON string: %s", requiredField, jsonElement));
+                throw new IllegalArgumentException(String.format(java.util.Locale.ROOT,
+                    "The required field `%s` is not found in the JSON string: %s", requiredField,
+                    jsonElement));
             }
         }
         JsonObject jsonObj = jsonElement.getAsJsonObject();
         if (!jsonObj.get("systemSymbol").isJsonPrimitive()) {
-            throw new IllegalArgumentException(String.format(java.util.Locale.ROOT, "Expected the field `systemSymbol` to be a primitive type in the JSON string but got `%s`", jsonObj.get("systemSymbol").toString()));
+            throw new IllegalArgumentException(String.format(java.util.Locale.ROOT,
+                "Expected the field `systemSymbol` to be a primitive type in the JSON string but got `%s`",
+                jsonObj.get("systemSymbol").toString()));
         }
         if (!jsonObj.get("waypointSymbol").isJsonPrimitive()) {
-            throw new IllegalArgumentException(String.format(java.util.Locale.ROOT, "Expected the field `waypointSymbol` to be a primitive type in the JSON string but got `%s`", jsonObj.get("waypointSymbol").toString()));
+            throw new IllegalArgumentException(String.format(java.util.Locale.ROOT,
+                "Expected the field `waypointSymbol` to be a primitive type in the JSON string but got `%s`",
+                jsonObj.get("waypointSymbol").toString()));
         }
         // validate the required field `route`
         ShipNavRoute.validateJsonElement(jsonObj.get("route"));
@@ -257,7 +234,51 @@ public class ShipNav {
         ShipNavFlightMode.validateJsonElement(jsonObj.get("flightMode"));
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        ShipNav shipNav = (ShipNav) o;
+        return Objects.equals(this.systemSymbol, shipNav.systemSymbol) &&
+            Objects.equals(this.waypointSymbol, shipNav.waypointSymbol) &&
+            Objects.equals(this.route, shipNav.route) &&
+            Objects.equals(this.status, shipNav.status) &&
+            Objects.equals(this.flightMode, shipNav.flightMode);
+    }
+
+
+    public static HashSet<String> openapiFields;
+    public static HashSet<String> openapiRequiredFields;
+
+    @Override
+    public String toString() {
+        String sb = "class ShipNav {\n" +
+            "    systemSymbol: " + toIndentedString(systemSymbol) + "\n" +
+            "    waypointSymbol: " + toIndentedString(waypointSymbol) + "\n" +
+            "    route: " + toIndentedString(route) + "\n" +
+            "    status: " + toIndentedString(status) + "\n" +
+            "    flightMode: " + toIndentedString(flightMode) + "\n" +
+            "}";
+        return sb;
+    }
+
+    /**
+     * Convert the given object to string with each line indented by 4 spaces (except the first
+     * line).
+     */
+    private String toIndentedString(Object o) {
+        if (o == null) {
+            return "null";
+        }
+        return o.toString().replace("\n", "\n    ");
+    }
+
     public static class CustomTypeAdapterFactory implements TypeAdapterFactory {
+
         @SuppressWarnings("unchecked")
         @Override
         public <T> TypeAdapter<T> create(Gson gson, TypeToken<T> type) {
@@ -266,7 +287,7 @@ public class ShipNav {
             }
             final TypeAdapter<JsonElement> elementAdapter = gson.getAdapter(JsonElement.class);
             final TypeAdapter<ShipNav> thisAdapter
-                    = gson.getDelegateAdapter(this, TypeToken.get(ShipNav.class));
+                = gson.getDelegateAdapter(this, TypeToken.get(ShipNav.class));
 
             return (TypeAdapter<T>) new TypeAdapter<ShipNav>() {
                 @Override

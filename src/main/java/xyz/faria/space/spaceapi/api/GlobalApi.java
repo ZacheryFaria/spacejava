@@ -14,18 +14,23 @@
 package xyz.faria.space.spaceapi.api;
 
 import com.google.gson.reflect.TypeToken;
-import xyz.faria.space.spaceapi.client.*;
-import xyz.faria.space.spaceapi.model.GetStatus200Response;
-import xyz.faria.space.spaceapi.model.Register201Response;
-import xyz.faria.space.spaceapi.model.RegisterRequest;
-
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import xyz.faria.space.spaceapi.client.ApiCallback;
+import xyz.faria.space.spaceapi.client.ApiClient;
+import xyz.faria.space.spaceapi.client.ApiException;
+import xyz.faria.space.spaceapi.client.ApiResponse;
+import xyz.faria.space.spaceapi.client.Configuration;
+import xyz.faria.space.spaceapi.client.Pair;
+import xyz.faria.space.spaceapi.model.GetStatus200Response;
+import xyz.faria.space.spaceapi.model.Register201Response;
+import xyz.faria.space.spaceapi.model.RegisterRequest;
 
 public class GlobalApi {
+
     private ApiClient localVarApiClient;
     private int localHostIndex;
     private String localCustomBaseUrl;
@@ -100,7 +105,7 @@ public class GlobalApi {
         Map<String, Object> localVarFormParams = new HashMap<String, Object>();
 
         final String[] localVarAccepts = {
-                "application/json"
+            "application/json"
         };
         final String localVarAccept = localVarApiClient.selectHeaderAccept(localVarAccepts);
         if (localVarAccept != null) {
@@ -109,27 +114,32 @@ public class GlobalApi {
 
         final String[] localVarContentTypes = {
         };
-        final String localVarContentType = localVarApiClient.selectHeaderContentType(localVarContentTypes);
+        final String localVarContentType = localVarApiClient.selectHeaderContentType(
+            localVarContentTypes);
         if (localVarContentType != null) {
             localVarHeaderParams.put("Content-Type", localVarContentType);
         }
 
         String[] localVarAuthNames = new String[]{"AgentToken"};
-        return localVarApiClient.buildCall(basePath, localVarPath, "GET", localVarQueryParams, localVarCollectionQueryParams, localVarPostBody, localVarHeaderParams, localVarCookieParams, localVarFormParams, localVarAuthNames, _callback);
+        return localVarApiClient.buildCall(basePath, localVarPath, "GET", localVarQueryParams,
+            localVarCollectionQueryParams, localVarPostBody, localVarHeaderParams,
+            localVarCookieParams, localVarFormParams, localVarAuthNames, _callback);
     }
 
     @SuppressWarnings("rawtypes")
-    private okhttp3.Call getStatusValidateBeforeCall(final ApiCallback _callback) throws ApiException {
+    private okhttp3.Call getStatusValidateBeforeCall(final ApiCallback _callback)
+        throws ApiException {
         return getStatusCall(_callback);
 
     }
 
     /**
-     * Get Status
-     * Return the status of the game server. This also includes a few global elements, such as announcements, server reset dates and leaderboards.
+     * Get Status Return the status of the game server. This also includes a few global elements,
+     * such as announcements, server reset dates and leaderboards.
      *
      * @return GetStatus200Response
-     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
+     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the
+     *                      response body
      * @http.response.details <table border="1">
      * <caption>Response Details</caption>
      * <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
@@ -142,11 +152,12 @@ public class GlobalApi {
     }
 
     /**
-     * Get Status
-     * Return the status of the game server. This also includes a few global elements, such as announcements, server reset dates and leaderboards.
+     * Get Status Return the status of the game server. This also includes a few global elements,
+     * such as announcements, server reset dates and leaderboards.
      *
      * @return ApiResponse&lt;GetStatus200Response&gt;
-     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
+     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the
+     *                      response body
      * @http.response.details <table border="1">
      * <caption>Response Details</caption>
      * <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
@@ -161,19 +172,21 @@ public class GlobalApi {
     }
 
     /**
-     * Get Status (asynchronously)
-     * Return the status of the game server. This also includes a few global elements, such as announcements, server reset dates and leaderboards.
+     * Get Status (asynchronously) Return the status of the game server. This also includes a few
+     * global elements, such as announcements, server reset dates and leaderboards.
      *
      * @param _callback The callback to be executed when the API call finishes
      * @return The request call
-     * @throws ApiException If fail to process the API call, e.g. serializing the request body object
+     * @throws ApiException If fail to process the API call, e.g. serializing the request body
+     *                      object
      * @http.response.details <table border="1">
      * <caption>Response Details</caption>
      * <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
      * <tr><td> 200 </td><td> Fetched status successfully. </td><td>  -  </td></tr>
      * </table>
      */
-    public okhttp3.Call getStatusAsync(final ApiCallback<GetStatus200Response> _callback) throws ApiException {
+    public okhttp3.Call getStatusAsync(final ApiCallback<GetStatus200Response> _callback)
+        throws ApiException {
 
         okhttp3.Call localVarCall = getStatusValidateBeforeCall(_callback);
         Type localVarReturnType = new TypeToken<GetStatus200Response>() {
@@ -195,7 +208,8 @@ public class GlobalApi {
      * <tr><td> 201 </td><td> Successfully registered. </td><td>  -  </td></tr>
      * </table>
      */
-    public okhttp3.Call registerCall(@javax.annotation.Nullable RegisterRequest registerRequest, final ApiCallback _callback) throws ApiException {
+    public okhttp3.Call registerCall(@javax.annotation.Nullable RegisterRequest registerRequest,
+        final ApiCallback _callback) throws ApiException {
         String basePath = null;
         // Operation Servers
         String[] localBasePaths = new String[]{};
@@ -221,7 +235,7 @@ public class GlobalApi {
         Map<String, Object> localVarFormParams = new HashMap<String, Object>();
 
         final String[] localVarAccepts = {
-                "application/json"
+            "application/json"
         };
         final String localVarAccept = localVarApiClient.selectHeaderAccept(localVarAccepts);
         if (localVarAccept != null) {
@@ -229,55 +243,90 @@ public class GlobalApi {
         }
 
         final String[] localVarContentTypes = {
-                "application/json"
+            "application/json"
         };
-        final String localVarContentType = localVarApiClient.selectHeaderContentType(localVarContentTypes);
+        final String localVarContentType = localVarApiClient.selectHeaderContentType(
+            localVarContentTypes);
         if (localVarContentType != null) {
             localVarHeaderParams.put("Content-Type", localVarContentType);
         }
 
         String[] localVarAuthNames = new String[]{"AccountToken"};
-        return localVarApiClient.buildCall(basePath, localVarPath, "POST", localVarQueryParams, localVarCollectionQueryParams, localVarPostBody, localVarHeaderParams, localVarCookieParams, localVarFormParams, localVarAuthNames, _callback);
+        return localVarApiClient.buildCall(basePath, localVarPath, "POST", localVarQueryParams,
+            localVarCollectionQueryParams, localVarPostBody, localVarHeaderParams,
+            localVarCookieParams, localVarFormParams, localVarAuthNames, _callback);
     }
 
     @SuppressWarnings("rawtypes")
-    private okhttp3.Call registerValidateBeforeCall(@javax.annotation.Nullable RegisterRequest registerRequest, final ApiCallback _callback) throws ApiException {
+    private okhttp3.Call registerValidateBeforeCall(
+        @javax.annotation.Nullable RegisterRequest registerRequest, final ApiCallback _callback)
+        throws ApiException {
         return registerCall(registerRequest, _callback);
 
     }
 
     /**
-     * Register New Agent
-     * Creates a new agent and ties it to an account.  The agent symbol must consist of a 3-14 character string, and will be used to represent your agent. This symbol will prefix the symbol of every ship you own. Agent symbols will be cast to all uppercase characters.  This new agent will be tied to a starting faction of your choice, which determines your starting location, and will be granted an authorization token, a contract with their starting faction, a command ship that can fly across space with advanced capabilities, a small probe ship that can be used for reconnaissance, and 175,000 credits.  &gt; #### Keep your token safe and secure &gt; &gt; Keep careful track of where you store your token. You can generate a new token from our account dashboard, but if someone else gains access to your token they will be able to use it to make API requests on your behalf until the end of the reset.  If you are new to SpaceTraders, It is recommended to register with the COSMIC faction, a faction that is well connected to the rest of the universe. After registering, you should try our interactive [quickstart guide](https://docs.spacetraders.io/quickstart/new-game) which will walk you through a few basic API requests in just a few minutes.
+     * Register New Agent Creates a new agent and ties it to an account.  The agent symbol must
+     * consist of a 3-14 character string, and will be used to represent your agent. This symbol
+     * will prefix the symbol of every ship you own. Agent symbols will be cast to all uppercase
+     * characters.  This new agent will be tied to a starting faction of your choice, which
+     * determines your starting location, and will be granted an authorization token, a contract
+     * with their starting faction, a command ship that can fly across space with advanced
+     * capabilities, a small probe ship that can be used for reconnaissance, and 175,000 credits.
+     * &gt; #### Keep your token safe and secure &gt; &gt; Keep careful track of where you store
+     * your token. You can generate a new token from our account dashboard, but if someone else
+     * gains access to your token they will be able to use it to make API requests on your behalf
+     * until the end of the reset.  If you are new to SpaceTraders, It is recommended to register
+     * with the COSMIC faction, a faction that is well connected to the rest of the universe. After
+     * registering, you should try our interactive [quickstart
+     * guide](https://docs.spacetraders.io/quickstart/new-game) which will walk you through a few
+     * basic API requests in just a few minutes.
      *
      * @param registerRequest (optional)
      * @return Register201Response
-     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
+     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the
+     *                      response body
      * @http.response.details <table border="1">
      * <caption>Response Details</caption>
      * <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
      * <tr><td> 201 </td><td> Successfully registered. </td><td>  -  </td></tr>
      * </table>
      */
-    public Register201Response register(@javax.annotation.Nullable RegisterRequest registerRequest) throws ApiException {
+    public Register201Response register(@javax.annotation.Nullable RegisterRequest registerRequest)
+        throws ApiException {
         ApiResponse<Register201Response> localVarResp = registerWithHttpInfo(registerRequest);
         return localVarResp.data();
     }
 
     /**
-     * Register New Agent
-     * Creates a new agent and ties it to an account.  The agent symbol must consist of a 3-14 character string, and will be used to represent your agent. This symbol will prefix the symbol of every ship you own. Agent symbols will be cast to all uppercase characters.  This new agent will be tied to a starting faction of your choice, which determines your starting location, and will be granted an authorization token, a contract with their starting faction, a command ship that can fly across space with advanced capabilities, a small probe ship that can be used for reconnaissance, and 175,000 credits.  &gt; #### Keep your token safe and secure &gt; &gt; Keep careful track of where you store your token. You can generate a new token from our account dashboard, but if someone else gains access to your token they will be able to use it to make API requests on your behalf until the end of the reset.  If you are new to SpaceTraders, It is recommended to register with the COSMIC faction, a faction that is well connected to the rest of the universe. After registering, you should try our interactive [quickstart guide](https://docs.spacetraders.io/quickstart/new-game) which will walk you through a few basic API requests in just a few minutes.
+     * Register New Agent Creates a new agent and ties it to an account.  The agent symbol must
+     * consist of a 3-14 character string, and will be used to represent your agent. This symbol
+     * will prefix the symbol of every ship you own. Agent symbols will be cast to all uppercase
+     * characters.  This new agent will be tied to a starting faction of your choice, which
+     * determines your starting location, and will be granted an authorization token, a contract
+     * with their starting faction, a command ship that can fly across space with advanced
+     * capabilities, a small probe ship that can be used for reconnaissance, and 175,000 credits.
+     * &gt; #### Keep your token safe and secure &gt; &gt; Keep careful track of where you store
+     * your token. You can generate a new token from our account dashboard, but if someone else
+     * gains access to your token they will be able to use it to make API requests on your behalf
+     * until the end of the reset.  If you are new to SpaceTraders, It is recommended to register
+     * with the COSMIC faction, a faction that is well connected to the rest of the universe. After
+     * registering, you should try our interactive [quickstart
+     * guide](https://docs.spacetraders.io/quickstart/new-game) which will walk you through a few
+     * basic API requests in just a few minutes.
      *
      * @param registerRequest (optional)
      * @return ApiResponse&lt;Register201Response&gt;
-     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
+     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the
+     *                      response body
      * @http.response.details <table border="1">
      * <caption>Response Details</caption>
      * <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
      * <tr><td> 201 </td><td> Successfully registered. </td><td>  -  </td></tr>
      * </table>
      */
-    public ApiResponse<Register201Response> registerWithHttpInfo(@javax.annotation.Nullable RegisterRequest registerRequest) throws ApiException {
+    public ApiResponse<Register201Response> registerWithHttpInfo(
+        @javax.annotation.Nullable RegisterRequest registerRequest) throws ApiException {
         okhttp3.Call localVarCall = registerValidateBeforeCall(registerRequest, null);
         Type localVarReturnType = new TypeToken<Register201Response>() {
         }.getType();
@@ -285,20 +334,35 @@ public class GlobalApi {
     }
 
     /**
-     * Register New Agent (asynchronously)
-     * Creates a new agent and ties it to an account.  The agent symbol must consist of a 3-14 character string, and will be used to represent your agent. This symbol will prefix the symbol of every ship you own. Agent symbols will be cast to all uppercase characters.  This new agent will be tied to a starting faction of your choice, which determines your starting location, and will be granted an authorization token, a contract with their starting faction, a command ship that can fly across space with advanced capabilities, a small probe ship that can be used for reconnaissance, and 175,000 credits.  &gt; #### Keep your token safe and secure &gt; &gt; Keep careful track of where you store your token. You can generate a new token from our account dashboard, but if someone else gains access to your token they will be able to use it to make API requests on your behalf until the end of the reset.  If you are new to SpaceTraders, It is recommended to register with the COSMIC faction, a faction that is well connected to the rest of the universe. After registering, you should try our interactive [quickstart guide](https://docs.spacetraders.io/quickstart/new-game) which will walk you through a few basic API requests in just a few minutes.
+     * Register New Agent (asynchronously) Creates a new agent and ties it to an account.  The agent
+     * symbol must consist of a 3-14 character string, and will be used to represent your agent.
+     * This symbol will prefix the symbol of every ship you own. Agent symbols will be cast to all
+     * uppercase characters.  This new agent will be tied to a starting faction of your choice,
+     * which determines your starting location, and will be granted an authorization token, a
+     * contract with their starting faction, a command ship that can fly across space with advanced
+     * capabilities, a small probe ship that can be used for reconnaissance, and 175,000 credits.
+     * &gt; #### Keep your token safe and secure &gt; &gt; Keep careful track of where you store
+     * your token. You can generate a new token from our account dashboard, but if someone else
+     * gains access to your token they will be able to use it to make API requests on your behalf
+     * until the end of the reset.  If you are new to SpaceTraders, It is recommended to register
+     * with the COSMIC faction, a faction that is well connected to the rest of the universe. After
+     * registering, you should try our interactive [quickstart
+     * guide](https://docs.spacetraders.io/quickstart/new-game) which will walk you through a few
+     * basic API requests in just a few minutes.
      *
      * @param registerRequest (optional)
      * @param _callback       The callback to be executed when the API call finishes
      * @return The request call
-     * @throws ApiException If fail to process the API call, e.g. serializing the request body object
+     * @throws ApiException If fail to process the API call, e.g. serializing the request body
+     *                      object
      * @http.response.details <table border="1">
      * <caption>Response Details</caption>
      * <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
      * <tr><td> 201 </td><td> Successfully registered. </td><td>  -  </td></tr>
      * </table>
      */
-    public okhttp3.Call registerAsync(@javax.annotation.Nullable RegisterRequest registerRequest, final ApiCallback<Register201Response> _callback) throws ApiException {
+    public okhttp3.Call registerAsync(@javax.annotation.Nullable RegisterRequest registerRequest,
+        final ApiCallback<Register201Response> _callback) throws ApiException {
 
         okhttp3.Call localVarCall = registerValidateBeforeCall(registerRequest, _callback);
         Type localVarReturnType = new TypeToken<Register201Response>() {

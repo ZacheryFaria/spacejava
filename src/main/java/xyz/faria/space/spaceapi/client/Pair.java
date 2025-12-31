@@ -15,6 +15,7 @@ package xyz.faria.space.spaceapi.client;
 
 
 public record Pair(String name, String value) {
+
     public Pair(String name, String value) {
         this.name = isValidString(name) ? name : "";
         this.value = isValidString(value) ? value : "";

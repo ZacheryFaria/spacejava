@@ -21,8 +21,8 @@ import xyz.faria.space.views.components.ShipDetailCard;
 public class ShipDetailsView extends VerticalLayout implements BeforeEnterObserver,
     AfterNavigationObserver, ApplicationListener<ShipUpdatedEvent> {
 
-    private ShipRepository shipRepository;
-    private ShipService shipService;
+    private final ShipRepository shipRepository;
+    private final ShipService shipService;
 
     private String shipSymbol;
 

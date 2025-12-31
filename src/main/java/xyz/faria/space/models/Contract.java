@@ -1,17 +1,27 @@
 package xyz.faria.space.models;
 
-import jakarta.persistence.*;
+import jakarta.persistence.AttributeOverride;
+import jakarta.persistence.AttributeOverrides;
+import jakarta.persistence.Column;
+import jakarta.persistence.Embedded;
+import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.Table;
+import java.time.LocalDateTime;
 import lombok.Getter;
 import lombok.Setter;
 import xyz.faria.space.spaceapi.model.ContractTerms;
-
-import java.time.LocalDateTime;
 
 @Getter
 @Setter
 @Entity
 @Table(name = "contract")
 public class Contract {
+
     @javax.annotation.Nonnull
     @Id
     @Column(name = "id", nullable = false)
@@ -34,9 +44,9 @@ public class Contract {
     @javax.annotation.Nonnull
     @Embedded
     @AttributeOverrides({
-            @AttributeOverride(name = "deadline", column = @Column(name = "terms_deadline", nullable = false)),
-            @AttributeOverride(name = "payment.onAccepted", column = @Column(name = "terms_payment_on_accepted", nullable = false)),
-            @AttributeOverride(name = "payment.onFulfilled", column = @Column(name = "terms_payment_on_fulfilled", nullable = false))
+        @AttributeOverride(name = "deadline", column = @Column(name = "terms_deadline", nullable = false)),
+        @AttributeOverride(name = "payment.onAccepted", column = @Column(name = "terms_payment_on_accepted", nullable = false)),
+        @AttributeOverride(name = "payment.onFulfilled", column = @Column(name = "terms_payment_on_fulfilled", nullable = false))
     })
     private ContractTerms terms;
 

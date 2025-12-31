@@ -13,21 +13,29 @@
 
 package xyz.faria.space.spaceapi.model;
 
-import com.google.gson.*;
+import com.google.gson.Gson;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.TypeAdapter;
+import com.google.gson.TypeAdapterFactory;
 import com.google.gson.annotations.SerializedName;
 import com.google.gson.reflect.TypeToken;
 import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonWriter;
-import xyz.faria.space.spaceapi.client.JSON;
-
 import java.io.IOException;
-import java.util.*;
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Objects;
+import java.util.Set;
+import xyz.faria.space.spaceapi.client.JSON;
 
 /**
  * JettisonRequest
  */
 
 public class JettisonRequest {
+
     public static final String SERIALIZED_NAME_SYMBOL = "symbol";
     @SerializedName(SERIALIZED_NAME_SYMBOL)
     @javax.annotation.Nonnull
@@ -67,8 +75,50 @@ public class JettisonRequest {
     }
 
     /**
-     * Amount of units to jettison of this good.
-     * minimum: 1
+     * Validates the JSON Element and throws an exception if issues found
+     *
+     * @param jsonElement JSON Element
+     * @throws IOException if the JSON Element is invalid with respect to JettisonRequest
+     */
+    public static void validateJsonElement(JsonElement jsonElement) throws IOException {
+        if (jsonElement == null) {
+            if (!JettisonRequest.openapiRequiredFields.isEmpty()) { // has required fields but JSON element is null
+                throw new IllegalArgumentException(String.format(java.util.Locale.ROOT,
+                    "The required field(s) %s in JettisonRequest is not found in the empty JSON string",
+                    JettisonRequest.openapiRequiredFields));
+            }
+        }
+
+        Set<Map.Entry<String, JsonElement>> entries = jsonElement.getAsJsonObject().entrySet();
+        // check to see if the JSON string contains additional fields
+        for (Map.Entry<String, JsonElement> entry : entries) {
+            if (!JettisonRequest.openapiFields.contains(entry.getKey())) {
+                throw new IllegalArgumentException(String.format(java.util.Locale.ROOT,
+                    "The field `%s` in the JSON string is not defined in the `JettisonRequest` properties. JSON: %s",
+                    entry.getKey(), jsonElement));
+            }
+        }
+
+        // check to make sure all required properties/fields are present in the JSON string
+        for (String requiredField : JettisonRequest.openapiRequiredFields) {
+            if (jsonElement.getAsJsonObject().get(requiredField) == null) {
+                throw new IllegalArgumentException(String.format(java.util.Locale.ROOT,
+                    "The required field `%s` is not found in the JSON string: %s",
+                    requiredField,
+                    jsonElement));
+            }
+        }
+        JsonObject jsonObj = jsonElement.getAsJsonObject();
+        // validate the required field `symbol`
+        TradeSymbol.validateJsonElement(jsonObj.get("symbol"));
+    }
+
+    public void setUnits(@javax.annotation.Nonnull Integer units) {
+        this.units = units;
+    }
+
+    /**
+     * Amount of units to jettison of this good. minimum: 1
      *
      * @return units
      */
@@ -77,10 +127,10 @@ public class JettisonRequest {
         return units;
     }
 
-    public void setUnits(@javax.annotation.Nonnull Integer units) {
-        this.units = units;
+    @Override
+    public int hashCode() {
+        return Objects.hash(symbol, units);
     }
-
 
     @Override
     public boolean equals(Object o) {
@@ -92,32 +142,16 @@ public class JettisonRequest {
         }
         JettisonRequest jettisonRequest = (JettisonRequest) o;
         return Objects.equals(this.symbol, jettisonRequest.symbol) &&
-                Objects.equals(this.units, jettisonRequest.units);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(symbol, units);
+            Objects.equals(this.units, jettisonRequest.units);
     }
 
     @Override
     public String toString() {
         String sb = "class JettisonRequest {\n" +
-                "    symbol: " + toIndentedString(symbol) + "\n" +
-                "    units: " + toIndentedString(units) + "\n" +
-                "}";
+            "    symbol: " + toIndentedString(symbol) + "\n" +
+            "    units: " + toIndentedString(units) + "\n" +
+            "}";
         return sb;
-    }
-
-    /**
-     * Convert the given object to string with each line indented by 4 spaces
-     * (except the first line).
-     */
-    private String toIndentedString(Object o) {
-        if (o == null) {
-            return "null";
-        }
-        return o.toString().replace("\n", "\n    ");
     }
 
 
@@ -133,38 +167,18 @@ public class JettisonRequest {
     }
 
     /**
-     * Validates the JSON Element and throws an exception if issues found
-     *
-     * @param jsonElement JSON Element
-     * @throws IOException if the JSON Element is invalid with respect to JettisonRequest
+     * Convert the given object to string with each line indented by 4 spaces (except the first
+     * line).
      */
-    public static void validateJsonElement(JsonElement jsonElement) throws IOException {
-        if (jsonElement == null) {
-            if (!JettisonRequest.openapiRequiredFields.isEmpty()) { // has required fields but JSON element is null
-                throw new IllegalArgumentException(String.format(java.util.Locale.ROOT, "The required field(s) %s in JettisonRequest is not found in the empty JSON string", JettisonRequest.openapiRequiredFields));
-            }
+    private String toIndentedString(Object o) {
+        if (o == null) {
+            return "null";
         }
-
-        Set<Map.Entry<String, JsonElement>> entries = jsonElement.getAsJsonObject().entrySet();
-        // check to see if the JSON string contains additional fields
-        for (Map.Entry<String, JsonElement> entry : entries) {
-            if (!JettisonRequest.openapiFields.contains(entry.getKey())) {
-                throw new IllegalArgumentException(String.format(java.util.Locale.ROOT, "The field `%s` in the JSON string is not defined in the `JettisonRequest` properties. JSON: %s", entry.getKey(), jsonElement));
-            }
-        }
-
-        // check to make sure all required properties/fields are present in the JSON string
-        for (String requiredField : JettisonRequest.openapiRequiredFields) {
-            if (jsonElement.getAsJsonObject().get(requiredField) == null) {
-                throw new IllegalArgumentException(String.format(java.util.Locale.ROOT, "The required field `%s` is not found in the JSON string: %s", requiredField, jsonElement));
-            }
-        }
-        JsonObject jsonObj = jsonElement.getAsJsonObject();
-        // validate the required field `symbol`
-        TradeSymbol.validateJsonElement(jsonObj.get("symbol"));
+        return o.toString().replace("\n", "\n    ");
     }
 
     public static class CustomTypeAdapterFactory implements TypeAdapterFactory {
+
         @SuppressWarnings("unchecked")
         @Override
         public <T> TypeAdapter<T> create(Gson gson, TypeToken<T> type) {
@@ -173,7 +187,7 @@ public class JettisonRequest {
             }
             final TypeAdapter<JsonElement> elementAdapter = gson.getAdapter(JsonElement.class);
             final TypeAdapter<JettisonRequest> thisAdapter
-                    = gson.getDelegateAdapter(this, TypeToken.get(JettisonRequest.class));
+                = gson.getDelegateAdapter(this, TypeToken.get(JettisonRequest.class));
 
             return (TypeAdapter<T>) new TypeAdapter<JettisonRequest>() {
                 @Override

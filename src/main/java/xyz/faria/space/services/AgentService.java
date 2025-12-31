@@ -1,11 +1,9 @@
 package xyz.faria.space.services;
 
 import jakarta.annotation.Nullable;
-import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
-import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import xyz.faria.space.models.Agent;
@@ -14,7 +12,6 @@ import xyz.faria.space.models.Ship;
 import xyz.faria.space.repositories.AgentRepository;
 import xyz.faria.space.repositories.ContractRepository;
 import xyz.faria.space.repositories.ShipRepository;
-import xyz.faria.space.spaceapi.Utils;
 import xyz.faria.space.spaceapi.api.AgentsApi;
 import xyz.faria.space.spaceapi.api.GlobalApi;
 import xyz.faria.space.spaceapi.client.ApiClient;
@@ -32,10 +29,8 @@ public class AgentService {
     private final AgentRepository agentRepository;
     private final ContractRepository contractRepository;
     private final ShipRepository shipRepository;
+    private final ResetService resetService;
 
-    public @Nullable Agent getAgentByResetDate(Date resetDate) {
-        return agentRepository.findByResetDate(resetDate).orElse(null);
-    }
 
     public @Nullable Agent getAgentById(UUID id) {
         return agentRepository.findById(id).orElse(null);
@@ -50,7 +45,7 @@ public class AgentService {
         var response = globalApi.register(request);
         Agent agent = AgentConverter.fromApiAgent(response.getData().getAgent());
         agent.setToken(response.getData().getToken());
-        agent.setResetDate(Utils.getCurrentResetDate());
+        agent.setReset(resetService.getCurrentReset());
 
         Contract contract = ContractConverter.fromApiContract(response.getData().getContract());
         contract.setAgent(agent);
@@ -81,19 +76,5 @@ public class AgentService {
         AgentConverter.fromApiAgent(agent, response.getData());
         agentRepository.save(agent);
         return agent;
-    }
-
-    public Agent syncAgent(@NonNull String symbol) throws ApiException {
-        var agent = agentRepository.findBySymbolAndResetDate(symbol, Utils.getCurrentResetDate());
-        if (agent.isPresent()) {
-            return syncAgent(agent.get());
-        } else {
-            ApiClient apiClient = ApiClient.getAccountApiClient();
-            AgentsApi agentsApi = new AgentsApi(apiClient);
-            var response = agentsApi.getAgent(symbol);
-            var newAgent = new Agent();
-            AgentConverter.fromApiAgent(newAgent, response.getData());
-            return agentRepository.save(newAgent);
-        }
     }
 }

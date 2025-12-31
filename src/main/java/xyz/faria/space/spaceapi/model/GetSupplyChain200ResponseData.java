@@ -13,21 +13,30 @@
 
 package xyz.faria.space.spaceapi.model;
 
-import com.google.gson.*;
+import com.google.gson.Gson;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.TypeAdapter;
+import com.google.gson.TypeAdapterFactory;
 import com.google.gson.annotations.SerializedName;
 import com.google.gson.reflect.TypeToken;
 import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonWriter;
-import xyz.faria.space.spaceapi.client.JSON;
-
 import java.io.IOException;
-import java.util.*;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
+import java.util.Set;
+import xyz.faria.space.spaceapi.client.JSON;
 
 /**
  * GetSupplyChain200ResponseData
  */
 
 public class GetSupplyChain200ResponseData {
+
     public static final String SERIALIZED_NAME_EXPORT_TO_IMPORT_MAP = "exportToImportMap";
     @SerializedName(SERIALIZED_NAME_EXPORT_TO_IMPORT_MAP)
     @javax.annotation.Nonnull
@@ -36,17 +45,54 @@ public class GetSupplyChain200ResponseData {
     public GetSupplyChain200ResponseData() {
     }
 
-    public GetSupplyChain200ResponseData exportToImportMap(@javax.annotation.Nonnull Map<String, List<String>> exportToImportMap) {
-        this.exportToImportMap = exportToImportMap;
-        return this;
+    /**
+     * Validates the JSON Element and throws an exception if issues found
+     *
+     * @param jsonElement JSON Element
+     * @throws IOException if the JSON Element is invalid with respect to
+     *                     GetSupplyChain200ResponseData
+     */
+    public static void validateJsonElement(JsonElement jsonElement) throws IOException {
+        if (jsonElement == null) {
+            if (!GetSupplyChain200ResponseData.openapiRequiredFields.isEmpty()) { // has required fields but JSON element is null
+                throw new IllegalArgumentException(String.format(java.util.Locale.ROOT,
+                    "The required field(s) %s in GetSupplyChain200ResponseData is not found in the empty JSON string",
+                    GetSupplyChain200ResponseData.openapiRequiredFields));
+            }
+        }
+
+        Set<Map.Entry<String, JsonElement>> entries = jsonElement.getAsJsonObject().entrySet();
+        // check to see if the JSON string contains additional fields
+        for (Map.Entry<String, JsonElement> entry : entries) {
+            if (!GetSupplyChain200ResponseData.openapiFields.contains(entry.getKey())) {
+                throw new IllegalArgumentException(String.format(java.util.Locale.ROOT,
+                    "The field `%s` in the JSON string is not defined in the `GetSupplyChain200ResponseData` properties. JSON: %s",
+                    entry.getKey(), jsonElement));
+            }
+        }
+
+        // check to make sure all required properties/fields are present in the JSON string
+        for (String requiredField : GetSupplyChain200ResponseData.openapiRequiredFields) {
+            if (jsonElement.getAsJsonObject().get(requiredField) == null) {
+                throw new IllegalArgumentException(String.format(java.util.Locale.ROOT,
+                    "The required field `%s` is not found in the JSON string: %s",
+                    requiredField,
+                    jsonElement));
+            }
+        }
+        JsonObject jsonObj = jsonElement.getAsJsonObject();
     }
 
-    public GetSupplyChain200ResponseData putExportToImportMapItem(String key, List<String> exportToImportMapItem) {
-        if (this.exportToImportMap == null) {
-            this.exportToImportMap = new HashMap<>();
-        }
-        this.exportToImportMap.put(key, exportToImportMapItem);
-        return this;
+    /**
+     * Create an instance of GetSupplyChain200ResponseData given an JSON string
+     *
+     * @param jsonString JSON string
+     * @return An instance of GetSupplyChain200ResponseData
+     * @throws IOException if the JSON string is invalid with respect to
+     *                     GetSupplyChain200ResponseData
+     */
+    public static GetSupplyChain200ResponseData fromJson(String jsonString) throws IOException {
+        return JSON.getGson().fromJson(jsonString, GetSupplyChain200ResponseData.class);
     }
 
     /**
@@ -59,10 +105,30 @@ public class GetSupplyChain200ResponseData {
         return exportToImportMap;
     }
 
-    public void setExportToImportMap(@javax.annotation.Nonnull Map<String, List<String>> exportToImportMap) {
+    public GetSupplyChain200ResponseData exportToImportMap(
+        @javax.annotation.Nonnull Map<String, List<String>> exportToImportMap) {
         this.exportToImportMap = exportToImportMap;
+        return this;
     }
 
+    public GetSupplyChain200ResponseData putExportToImportMapItem(String key,
+        List<String> exportToImportMapItem) {
+        if (this.exportToImportMap == null) {
+            this.exportToImportMap = new HashMap<>();
+        }
+        this.exportToImportMap.put(key, exportToImportMapItem);
+        return this;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(exportToImportMap);
+    }
+
+    public void setExportToImportMap(
+        @javax.annotation.Nonnull Map<String, List<String>> exportToImportMap) {
+        this.exportToImportMap = exportToImportMap;
+    }
 
     @Override
     public boolean equals(Object o) {
@@ -73,31 +139,8 @@ public class GetSupplyChain200ResponseData {
             return false;
         }
         GetSupplyChain200ResponseData getSupplyChain200ResponseData = (GetSupplyChain200ResponseData) o;
-        return Objects.equals(this.exportToImportMap, getSupplyChain200ResponseData.exportToImportMap);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(exportToImportMap);
-    }
-
-    @Override
-    public String toString() {
-        String sb = "class GetSupplyChain200ResponseData {\n" +
-                "    exportToImportMap: " + toIndentedString(exportToImportMap) + "\n" +
-                "}";
-        return sb;
-    }
-
-    /**
-     * Convert the given object to string with each line indented by 4 spaces
-     * (except the first line).
-     */
-    private String toIndentedString(Object o) {
-        if (o == null) {
-            return "null";
-        }
-        return o.toString().replace("\n", "\n    ");
+        return Objects.equals(this.exportToImportMap,
+            getSupplyChain200ResponseData.exportToImportMap);
     }
 
 
@@ -112,37 +155,27 @@ public class GetSupplyChain200ResponseData {
         openapiRequiredFields = new HashSet<String>(List.of("exportToImportMap"));
     }
 
+    @Override
+    public String toString() {
+        String sb = "class GetSupplyChain200ResponseData {\n" +
+            "    exportToImportMap: " + toIndentedString(exportToImportMap) + "\n" +
+            "}";
+        return sb;
+    }
+
     /**
-     * Validates the JSON Element and throws an exception if issues found
-     *
-     * @param jsonElement JSON Element
-     * @throws IOException if the JSON Element is invalid with respect to GetSupplyChain200ResponseData
+     * Convert the given object to string with each line indented by 4 spaces (except the first
+     * line).
      */
-    public static void validateJsonElement(JsonElement jsonElement) throws IOException {
-        if (jsonElement == null) {
-            if (!GetSupplyChain200ResponseData.openapiRequiredFields.isEmpty()) { // has required fields but JSON element is null
-                throw new IllegalArgumentException(String.format(java.util.Locale.ROOT, "The required field(s) %s in GetSupplyChain200ResponseData is not found in the empty JSON string", GetSupplyChain200ResponseData.openapiRequiredFields));
-            }
+    private String toIndentedString(Object o) {
+        if (o == null) {
+            return "null";
         }
-
-        Set<Map.Entry<String, JsonElement>> entries = jsonElement.getAsJsonObject().entrySet();
-        // check to see if the JSON string contains additional fields
-        for (Map.Entry<String, JsonElement> entry : entries) {
-            if (!GetSupplyChain200ResponseData.openapiFields.contains(entry.getKey())) {
-                throw new IllegalArgumentException(String.format(java.util.Locale.ROOT, "The field `%s` in the JSON string is not defined in the `GetSupplyChain200ResponseData` properties. JSON: %s", entry.getKey(), jsonElement));
-            }
-        }
-
-        // check to make sure all required properties/fields are present in the JSON string
-        for (String requiredField : GetSupplyChain200ResponseData.openapiRequiredFields) {
-            if (jsonElement.getAsJsonObject().get(requiredField) == null) {
-                throw new IllegalArgumentException(String.format(java.util.Locale.ROOT, "The required field `%s` is not found in the JSON string: %s", requiredField, jsonElement));
-            }
-        }
-        JsonObject jsonObj = jsonElement.getAsJsonObject();
+        return o.toString().replace("\n", "\n    ");
     }
 
     public static class CustomTypeAdapterFactory implements TypeAdapterFactory {
+
         @SuppressWarnings("unchecked")
         @Override
         public <T> TypeAdapter<T> create(Gson gson, TypeToken<T> type) {
@@ -151,11 +184,13 @@ public class GetSupplyChain200ResponseData {
             }
             final TypeAdapter<JsonElement> elementAdapter = gson.getAdapter(JsonElement.class);
             final TypeAdapter<GetSupplyChain200ResponseData> thisAdapter
-                    = gson.getDelegateAdapter(this, TypeToken.get(GetSupplyChain200ResponseData.class));
+                = gson.getDelegateAdapter(this,
+                TypeToken.get(GetSupplyChain200ResponseData.class));
 
             return (TypeAdapter<T>) new TypeAdapter<GetSupplyChain200ResponseData>() {
                 @Override
-                public void write(JsonWriter out, GetSupplyChain200ResponseData value) throws IOException {
+                public void write(JsonWriter out, GetSupplyChain200ResponseData value)
+                    throws IOException {
                     JsonObject obj = thisAdapter.toJsonTree(value).getAsJsonObject();
                     elementAdapter.write(out, obj);
                 }
@@ -169,17 +204,6 @@ public class GetSupplyChain200ResponseData {
 
             }.nullSafe();
         }
-    }
-
-    /**
-     * Create an instance of GetSupplyChain200ResponseData given an JSON string
-     *
-     * @param jsonString JSON string
-     * @return An instance of GetSupplyChain200ResponseData
-     * @throws IOException if the JSON string is invalid with respect to GetSupplyChain200ResponseData
-     */
-    public static GetSupplyChain200ResponseData fromJson(String jsonString) throws IOException {
-        return JSON.getGson().fromJson(jsonString, GetSupplyChain200ResponseData.class);
     }
 
     /**

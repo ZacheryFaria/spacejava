@@ -14,16 +14,26 @@
 package xyz.faria.space.spaceapi.api;
 
 import com.google.gson.reflect.TypeToken;
-import xyz.faria.space.spaceapi.client.*;
-import xyz.faria.space.spaceapi.model.*;
-
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import xyz.faria.space.spaceapi.client.ApiCallback;
+import xyz.faria.space.spaceapi.client.ApiClient;
+import xyz.faria.space.spaceapi.client.ApiException;
+import xyz.faria.space.spaceapi.client.ApiResponse;
+import xyz.faria.space.spaceapi.client.Configuration;
+import xyz.faria.space.spaceapi.client.Pair;
+import xyz.faria.space.spaceapi.model.AcceptContract200Response;
+import xyz.faria.space.spaceapi.model.DeliverContract200Response;
+import xyz.faria.space.spaceapi.model.DeliverContractRequest;
+import xyz.faria.space.spaceapi.model.FulfillContract200Response;
+import xyz.faria.space.spaceapi.model.GetContract200Response;
+import xyz.faria.space.spaceapi.model.GetContracts200Response;
 
 public class ContractsApi {
+
     private ApiClient localVarApiClient;
     private int localHostIndex;
     private String localCustomBaseUrl;
@@ -73,7 +83,8 @@ public class ContractsApi {
      * <tr><td> 200 </td><td> Successfully accepted contract. </td><td>  -  </td></tr>
      * </table>
      */
-    public okhttp3.Call acceptContractCall(@javax.annotation.Nonnull String contractId, final ApiCallback _callback) throws ApiException {
+    public okhttp3.Call acceptContractCall(@javax.annotation.Nonnull String contractId,
+        final ApiCallback _callback) throws ApiException {
         String basePath = null;
         // Operation Servers
         String[] localBasePaths = new String[]{};
@@ -91,7 +102,7 @@ public class ContractsApi {
 
         // create path and map variables
         String localVarPath = "/my/contracts/{contractId}/accept"
-                .replace("{" + "contractId" + "}", localVarApiClient.escapeString(contractId));
+            .replace("{" + "contractId" + "}", localVarApiClient.escapeString(contractId));
 
         List<Pair> localVarQueryParams = new ArrayList<Pair>();
         List<Pair> localVarCollectionQueryParams = new ArrayList<Pair>();
@@ -100,7 +111,7 @@ public class ContractsApi {
         Map<String, Object> localVarFormParams = new HashMap<String, Object>();
 
         final String[] localVarAccepts = {
-                "application/json"
+            "application/json"
         };
         final String localVarAccept = localVarApiClient.selectHeaderAccept(localVarAccepts);
         if (localVarAccept != null) {
@@ -109,20 +120,26 @@ public class ContractsApi {
 
         final String[] localVarContentTypes = {
         };
-        final String localVarContentType = localVarApiClient.selectHeaderContentType(localVarContentTypes);
+        final String localVarContentType = localVarApiClient.selectHeaderContentType(
+            localVarContentTypes);
         if (localVarContentType != null) {
             localVarHeaderParams.put("Content-Type", localVarContentType);
         }
 
         String[] localVarAuthNames = new String[]{"AgentToken"};
-        return localVarApiClient.buildCall(basePath, localVarPath, "POST", localVarQueryParams, localVarCollectionQueryParams, localVarPostBody, localVarHeaderParams, localVarCookieParams, localVarFormParams, localVarAuthNames, _callback);
+        return localVarApiClient.buildCall(basePath, localVarPath, "POST", localVarQueryParams,
+            localVarCollectionQueryParams, localVarPostBody, localVarHeaderParams,
+            localVarCookieParams, localVarFormParams, localVarAuthNames, _callback);
     }
 
     @SuppressWarnings("rawtypes")
-    private okhttp3.Call acceptContractValidateBeforeCall(@javax.annotation.Nonnull String contractId, final ApiCallback _callback) throws ApiException {
+    private okhttp3.Call acceptContractValidateBeforeCall(
+        @javax.annotation.Nonnull String contractId, final ApiCallback _callback)
+        throws ApiException {
         // verify the required parameter 'contractId' is set
         if (contractId == null) {
-            throw new ApiException("Missing the required parameter 'contractId' when calling acceptContract(Async)");
+            throw new ApiException(
+                "Missing the required parameter 'contractId' when calling acceptContract(Async)");
         }
 
         return acceptContractCall(contractId, _callback);
@@ -130,37 +147,42 @@ public class ContractsApi {
     }
 
     /**
-     * Accept Contract
-     * Accept a contract by ID.   You can only accept contracts that were offered to you, were not accepted yet, and whose deadlines has not passed yet.
+     * Accept Contract Accept a contract by ID.   You can only accept contracts that were offered to
+     * you, were not accepted yet, and whose deadlines has not passed yet.
      *
      * @param contractId The contract ID to accept. (required)
      * @return AcceptContract200Response
-     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
+     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the
+     *                      response body
      * @http.response.details <table border="1">
      * <caption>Response Details</caption>
      * <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
      * <tr><td> 200 </td><td> Successfully accepted contract. </td><td>  -  </td></tr>
      * </table>
      */
-    public AcceptContract200Response acceptContract(@javax.annotation.Nonnull String contractId) throws ApiException {
-        ApiResponse<AcceptContract200Response> localVarResp = acceptContractWithHttpInfo(contractId);
+    public AcceptContract200Response acceptContract(@javax.annotation.Nonnull String contractId)
+        throws ApiException {
+        ApiResponse<AcceptContract200Response> localVarResp = acceptContractWithHttpInfo(
+            contractId);
         return localVarResp.data();
     }
 
     /**
-     * Accept Contract
-     * Accept a contract by ID.   You can only accept contracts that were offered to you, were not accepted yet, and whose deadlines has not passed yet.
+     * Accept Contract Accept a contract by ID.   You can only accept contracts that were offered to
+     * you, were not accepted yet, and whose deadlines has not passed yet.
      *
      * @param contractId The contract ID to accept. (required)
      * @return ApiResponse&lt;AcceptContract200Response&gt;
-     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
+     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the
+     *                      response body
      * @http.response.details <table border="1">
      * <caption>Response Details</caption>
      * <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
      * <tr><td> 200 </td><td> Successfully accepted contract. </td><td>  -  </td></tr>
      * </table>
      */
-    public ApiResponse<AcceptContract200Response> acceptContractWithHttpInfo(@javax.annotation.Nonnull String contractId) throws ApiException {
+    public ApiResponse<AcceptContract200Response> acceptContractWithHttpInfo(
+        @javax.annotation.Nonnull String contractId) throws ApiException {
         okhttp3.Call localVarCall = acceptContractValidateBeforeCall(contractId, null);
         Type localVarReturnType = new TypeToken<AcceptContract200Response>() {
         }.getType();
@@ -168,20 +190,22 @@ public class ContractsApi {
     }
 
     /**
-     * Accept Contract (asynchronously)
-     * Accept a contract by ID.   You can only accept contracts that were offered to you, were not accepted yet, and whose deadlines has not passed yet.
+     * Accept Contract (asynchronously) Accept a contract by ID.   You can only accept contracts
+     * that were offered to you, were not accepted yet, and whose deadlines has not passed yet.
      *
      * @param contractId The contract ID to accept. (required)
      * @param _callback  The callback to be executed when the API call finishes
      * @return The request call
-     * @throws ApiException If fail to process the API call, e.g. serializing the request body object
+     * @throws ApiException If fail to process the API call, e.g. serializing the request body
+     *                      object
      * @http.response.details <table border="1">
      * <caption>Response Details</caption>
      * <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
      * <tr><td> 200 </td><td> Successfully accepted contract. </td><td>  -  </td></tr>
      * </table>
      */
-    public okhttp3.Call acceptContractAsync(@javax.annotation.Nonnull String contractId, final ApiCallback<AcceptContract200Response> _callback) throws ApiException {
+    public okhttp3.Call acceptContractAsync(@javax.annotation.Nonnull String contractId,
+        final ApiCallback<AcceptContract200Response> _callback) throws ApiException {
 
         okhttp3.Call localVarCall = acceptContractValidateBeforeCall(contractId, _callback);
         Type localVarReturnType = new TypeToken<AcceptContract200Response>() {
@@ -204,7 +228,9 @@ public class ContractsApi {
      * <tr><td> 200 </td><td> Successfully delivered cargo to contract. </td><td>  -  </td></tr>
      * </table>
      */
-    public okhttp3.Call deliverContractCall(@javax.annotation.Nonnull String contractId, @javax.annotation.Nullable DeliverContractRequest deliverContractRequest, final ApiCallback _callback) throws ApiException {
+    public okhttp3.Call deliverContractCall(@javax.annotation.Nonnull String contractId,
+        @javax.annotation.Nullable DeliverContractRequest deliverContractRequest,
+        final ApiCallback _callback) throws ApiException {
         String basePath = null;
         // Operation Servers
         String[] localBasePaths = new String[]{};
@@ -222,7 +248,7 @@ public class ContractsApi {
 
         // create path and map variables
         String localVarPath = "/my/contracts/{contractId}/deliver"
-                .replace("{" + "contractId" + "}", localVarApiClient.escapeString(contractId));
+            .replace("{" + "contractId" + "}", localVarApiClient.escapeString(contractId));
 
         List<Pair> localVarQueryParams = new ArrayList<Pair>();
         List<Pair> localVarCollectionQueryParams = new ArrayList<Pair>();
@@ -231,7 +257,7 @@ public class ContractsApi {
         Map<String, Object> localVarFormParams = new HashMap<String, Object>();
 
         final String[] localVarAccepts = {
-                "application/json"
+            "application/json"
         };
         final String localVarAccept = localVarApiClient.selectHeaderAccept(localVarAccepts);
         if (localVarAccept != null) {
@@ -239,22 +265,29 @@ public class ContractsApi {
         }
 
         final String[] localVarContentTypes = {
-                "application/json"
+            "application/json"
         };
-        final String localVarContentType = localVarApiClient.selectHeaderContentType(localVarContentTypes);
+        final String localVarContentType = localVarApiClient.selectHeaderContentType(
+            localVarContentTypes);
         if (localVarContentType != null) {
             localVarHeaderParams.put("Content-Type", localVarContentType);
         }
 
         String[] localVarAuthNames = new String[]{"AgentToken"};
-        return localVarApiClient.buildCall(basePath, localVarPath, "POST", localVarQueryParams, localVarCollectionQueryParams, localVarPostBody, localVarHeaderParams, localVarCookieParams, localVarFormParams, localVarAuthNames, _callback);
+        return localVarApiClient.buildCall(basePath, localVarPath, "POST", localVarQueryParams,
+            localVarCollectionQueryParams, localVarPostBody, localVarHeaderParams,
+            localVarCookieParams, localVarFormParams, localVarAuthNames, _callback);
     }
 
     @SuppressWarnings("rawtypes")
-    private okhttp3.Call deliverContractValidateBeforeCall(@javax.annotation.Nonnull String contractId, @javax.annotation.Nullable DeliverContractRequest deliverContractRequest, final ApiCallback _callback) throws ApiException {
+    private okhttp3.Call deliverContractValidateBeforeCall(
+        @javax.annotation.Nonnull String contractId,
+        @javax.annotation.Nullable DeliverContractRequest deliverContractRequest,
+        final ApiCallback _callback) throws ApiException {
         // verify the required parameter 'contractId' is set
         if (contractId == null) {
-            throw new ApiException("Missing the required parameter 'contractId' when calling deliverContract(Async)");
+            throw new ApiException(
+                "Missing the required parameter 'contractId' when calling deliverContract(Async)");
         }
 
         return deliverContractCall(contractId, deliverContractRequest, _callback);
@@ -262,63 +295,83 @@ public class ContractsApi {
     }
 
     /**
-     * Deliver Cargo to Contract
-     * Deliver cargo to a contract.  In order to use this API, a ship must be at the delivery location (denoted in the delivery terms as &#x60;destinationSymbol&#x60; of a contract) and must have a number of units of a good required by this contract in its cargo.  Cargo that was delivered will be removed from the ship&#39;s cargo.
+     * Deliver Cargo to Contract Deliver cargo to a contract.  In order to use this API, a ship must
+     * be at the delivery location (denoted in the delivery terms as &#x60;destinationSymbol&#x60;
+     * of a contract) and must have a number of units of a good required by this contract in its
+     * cargo.  Cargo that was delivered will be removed from the ship&#39;s cargo.
      *
      * @param contractId             The ID of the contract. (required)
      * @param deliverContractRequest (optional)
      * @return DeliverContract200Response
-     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
+     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the
+     *                      response body
      * @http.response.details <table border="1">
      * <caption>Response Details</caption>
      * <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
      * <tr><td> 200 </td><td> Successfully delivered cargo to contract. </td><td>  -  </td></tr>
      * </table>
      */
-    public DeliverContract200Response deliverContract(@javax.annotation.Nonnull String contractId, @javax.annotation.Nullable DeliverContractRequest deliverContractRequest) throws ApiException {
-        ApiResponse<DeliverContract200Response> localVarResp = deliverContractWithHttpInfo(contractId, deliverContractRequest);
+    public DeliverContract200Response deliverContract(@javax.annotation.Nonnull String contractId,
+        @javax.annotation.Nullable DeliverContractRequest deliverContractRequest)
+        throws ApiException {
+        ApiResponse<DeliverContract200Response> localVarResp = deliverContractWithHttpInfo(
+            contractId, deliverContractRequest);
         return localVarResp.data();
     }
 
     /**
-     * Deliver Cargo to Contract
-     * Deliver cargo to a contract.  In order to use this API, a ship must be at the delivery location (denoted in the delivery terms as &#x60;destinationSymbol&#x60; of a contract) and must have a number of units of a good required by this contract in its cargo.  Cargo that was delivered will be removed from the ship&#39;s cargo.
+     * Deliver Cargo to Contract Deliver cargo to a contract.  In order to use this API, a ship must
+     * be at the delivery location (denoted in the delivery terms as &#x60;destinationSymbol&#x60;
+     * of a contract) and must have a number of units of a good required by this contract in its
+     * cargo.  Cargo that was delivered will be removed from the ship&#39;s cargo.
      *
      * @param contractId             The ID of the contract. (required)
      * @param deliverContractRequest (optional)
      * @return ApiResponse&lt;DeliverContract200Response&gt;
-     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
+     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the
+     *                      response body
      * @http.response.details <table border="1">
      * <caption>Response Details</caption>
      * <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
      * <tr><td> 200 </td><td> Successfully delivered cargo to contract. </td><td>  -  </td></tr>
      * </table>
      */
-    public ApiResponse<DeliverContract200Response> deliverContractWithHttpInfo(@javax.annotation.Nonnull String contractId, @javax.annotation.Nullable DeliverContractRequest deliverContractRequest) throws ApiException {
-        okhttp3.Call localVarCall = deliverContractValidateBeforeCall(contractId, deliverContractRequest, null);
+    public ApiResponse<DeliverContract200Response> deliverContractWithHttpInfo(
+        @javax.annotation.Nonnull String contractId,
+        @javax.annotation.Nullable DeliverContractRequest deliverContractRequest)
+        throws ApiException {
+        okhttp3.Call localVarCall = deliverContractValidateBeforeCall(contractId,
+            deliverContractRequest, null);
         Type localVarReturnType = new TypeToken<DeliverContract200Response>() {
         }.getType();
         return localVarApiClient.execute(localVarCall, localVarReturnType);
     }
 
     /**
-     * Deliver Cargo to Contract (asynchronously)
-     * Deliver cargo to a contract.  In order to use this API, a ship must be at the delivery location (denoted in the delivery terms as &#x60;destinationSymbol&#x60; of a contract) and must have a number of units of a good required by this contract in its cargo.  Cargo that was delivered will be removed from the ship&#39;s cargo.
+     * Deliver Cargo to Contract (asynchronously) Deliver cargo to a contract.  In order to use this
+     * API, a ship must be at the delivery location (denoted in the delivery terms as
+     * &#x60;destinationSymbol&#x60; of a contract) and must have a number of units of a good
+     * required by this contract in its cargo.  Cargo that was delivered will be removed from the
+     * ship&#39;s cargo.
      *
      * @param contractId             The ID of the contract. (required)
      * @param deliverContractRequest (optional)
      * @param _callback              The callback to be executed when the API call finishes
      * @return The request call
-     * @throws ApiException If fail to process the API call, e.g. serializing the request body object
+     * @throws ApiException If fail to process the API call, e.g. serializing the request body
+     *                      object
      * @http.response.details <table border="1">
      * <caption>Response Details</caption>
      * <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
      * <tr><td> 200 </td><td> Successfully delivered cargo to contract. </td><td>  -  </td></tr>
      * </table>
      */
-    public okhttp3.Call deliverContractAsync(@javax.annotation.Nonnull String contractId, @javax.annotation.Nullable DeliverContractRequest deliverContractRequest, final ApiCallback<DeliverContract200Response> _callback) throws ApiException {
+    public okhttp3.Call deliverContractAsync(@javax.annotation.Nonnull String contractId,
+        @javax.annotation.Nullable DeliverContractRequest deliverContractRequest,
+        final ApiCallback<DeliverContract200Response> _callback) throws ApiException {
 
-        okhttp3.Call localVarCall = deliverContractValidateBeforeCall(contractId, deliverContractRequest, _callback);
+        okhttp3.Call localVarCall = deliverContractValidateBeforeCall(contractId,
+            deliverContractRequest, _callback);
         Type localVarReturnType = new TypeToken<DeliverContract200Response>() {
         }.getType();
         localVarApiClient.executeAsync(localVarCall, localVarReturnType, _callback);
@@ -338,7 +391,8 @@ public class ContractsApi {
      * <tr><td> 200 </td><td> Successfully fulfilled a contract. </td><td>  -  </td></tr>
      * </table>
      */
-    public okhttp3.Call fulfillContractCall(@javax.annotation.Nonnull String contractId, final ApiCallback _callback) throws ApiException {
+    public okhttp3.Call fulfillContractCall(@javax.annotation.Nonnull String contractId,
+        final ApiCallback _callback) throws ApiException {
         String basePath = null;
         // Operation Servers
         String[] localBasePaths = new String[]{};
@@ -356,7 +410,7 @@ public class ContractsApi {
 
         // create path and map variables
         String localVarPath = "/my/contracts/{contractId}/fulfill"
-                .replace("{" + "contractId" + "}", localVarApiClient.escapeString(contractId));
+            .replace("{" + "contractId" + "}", localVarApiClient.escapeString(contractId));
 
         List<Pair> localVarQueryParams = new ArrayList<Pair>();
         List<Pair> localVarCollectionQueryParams = new ArrayList<Pair>();
@@ -365,7 +419,7 @@ public class ContractsApi {
         Map<String, Object> localVarFormParams = new HashMap<String, Object>();
 
         final String[] localVarAccepts = {
-                "application/json"
+            "application/json"
         };
         final String localVarAccept = localVarApiClient.selectHeaderAccept(localVarAccepts);
         if (localVarAccept != null) {
@@ -374,20 +428,26 @@ public class ContractsApi {
 
         final String[] localVarContentTypes = {
         };
-        final String localVarContentType = localVarApiClient.selectHeaderContentType(localVarContentTypes);
+        final String localVarContentType = localVarApiClient.selectHeaderContentType(
+            localVarContentTypes);
         if (localVarContentType != null) {
             localVarHeaderParams.put("Content-Type", localVarContentType);
         }
 
         String[] localVarAuthNames = new String[]{"AgentToken"};
-        return localVarApiClient.buildCall(basePath, localVarPath, "POST", localVarQueryParams, localVarCollectionQueryParams, localVarPostBody, localVarHeaderParams, localVarCookieParams, localVarFormParams, localVarAuthNames, _callback);
+        return localVarApiClient.buildCall(basePath, localVarPath, "POST", localVarQueryParams,
+            localVarCollectionQueryParams, localVarPostBody, localVarHeaderParams,
+            localVarCookieParams, localVarFormParams, localVarAuthNames, _callback);
     }
 
     @SuppressWarnings("rawtypes")
-    private okhttp3.Call fulfillContractValidateBeforeCall(@javax.annotation.Nonnull String contractId, final ApiCallback _callback) throws ApiException {
+    private okhttp3.Call fulfillContractValidateBeforeCall(
+        @javax.annotation.Nonnull String contractId, final ApiCallback _callback)
+        throws ApiException {
         // verify the required parameter 'contractId' is set
         if (contractId == null) {
-            throw new ApiException("Missing the required parameter 'contractId' when calling fulfillContract(Async)");
+            throw new ApiException(
+                "Missing the required parameter 'contractId' when calling fulfillContract(Async)");
         }
 
         return fulfillContractCall(contractId, _callback);
@@ -395,37 +455,42 @@ public class ContractsApi {
     }
 
     /**
-     * Fulfill Contract
-     * Fulfill a contract. Can only be used on contracts that have all of their delivery terms fulfilled.
+     * Fulfill Contract Fulfill a contract. Can only be used on contracts that have all of their
+     * delivery terms fulfilled.
      *
      * @param contractId The ID of the contract to fulfill. (required)
      * @return FulfillContract200Response
-     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
+     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the
+     *                      response body
      * @http.response.details <table border="1">
      * <caption>Response Details</caption>
      * <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
      * <tr><td> 200 </td><td> Successfully fulfilled a contract. </td><td>  -  </td></tr>
      * </table>
      */
-    public FulfillContract200Response fulfillContract(@javax.annotation.Nonnull String contractId) throws ApiException {
-        ApiResponse<FulfillContract200Response> localVarResp = fulfillContractWithHttpInfo(contractId);
+    public FulfillContract200Response fulfillContract(@javax.annotation.Nonnull String contractId)
+        throws ApiException {
+        ApiResponse<FulfillContract200Response> localVarResp = fulfillContractWithHttpInfo(
+            contractId);
         return localVarResp.data();
     }
 
     /**
-     * Fulfill Contract
-     * Fulfill a contract. Can only be used on contracts that have all of their delivery terms fulfilled.
+     * Fulfill Contract Fulfill a contract. Can only be used on contracts that have all of their
+     * delivery terms fulfilled.
      *
      * @param contractId The ID of the contract to fulfill. (required)
      * @return ApiResponse&lt;FulfillContract200Response&gt;
-     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
+     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the
+     *                      response body
      * @http.response.details <table border="1">
      * <caption>Response Details</caption>
      * <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
      * <tr><td> 200 </td><td> Successfully fulfilled a contract. </td><td>  -  </td></tr>
      * </table>
      */
-    public ApiResponse<FulfillContract200Response> fulfillContractWithHttpInfo(@javax.annotation.Nonnull String contractId) throws ApiException {
+    public ApiResponse<FulfillContract200Response> fulfillContractWithHttpInfo(
+        @javax.annotation.Nonnull String contractId) throws ApiException {
         okhttp3.Call localVarCall = fulfillContractValidateBeforeCall(contractId, null);
         Type localVarReturnType = new TypeToken<FulfillContract200Response>() {
         }.getType();
@@ -433,20 +498,22 @@ public class ContractsApi {
     }
 
     /**
-     * Fulfill Contract (asynchronously)
-     * Fulfill a contract. Can only be used on contracts that have all of their delivery terms fulfilled.
+     * Fulfill Contract (asynchronously) Fulfill a contract. Can only be used on contracts that have
+     * all of their delivery terms fulfilled.
      *
      * @param contractId The ID of the contract to fulfill. (required)
      * @param _callback  The callback to be executed when the API call finishes
      * @return The request call
-     * @throws ApiException If fail to process the API call, e.g. serializing the request body object
+     * @throws ApiException If fail to process the API call, e.g. serializing the request body
+     *                      object
      * @http.response.details <table border="1">
      * <caption>Response Details</caption>
      * <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
      * <tr><td> 200 </td><td> Successfully fulfilled a contract. </td><td>  -  </td></tr>
      * </table>
      */
-    public okhttp3.Call fulfillContractAsync(@javax.annotation.Nonnull String contractId, final ApiCallback<FulfillContract200Response> _callback) throws ApiException {
+    public okhttp3.Call fulfillContractAsync(@javax.annotation.Nonnull String contractId,
+        final ApiCallback<FulfillContract200Response> _callback) throws ApiException {
 
         okhttp3.Call localVarCall = fulfillContractValidateBeforeCall(contractId, _callback);
         Type localVarReturnType = new TypeToken<FulfillContract200Response>() {
@@ -468,7 +535,8 @@ public class ContractsApi {
      * <tr><td> 200 </td><td> Successfully fetched contract. </td><td>  -  </td></tr>
      * </table>
      */
-    public okhttp3.Call getContractCall(@javax.annotation.Nonnull String contractId, final ApiCallback _callback) throws ApiException {
+    public okhttp3.Call getContractCall(@javax.annotation.Nonnull String contractId,
+        final ApiCallback _callback) throws ApiException {
         String basePath = null;
         // Operation Servers
         String[] localBasePaths = new String[]{};
@@ -486,7 +554,7 @@ public class ContractsApi {
 
         // create path and map variables
         String localVarPath = "/my/contracts/{contractId}"
-                .replace("{" + "contractId" + "}", localVarApiClient.escapeString(contractId));
+            .replace("{" + "contractId" + "}", localVarApiClient.escapeString(contractId));
 
         List<Pair> localVarQueryParams = new ArrayList<Pair>();
         List<Pair> localVarCollectionQueryParams = new ArrayList<Pair>();
@@ -495,7 +563,7 @@ public class ContractsApi {
         Map<String, Object> localVarFormParams = new HashMap<String, Object>();
 
         final String[] localVarAccepts = {
-                "application/json"
+            "application/json"
         };
         final String localVarAccept = localVarApiClient.selectHeaderAccept(localVarAccepts);
         if (localVarAccept != null) {
@@ -504,20 +572,25 @@ public class ContractsApi {
 
         final String[] localVarContentTypes = {
         };
-        final String localVarContentType = localVarApiClient.selectHeaderContentType(localVarContentTypes);
+        final String localVarContentType = localVarApiClient.selectHeaderContentType(
+            localVarContentTypes);
         if (localVarContentType != null) {
             localVarHeaderParams.put("Content-Type", localVarContentType);
         }
 
         String[] localVarAuthNames = new String[]{"AgentToken"};
-        return localVarApiClient.buildCall(basePath, localVarPath, "GET", localVarQueryParams, localVarCollectionQueryParams, localVarPostBody, localVarHeaderParams, localVarCookieParams, localVarFormParams, localVarAuthNames, _callback);
+        return localVarApiClient.buildCall(basePath, localVarPath, "GET", localVarQueryParams,
+            localVarCollectionQueryParams, localVarPostBody, localVarHeaderParams,
+            localVarCookieParams, localVarFormParams, localVarAuthNames, _callback);
     }
 
     @SuppressWarnings("rawtypes")
-    private okhttp3.Call getContractValidateBeforeCall(@javax.annotation.Nonnull String contractId, final ApiCallback _callback) throws ApiException {
+    private okhttp3.Call getContractValidateBeforeCall(@javax.annotation.Nonnull String contractId,
+        final ApiCallback _callback) throws ApiException {
         // verify the required parameter 'contractId' is set
         if (contractId == null) {
-            throw new ApiException("Missing the required parameter 'contractId' when calling getContract(Async)");
+            throw new ApiException(
+                "Missing the required parameter 'contractId' when calling getContract(Async)");
         }
 
         return getContractCall(contractId, _callback);
@@ -525,37 +598,39 @@ public class ContractsApi {
     }
 
     /**
-     * Get Contract
-     * Get the details of a contract by ID.
+     * Get Contract Get the details of a contract by ID.
      *
      * @param contractId The contract ID (required)
      * @return GetContract200Response
-     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
+     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the
+     *                      response body
      * @http.response.details <table border="1">
      * <caption>Response Details</caption>
      * <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
      * <tr><td> 200 </td><td> Successfully fetched contract. </td><td>  -  </td></tr>
      * </table>
      */
-    public GetContract200Response getContract(@javax.annotation.Nonnull String contractId) throws ApiException {
+    public GetContract200Response getContract(@javax.annotation.Nonnull String contractId)
+        throws ApiException {
         ApiResponse<GetContract200Response> localVarResp = getContractWithHttpInfo(contractId);
         return localVarResp.data();
     }
 
     /**
-     * Get Contract
-     * Get the details of a contract by ID.
+     * Get Contract Get the details of a contract by ID.
      *
      * @param contractId The contract ID (required)
      * @return ApiResponse&lt;GetContract200Response&gt;
-     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
+     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the
+     *                      response body
      * @http.response.details <table border="1">
      * <caption>Response Details</caption>
      * <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
      * <tr><td> 200 </td><td> Successfully fetched contract. </td><td>  -  </td></tr>
      * </table>
      */
-    public ApiResponse<GetContract200Response> getContractWithHttpInfo(@javax.annotation.Nonnull String contractId) throws ApiException {
+    public ApiResponse<GetContract200Response> getContractWithHttpInfo(
+        @javax.annotation.Nonnull String contractId) throws ApiException {
         okhttp3.Call localVarCall = getContractValidateBeforeCall(contractId, null);
         Type localVarReturnType = new TypeToken<GetContract200Response>() {
         }.getType();
@@ -563,20 +638,21 @@ public class ContractsApi {
     }
 
     /**
-     * Get Contract (asynchronously)
-     * Get the details of a contract by ID.
+     * Get Contract (asynchronously) Get the details of a contract by ID.
      *
      * @param contractId The contract ID (required)
      * @param _callback  The callback to be executed when the API call finishes
      * @return The request call
-     * @throws ApiException If fail to process the API call, e.g. serializing the request body object
+     * @throws ApiException If fail to process the API call, e.g. serializing the request body
+     *                      object
      * @http.response.details <table border="1">
      * <caption>Response Details</caption>
      * <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
      * <tr><td> 200 </td><td> Successfully fetched contract. </td><td>  -  </td></tr>
      * </table>
      */
-    public okhttp3.Call getContractAsync(@javax.annotation.Nonnull String contractId, final ApiCallback<GetContract200Response> _callback) throws ApiException {
+    public okhttp3.Call getContractAsync(@javax.annotation.Nonnull String contractId,
+        final ApiCallback<GetContract200Response> _callback) throws ApiException {
 
         okhttp3.Call localVarCall = getContractValidateBeforeCall(contractId, _callback);
         Type localVarReturnType = new TypeToken<GetContract200Response>() {
@@ -599,7 +675,8 @@ public class ContractsApi {
      * <tr><td> 200 </td><td> Successfully listed contracts. </td><td>  -  </td></tr>
      * </table>
      */
-    public okhttp3.Call getContractsCall(@javax.annotation.Nullable Integer page, @javax.annotation.Nullable Integer limit, final ApiCallback _callback) throws ApiException {
+    public okhttp3.Call getContractsCall(@javax.annotation.Nullable Integer page,
+        @javax.annotation.Nullable Integer limit, final ApiCallback _callback) throws ApiException {
         String basePath = null;
         // Operation Servers
         String[] localBasePaths = new String[]{};
@@ -633,7 +710,7 @@ public class ContractsApi {
         }
 
         final String[] localVarAccepts = {
-                "application/json"
+            "application/json"
         };
         final String localVarAccept = localVarApiClient.selectHeaderAccept(localVarAccepts);
         if (localVarAccept != null) {
@@ -642,55 +719,62 @@ public class ContractsApi {
 
         final String[] localVarContentTypes = {
         };
-        final String localVarContentType = localVarApiClient.selectHeaderContentType(localVarContentTypes);
+        final String localVarContentType = localVarApiClient.selectHeaderContentType(
+            localVarContentTypes);
         if (localVarContentType != null) {
             localVarHeaderParams.put("Content-Type", localVarContentType);
         }
 
         String[] localVarAuthNames = new String[]{"AgentToken"};
-        return localVarApiClient.buildCall(basePath, localVarPath, "GET", localVarQueryParams, localVarCollectionQueryParams, localVarPostBody, localVarHeaderParams, localVarCookieParams, localVarFormParams, localVarAuthNames, _callback);
+        return localVarApiClient.buildCall(basePath, localVarPath, "GET", localVarQueryParams,
+            localVarCollectionQueryParams, localVarPostBody, localVarHeaderParams,
+            localVarCookieParams, localVarFormParams, localVarAuthNames, _callback);
     }
 
     @SuppressWarnings("rawtypes")
-    private okhttp3.Call getContractsValidateBeforeCall(@javax.annotation.Nullable Integer page, @javax.annotation.Nullable Integer limit, final ApiCallback _callback) throws ApiException {
+    private okhttp3.Call getContractsValidateBeforeCall(@javax.annotation.Nullable Integer page,
+        @javax.annotation.Nullable Integer limit, final ApiCallback _callback) throws ApiException {
         return getContractsCall(page, limit, _callback);
 
     }
 
     /**
-     * List Contracts
-     * Return a paginated list of all your contracts.
+     * List Contracts Return a paginated list of all your contracts.
      *
      * @param page  What entry offset to request (optional, default to 1)
      * @param limit How many entries to return per page (optional, default to 10)
      * @return GetContracts200Response
-     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
+     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the
+     *                      response body
      * @http.response.details <table border="1">
      * <caption>Response Details</caption>
      * <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
      * <tr><td> 200 </td><td> Successfully listed contracts. </td><td>  -  </td></tr>
      * </table>
      */
-    public GetContracts200Response getContracts(@javax.annotation.Nullable Integer page, @javax.annotation.Nullable Integer limit) throws ApiException {
+    public GetContracts200Response getContracts(@javax.annotation.Nullable Integer page,
+        @javax.annotation.Nullable Integer limit) throws ApiException {
         ApiResponse<GetContracts200Response> localVarResp = getContractsWithHttpInfo(page, limit);
         return localVarResp.data();
     }
 
     /**
-     * List Contracts
-     * Return a paginated list of all your contracts.
+     * List Contracts Return a paginated list of all your contracts.
      *
      * @param page  What entry offset to request (optional, default to 1)
      * @param limit How many entries to return per page (optional, default to 10)
      * @return ApiResponse&lt;GetContracts200Response&gt;
-     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
+     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the
+     *                      response body
      * @http.response.details <table border="1">
      * <caption>Response Details</caption>
      * <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
      * <tr><td> 200 </td><td> Successfully listed contracts. </td><td>  -  </td></tr>
      * </table>
      */
-    public ApiResponse<GetContracts200Response> getContractsWithHttpInfo(@javax.annotation.Nullable Integer page, @javax.annotation.Nullable Integer limit) throws ApiException {
+    public ApiResponse<GetContracts200Response> getContractsWithHttpInfo(
+        @javax.annotation.Nullable Integer page, @javax.annotation.Nullable Integer limit)
+        throws ApiException {
         okhttp3.Call localVarCall = getContractsValidateBeforeCall(page, limit, null);
         Type localVarReturnType = new TypeToken<GetContracts200Response>() {
         }.getType();
@@ -698,21 +782,23 @@ public class ContractsApi {
     }
 
     /**
-     * List Contracts (asynchronously)
-     * Return a paginated list of all your contracts.
+     * List Contracts (asynchronously) Return a paginated list of all your contracts.
      *
      * @param page      What entry offset to request (optional, default to 1)
      * @param limit     How many entries to return per page (optional, default to 10)
      * @param _callback The callback to be executed when the API call finishes
      * @return The request call
-     * @throws ApiException If fail to process the API call, e.g. serializing the request body object
+     * @throws ApiException If fail to process the API call, e.g. serializing the request body
+     *                      object
      * @http.response.details <table border="1">
      * <caption>Response Details</caption>
      * <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
      * <tr><td> 200 </td><td> Successfully listed contracts. </td><td>  -  </td></tr>
      * </table>
      */
-    public okhttp3.Call getContractsAsync(@javax.annotation.Nullable Integer page, @javax.annotation.Nullable Integer limit, final ApiCallback<GetContracts200Response> _callback) throws ApiException {
+    public okhttp3.Call getContractsAsync(@javax.annotation.Nullable Integer page,
+        @javax.annotation.Nullable Integer limit,
+        final ApiCallback<GetContracts200Response> _callback) throws ApiException {
 
         okhttp3.Call localVarCall = getContractsValidateBeforeCall(page, limit, _callback);
         Type localVarReturnType = new TypeToken<GetContracts200Response>() {

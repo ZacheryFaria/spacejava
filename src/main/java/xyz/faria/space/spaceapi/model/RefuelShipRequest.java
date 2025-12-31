@@ -13,21 +13,29 @@
 
 package xyz.faria.space.spaceapi.model;
 
-import com.google.gson.*;
+import com.google.gson.Gson;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.TypeAdapter;
+import com.google.gson.TypeAdapterFactory;
 import com.google.gson.annotations.SerializedName;
 import com.google.gson.reflect.TypeToken;
 import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonWriter;
-import xyz.faria.space.spaceapi.client.JSON;
-
 import java.io.IOException;
-import java.util.*;
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Objects;
+import java.util.Set;
+import xyz.faria.space.spaceapi.client.JSON;
 
 /**
  * RefuelShipRequest
  */
 
 public class RefuelShipRequest {
+
     public static final String SERIALIZED_NAME_UNITS = "units";
     @SerializedName(SERIALIZED_NAME_UNITS)
     @javax.annotation.Nullable
@@ -47,14 +55,30 @@ public class RefuelShipRequest {
     }
 
     /**
-     * The amount of fuel to fill in the ship&#39;s tanks. When not specified, the ship will be refueled to its maximum fuel capacity. If the amount specified is greater than the ship&#39;s remaining capacity, the ship will only be refueled to its maximum fuel capacity. The amount specified is not in market units but in ship fuel units.
-     * minimum: 1
+     * Validates the JSON Element and throws an exception if issues found
      *
-     * @return units
+     * @param jsonElement JSON Element
+     * @throws IOException if the JSON Element is invalid with respect to RefuelShipRequest
      */
-    @javax.annotation.Nullable
-    public Integer getUnits() {
-        return units;
+    public static void validateJsonElement(JsonElement jsonElement) throws IOException {
+        if (jsonElement == null) {
+            if (!RefuelShipRequest.openapiRequiredFields.isEmpty()) { // has required fields but JSON element is null
+                throw new IllegalArgumentException(String.format(java.util.Locale.ROOT,
+                    "The required field(s) %s in RefuelShipRequest is not found in the empty JSON string",
+                    RefuelShipRequest.openapiRequiredFields));
+            }
+        }
+
+        Set<Map.Entry<String, JsonElement>> entries = jsonElement.getAsJsonObject().entrySet();
+        // check to see if the JSON string contains additional fields
+        for (Map.Entry<String, JsonElement> entry : entries) {
+            if (!RefuelShipRequest.openapiFields.contains(entry.getKey())) {
+                throw new IllegalArgumentException(String.format(java.util.Locale.ROOT,
+                    "The field `%s` in the JSON string is not defined in the `RefuelShipRequest` properties. JSON: %s",
+                    entry.getKey(), jsonElement));
+            }
+        }
+        JsonObject jsonObj = jsonElement.getAsJsonObject();
     }
 
     public void setUnits(@javax.annotation.Nullable Integer units) {
@@ -81,6 +105,23 @@ public class RefuelShipRequest {
         this.fromCargo = fromCargo;
     }
 
+    /**
+     * The amount of fuel to fill in the ship&#39;s tanks. When not specified, the ship will be
+     * refueled to its maximum fuel capacity. If the amount specified is greater than the ship&#39;s
+     * remaining capacity, the ship will only be refueled to its maximum fuel capacity. The amount
+     * specified is not in market units but in ship fuel units. minimum: 1
+     *
+     * @return units
+     */
+    @javax.annotation.Nullable
+    public Integer getUnits() {
+        return units;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(units, fromCargo);
+    }
 
     @Override
     public boolean equals(Object o) {
@@ -92,32 +133,16 @@ public class RefuelShipRequest {
         }
         RefuelShipRequest refuelShipRequest = (RefuelShipRequest) o;
         return Objects.equals(this.units, refuelShipRequest.units) &&
-                Objects.equals(this.fromCargo, refuelShipRequest.fromCargo);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(units, fromCargo);
+            Objects.equals(this.fromCargo, refuelShipRequest.fromCargo);
     }
 
     @Override
     public String toString() {
         String sb = "class RefuelShipRequest {\n" +
-                "    units: " + toIndentedString(units) + "\n" +
-                "    fromCargo: " + toIndentedString(fromCargo) + "\n" +
-                "}";
+            "    units: " + toIndentedString(units) + "\n" +
+            "    fromCargo: " + toIndentedString(fromCargo) + "\n" +
+            "}";
         return sb;
-    }
-
-    /**
-     * Convert the given object to string with each line indented by 4 spaces
-     * (except the first line).
-     */
-    private String toIndentedString(Object o) {
-        if (o == null) {
-            return "null";
-        }
-        return o.toString().replace("\n", "\n    ");
     }
 
 
@@ -133,29 +158,18 @@ public class RefuelShipRequest {
     }
 
     /**
-     * Validates the JSON Element and throws an exception if issues found
-     *
-     * @param jsonElement JSON Element
-     * @throws IOException if the JSON Element is invalid with respect to RefuelShipRequest
+     * Convert the given object to string with each line indented by 4 spaces (except the first
+     * line).
      */
-    public static void validateJsonElement(JsonElement jsonElement) throws IOException {
-        if (jsonElement == null) {
-            if (!RefuelShipRequest.openapiRequiredFields.isEmpty()) { // has required fields but JSON element is null
-                throw new IllegalArgumentException(String.format(java.util.Locale.ROOT, "The required field(s) %s in RefuelShipRequest is not found in the empty JSON string", RefuelShipRequest.openapiRequiredFields));
-            }
+    private String toIndentedString(Object o) {
+        if (o == null) {
+            return "null";
         }
-
-        Set<Map.Entry<String, JsonElement>> entries = jsonElement.getAsJsonObject().entrySet();
-        // check to see if the JSON string contains additional fields
-        for (Map.Entry<String, JsonElement> entry : entries) {
-            if (!RefuelShipRequest.openapiFields.contains(entry.getKey())) {
-                throw new IllegalArgumentException(String.format(java.util.Locale.ROOT, "The field `%s` in the JSON string is not defined in the `RefuelShipRequest` properties. JSON: %s", entry.getKey(), jsonElement));
-            }
-        }
-        JsonObject jsonObj = jsonElement.getAsJsonObject();
+        return o.toString().replace("\n", "\n    ");
     }
 
     public static class CustomTypeAdapterFactory implements TypeAdapterFactory {
+
         @SuppressWarnings("unchecked")
         @Override
         public <T> TypeAdapter<T> create(Gson gson, TypeToken<T> type) {
@@ -164,7 +178,7 @@ public class RefuelShipRequest {
             }
             final TypeAdapter<JsonElement> elementAdapter = gson.getAdapter(JsonElement.class);
             final TypeAdapter<RefuelShipRequest> thisAdapter
-                    = gson.getDelegateAdapter(this, TypeToken.get(RefuelShipRequest.class));
+                = gson.getDelegateAdapter(this, TypeToken.get(RefuelShipRequest.class));
 
             return (TypeAdapter<T>) new TypeAdapter<RefuelShipRequest>() {
                 @Override

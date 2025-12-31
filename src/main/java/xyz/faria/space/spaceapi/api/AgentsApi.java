@@ -14,17 +14,22 @@
 package xyz.faria.space.spaceapi.api;
 
 import com.google.gson.reflect.TypeToken;
-import xyz.faria.space.spaceapi.client.*;
-import xyz.faria.space.spaceapi.model.GetAgents200Response;
-import xyz.faria.space.spaceapi.model.GetMyAgent200Response;
-
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import xyz.faria.space.spaceapi.client.ApiCallback;
+import xyz.faria.space.spaceapi.client.ApiClient;
+import xyz.faria.space.spaceapi.client.ApiException;
+import xyz.faria.space.spaceapi.client.ApiResponse;
+import xyz.faria.space.spaceapi.client.Configuration;
+import xyz.faria.space.spaceapi.client.Pair;
+import xyz.faria.space.spaceapi.model.GetAgents200Response;
+import xyz.faria.space.spaceapi.model.GetMyAgent200Response;
 
 public class AgentsApi {
+
     private ApiClient localVarApiClient;
     private int localHostIndex;
     private String localCustomBaseUrl;
@@ -74,7 +79,8 @@ public class AgentsApi {
      * <tr><td> 200 </td><td> Successfully fetched agent details. </td><td>  -  </td></tr>
      * </table>
      */
-    public okhttp3.Call getAgentCall(@javax.annotation.Nonnull String agentSymbol, final ApiCallback _callback) throws ApiException {
+    public okhttp3.Call getAgentCall(@javax.annotation.Nonnull String agentSymbol,
+        final ApiCallback _callback) throws ApiException {
         String basePath = null;
         // Operation Servers
         String[] localBasePaths = new String[]{};
@@ -92,7 +98,7 @@ public class AgentsApi {
 
         // create path and map variables
         String localVarPath = "/agents/{agentSymbol}"
-                .replace("{" + "agentSymbol" + "}", localVarApiClient.escapeString(agentSymbol));
+            .replace("{" + "agentSymbol" + "}", localVarApiClient.escapeString(agentSymbol));
 
         List<Pair> localVarQueryParams = new ArrayList<Pair>();
         List<Pair> localVarCollectionQueryParams = new ArrayList<Pair>();
@@ -101,7 +107,7 @@ public class AgentsApi {
         Map<String, Object> localVarFormParams = new HashMap<String, Object>();
 
         final String[] localVarAccepts = {
-                "application/json"
+            "application/json"
         };
         final String localVarAccept = localVarApiClient.selectHeaderAccept(localVarAccepts);
         if (localVarAccept != null) {
@@ -110,20 +116,25 @@ public class AgentsApi {
 
         final String[] localVarContentTypes = {
         };
-        final String localVarContentType = localVarApiClient.selectHeaderContentType(localVarContentTypes);
+        final String localVarContentType = localVarApiClient.selectHeaderContentType(
+            localVarContentTypes);
         if (localVarContentType != null) {
             localVarHeaderParams.put("Content-Type", localVarContentType);
         }
 
         String[] localVarAuthNames = new String[]{"AgentToken"};
-        return localVarApiClient.buildCall(basePath, localVarPath, "GET", localVarQueryParams, localVarCollectionQueryParams, localVarPostBody, localVarHeaderParams, localVarCookieParams, localVarFormParams, localVarAuthNames, _callback);
+        return localVarApiClient.buildCall(basePath, localVarPath, "GET", localVarQueryParams,
+            localVarCollectionQueryParams, localVarPostBody, localVarHeaderParams,
+            localVarCookieParams, localVarFormParams, localVarAuthNames, _callback);
     }
 
     @SuppressWarnings("rawtypes")
-    private okhttp3.Call getAgentValidateBeforeCall(@javax.annotation.Nonnull String agentSymbol, final ApiCallback _callback) throws ApiException {
+    private okhttp3.Call getAgentValidateBeforeCall(@javax.annotation.Nonnull String agentSymbol,
+        final ApiCallback _callback) throws ApiException {
         // verify the required parameter 'agentSymbol' is set
         if (agentSymbol == null) {
-            throw new ApiException("Missing the required parameter 'agentSymbol' when calling getAgent(Async)");
+            throw new ApiException(
+                "Missing the required parameter 'agentSymbol' when calling getAgent(Async)");
         }
 
         return getAgentCall(agentSymbol, _callback);
@@ -131,37 +142,39 @@ public class AgentsApi {
     }
 
     /**
-     * Get Public Agent
-     * Fetch agent details.
+     * Get Public Agent Fetch agent details.
      *
      * @param agentSymbol The agent symbol (required)
      * @return GetMyAgent200Response
-     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
+     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the
+     *                      response body
      * @http.response.details <table border="1">
      * <caption>Response Details</caption>
      * <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
      * <tr><td> 200 </td><td> Successfully fetched agent details. </td><td>  -  </td></tr>
      * </table>
      */
-    public GetMyAgent200Response getAgent(@javax.annotation.Nonnull String agentSymbol) throws ApiException {
+    public GetMyAgent200Response getAgent(@javax.annotation.Nonnull String agentSymbol)
+        throws ApiException {
         ApiResponse<GetMyAgent200Response> localVarResp = getAgentWithHttpInfo(agentSymbol);
         return localVarResp.data();
     }
 
     /**
-     * Get Public Agent
-     * Fetch agent details.
+     * Get Public Agent Fetch agent details.
      *
      * @param agentSymbol The agent symbol (required)
      * @return ApiResponse&lt;GetMyAgent200Response&gt;
-     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
+     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the
+     *                      response body
      * @http.response.details <table border="1">
      * <caption>Response Details</caption>
      * <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
      * <tr><td> 200 </td><td> Successfully fetched agent details. </td><td>  -  </td></tr>
      * </table>
      */
-    public ApiResponse<GetMyAgent200Response> getAgentWithHttpInfo(@javax.annotation.Nonnull String agentSymbol) throws ApiException {
+    public ApiResponse<GetMyAgent200Response> getAgentWithHttpInfo(
+        @javax.annotation.Nonnull String agentSymbol) throws ApiException {
         okhttp3.Call localVarCall = getAgentValidateBeforeCall(agentSymbol, null);
         Type localVarReturnType = new TypeToken<GetMyAgent200Response>() {
         }.getType();
@@ -169,20 +182,21 @@ public class AgentsApi {
     }
 
     /**
-     * Get Public Agent (asynchronously)
-     * Fetch agent details.
+     * Get Public Agent (asynchronously) Fetch agent details.
      *
      * @param agentSymbol The agent symbol (required)
      * @param _callback   The callback to be executed when the API call finishes
      * @return The request call
-     * @throws ApiException If fail to process the API call, e.g. serializing the request body object
+     * @throws ApiException If fail to process the API call, e.g. serializing the request body
+     *                      object
      * @http.response.details <table border="1">
      * <caption>Response Details</caption>
      * <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
      * <tr><td> 200 </td><td> Successfully fetched agent details. </td><td>  -  </td></tr>
      * </table>
      */
-    public okhttp3.Call getAgentAsync(@javax.annotation.Nonnull String agentSymbol, final ApiCallback<GetMyAgent200Response> _callback) throws ApiException {
+    public okhttp3.Call getAgentAsync(@javax.annotation.Nonnull String agentSymbol,
+        final ApiCallback<GetMyAgent200Response> _callback) throws ApiException {
 
         okhttp3.Call localVarCall = getAgentValidateBeforeCall(agentSymbol, _callback);
         Type localVarReturnType = new TypeToken<GetMyAgent200Response>() {
@@ -205,7 +219,8 @@ public class AgentsApi {
      * <tr><td> 200 </td><td> Successfully fetched agents details. </td><td>  -  </td></tr>
      * </table>
      */
-    public okhttp3.Call getAgentsCall(@javax.annotation.Nullable Integer page, @javax.annotation.Nullable Integer limit, final ApiCallback _callback) throws ApiException {
+    public okhttp3.Call getAgentsCall(@javax.annotation.Nullable Integer page,
+        @javax.annotation.Nullable Integer limit, final ApiCallback _callback) throws ApiException {
         String basePath = null;
         // Operation Servers
         String[] localBasePaths = new String[]{};
@@ -239,7 +254,7 @@ public class AgentsApi {
         }
 
         final String[] localVarAccepts = {
-                "application/json"
+            "application/json"
         };
         final String localVarAccept = localVarApiClient.selectHeaderAccept(localVarAccepts);
         if (localVarAccept != null) {
@@ -248,55 +263,62 @@ public class AgentsApi {
 
         final String[] localVarContentTypes = {
         };
-        final String localVarContentType = localVarApiClient.selectHeaderContentType(localVarContentTypes);
+        final String localVarContentType = localVarApiClient.selectHeaderContentType(
+            localVarContentTypes);
         if (localVarContentType != null) {
             localVarHeaderParams.put("Content-Type", localVarContentType);
         }
 
         String[] localVarAuthNames = new String[]{"AgentToken"};
-        return localVarApiClient.buildCall(basePath, localVarPath, "GET", localVarQueryParams, localVarCollectionQueryParams, localVarPostBody, localVarHeaderParams, localVarCookieParams, localVarFormParams, localVarAuthNames, _callback);
+        return localVarApiClient.buildCall(basePath, localVarPath, "GET", localVarQueryParams,
+            localVarCollectionQueryParams, localVarPostBody, localVarHeaderParams,
+            localVarCookieParams, localVarFormParams, localVarAuthNames, _callback);
     }
 
     @SuppressWarnings("rawtypes")
-    private okhttp3.Call getAgentsValidateBeforeCall(@javax.annotation.Nullable Integer page, @javax.annotation.Nullable Integer limit, final ApiCallback _callback) throws ApiException {
+    private okhttp3.Call getAgentsValidateBeforeCall(@javax.annotation.Nullable Integer page,
+        @javax.annotation.Nullable Integer limit, final ApiCallback _callback) throws ApiException {
         return getAgentsCall(page, limit, _callback);
 
     }
 
     /**
-     * List Agents
-     * Fetch agents details.
+     * List Agents Fetch agents details.
      *
      * @param page  What entry offset to request (optional, default to 1)
      * @param limit How many entries to return per page (optional, default to 10)
      * @return GetAgents200Response
-     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
+     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the
+     *                      response body
      * @http.response.details <table border="1">
      * <caption>Response Details</caption>
      * <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
      * <tr><td> 200 </td><td> Successfully fetched agents details. </td><td>  -  </td></tr>
      * </table>
      */
-    public GetAgents200Response getAgents(@javax.annotation.Nullable Integer page, @javax.annotation.Nullable Integer limit) throws ApiException {
+    public GetAgents200Response getAgents(@javax.annotation.Nullable Integer page,
+        @javax.annotation.Nullable Integer limit) throws ApiException {
         ApiResponse<GetAgents200Response> localVarResp = getAgentsWithHttpInfo(page, limit);
         return localVarResp.data();
     }
 
     /**
-     * List Agents
-     * Fetch agents details.
+     * List Agents Fetch agents details.
      *
      * @param page  What entry offset to request (optional, default to 1)
      * @param limit How many entries to return per page (optional, default to 10)
      * @return ApiResponse&lt;GetAgents200Response&gt;
-     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
+     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the
+     *                      response body
      * @http.response.details <table border="1">
      * <caption>Response Details</caption>
      * <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
      * <tr><td> 200 </td><td> Successfully fetched agents details. </td><td>  -  </td></tr>
      * </table>
      */
-    public ApiResponse<GetAgents200Response> getAgentsWithHttpInfo(@javax.annotation.Nullable Integer page, @javax.annotation.Nullable Integer limit) throws ApiException {
+    public ApiResponse<GetAgents200Response> getAgentsWithHttpInfo(
+        @javax.annotation.Nullable Integer page, @javax.annotation.Nullable Integer limit)
+        throws ApiException {
         okhttp3.Call localVarCall = getAgentsValidateBeforeCall(page, limit, null);
         Type localVarReturnType = new TypeToken<GetAgents200Response>() {
         }.getType();
@@ -304,21 +326,23 @@ public class AgentsApi {
     }
 
     /**
-     * List Agents (asynchronously)
-     * Fetch agents details.
+     * List Agents (asynchronously) Fetch agents details.
      *
      * @param page      What entry offset to request (optional, default to 1)
      * @param limit     How many entries to return per page (optional, default to 10)
      * @param _callback The callback to be executed when the API call finishes
      * @return The request call
-     * @throws ApiException If fail to process the API call, e.g. serializing the request body object
+     * @throws ApiException If fail to process the API call, e.g. serializing the request body
+     *                      object
      * @http.response.details <table border="1">
      * <caption>Response Details</caption>
      * <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
      * <tr><td> 200 </td><td> Successfully fetched agents details. </td><td>  -  </td></tr>
      * </table>
      */
-    public okhttp3.Call getAgentsAsync(@javax.annotation.Nullable Integer page, @javax.annotation.Nullable Integer limit, final ApiCallback<GetAgents200Response> _callback) throws ApiException {
+    public okhttp3.Call getAgentsAsync(@javax.annotation.Nullable Integer page,
+        @javax.annotation.Nullable Integer limit, final ApiCallback<GetAgents200Response> _callback)
+        throws ApiException {
 
         okhttp3.Call localVarCall = getAgentsValidateBeforeCall(page, limit, _callback);
         Type localVarReturnType = new TypeToken<GetAgents200Response>() {
@@ -365,7 +389,7 @@ public class AgentsApi {
         Map<String, Object> localVarFormParams = new HashMap<String, Object>();
 
         final String[] localVarAccepts = {
-                "application/json"
+            "application/json"
         };
         final String localVarAccept = localVarApiClient.selectHeaderAccept(localVarAccepts);
         if (localVarAccept != null) {
@@ -374,27 +398,31 @@ public class AgentsApi {
 
         final String[] localVarContentTypes = {
         };
-        final String localVarContentType = localVarApiClient.selectHeaderContentType(localVarContentTypes);
+        final String localVarContentType = localVarApiClient.selectHeaderContentType(
+            localVarContentTypes);
         if (localVarContentType != null) {
             localVarHeaderParams.put("Content-Type", localVarContentType);
         }
 
         String[] localVarAuthNames = new String[]{"AgentToken"};
-        return localVarApiClient.buildCall(basePath, localVarPath, "GET", localVarQueryParams, localVarCollectionQueryParams, localVarPostBody, localVarHeaderParams, localVarCookieParams, localVarFormParams, localVarAuthNames, _callback);
+        return localVarApiClient.buildCall(basePath, localVarPath, "GET", localVarQueryParams,
+            localVarCollectionQueryParams, localVarPostBody, localVarHeaderParams,
+            localVarCookieParams, localVarFormParams, localVarAuthNames, _callback);
     }
 
     @SuppressWarnings("rawtypes")
-    private okhttp3.Call getMyAgentValidateBeforeCall(final ApiCallback _callback) throws ApiException {
+    private okhttp3.Call getMyAgentValidateBeforeCall(final ApiCallback _callback)
+        throws ApiException {
         return getMyAgentCall(_callback);
 
     }
 
     /**
-     * Get Agent
-     * Fetch your agent&#39;s details.
+     * Get Agent Fetch your agent&#39;s details.
      *
      * @return GetMyAgent200Response
-     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
+     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the
+     *                      response body
      * @http.response.details <table border="1">
      * <caption>Response Details</caption>
      * <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
@@ -407,11 +435,11 @@ public class AgentsApi {
     }
 
     /**
-     * Get Agent
-     * Fetch your agent&#39;s details.
+     * Get Agent Fetch your agent&#39;s details.
      *
      * @return ApiResponse&lt;GetMyAgent200Response&gt;
-     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
+     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the
+     *                      response body
      * @http.response.details <table border="1">
      * <caption>Response Details</caption>
      * <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
@@ -426,19 +454,20 @@ public class AgentsApi {
     }
 
     /**
-     * Get Agent (asynchronously)
-     * Fetch your agent&#39;s details.
+     * Get Agent (asynchronously) Fetch your agent&#39;s details.
      *
      * @param _callback The callback to be executed when the API call finishes
      * @return The request call
-     * @throws ApiException If fail to process the API call, e.g. serializing the request body object
+     * @throws ApiException If fail to process the API call, e.g. serializing the request body
+     *                      object
      * @http.response.details <table border="1">
      * <caption>Response Details</caption>
      * <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
      * <tr><td> 200 </td><td> Successfully fetched agent details. </td><td>  -  </td></tr>
      * </table>
      */
-    public okhttp3.Call getMyAgentAsync(final ApiCallback<GetMyAgent200Response> _callback) throws ApiException {
+    public okhttp3.Call getMyAgentAsync(final ApiCallback<GetMyAgent200Response> _callback)
+        throws ApiException {
 
         okhttp3.Call localVarCall = getMyAgentValidateBeforeCall(_callback);
         Type localVarReturnType = new TypeToken<GetMyAgent200Response>() {

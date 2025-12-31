@@ -20,6 +20,7 @@ import java.util.Map;
  * API response returned by API call.
  */
 public record ApiResponse<T>(int statusCode, Map<String, List<String>> headers, T data) {
+
     /**
      * <p>Constructor for ApiResponse.</p>
      *

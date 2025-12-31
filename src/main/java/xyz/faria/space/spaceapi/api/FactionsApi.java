@@ -14,17 +14,22 @@
 package xyz.faria.space.spaceapi.api;
 
 import com.google.gson.reflect.TypeToken;
-import xyz.faria.space.spaceapi.client.*;
-import xyz.faria.space.spaceapi.model.GetFaction200Response;
-import xyz.faria.space.spaceapi.model.GetFactions200Response;
-
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import xyz.faria.space.spaceapi.client.ApiCallback;
+import xyz.faria.space.spaceapi.client.ApiClient;
+import xyz.faria.space.spaceapi.client.ApiException;
+import xyz.faria.space.spaceapi.client.ApiResponse;
+import xyz.faria.space.spaceapi.client.Configuration;
+import xyz.faria.space.spaceapi.client.Pair;
+import xyz.faria.space.spaceapi.model.GetFaction200Response;
+import xyz.faria.space.spaceapi.model.GetFactions200Response;
 
 public class FactionsApi {
+
     private ApiClient localVarApiClient;
     private int localHostIndex;
     private String localCustomBaseUrl;
@@ -74,7 +79,8 @@ public class FactionsApi {
      * <tr><td> 200 </td><td> Successfully fetched a faction. </td><td>  -  </td></tr>
      * </table>
      */
-    public okhttp3.Call getFactionCall(@javax.annotation.Nonnull String factionSymbol, final ApiCallback _callback) throws ApiException {
+    public okhttp3.Call getFactionCall(@javax.annotation.Nonnull String factionSymbol,
+        final ApiCallback _callback) throws ApiException {
         String basePath = null;
         // Operation Servers
         String[] localBasePaths = new String[]{};
@@ -92,7 +98,8 @@ public class FactionsApi {
 
         // create path and map variables
         String localVarPath = "/factions/{factionSymbol}"
-                .replace("{" + "factionSymbol" + "}", localVarApiClient.escapeString(factionSymbol));
+            .replace("{" + "factionSymbol" + "}",
+                localVarApiClient.escapeString(factionSymbol));
 
         List<Pair> localVarQueryParams = new ArrayList<Pair>();
         List<Pair> localVarCollectionQueryParams = new ArrayList<Pair>();
@@ -101,7 +108,7 @@ public class FactionsApi {
         Map<String, Object> localVarFormParams = new HashMap<String, Object>();
 
         final String[] localVarAccepts = {
-                "application/json"
+            "application/json"
         };
         final String localVarAccept = localVarApiClient.selectHeaderAccept(localVarAccepts);
         if (localVarAccept != null) {
@@ -110,20 +117,26 @@ public class FactionsApi {
 
         final String[] localVarContentTypes = {
         };
-        final String localVarContentType = localVarApiClient.selectHeaderContentType(localVarContentTypes);
+        final String localVarContentType = localVarApiClient.selectHeaderContentType(
+            localVarContentTypes);
         if (localVarContentType != null) {
             localVarHeaderParams.put("Content-Type", localVarContentType);
         }
 
         String[] localVarAuthNames = new String[]{"AccountToken", "AgentToken"};
-        return localVarApiClient.buildCall(basePath, localVarPath, "GET", localVarQueryParams, localVarCollectionQueryParams, localVarPostBody, localVarHeaderParams, localVarCookieParams, localVarFormParams, localVarAuthNames, _callback);
+        return localVarApiClient.buildCall(basePath, localVarPath, "GET", localVarQueryParams,
+            localVarCollectionQueryParams, localVarPostBody, localVarHeaderParams,
+            localVarCookieParams, localVarFormParams, localVarAuthNames, _callback);
     }
 
     @SuppressWarnings("rawtypes")
-    private okhttp3.Call getFactionValidateBeforeCall(@javax.annotation.Nonnull String factionSymbol, final ApiCallback _callback) throws ApiException {
+    private okhttp3.Call getFactionValidateBeforeCall(
+        @javax.annotation.Nonnull String factionSymbol, final ApiCallback _callback)
+        throws ApiException {
         // verify the required parameter 'factionSymbol' is set
         if (factionSymbol == null) {
-            throw new ApiException("Missing the required parameter 'factionSymbol' when calling getFaction(Async)");
+            throw new ApiException(
+                "Missing the required parameter 'factionSymbol' when calling getFaction(Async)");
         }
 
         return getFactionCall(factionSymbol, _callback);
@@ -131,37 +144,39 @@ public class FactionsApi {
     }
 
     /**
-     * Get Faction
-     * View the details of a faction.
+     * Get Faction View the details of a faction.
      *
      * @param factionSymbol The faction symbol (required)
      * @return GetFaction200Response
-     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
+     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the
+     *                      response body
      * @http.response.details <table border="1">
      * <caption>Response Details</caption>
      * <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
      * <tr><td> 200 </td><td> Successfully fetched a faction. </td><td>  -  </td></tr>
      * </table>
      */
-    public GetFaction200Response getFaction(@javax.annotation.Nonnull String factionSymbol) throws ApiException {
+    public GetFaction200Response getFaction(@javax.annotation.Nonnull String factionSymbol)
+        throws ApiException {
         ApiResponse<GetFaction200Response> localVarResp = getFactionWithHttpInfo(factionSymbol);
         return localVarResp.data();
     }
 
     /**
-     * Get Faction
-     * View the details of a faction.
+     * Get Faction View the details of a faction.
      *
      * @param factionSymbol The faction symbol (required)
      * @return ApiResponse&lt;GetFaction200Response&gt;
-     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
+     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the
+     *                      response body
      * @http.response.details <table border="1">
      * <caption>Response Details</caption>
      * <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
      * <tr><td> 200 </td><td> Successfully fetched a faction. </td><td>  -  </td></tr>
      * </table>
      */
-    public ApiResponse<GetFaction200Response> getFactionWithHttpInfo(@javax.annotation.Nonnull String factionSymbol) throws ApiException {
+    public ApiResponse<GetFaction200Response> getFactionWithHttpInfo(
+        @javax.annotation.Nonnull String factionSymbol) throws ApiException {
         okhttp3.Call localVarCall = getFactionValidateBeforeCall(factionSymbol, null);
         Type localVarReturnType = new TypeToken<GetFaction200Response>() {
         }.getType();
@@ -169,20 +184,21 @@ public class FactionsApi {
     }
 
     /**
-     * Get Faction (asynchronously)
-     * View the details of a faction.
+     * Get Faction (asynchronously) View the details of a faction.
      *
      * @param factionSymbol The faction symbol (required)
      * @param _callback     The callback to be executed when the API call finishes
      * @return The request call
-     * @throws ApiException If fail to process the API call, e.g. serializing the request body object
+     * @throws ApiException If fail to process the API call, e.g. serializing the request body
+     *                      object
      * @http.response.details <table border="1">
      * <caption>Response Details</caption>
      * <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
      * <tr><td> 200 </td><td> Successfully fetched a faction. </td><td>  -  </td></tr>
      * </table>
      */
-    public okhttp3.Call getFactionAsync(@javax.annotation.Nonnull String factionSymbol, final ApiCallback<GetFaction200Response> _callback) throws ApiException {
+    public okhttp3.Call getFactionAsync(@javax.annotation.Nonnull String factionSymbol,
+        final ApiCallback<GetFaction200Response> _callback) throws ApiException {
 
         okhttp3.Call localVarCall = getFactionValidateBeforeCall(factionSymbol, _callback);
         Type localVarReturnType = new TypeToken<GetFaction200Response>() {
@@ -205,7 +221,9 @@ public class FactionsApi {
      * <tr><td> 200 </td><td> Successfully fetched factions. </td><td>  -  </td></tr>
      * </table>
      */
-    public okhttp3.Call getFactionsCall(@javax.annotation.Nullable Integer page, @javax.annotation.Nullable Integer limit, final ApiCallback _callback) throws ApiException {
+    public okhttp3.Call getFactionsCall(@javax.annotation.Nullable Integer page,
+        @javax.annotation.Nullable Integer limit, final ApiCallback _callback)
+        throws ApiException {
         String basePath = null;
         // Operation Servers
         String[] localBasePaths = new String[]{};
@@ -239,7 +257,7 @@ public class FactionsApi {
         }
 
         final String[] localVarAccepts = {
-                "application/json"
+            "application/json"
         };
         final String localVarAccept = localVarApiClient.selectHeaderAccept(localVarAccepts);
         if (localVarAccept != null) {
@@ -248,55 +266,63 @@ public class FactionsApi {
 
         final String[] localVarContentTypes = {
         };
-        final String localVarContentType = localVarApiClient.selectHeaderContentType(localVarContentTypes);
+        final String localVarContentType = localVarApiClient.selectHeaderContentType(
+            localVarContentTypes);
         if (localVarContentType != null) {
             localVarHeaderParams.put("Content-Type", localVarContentType);
         }
 
         String[] localVarAuthNames = new String[]{"AgentToken"};
-        return localVarApiClient.buildCall(basePath, localVarPath, "GET", localVarQueryParams, localVarCollectionQueryParams, localVarPostBody, localVarHeaderParams, localVarCookieParams, localVarFormParams, localVarAuthNames, _callback);
+        return localVarApiClient.buildCall(basePath, localVarPath, "GET", localVarQueryParams,
+            localVarCollectionQueryParams, localVarPostBody, localVarHeaderParams,
+            localVarCookieParams, localVarFormParams, localVarAuthNames, _callback);
     }
 
     @SuppressWarnings("rawtypes")
-    private okhttp3.Call getFactionsValidateBeforeCall(@javax.annotation.Nullable Integer page, @javax.annotation.Nullable Integer limit, final ApiCallback _callback) throws ApiException {
+    private okhttp3.Call getFactionsValidateBeforeCall(@javax.annotation.Nullable Integer page,
+        @javax.annotation.Nullable Integer limit, final ApiCallback _callback)
+        throws ApiException {
         return getFactionsCall(page, limit, _callback);
 
     }
 
     /**
-     * List Factions
-     * Return a paginated list of all the factions in the game.
+     * List Factions Return a paginated list of all the factions in the game.
      *
      * @param page  What entry offset to request (optional, default to 1)
      * @param limit How many entries to return per page (optional, default to 10)
      * @return GetFactions200Response
-     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
+     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the
+     *                      response body
      * @http.response.details <table border="1">
      * <caption>Response Details</caption>
      * <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
      * <tr><td> 200 </td><td> Successfully fetched factions. </td><td>  -  </td></tr>
      * </table>
      */
-    public GetFactions200Response getFactions(@javax.annotation.Nullable Integer page, @javax.annotation.Nullable Integer limit) throws ApiException {
+    public GetFactions200Response getFactions(@javax.annotation.Nullable Integer page,
+        @javax.annotation.Nullable Integer limit) throws ApiException {
         ApiResponse<GetFactions200Response> localVarResp = getFactionsWithHttpInfo(page, limit);
         return localVarResp.data();
     }
 
     /**
-     * List Factions
-     * Return a paginated list of all the factions in the game.
+     * List Factions Return a paginated list of all the factions in the game.
      *
      * @param page  What entry offset to request (optional, default to 1)
      * @param limit How many entries to return per page (optional, default to 10)
      * @return ApiResponse&lt;GetFactions200Response&gt;
-     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
+     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the
+     *                      response body
      * @http.response.details <table border="1">
      * <caption>Response Details</caption>
      * <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
      * <tr><td> 200 </td><td> Successfully fetched factions. </td><td>  -  </td></tr>
      * </table>
      */
-    public ApiResponse<GetFactions200Response> getFactionsWithHttpInfo(@javax.annotation.Nullable Integer page, @javax.annotation.Nullable Integer limit) throws ApiException {
+    public ApiResponse<GetFactions200Response> getFactionsWithHttpInfo(
+        @javax.annotation.Nullable Integer page, @javax.annotation.Nullable Integer limit)
+        throws ApiException {
         okhttp3.Call localVarCall = getFactionsValidateBeforeCall(page, limit, null);
         Type localVarReturnType = new TypeToken<GetFactions200Response>() {
         }.getType();
@@ -304,21 +330,23 @@ public class FactionsApi {
     }
 
     /**
-     * List Factions (asynchronously)
-     * Return a paginated list of all the factions in the game.
+     * List Factions (asynchronously) Return a paginated list of all the factions in the game.
      *
      * @param page      What entry offset to request (optional, default to 1)
      * @param limit     How many entries to return per page (optional, default to 10)
      * @param _callback The callback to be executed when the API call finishes
      * @return The request call
-     * @throws ApiException If fail to process the API call, e.g. serializing the request body object
+     * @throws ApiException If fail to process the API call, e.g. serializing the request body
+     *                      object
      * @http.response.details <table border="1">
      * <caption>Response Details</caption>
      * <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
      * <tr><td> 200 </td><td> Successfully fetched factions. </td><td>  -  </td></tr>
      * </table>
      */
-    public okhttp3.Call getFactionsAsync(@javax.annotation.Nullable Integer page, @javax.annotation.Nullable Integer limit, final ApiCallback<GetFactions200Response> _callback) throws ApiException {
+    public okhttp3.Call getFactionsAsync(@javax.annotation.Nullable Integer page,
+        @javax.annotation.Nullable Integer limit,
+        final ApiCallback<GetFactions200Response> _callback) throws ApiException {
 
         okhttp3.Call localVarCall = getFactionsValidateBeforeCall(page, limit, _callback);
         Type localVarReturnType = new TypeToken<GetFactions200Response>() {

@@ -23,6 +23,7 @@ import java.util.Map;
 @SuppressWarnings("serial")
 
 public class ApiException extends Exception {
+
     private static final long serialVersionUID = 1L;
 
     private int code = 0;
@@ -62,7 +63,8 @@ public class ApiException extends Exception {
      * @param responseHeaders a {@link java.util.Map} of HTTP response headers
      * @param responseBody    the response body
      */
-    public ApiException(String message, Throwable throwable, int code, Map<String, List<String>> responseHeaders, String responseBody) {
+    public ApiException(String message, Throwable throwable, int code,
+        Map<String, List<String>> responseHeaders, String responseBody) {
         super(message, throwable);
         this.code = code;
         this.responseHeaders = responseHeaders;
@@ -77,7 +79,8 @@ public class ApiException extends Exception {
      * @param responseHeaders a {@link java.util.Map} of HTTP response headers
      * @param responseBody    the response body
      */
-    public ApiException(String message, int code, Map<String, List<String>> responseHeaders, String responseBody) {
+    public ApiException(String message, int code, Map<String, List<String>> responseHeaders,
+        String responseBody) {
         this(message, null, code, responseHeaders, responseBody);
     }
 
@@ -89,7 +92,8 @@ public class ApiException extends Exception {
      * @param code            HTTP status code
      * @param responseHeaders a {@link java.util.Map} of HTTP response headers
      */
-    public ApiException(String message, Throwable throwable, int code, Map<String, List<String>> responseHeaders) {
+    public ApiException(String message, Throwable throwable, int code,
+        Map<String, List<String>> responseHeaders) {
         this(message, throwable, code, responseHeaders, null);
     }
 
@@ -101,7 +105,8 @@ public class ApiException extends Exception {
      * @param responseBody    the response body
      */
     public ApiException(int code, Map<String, List<String>> responseHeaders, String responseBody) {
-        this("Response Code: " + code + " Response Body: " + responseBody, null, code, responseHeaders, responseBody);
+        this("Response Code: " + code + " Response Body: " + responseBody, null, code,
+            responseHeaders, responseBody);
     }
 
     /**
@@ -123,7 +128,8 @@ public class ApiException extends Exception {
      * @param responseHeaders a {@link java.util.Map} of HTTP response headers
      * @param responseBody    the response body
      */
-    public ApiException(int code, String message, Map<String, List<String>> responseHeaders, String responseBody) {
+    public ApiException(int code, String message, Map<String, List<String>> responseHeaders,
+        String responseBody) {
         this(code, message);
         this.responseHeaders = responseHeaders;
         this.responseBody = responseBody;
@@ -162,7 +168,9 @@ public class ApiException extends Exception {
      * @return The exception message
      */
     public String getMessage() {
-        return String.format(java.util.Locale.ROOT, "Message: %s%nHTTP response code: %s%nHTTP response body: %s%nHTTP response headers: %s",
-                super.getMessage(), this.getCode(), this.getResponseBody(), this.getResponseHeaders());
+        return String.format(java.util.Locale.ROOT,
+            "Message: %s%nHTTP response code: %s%nHTTP response body: %s%nHTTP response headers: %s",
+            super.getMessage(), this.getCode(), this.getResponseBody(),
+            this.getResponseHeaders());
     }
 }

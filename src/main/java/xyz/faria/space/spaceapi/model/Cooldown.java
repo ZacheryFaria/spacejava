@@ -13,17 +13,24 @@
 
 package xyz.faria.space.spaceapi.model;
 
-import com.google.gson.*;
+import com.google.gson.Gson;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.TypeAdapter;
+import com.google.gson.TypeAdapterFactory;
 import com.google.gson.annotations.SerializedName;
 import com.google.gson.reflect.TypeToken;
 import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonWriter;
 import jakarta.persistence.Embeddable;
-import xyz.faria.space.spaceapi.client.JSON;
-
 import java.io.IOException;
 import java.time.OffsetDateTime;
-import java.util.*;
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Objects;
+import java.util.Set;
+import xyz.faria.space.spaceapi.client.JSON;
 
 /**
  * A cooldown is a period of time in which a ship cannot perform certain actions.
@@ -31,6 +38,7 @@ import java.util.*;
 
 @Embeddable
 public class Cooldown {
+
     public static final String SERIALIZED_NAME_SHIP_SYMBOL = "shipSymbol";
     @SerializedName(SERIALIZED_NAME_SHIP_SYMBOL)
     @javax.annotation.Nonnull
@@ -79,15 +87,14 @@ public class Cooldown {
         return this;
     }
 
-    /**
-     * The total duration of the cooldown in seconds
-     * minimum: 0
-     *
-     * @return totalSeconds
-     */
-    @javax.annotation.Nonnull
-    public Integer getTotalSeconds() {
-        return totalSeconds;
+    static {
+        // a set of all properties/fields (JSON key names)
+        openapiFields = new HashSet<String>(
+            Arrays.asList("shipSymbol", "totalSeconds", "remainingSeconds", "expiration"));
+
+        // a set of required properties/fields (JSON key names)
+        openapiRequiredFields = new HashSet<String>(
+            Arrays.asList("shipSymbol", "totalSeconds", "remainingSeconds"));
     }
 
     public void setTotalSeconds(@javax.annotation.Nonnull Integer totalSeconds) {
@@ -101,14 +108,44 @@ public class Cooldown {
     }
 
     /**
-     * The remaining duration of the cooldown in seconds
-     * minimum: 0
+     * Validates the JSON Element and throws an exception if issues found
      *
-     * @return remainingSeconds
+     * @param jsonElement JSON Element
+     * @throws IOException if the JSON Element is invalid with respect to Cooldown
      */
-    @javax.annotation.Nonnull
-    public Integer getRemainingSeconds() {
-        return remainingSeconds;
+    public static void validateJsonElement(JsonElement jsonElement) throws IOException {
+        if (jsonElement == null) {
+            if (!Cooldown.openapiRequiredFields.isEmpty()) { // has required fields but JSON element is null
+                throw new IllegalArgumentException(String.format(java.util.Locale.ROOT,
+                    "The required field(s) %s in Cooldown is not found in the empty JSON string",
+                    Cooldown.openapiRequiredFields));
+            }
+        }
+
+        Set<Map.Entry<String, JsonElement>> entries = jsonElement.getAsJsonObject().entrySet();
+        // check to see if the JSON string contains additional fields
+        for (Map.Entry<String, JsonElement> entry : entries) {
+            if (!Cooldown.openapiFields.contains(entry.getKey())) {
+                throw new IllegalArgumentException(String.format(java.util.Locale.ROOT,
+                    "The field `%s` in the JSON string is not defined in the `Cooldown` properties. JSON: %s",
+                    entry.getKey(), jsonElement));
+            }
+        }
+
+        // check to make sure all required properties/fields are present in the JSON string
+        for (String requiredField : Cooldown.openapiRequiredFields) {
+            if (jsonElement.getAsJsonObject().get(requiredField) == null) {
+                throw new IllegalArgumentException(String.format(java.util.Locale.ROOT,
+                    "The required field `%s` is not found in the JSON string: %s", requiredField,
+                    jsonElement));
+            }
+        }
+        JsonObject jsonObj = jsonElement.getAsJsonObject();
+        if (!jsonObj.get("shipSymbol").isJsonPrimitive()) {
+            throw new IllegalArgumentException(String.format(java.util.Locale.ROOT,
+                "Expected the field `shipSymbol` to be a primitive type in the JSON string but got `%s`",
+                jsonObj.get("shipSymbol").toString()));
+        }
     }
 
     public void setRemainingSeconds(@javax.annotation.Nonnull Integer remainingSeconds) {
@@ -135,6 +172,30 @@ public class Cooldown {
         this.expiration = expiration;
     }
 
+    /**
+     * The total duration of the cooldown in seconds minimum: 0
+     *
+     * @return totalSeconds
+     */
+    @javax.annotation.Nonnull
+    public Integer getTotalSeconds() {
+        return totalSeconds;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(shipSymbol, totalSeconds, remainingSeconds, expiration);
+    }
+
+    /**
+     * The remaining duration of the cooldown in seconds minimum: 0
+     *
+     * @return remainingSeconds
+     */
+    @javax.annotation.Nonnull
+    public Integer getRemainingSeconds() {
+        return remainingSeconds;
+    }
 
     @Override
     public boolean equals(Object o) {
@@ -146,30 +207,29 @@ public class Cooldown {
         }
         Cooldown cooldown = (Cooldown) o;
         return Objects.equals(this.shipSymbol, cooldown.shipSymbol) &&
-                Objects.equals(this.totalSeconds, cooldown.totalSeconds) &&
-                Objects.equals(this.remainingSeconds, cooldown.remainingSeconds) &&
-                Objects.equals(this.expiration, cooldown.expiration);
+            Objects.equals(this.totalSeconds, cooldown.totalSeconds) &&
+            Objects.equals(this.remainingSeconds, cooldown.remainingSeconds) &&
+            Objects.equals(this.expiration, cooldown.expiration);
     }
 
-    @Override
-    public int hashCode() {
-        return Objects.hash(shipSymbol, totalSeconds, remainingSeconds, expiration);
-    }
+
+    public static HashSet<String> openapiFields;
+    public static HashSet<String> openapiRequiredFields;
 
     @Override
     public String toString() {
         String sb = "class Cooldown {\n" +
-                "    shipSymbol: " + toIndentedString(shipSymbol) + "\n" +
-                "    totalSeconds: " + toIndentedString(totalSeconds) + "\n" +
-                "    remainingSeconds: " + toIndentedString(remainingSeconds) + "\n" +
-                "    expiration: " + toIndentedString(expiration) + "\n" +
-                "}";
+            "    shipSymbol: " + toIndentedString(shipSymbol) + "\n" +
+            "    totalSeconds: " + toIndentedString(totalSeconds) + "\n" +
+            "    remainingSeconds: " + toIndentedString(remainingSeconds) + "\n" +
+            "    expiration: " + toIndentedString(expiration) + "\n" +
+            "}";
         return sb;
     }
 
     /**
-     * Convert the given object to string with each line indented by 4 spaces
-     * (except the first line).
+     * Convert the given object to string with each line indented by 4 spaces (except the first
+     * line).
      */
     private String toIndentedString(Object o) {
         if (o == null) {
@@ -178,52 +238,8 @@ public class Cooldown {
         return o.toString().replace("\n", "\n    ");
     }
 
-
-    public static HashSet<String> openapiFields;
-    public static HashSet<String> openapiRequiredFields;
-
-    static {
-        // a set of all properties/fields (JSON key names)
-        openapiFields = new HashSet<String>(Arrays.asList("shipSymbol", "totalSeconds", "remainingSeconds", "expiration"));
-
-        // a set of required properties/fields (JSON key names)
-        openapiRequiredFields = new HashSet<String>(Arrays.asList("shipSymbol", "totalSeconds", "remainingSeconds"));
-    }
-
-    /**
-     * Validates the JSON Element and throws an exception if issues found
-     *
-     * @param jsonElement JSON Element
-     * @throws IOException if the JSON Element is invalid with respect to Cooldown
-     */
-    public static void validateJsonElement(JsonElement jsonElement) throws IOException {
-        if (jsonElement == null) {
-            if (!Cooldown.openapiRequiredFields.isEmpty()) { // has required fields but JSON element is null
-                throw new IllegalArgumentException(String.format(java.util.Locale.ROOT, "The required field(s) %s in Cooldown is not found in the empty JSON string", Cooldown.openapiRequiredFields));
-            }
-        }
-
-        Set<Map.Entry<String, JsonElement>> entries = jsonElement.getAsJsonObject().entrySet();
-        // check to see if the JSON string contains additional fields
-        for (Map.Entry<String, JsonElement> entry : entries) {
-            if (!Cooldown.openapiFields.contains(entry.getKey())) {
-                throw new IllegalArgumentException(String.format(java.util.Locale.ROOT, "The field `%s` in the JSON string is not defined in the `Cooldown` properties. JSON: %s", entry.getKey(), jsonElement));
-            }
-        }
-
-        // check to make sure all required properties/fields are present in the JSON string
-        for (String requiredField : Cooldown.openapiRequiredFields) {
-            if (jsonElement.getAsJsonObject().get(requiredField) == null) {
-                throw new IllegalArgumentException(String.format(java.util.Locale.ROOT, "The required field `%s` is not found in the JSON string: %s", requiredField, jsonElement));
-            }
-        }
-        JsonObject jsonObj = jsonElement.getAsJsonObject();
-        if (!jsonObj.get("shipSymbol").isJsonPrimitive()) {
-            throw new IllegalArgumentException(String.format(java.util.Locale.ROOT, "Expected the field `shipSymbol` to be a primitive type in the JSON string but got `%s`", jsonObj.get("shipSymbol").toString()));
-        }
-    }
-
     public static class CustomTypeAdapterFactory implements TypeAdapterFactory {
+
         @SuppressWarnings("unchecked")
         @Override
         public <T> TypeAdapter<T> create(Gson gson, TypeToken<T> type) {
@@ -232,7 +248,7 @@ public class Cooldown {
             }
             final TypeAdapter<JsonElement> elementAdapter = gson.getAdapter(JsonElement.class);
             final TypeAdapter<Cooldown> thisAdapter
-                    = gson.getDelegateAdapter(this, TypeToken.get(Cooldown.class));
+                = gson.getDelegateAdapter(this, TypeToken.get(Cooldown.class));
 
             return (TypeAdapter<T>) new TypeAdapter<Cooldown>() {
                 @Override

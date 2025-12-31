@@ -13,21 +13,29 @@
 
 package xyz.faria.space.spaceapi.model;
 
-import com.google.gson.*;
+import com.google.gson.Gson;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.TypeAdapter;
+import com.google.gson.TypeAdapterFactory;
 import com.google.gson.annotations.SerializedName;
 import com.google.gson.reflect.TypeToken;
 import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonWriter;
-import xyz.faria.space.spaceapi.client.JSON;
-
 import java.io.IOException;
-import java.util.*;
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Objects;
+import java.util.Set;
+import xyz.faria.space.spaceapi.client.JSON;
 
 /**
  * InstallShipModule201ResponseDataTransaction
  */
 
 public class InstallShipModule201ResponseDataTransaction {
+
     public static final String SERIALIZED_NAME_WAYPOINT_SYMBOL = "waypointSymbol";
     @SerializedName(SERIALIZED_NAME_WAYPOINT_SYMBOL)
     @javax.annotation.Nonnull
@@ -56,9 +64,16 @@ public class InstallShipModule201ResponseDataTransaction {
     public InstallShipModule201ResponseDataTransaction() {
     }
 
-    public InstallShipModule201ResponseDataTransaction waypointSymbol(@javax.annotation.Nonnull String waypointSymbol) {
-        this.waypointSymbol = waypointSymbol;
-        return this;
+    static {
+        // a set of all properties/fields (JSON key names)
+        openapiFields = new HashSet<String>(
+            Arrays.asList("waypointSymbol", "shipSymbol", "tradeSymbol", "totalPrice",
+                "timestamp"));
+
+        // a set of required properties/fields (JSON key names)
+        openapiRequiredFields = new HashSet<String>(
+            Arrays.asList("waypointSymbol", "shipSymbol", "tradeSymbol", "totalPrice",
+                "timestamp"));
     }
 
     /**
@@ -75,10 +90,63 @@ public class InstallShipModule201ResponseDataTransaction {
         this.waypointSymbol = waypointSymbol;
     }
 
+    /**
+     * Validates the JSON Element and throws an exception if issues found
+     *
+     * @param jsonElement JSON Element
+     * @throws IOException if the JSON Element is invalid with respect to
+     *                     InstallShipModule201ResponseDataTransaction
+     */
+    public static void validateJsonElement(JsonElement jsonElement) throws IOException {
+        if (jsonElement == null) {
+            if (!InstallShipModule201ResponseDataTransaction.openapiRequiredFields.isEmpty()) { // has required fields but JSON element is null
+                throw new IllegalArgumentException(String.format(java.util.Locale.ROOT,
+                    "The required field(s) %s in InstallShipModule201ResponseDataTransaction is not found in the empty JSON string",
+                    InstallShipModule201ResponseDataTransaction.openapiRequiredFields));
+            }
+        }
 
-    public InstallShipModule201ResponseDataTransaction shipSymbol(@javax.annotation.Nonnull String shipSymbol) {
-        this.shipSymbol = shipSymbol;
-        return this;
+        Set<Map.Entry<String, JsonElement>> entries = jsonElement.getAsJsonObject().entrySet();
+        // check to see if the JSON string contains additional fields
+        for (Map.Entry<String, JsonElement> entry : entries) {
+            if (!InstallShipModule201ResponseDataTransaction.openapiFields.contains(
+                entry.getKey())) {
+                throw new IllegalArgumentException(String.format(java.util.Locale.ROOT,
+                    "The field `%s` in the JSON string is not defined in the `InstallShipModule201ResponseDataTransaction` properties. JSON: %s",
+                    entry.getKey(), jsonElement));
+            }
+        }
+
+        // check to make sure all required properties/fields are present in the JSON string
+        for (String requiredField : InstallShipModule201ResponseDataTransaction.openapiRequiredFields) {
+            if (jsonElement.getAsJsonObject().get(requiredField) == null) {
+                throw new IllegalArgumentException(String.format(java.util.Locale.ROOT,
+                    "The required field `%s` is not found in the JSON string: %s",
+                    requiredField,
+                    jsonElement));
+            }
+        }
+        JsonObject jsonObj = jsonElement.getAsJsonObject();
+        if (!jsonObj.get("waypointSymbol").isJsonPrimitive()) {
+            throw new IllegalArgumentException(String.format(java.util.Locale.ROOT,
+                "Expected the field `waypointSymbol` to be a primitive type in the JSON string but got `%s`",
+                jsonObj.get("waypointSymbol").toString()));
+        }
+        if (!jsonObj.get("shipSymbol").isJsonPrimitive()) {
+            throw new IllegalArgumentException(String.format(java.util.Locale.ROOT,
+                "Expected the field `shipSymbol` to be a primitive type in the JSON string but got `%s`",
+                jsonObj.get("shipSymbol").toString()));
+        }
+        if (!jsonObj.get("tradeSymbol").isJsonPrimitive()) {
+            throw new IllegalArgumentException(String.format(java.util.Locale.ROOT,
+                "Expected the field `tradeSymbol` to be a primitive type in the JSON string but got `%s`",
+                jsonObj.get("tradeSymbol").toString()));
+        }
+        if (!jsonObj.get("timestamp").isJsonPrimitive()) {
+            throw new IllegalArgumentException(String.format(java.util.Locale.ROOT,
+                "Expected the field `timestamp` to be a primitive type in the JSON string but got `%s`",
+                jsonObj.get("timestamp").toString()));
+        }
     }
 
     /**
@@ -95,10 +163,18 @@ public class InstallShipModule201ResponseDataTransaction {
         this.shipSymbol = shipSymbol;
     }
 
-
-    public InstallShipModule201ResponseDataTransaction tradeSymbol(@javax.annotation.Nonnull String tradeSymbol) {
-        this.tradeSymbol = tradeSymbol;
-        return this;
+    /**
+     * Create an instance of InstallShipModule201ResponseDataTransaction given an JSON string
+     *
+     * @param jsonString JSON string
+     * @return An instance of InstallShipModule201ResponseDataTransaction
+     * @throws IOException if the JSON string is invalid with respect to
+     *                     InstallShipModule201ResponseDataTransaction
+     */
+    public static InstallShipModule201ResponseDataTransaction fromJson(String jsonString)
+        throws IOException {
+        return JSON.getGson()
+            .fromJson(jsonString, InstallShipModule201ResponseDataTransaction.class);
     }
 
     /**
@@ -115,9 +191,9 @@ public class InstallShipModule201ResponseDataTransaction {
         this.tradeSymbol = tradeSymbol;
     }
 
-
-    public InstallShipModule201ResponseDataTransaction totalPrice(@javax.annotation.Nonnull Integer totalPrice) {
-        this.totalPrice = totalPrice;
+    public InstallShipModule201ResponseDataTransaction waypointSymbol(
+        @javax.annotation.Nonnull String waypointSymbol) {
+        this.waypointSymbol = waypointSymbol;
         return this;
     }
 
@@ -135,9 +211,9 @@ public class InstallShipModule201ResponseDataTransaction {
         this.totalPrice = totalPrice;
     }
 
-
-    public InstallShipModule201ResponseDataTransaction timestamp(@javax.annotation.Nonnull String timestamp) {
-        this.timestamp = timestamp;
+    public InstallShipModule201ResponseDataTransaction shipSymbol(
+        @javax.annotation.Nonnull String shipSymbol) {
+        this.shipSymbol = shipSymbol;
         return this;
     }
 
@@ -155,6 +231,32 @@ public class InstallShipModule201ResponseDataTransaction {
         this.timestamp = timestamp;
     }
 
+    public InstallShipModule201ResponseDataTransaction tradeSymbol(
+        @javax.annotation.Nonnull String tradeSymbol) {
+        this.tradeSymbol = tradeSymbol;
+        return this;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(waypointSymbol, shipSymbol, tradeSymbol, totalPrice, timestamp);
+    }
+
+    public InstallShipModule201ResponseDataTransaction totalPrice(
+        @javax.annotation.Nonnull Integer totalPrice) {
+        this.totalPrice = totalPrice;
+        return this;
+    }
+
+    public InstallShipModule201ResponseDataTransaction timestamp(
+        @javax.annotation.Nonnull String timestamp) {
+        this.timestamp = timestamp;
+        return this;
+    }
+
+
+    public static HashSet<String> openapiFields;
+    public static HashSet<String> openapiRequiredFields;
 
     @Override
     public boolean equals(Object o) {
@@ -165,33 +267,35 @@ public class InstallShipModule201ResponseDataTransaction {
             return false;
         }
         InstallShipModule201ResponseDataTransaction installShipModule201ResponseDataTransaction = (InstallShipModule201ResponseDataTransaction) o;
-        return Objects.equals(this.waypointSymbol, installShipModule201ResponseDataTransaction.waypointSymbol) &&
-                Objects.equals(this.shipSymbol, installShipModule201ResponseDataTransaction.shipSymbol) &&
-                Objects.equals(this.tradeSymbol, installShipModule201ResponseDataTransaction.tradeSymbol) &&
-                Objects.equals(this.totalPrice, installShipModule201ResponseDataTransaction.totalPrice) &&
-                Objects.equals(this.timestamp, installShipModule201ResponseDataTransaction.timestamp);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(waypointSymbol, shipSymbol, tradeSymbol, totalPrice, timestamp);
+        return Objects.equals(this.waypointSymbol,
+            installShipModule201ResponseDataTransaction.waypointSymbol) &&
+            Objects.equals(this.shipSymbol,
+                installShipModule201ResponseDataTransaction.shipSymbol)
+            &&
+            Objects.equals(this.tradeSymbol,
+                installShipModule201ResponseDataTransaction.tradeSymbol) &&
+            Objects.equals(this.totalPrice,
+                installShipModule201ResponseDataTransaction.totalPrice)
+            &&
+            Objects.equals(this.timestamp,
+                installShipModule201ResponseDataTransaction.timestamp);
     }
 
     @Override
     public String toString() {
         String sb = "class InstallShipModule201ResponseDataTransaction {\n" +
-                "    waypointSymbol: " + toIndentedString(waypointSymbol) + "\n" +
-                "    shipSymbol: " + toIndentedString(shipSymbol) + "\n" +
-                "    tradeSymbol: " + toIndentedString(tradeSymbol) + "\n" +
-                "    totalPrice: " + toIndentedString(totalPrice) + "\n" +
-                "    timestamp: " + toIndentedString(timestamp) + "\n" +
-                "}";
+            "    waypointSymbol: " + toIndentedString(waypointSymbol) + "\n" +
+            "    shipSymbol: " + toIndentedString(shipSymbol) + "\n" +
+            "    tradeSymbol: " + toIndentedString(tradeSymbol) + "\n" +
+            "    totalPrice: " + toIndentedString(totalPrice) + "\n" +
+            "    timestamp: " + toIndentedString(timestamp) + "\n" +
+            "}";
         return sb;
     }
 
     /**
-     * Convert the given object to string with each line indented by 4 spaces
-     * (except the first line).
+     * Convert the given object to string with each line indented by 4 spaces (except the first
+     * line).
      */
     private String toIndentedString(Object o) {
         if (o == null) {
@@ -200,80 +304,31 @@ public class InstallShipModule201ResponseDataTransaction {
         return o.toString().replace("\n", "\n    ");
     }
 
-
-    public static HashSet<String> openapiFields;
-    public static HashSet<String> openapiRequiredFields;
-
-    static {
-        // a set of all properties/fields (JSON key names)
-        openapiFields = new HashSet<String>(Arrays.asList("waypointSymbol", "shipSymbol", "tradeSymbol", "totalPrice", "timestamp"));
-
-        // a set of required properties/fields (JSON key names)
-        openapiRequiredFields = new HashSet<String>(Arrays.asList("waypointSymbol", "shipSymbol", "tradeSymbol", "totalPrice", "timestamp"));
-    }
-
-    /**
-     * Validates the JSON Element and throws an exception if issues found
-     *
-     * @param jsonElement JSON Element
-     * @throws IOException if the JSON Element is invalid with respect to InstallShipModule201ResponseDataTransaction
-     */
-    public static void validateJsonElement(JsonElement jsonElement) throws IOException {
-        if (jsonElement == null) {
-            if (!InstallShipModule201ResponseDataTransaction.openapiRequiredFields.isEmpty()) { // has required fields but JSON element is null
-                throw new IllegalArgumentException(String.format(java.util.Locale.ROOT, "The required field(s) %s in InstallShipModule201ResponseDataTransaction is not found in the empty JSON string", InstallShipModule201ResponseDataTransaction.openapiRequiredFields));
-            }
-        }
-
-        Set<Map.Entry<String, JsonElement>> entries = jsonElement.getAsJsonObject().entrySet();
-        // check to see if the JSON string contains additional fields
-        for (Map.Entry<String, JsonElement> entry : entries) {
-            if (!InstallShipModule201ResponseDataTransaction.openapiFields.contains(entry.getKey())) {
-                throw new IllegalArgumentException(String.format(java.util.Locale.ROOT, "The field `%s` in the JSON string is not defined in the `InstallShipModule201ResponseDataTransaction` properties. JSON: %s", entry.getKey(), jsonElement));
-            }
-        }
-
-        // check to make sure all required properties/fields are present in the JSON string
-        for (String requiredField : InstallShipModule201ResponseDataTransaction.openapiRequiredFields) {
-            if (jsonElement.getAsJsonObject().get(requiredField) == null) {
-                throw new IllegalArgumentException(String.format(java.util.Locale.ROOT, "The required field `%s` is not found in the JSON string: %s", requiredField, jsonElement));
-            }
-        }
-        JsonObject jsonObj = jsonElement.getAsJsonObject();
-        if (!jsonObj.get("waypointSymbol").isJsonPrimitive()) {
-            throw new IllegalArgumentException(String.format(java.util.Locale.ROOT, "Expected the field `waypointSymbol` to be a primitive type in the JSON string but got `%s`", jsonObj.get("waypointSymbol").toString()));
-        }
-        if (!jsonObj.get("shipSymbol").isJsonPrimitive()) {
-            throw new IllegalArgumentException(String.format(java.util.Locale.ROOT, "Expected the field `shipSymbol` to be a primitive type in the JSON string but got `%s`", jsonObj.get("shipSymbol").toString()));
-        }
-        if (!jsonObj.get("tradeSymbol").isJsonPrimitive()) {
-            throw new IllegalArgumentException(String.format(java.util.Locale.ROOT, "Expected the field `tradeSymbol` to be a primitive type in the JSON string but got `%s`", jsonObj.get("tradeSymbol").toString()));
-        }
-        if (!jsonObj.get("timestamp").isJsonPrimitive()) {
-            throw new IllegalArgumentException(String.format(java.util.Locale.ROOT, "Expected the field `timestamp` to be a primitive type in the JSON string but got `%s`", jsonObj.get("timestamp").toString()));
-        }
-    }
-
     public static class CustomTypeAdapterFactory implements TypeAdapterFactory {
+
         @SuppressWarnings("unchecked")
         @Override
         public <T> TypeAdapter<T> create(Gson gson, TypeToken<T> type) {
-            if (!InstallShipModule201ResponseDataTransaction.class.isAssignableFrom(type.getRawType())) {
+            if (!InstallShipModule201ResponseDataTransaction.class.isAssignableFrom(
+                type.getRawType())) {
                 return null; // this class only serializes 'InstallShipModule201ResponseDataTransaction' and its subtypes
             }
             final TypeAdapter<JsonElement> elementAdapter = gson.getAdapter(JsonElement.class);
             final TypeAdapter<InstallShipModule201ResponseDataTransaction> thisAdapter
-                    = gson.getDelegateAdapter(this, TypeToken.get(InstallShipModule201ResponseDataTransaction.class));
+                = gson.getDelegateAdapter(this,
+                TypeToken.get(InstallShipModule201ResponseDataTransaction.class));
 
             return (TypeAdapter<T>) new TypeAdapter<InstallShipModule201ResponseDataTransaction>() {
                 @Override
-                public void write(JsonWriter out, InstallShipModule201ResponseDataTransaction value) throws IOException {
+                public void write(JsonWriter out, InstallShipModule201ResponseDataTransaction value)
+                    throws IOException {
                     JsonObject obj = thisAdapter.toJsonTree(value).getAsJsonObject();
                     elementAdapter.write(out, obj);
                 }
 
                 @Override
-                public InstallShipModule201ResponseDataTransaction read(JsonReader in) throws IOException {
+                public InstallShipModule201ResponseDataTransaction read(JsonReader in)
+                    throws IOException {
                     JsonElement jsonElement = elementAdapter.read(in);
                     validateJsonElement(jsonElement);
                     return thisAdapter.fromJsonTree(jsonElement);
@@ -281,17 +336,6 @@ public class InstallShipModule201ResponseDataTransaction {
 
             }.nullSafe();
         }
-    }
-
-    /**
-     * Create an instance of InstallShipModule201ResponseDataTransaction given an JSON string
-     *
-     * @param jsonString JSON string
-     * @return An instance of InstallShipModule201ResponseDataTransaction
-     * @throws IOException if the JSON string is invalid with respect to InstallShipModule201ResponseDataTransaction
-     */
-    public static InstallShipModule201ResponseDataTransaction fromJson(String jsonString) throws IOException {
-        return JSON.getGson().fromJson(jsonString, InstallShipModule201ResponseDataTransaction.class);
     }
 
     /**

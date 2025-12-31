@@ -13,7 +13,11 @@
 
 package xyz.faria.space.spaceapi.model;
 
-import com.google.gson.*;
+import com.google.gson.Gson;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.TypeAdapter;
+import com.google.gson.TypeAdapterFactory;
 import com.google.gson.annotations.SerializedName;
 import com.google.gson.reflect.TypeToken;
 import com.google.gson.stream.JsonReader;
@@ -21,16 +25,20 @@ import com.google.gson.stream.JsonWriter;
 import jakarta.persistence.Embeddable;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
-import xyz.faria.space.spaceapi.client.JSON;
-
 import java.io.IOException;
-import java.util.*;
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Objects;
+import java.util.Set;
+import xyz.faria.space.spaceapi.client.JSON;
 
 /**
  * The public registration information of the ship
  */
 @Embeddable
 public class ShipRegistration {
+
     public static final String SERIALIZED_NAME_NAME = "name";
     @SerializedName(SERIALIZED_NAME_NAME)
     @javax.annotation.Nonnull
@@ -110,6 +118,59 @@ public class ShipRegistration {
     }
 
 
+    /**
+     * Validates the JSON Element and throws an exception if issues found
+     *
+     * @param jsonElement JSON Element
+     * @throws IOException if the JSON Element is invalid with respect to ShipRegistration
+     */
+    public static void validateJsonElement(JsonElement jsonElement) throws IOException {
+        if (jsonElement == null) {
+            if (!ShipRegistration.openapiRequiredFields.isEmpty()) { // has required fields but JSON element is null
+                throw new IllegalArgumentException(String.format(java.util.Locale.ROOT,
+                    "The required field(s) %s in ShipRegistration is not found in the empty JSON string",
+                    ShipRegistration.openapiRequiredFields));
+            }
+        }
+
+        Set<Map.Entry<String, JsonElement>> entries = jsonElement.getAsJsonObject().entrySet();
+        // check to see if the JSON string contains additional fields
+        for (Map.Entry<String, JsonElement> entry : entries) {
+            if (!ShipRegistration.openapiFields.contains(entry.getKey())) {
+                throw new IllegalArgumentException(String.format(java.util.Locale.ROOT,
+                    "The field `%s` in the JSON string is not defined in the `ShipRegistration` properties. JSON: %s",
+                    entry.getKey(), jsonElement));
+            }
+        }
+
+        // check to make sure all required properties/fields are present in the JSON string
+        for (String requiredField : ShipRegistration.openapiRequiredFields) {
+            if (jsonElement.getAsJsonObject().get(requiredField) == null) {
+                throw new IllegalArgumentException(String.format(java.util.Locale.ROOT,
+                    "The required field `%s` is not found in the JSON string: %s", requiredField,
+                    jsonElement));
+            }
+        }
+        JsonObject jsonObj = jsonElement.getAsJsonObject();
+        if (!jsonObj.get("name").isJsonPrimitive()) {
+            throw new IllegalArgumentException(String.format(java.util.Locale.ROOT,
+                "Expected the field `name` to be a primitive type in the JSON string but got `%s`",
+                jsonObj.get("name").toString()));
+        }
+        if (!jsonObj.get("factionSymbol").isJsonPrimitive()) {
+            throw new IllegalArgumentException(String.format(java.util.Locale.ROOT,
+                "Expected the field `factionSymbol` to be a primitive type in the JSON string but got `%s`",
+                jsonObj.get("factionSymbol").toString()));
+        }
+        // validate the required field `role`
+        ShipRole.validateJsonElement(jsonObj.get("role"));
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(name, factionSymbol, role);
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) {
@@ -120,34 +181,18 @@ public class ShipRegistration {
         }
         ShipRegistration shipRegistration = (ShipRegistration) o;
         return Objects.equals(this.name, shipRegistration.name) &&
-                Objects.equals(this.factionSymbol, shipRegistration.factionSymbol) &&
-                Objects.equals(this.role, shipRegistration.role);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(name, factionSymbol, role);
+            Objects.equals(this.factionSymbol, shipRegistration.factionSymbol) &&
+            Objects.equals(this.role, shipRegistration.role);
     }
 
     @Override
     public String toString() {
         String sb = "class ShipRegistration {\n" +
-                "    name: " + toIndentedString(name) + "\n" +
-                "    factionSymbol: " + toIndentedString(factionSymbol) + "\n" +
-                "    role: " + toIndentedString(role) + "\n" +
-                "}";
+            "    name: " + toIndentedString(name) + "\n" +
+            "    factionSymbol: " + toIndentedString(factionSymbol) + "\n" +
+            "    role: " + toIndentedString(role) + "\n" +
+            "}";
         return sb;
-    }
-
-    /**
-     * Convert the given object to string with each line indented by 4 spaces
-     * (except the first line).
-     */
-    private String toIndentedString(Object o) {
-        if (o == null) {
-            return "null";
-        }
-        return o.toString().replace("\n", "\n    ");
     }
 
 
@@ -163,44 +208,18 @@ public class ShipRegistration {
     }
 
     /**
-     * Validates the JSON Element and throws an exception if issues found
-     *
-     * @param jsonElement JSON Element
-     * @throws IOException if the JSON Element is invalid with respect to ShipRegistration
+     * Convert the given object to string with each line indented by 4 spaces (except the first
+     * line).
      */
-    public static void validateJsonElement(JsonElement jsonElement) throws IOException {
-        if (jsonElement == null) {
-            if (!ShipRegistration.openapiRequiredFields.isEmpty()) { // has required fields but JSON element is null
-                throw new IllegalArgumentException(String.format(java.util.Locale.ROOT, "The required field(s) %s in ShipRegistration is not found in the empty JSON string", ShipRegistration.openapiRequiredFields));
-            }
+    private String toIndentedString(Object o) {
+        if (o == null) {
+            return "null";
         }
-
-        Set<Map.Entry<String, JsonElement>> entries = jsonElement.getAsJsonObject().entrySet();
-        // check to see if the JSON string contains additional fields
-        for (Map.Entry<String, JsonElement> entry : entries) {
-            if (!ShipRegistration.openapiFields.contains(entry.getKey())) {
-                throw new IllegalArgumentException(String.format(java.util.Locale.ROOT, "The field `%s` in the JSON string is not defined in the `ShipRegistration` properties. JSON: %s", entry.getKey(), jsonElement));
-            }
-        }
-
-        // check to make sure all required properties/fields are present in the JSON string
-        for (String requiredField : ShipRegistration.openapiRequiredFields) {
-            if (jsonElement.getAsJsonObject().get(requiredField) == null) {
-                throw new IllegalArgumentException(String.format(java.util.Locale.ROOT, "The required field `%s` is not found in the JSON string: %s", requiredField, jsonElement));
-            }
-        }
-        JsonObject jsonObj = jsonElement.getAsJsonObject();
-        if (!jsonObj.get("name").isJsonPrimitive()) {
-            throw new IllegalArgumentException(String.format(java.util.Locale.ROOT, "Expected the field `name` to be a primitive type in the JSON string but got `%s`", jsonObj.get("name").toString()));
-        }
-        if (!jsonObj.get("factionSymbol").isJsonPrimitive()) {
-            throw new IllegalArgumentException(String.format(java.util.Locale.ROOT, "Expected the field `factionSymbol` to be a primitive type in the JSON string but got `%s`", jsonObj.get("factionSymbol").toString()));
-        }
-        // validate the required field `role`
-        ShipRole.validateJsonElement(jsonObj.get("role"));
+        return o.toString().replace("\n", "\n    ");
     }
 
     public static class CustomTypeAdapterFactory implements TypeAdapterFactory {
+
         @SuppressWarnings("unchecked")
         @Override
         public <T> TypeAdapter<T> create(Gson gson, TypeToken<T> type) {
@@ -209,7 +228,7 @@ public class ShipRegistration {
             }
             final TypeAdapter<JsonElement> elementAdapter = gson.getAdapter(JsonElement.class);
             final TypeAdapter<ShipRegistration> thisAdapter
-                    = gson.getDelegateAdapter(this, TypeToken.get(ShipRegistration.class));
+                = gson.getDelegateAdapter(this, TypeToken.get(ShipRegistration.class));
 
             return (TypeAdapter<T>) new TypeAdapter<ShipRegistration>() {
                 @Override

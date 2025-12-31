@@ -13,7 +13,11 @@
 
 package xyz.faria.space.spaceapi.model;
 
-import com.google.gson.*;
+import com.google.gson.Gson;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.TypeAdapter;
+import com.google.gson.TypeAdapterFactory;
 import com.google.gson.annotations.JsonAdapter;
 import com.google.gson.annotations.SerializedName;
 import com.google.gson.reflect.TypeToken;
@@ -21,16 +25,293 @@ import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonWriter;
 import jakarta.persistence.Embeddable;
 import jakarta.persistence.Embedded;
+import java.io.IOException;
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Objects;
+import java.util.Set;
 import xyz.faria.space.spaceapi.client.JSON;
 
-import java.io.IOException;
-import java.util.*;
-
 /**
- * A module can be installed in a ship and provides a set of capabilities such as storage space or quarters for crew. Module installations are permanent.
+ * A module can be installed in a ship and provides a set of capabilities such as storage space or
+ * quarters for crew. Module installations are permanent.
  */
 @Embeddable
 public class ShipModule {
+
+    static {
+        // a set of all properties/fields (JSON key names)
+        openapiFields = new HashSet<String>(
+            Arrays.asList("symbol", "capacity", "range", "name", "description",
+                "requirements"));
+
+        // a set of required properties/fields (JSON key names)
+        openapiRequiredFields = new HashSet<String>(
+            Arrays.asList("symbol", "name", "description", "requirements"));
+    }
+
+    public static final String SERIALIZED_NAME_SYMBOL = "symbol";
+    @SerializedName(SERIALIZED_NAME_SYMBOL)
+    @javax.annotation.Nonnull
+    private SymbolEnum symbol;
+
+    public static final String SERIALIZED_NAME_CAPACITY = "capacity";
+    @SerializedName(SERIALIZED_NAME_CAPACITY)
+    @javax.annotation.Nullable
+    private Integer capacity;
+
+    public static final String SERIALIZED_NAME_RANGE = "range";
+    @SerializedName(SERIALIZED_NAME_RANGE)
+    @javax.annotation.Nullable
+    private Integer range;
+
+    public static final String SERIALIZED_NAME_NAME = "name";
+    @SerializedName(SERIALIZED_NAME_NAME)
+    @javax.annotation.Nonnull
+    private String name;
+
+    public static final String SERIALIZED_NAME_DESCRIPTION = "description";
+    @SerializedName(SERIALIZED_NAME_DESCRIPTION)
+    @javax.annotation.Nonnull
+    private String description;
+
+    public static final String SERIALIZED_NAME_REQUIREMENTS = "requirements";
+    @SerializedName(SERIALIZED_NAME_REQUIREMENTS)
+    @javax.annotation.Nonnull
+    @Embedded
+    private ShipRequirements requirements;
+
+    public ShipModule() {
+    }
+
+    public ShipModule symbol(@javax.annotation.Nonnull SymbolEnum symbol) {
+        this.symbol = symbol;
+        return this;
+    }
+
+    /**
+     * The symbol of the module.
+     *
+     * @return symbol
+     */
+    @javax.annotation.Nonnull
+    public SymbolEnum getSymbol() {
+        return symbol;
+    }
+
+    public void setSymbol(@javax.annotation.Nonnull SymbolEnum symbol) {
+        this.symbol = symbol;
+    }
+
+
+    public ShipModule capacity(@javax.annotation.Nullable Integer capacity) {
+        this.capacity = capacity;
+        return this;
+    }
+
+    /**
+     * Validates the JSON Element and throws an exception if issues found
+     *
+     * @param jsonElement JSON Element
+     * @throws IOException if the JSON Element is invalid with respect to ShipModule
+     */
+    public static void validateJsonElement(JsonElement jsonElement) throws IOException {
+        if (jsonElement == null) {
+            if (!ShipModule.openapiRequiredFields.isEmpty()) { // has required fields but JSON element is null
+                throw new IllegalArgumentException(String.format(java.util.Locale.ROOT,
+                    "The required field(s) %s in ShipModule is not found in the empty JSON string",
+                    ShipModule.openapiRequiredFields));
+            }
+        }
+
+        Set<Map.Entry<String, JsonElement>> entries = jsonElement.getAsJsonObject().entrySet();
+        // check to see if the JSON string contains additional fields
+        for (Map.Entry<String, JsonElement> entry : entries) {
+            if (!ShipModule.openapiFields.contains(entry.getKey())) {
+                throw new IllegalArgumentException(String.format(java.util.Locale.ROOT,
+                    "The field `%s` in the JSON string is not defined in the `ShipModule` properties. JSON: %s",
+                    entry.getKey(), jsonElement));
+            }
+        }
+
+        // check to make sure all required properties/fields are present in the JSON string
+        for (String requiredField : ShipModule.openapiRequiredFields) {
+            if (jsonElement.getAsJsonObject().get(requiredField) == null) {
+                throw new IllegalArgumentException(String.format(java.util.Locale.ROOT,
+                    "The required field `%s` is not found in the JSON string: %s",
+                    requiredField,
+                    jsonElement));
+            }
+        }
+        JsonObject jsonObj = jsonElement.getAsJsonObject();
+        if (!jsonObj.get("symbol").isJsonPrimitive()) {
+            throw new IllegalArgumentException(String.format(java.util.Locale.ROOT,
+                "Expected the field `symbol` to be a primitive type in the JSON string but got `%s`",
+                jsonObj.get("symbol").toString()));
+        }
+        // validate the required field `symbol`
+        SymbolEnum.validateJsonElement(jsonObj.get("symbol"));
+        if (!jsonObj.get("name").isJsonPrimitive()) {
+            throw new IllegalArgumentException(String.format(java.util.Locale.ROOT,
+                "Expected the field `name` to be a primitive type in the JSON string but got `%s`",
+                jsonObj.get("name").toString()));
+        }
+        if (!jsonObj.get("description").isJsonPrimitive()) {
+            throw new IllegalArgumentException(String.format(java.util.Locale.ROOT,
+                "Expected the field `description` to be a primitive type in the JSON string but got `%s`",
+                jsonObj.get("description").toString()));
+        }
+        // validate the required field `requirements`
+        ShipRequirements.validateJsonElement(jsonObj.get("requirements"));
+    }
+
+    public void setCapacity(@javax.annotation.Nullable Integer capacity) {
+        this.capacity = capacity;
+    }
+
+
+    public ShipModule range(@javax.annotation.Nullable Integer range) {
+        this.range = range;
+        return this;
+    }
+
+    /**
+     * Modules that provide capacity, such as cargo hold or crew quarters will show this value to
+     * denote how much of a bonus the module grants. minimum: 0
+     *
+     * @return capacity
+     */
+    @javax.annotation.Nullable
+    public Integer getCapacity() {
+        return capacity;
+    }
+
+    public void setRange(@javax.annotation.Nullable Integer range) {
+        this.range = range;
+    }
+
+
+    public ShipModule name(@javax.annotation.Nonnull String name) {
+        this.name = name;
+        return this;
+    }
+
+    /**
+     * Name of this module.
+     *
+     * @return name
+     */
+    @javax.annotation.Nonnull
+    public String getName() {
+        return name;
+    }
+
+    public void setName(@javax.annotation.Nonnull String name) {
+        this.name = name;
+    }
+
+
+    public ShipModule description(@javax.annotation.Nonnull String description) {
+        this.description = description;
+        return this;
+    }
+
+    /**
+     * Description of this module.
+     *
+     * @return description
+     */
+    @javax.annotation.Nonnull
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(@javax.annotation.Nonnull String description) {
+        this.description = description;
+    }
+
+
+    public ShipModule requirements(@javax.annotation.Nonnull ShipRequirements requirements) {
+        this.requirements = requirements;
+        return this;
+    }
+
+    /**
+     * Get requirements
+     *
+     * @return requirements
+     */
+    @javax.annotation.Nonnull
+    public ShipRequirements getRequirements() {
+        return requirements;
+    }
+
+    public void setRequirements(@javax.annotation.Nonnull ShipRequirements requirements) {
+        this.requirements = requirements;
+    }
+
+    /**
+     * Modules that have a range will such as a sensor array show this value to denote how far can
+     * the module reach with its capabilities. minimum: 0
+     *
+     * @return range
+     */
+    @javax.annotation.Nullable
+    public Integer getRange() {
+        return range;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(symbol, capacity, range, name, description, requirements);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        ShipModule shipModule = (ShipModule) o;
+        return Objects.equals(this.symbol, shipModule.symbol) &&
+            Objects.equals(this.capacity, shipModule.capacity) &&
+            Objects.equals(this.range, shipModule.range) &&
+            Objects.equals(this.name, shipModule.name) &&
+            Objects.equals(this.description, shipModule.description) &&
+            Objects.equals(this.requirements, shipModule.requirements);
+    }
+
+    @Override
+    public String toString() {
+        String sb = "class ShipModule {\n" +
+            "    symbol: " + toIndentedString(symbol) + "\n" +
+            "    capacity: " + toIndentedString(capacity) + "\n" +
+            "    range: " + toIndentedString(range) + "\n" +
+            "    name: " + toIndentedString(name) + "\n" +
+            "    description: " + toIndentedString(description) + "\n" +
+            "    requirements: " + toIndentedString(requirements) + "\n" +
+            "}";
+        return sb;
+    }
+
+
+    public static HashSet<String> openapiFields;
+    public static HashSet<String> openapiRequiredFields;
+
+    /**
+     * Convert the given object to string with each line indented by 4 spaces (except the first
+     * line).
+     */
+    private String toIndentedString(Object o) {
+        if (o == null) {
+            return "null";
+        }
+        return o.toString().replace("\n", "\n    ");
+    }
+
     /**
      * The symbol of the module.
      */
@@ -101,8 +382,10 @@ public class ShipModule {
         }
 
         public static class Adapter extends TypeAdapter<SymbolEnum> {
+
             @Override
-            public void write(final JsonWriter jsonWriter, final SymbolEnum enumeration) throws IOException {
+            public void write(final JsonWriter jsonWriter, final SymbolEnum enumeration)
+                throws IOException {
                 jsonWriter.value(enumeration.getValue());
             }
 
@@ -119,264 +402,8 @@ public class ShipModule {
         }
     }
 
-    public static final String SERIALIZED_NAME_SYMBOL = "symbol";
-    @SerializedName(SERIALIZED_NAME_SYMBOL)
-    @javax.annotation.Nonnull
-    private SymbolEnum symbol;
-
-    public static final String SERIALIZED_NAME_CAPACITY = "capacity";
-    @SerializedName(SERIALIZED_NAME_CAPACITY)
-    @javax.annotation.Nullable
-    private Integer capacity;
-
-    public static final String SERIALIZED_NAME_RANGE = "range";
-    @SerializedName(SERIALIZED_NAME_RANGE)
-    @javax.annotation.Nullable
-    private Integer range;
-
-    public static final String SERIALIZED_NAME_NAME = "name";
-    @SerializedName(SERIALIZED_NAME_NAME)
-    @javax.annotation.Nonnull
-    private String name;
-
-    public static final String SERIALIZED_NAME_DESCRIPTION = "description";
-    @SerializedName(SERIALIZED_NAME_DESCRIPTION)
-    @javax.annotation.Nonnull
-    private String description;
-
-    public static final String SERIALIZED_NAME_REQUIREMENTS = "requirements";
-    @SerializedName(SERIALIZED_NAME_REQUIREMENTS)
-    @javax.annotation.Nonnull
-    @Embedded
-    private ShipRequirements requirements;
-
-    public ShipModule() {
-    }
-
-    public ShipModule symbol(@javax.annotation.Nonnull SymbolEnum symbol) {
-        this.symbol = symbol;
-        return this;
-    }
-
-    /**
-     * The symbol of the module.
-     *
-     * @return symbol
-     */
-    @javax.annotation.Nonnull
-    public SymbolEnum getSymbol() {
-        return symbol;
-    }
-
-    public void setSymbol(@javax.annotation.Nonnull SymbolEnum symbol) {
-        this.symbol = symbol;
-    }
-
-
-    public ShipModule capacity(@javax.annotation.Nullable Integer capacity) {
-        this.capacity = capacity;
-        return this;
-    }
-
-    /**
-     * Modules that provide capacity, such as cargo hold or crew quarters will show this value to denote how much of a bonus the module grants.
-     * minimum: 0
-     *
-     * @return capacity
-     */
-    @javax.annotation.Nullable
-    public Integer getCapacity() {
-        return capacity;
-    }
-
-    public void setCapacity(@javax.annotation.Nullable Integer capacity) {
-        this.capacity = capacity;
-    }
-
-
-    public ShipModule range(@javax.annotation.Nullable Integer range) {
-        this.range = range;
-        return this;
-    }
-
-    /**
-     * Modules that have a range will such as a sensor array show this value to denote how far can the module reach with its capabilities.
-     * minimum: 0
-     *
-     * @return range
-     */
-    @javax.annotation.Nullable
-    public Integer getRange() {
-        return range;
-    }
-
-    public void setRange(@javax.annotation.Nullable Integer range) {
-        this.range = range;
-    }
-
-
-    public ShipModule name(@javax.annotation.Nonnull String name) {
-        this.name = name;
-        return this;
-    }
-
-    /**
-     * Name of this module.
-     *
-     * @return name
-     */
-    @javax.annotation.Nonnull
-    public String getName() {
-        return name;
-    }
-
-    public void setName(@javax.annotation.Nonnull String name) {
-        this.name = name;
-    }
-
-
-    public ShipModule description(@javax.annotation.Nonnull String description) {
-        this.description = description;
-        return this;
-    }
-
-    /**
-     * Description of this module.
-     *
-     * @return description
-     */
-    @javax.annotation.Nonnull
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(@javax.annotation.Nonnull String description) {
-        this.description = description;
-    }
-
-
-    public ShipModule requirements(@javax.annotation.Nonnull ShipRequirements requirements) {
-        this.requirements = requirements;
-        return this;
-    }
-
-    /**
-     * Get requirements
-     *
-     * @return requirements
-     */
-    @javax.annotation.Nonnull
-    public ShipRequirements getRequirements() {
-        return requirements;
-    }
-
-    public void setRequirements(@javax.annotation.Nonnull ShipRequirements requirements) {
-        this.requirements = requirements;
-    }
-
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (o == null || getClass() != o.getClass()) {
-            return false;
-        }
-        ShipModule shipModule = (ShipModule) o;
-        return Objects.equals(this.symbol, shipModule.symbol) &&
-                Objects.equals(this.capacity, shipModule.capacity) &&
-                Objects.equals(this.range, shipModule.range) &&
-                Objects.equals(this.name, shipModule.name) &&
-                Objects.equals(this.description, shipModule.description) &&
-                Objects.equals(this.requirements, shipModule.requirements);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(symbol, capacity, range, name, description, requirements);
-    }
-
-    @Override
-    public String toString() {
-        String sb = "class ShipModule {\n" +
-                "    symbol: " + toIndentedString(symbol) + "\n" +
-                "    capacity: " + toIndentedString(capacity) + "\n" +
-                "    range: " + toIndentedString(range) + "\n" +
-                "    name: " + toIndentedString(name) + "\n" +
-                "    description: " + toIndentedString(description) + "\n" +
-                "    requirements: " + toIndentedString(requirements) + "\n" +
-                "}";
-        return sb;
-    }
-
-    /**
-     * Convert the given object to string with each line indented by 4 spaces
-     * (except the first line).
-     */
-    private String toIndentedString(Object o) {
-        if (o == null) {
-            return "null";
-        }
-        return o.toString().replace("\n", "\n    ");
-    }
-
-
-    public static HashSet<String> openapiFields;
-    public static HashSet<String> openapiRequiredFields;
-
-    static {
-        // a set of all properties/fields (JSON key names)
-        openapiFields = new HashSet<String>(Arrays.asList("symbol", "capacity", "range", "name", "description", "requirements"));
-
-        // a set of required properties/fields (JSON key names)
-        openapiRequiredFields = new HashSet<String>(Arrays.asList("symbol", "name", "description", "requirements"));
-    }
-
-    /**
-     * Validates the JSON Element and throws an exception if issues found
-     *
-     * @param jsonElement JSON Element
-     * @throws IOException if the JSON Element is invalid with respect to ShipModule
-     */
-    public static void validateJsonElement(JsonElement jsonElement) throws IOException {
-        if (jsonElement == null) {
-            if (!ShipModule.openapiRequiredFields.isEmpty()) { // has required fields but JSON element is null
-                throw new IllegalArgumentException(String.format(java.util.Locale.ROOT, "The required field(s) %s in ShipModule is not found in the empty JSON string", ShipModule.openapiRequiredFields));
-            }
-        }
-
-        Set<Map.Entry<String, JsonElement>> entries = jsonElement.getAsJsonObject().entrySet();
-        // check to see if the JSON string contains additional fields
-        for (Map.Entry<String, JsonElement> entry : entries) {
-            if (!ShipModule.openapiFields.contains(entry.getKey())) {
-                throw new IllegalArgumentException(String.format(java.util.Locale.ROOT, "The field `%s` in the JSON string is not defined in the `ShipModule` properties. JSON: %s", entry.getKey(), jsonElement));
-            }
-        }
-
-        // check to make sure all required properties/fields are present in the JSON string
-        for (String requiredField : ShipModule.openapiRequiredFields) {
-            if (jsonElement.getAsJsonObject().get(requiredField) == null) {
-                throw new IllegalArgumentException(String.format(java.util.Locale.ROOT, "The required field `%s` is not found in the JSON string: %s", requiredField, jsonElement));
-            }
-        }
-        JsonObject jsonObj = jsonElement.getAsJsonObject();
-        if (!jsonObj.get("symbol").isJsonPrimitive()) {
-            throw new IllegalArgumentException(String.format(java.util.Locale.ROOT, "Expected the field `symbol` to be a primitive type in the JSON string but got `%s`", jsonObj.get("symbol").toString()));
-        }
-        // validate the required field `symbol`
-        SymbolEnum.validateJsonElement(jsonObj.get("symbol"));
-        if (!jsonObj.get("name").isJsonPrimitive()) {
-            throw new IllegalArgumentException(String.format(java.util.Locale.ROOT, "Expected the field `name` to be a primitive type in the JSON string but got `%s`", jsonObj.get("name").toString()));
-        }
-        if (!jsonObj.get("description").isJsonPrimitive()) {
-            throw new IllegalArgumentException(String.format(java.util.Locale.ROOT, "Expected the field `description` to be a primitive type in the JSON string but got `%s`", jsonObj.get("description").toString()));
-        }
-        // validate the required field `requirements`
-        ShipRequirements.validateJsonElement(jsonObj.get("requirements"));
-    }
-
     public static class CustomTypeAdapterFactory implements TypeAdapterFactory {
+
         @SuppressWarnings("unchecked")
         @Override
         public <T> TypeAdapter<T> create(Gson gson, TypeToken<T> type) {
@@ -385,7 +412,7 @@ public class ShipModule {
             }
             final TypeAdapter<JsonElement> elementAdapter = gson.getAdapter(JsonElement.class);
             final TypeAdapter<ShipModule> thisAdapter
-                    = gson.getDelegateAdapter(this, TypeToken.get(ShipModule.class));
+                = gson.getDelegateAdapter(this, TypeToken.get(ShipModule.class));
 
             return (TypeAdapter<T>) new TypeAdapter<ShipModule>() {
                 @Override

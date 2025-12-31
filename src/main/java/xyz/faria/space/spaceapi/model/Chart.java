@@ -13,22 +13,30 @@
 
 package xyz.faria.space.spaceapi.model;
 
-import com.google.gson.*;
+import com.google.gson.Gson;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.TypeAdapter;
+import com.google.gson.TypeAdapterFactory;
 import com.google.gson.annotations.SerializedName;
 import com.google.gson.reflect.TypeToken;
 import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonWriter;
-import xyz.faria.space.spaceapi.client.JSON;
-
 import java.io.IOException;
 import java.time.OffsetDateTime;
-import java.util.*;
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Objects;
+import java.util.Set;
+import xyz.faria.space.spaceapi.client.JSON;
 
 /**
  * The chart of a system or waypoint, which makes the location visible to other agents.
  */
 
 public class Chart {
+
     public static final String SERIALIZED_NAME_WAYPOINT_SYMBOL = "waypointSymbol";
     @SerializedName(SERIALIZED_NAME_WAYPOINT_SYMBOL)
     @javax.annotation.Nullable
@@ -107,56 +115,18 @@ public class Chart {
     }
 
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (o == null || getClass() != o.getClass()) {
-            return false;
-        }
-        Chart chart = (Chart) o;
-        return Objects.equals(this.waypointSymbol, chart.waypointSymbol) &&
-                Objects.equals(this.submittedBy, chart.submittedBy) &&
-                Objects.equals(this.submittedOn, chart.submittedOn);
+    static {
+        // a set of all properties/fields (JSON key names)
+        openapiFields = new HashSet<String>(
+            Arrays.asList("waypointSymbol", "submittedBy", "submittedOn"));
+
+        // a set of required properties/fields (JSON key names)
+        openapiRequiredFields = new HashSet<String>(0);
     }
 
     @Override
     public int hashCode() {
         return Objects.hash(waypointSymbol, submittedBy, submittedOn);
-    }
-
-    @Override
-    public String toString() {
-        String sb = "class Chart {\n" +
-                "    waypointSymbol: " + toIndentedString(waypointSymbol) + "\n" +
-                "    submittedBy: " + toIndentedString(submittedBy) + "\n" +
-                "    submittedOn: " + toIndentedString(submittedOn) + "\n" +
-                "}";
-        return sb;
-    }
-
-    /**
-     * Convert the given object to string with each line indented by 4 spaces
-     * (except the first line).
-     */
-    private String toIndentedString(Object o) {
-        if (o == null) {
-            return "null";
-        }
-        return o.toString().replace("\n", "\n    ");
-    }
-
-
-    public static HashSet<String> openapiFields;
-    public static HashSet<String> openapiRequiredFields;
-
-    static {
-        // a set of all properties/fields (JSON key names)
-        openapiFields = new HashSet<String>(Arrays.asList("waypointSymbol", "submittedBy", "submittedOn"));
-
-        // a set of required properties/fields (JSON key names)
-        openapiRequiredFields = new HashSet<String>(0);
     }
 
     /**
@@ -168,7 +138,9 @@ public class Chart {
     public static void validateJsonElement(JsonElement jsonElement) throws IOException {
         if (jsonElement == null) {
             if (!Chart.openapiRequiredFields.isEmpty()) { // has required fields but JSON element is null
-                throw new IllegalArgumentException(String.format(java.util.Locale.ROOT, "The required field(s) %s in Chart is not found in the empty JSON string", Chart.openapiRequiredFields));
+                throw new IllegalArgumentException(String.format(java.util.Locale.ROOT,
+                    "The required field(s) %s in Chart is not found in the empty JSON string",
+                    Chart.openapiRequiredFields));
             }
         }
 
@@ -176,19 +148,67 @@ public class Chart {
         // check to see if the JSON string contains additional fields
         for (Map.Entry<String, JsonElement> entry : entries) {
             if (!Chart.openapiFields.contains(entry.getKey())) {
-                throw new IllegalArgumentException(String.format(java.util.Locale.ROOT, "The field `%s` in the JSON string is not defined in the `Chart` properties. JSON: %s", entry.getKey(), jsonElement));
+                throw new IllegalArgumentException(String.format(java.util.Locale.ROOT,
+                    "The field `%s` in the JSON string is not defined in the `Chart` properties. JSON: %s",
+                    entry.getKey(), jsonElement));
             }
         }
         JsonObject jsonObj = jsonElement.getAsJsonObject();
-        if ((jsonObj.get("waypointSymbol") != null && !jsonObj.get("waypointSymbol").isJsonNull()) && !jsonObj.get("waypointSymbol").isJsonPrimitive()) {
-            throw new IllegalArgumentException(String.format(java.util.Locale.ROOT, "Expected the field `waypointSymbol` to be a primitive type in the JSON string but got `%s`", jsonObj.get("waypointSymbol").toString()));
+        if ((jsonObj.get("waypointSymbol") != null && !jsonObj.get("waypointSymbol").isJsonNull())
+            && !jsonObj.get("waypointSymbol").isJsonPrimitive()) {
+            throw new IllegalArgumentException(String.format(java.util.Locale.ROOT,
+                "Expected the field `waypointSymbol` to be a primitive type in the JSON string but got `%s`",
+                jsonObj.get("waypointSymbol").toString()));
         }
-        if ((jsonObj.get("submittedBy") != null && !jsonObj.get("submittedBy").isJsonNull()) && !jsonObj.get("submittedBy").isJsonPrimitive()) {
-            throw new IllegalArgumentException(String.format(java.util.Locale.ROOT, "Expected the field `submittedBy` to be a primitive type in the JSON string but got `%s`", jsonObj.get("submittedBy").toString()));
+        if ((jsonObj.get("submittedBy") != null && !jsonObj.get("submittedBy").isJsonNull())
+            && !jsonObj.get("submittedBy").isJsonPrimitive()) {
+            throw new IllegalArgumentException(String.format(java.util.Locale.ROOT,
+                "Expected the field `submittedBy` to be a primitive type in the JSON string but got `%s`",
+                jsonObj.get("submittedBy").toString()));
         }
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        Chart chart = (Chart) o;
+        return Objects.equals(this.waypointSymbol, chart.waypointSymbol) &&
+            Objects.equals(this.submittedBy, chart.submittedBy) &&
+            Objects.equals(this.submittedOn, chart.submittedOn);
+    }
+
+
+    public static HashSet<String> openapiFields;
+    public static HashSet<String> openapiRequiredFields;
+
+    @Override
+    public String toString() {
+        String sb = "class Chart {\n" +
+            "    waypointSymbol: " + toIndentedString(waypointSymbol) + "\n" +
+            "    submittedBy: " + toIndentedString(submittedBy) + "\n" +
+            "    submittedOn: " + toIndentedString(submittedOn) + "\n" +
+            "}";
+        return sb;
+    }
+
+    /**
+     * Convert the given object to string with each line indented by 4 spaces (except the first
+     * line).
+     */
+    private String toIndentedString(Object o) {
+        if (o == null) {
+            return "null";
+        }
+        return o.toString().replace("\n", "\n    ");
+    }
+
     public static class CustomTypeAdapterFactory implements TypeAdapterFactory {
+
         @SuppressWarnings("unchecked")
         @Override
         public <T> TypeAdapter<T> create(Gson gson, TypeToken<T> type) {
@@ -197,7 +217,7 @@ public class Chart {
             }
             final TypeAdapter<JsonElement> elementAdapter = gson.getAdapter(JsonElement.class);
             final TypeAdapter<Chart> thisAdapter
-                    = gson.getDelegateAdapter(this, TypeToken.get(Chart.class));
+                = gson.getDelegateAdapter(this, TypeToken.get(Chart.class));
 
             return (TypeAdapter<T>) new TypeAdapter<Chart>() {
                 @Override

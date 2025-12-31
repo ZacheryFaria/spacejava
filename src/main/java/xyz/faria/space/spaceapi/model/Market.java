@@ -13,21 +13,32 @@
 
 package xyz.faria.space.spaceapi.model;
 
-import com.google.gson.*;
+import com.google.gson.Gson;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.TypeAdapter;
+import com.google.gson.TypeAdapterFactory;
 import com.google.gson.annotations.SerializedName;
 import com.google.gson.reflect.TypeToken;
 import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonWriter;
-import xyz.faria.space.spaceapi.client.JSON;
-
 import java.io.IOException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
+import java.util.Set;
+import xyz.faria.space.spaceapi.client.JSON;
 
 /**
  * Market details.
  */
 
 public class Market {
+
     public static final String SERIALIZED_NAME_SYMBOL = "symbol";
     @SerializedName(SERIALIZED_NAME_SYMBOL)
     @javax.annotation.Nonnull
@@ -66,14 +77,15 @@ public class Market {
         return this;
     }
 
-    /**
-     * The symbol of the market. The symbol is the same as the waypoint where the market is located.
-     *
-     * @return symbol
-     */
-    @javax.annotation.Nonnull
-    public String getSymbol() {
-        return symbol;
+    static {
+        // a set of all properties/fields (JSON key names)
+        openapiFields = new HashSet<String>(
+            Arrays.asList("symbol", "exports", "imports", "exchange", "transactions",
+                "tradeGoods"));
+
+        // a set of required properties/fields (JSON key names)
+        openapiRequiredFields = new HashSet<String>(
+            Arrays.asList("symbol", "exports", "imports", "exchange"));
     }
 
     public void setSymbol(@javax.annotation.Nonnull String symbol) {
@@ -179,13 +191,112 @@ public class Market {
     }
 
     /**
-     * The list of recent transactions at this market. Visible only when a ship is present at the market.
+     * Validates the JSON Element and throws an exception if issues found
      *
-     * @return transactions
+     * @param jsonElement JSON Element
+     * @throws IOException if the JSON Element is invalid with respect to Market
      */
-    @javax.annotation.Nullable
-    public List<MarketTransaction> getTransactions() {
-        return transactions;
+    public static void validateJsonElement(JsonElement jsonElement) throws IOException {
+        if (jsonElement == null) {
+            if (!Market.openapiRequiredFields.isEmpty()) { // has required fields but JSON element is null
+                throw new IllegalArgumentException(String.format(java.util.Locale.ROOT,
+                    "The required field(s) %s in Market is not found in the empty JSON string",
+                    Market.openapiRequiredFields));
+            }
+        }
+
+        Set<Map.Entry<String, JsonElement>> entries = jsonElement.getAsJsonObject().entrySet();
+        // check to see if the JSON string contains additional fields
+        for (Map.Entry<String, JsonElement> entry : entries) {
+            if (!Market.openapiFields.contains(entry.getKey())) {
+                throw new IllegalArgumentException(String.format(java.util.Locale.ROOT,
+                    "The field `%s` in the JSON string is not defined in the `Market` properties. JSON: %s",
+                    entry.getKey(), jsonElement));
+            }
+        }
+
+        // check to make sure all required properties/fields are present in the JSON string
+        for (String requiredField : Market.openapiRequiredFields) {
+            if (jsonElement.getAsJsonObject().get(requiredField) == null) {
+                throw new IllegalArgumentException(String.format(java.util.Locale.ROOT,
+                    "The required field `%s` is not found in the JSON string: %s", requiredField,
+                    jsonElement));
+            }
+        }
+        JsonObject jsonObj = jsonElement.getAsJsonObject();
+        if (!jsonObj.get("symbol").isJsonPrimitive()) {
+            throw new IllegalArgumentException(String.format(java.util.Locale.ROOT,
+                "Expected the field `symbol` to be a primitive type in the JSON string but got `%s`",
+                jsonObj.get("symbol").toString()));
+        }
+        // ensure the json data is an array
+        if (!jsonObj.get("exports").isJsonArray()) {
+            throw new IllegalArgumentException(String.format(java.util.Locale.ROOT,
+                "Expected the field `exports` to be an array in the JSON string but got `%s`",
+                jsonObj.get("exports").toString()));
+        }
+
+        JsonArray jsonArrayexports = jsonObj.getAsJsonArray("exports");
+        // validate the required field `exports` (array)
+        for (int i = 0; i < jsonArrayexports.size(); i++) {
+            TradeGood.validateJsonElement(jsonArrayexports.get(i));
+        }
+        // ensure the json data is an array
+        if (!jsonObj.get("imports").isJsonArray()) {
+            throw new IllegalArgumentException(String.format(java.util.Locale.ROOT,
+                "Expected the field `imports` to be an array in the JSON string but got `%s`",
+                jsonObj.get("imports").toString()));
+        }
+
+        JsonArray jsonArrayimports = jsonObj.getAsJsonArray("imports");
+        // validate the required field `imports` (array)
+        for (int i = 0; i < jsonArrayimports.size(); i++) {
+            TradeGood.validateJsonElement(jsonArrayimports.get(i));
+        }
+        // ensure the json data is an array
+        if (!jsonObj.get("exchange").isJsonArray()) {
+            throw new IllegalArgumentException(String.format(java.util.Locale.ROOT,
+                "Expected the field `exchange` to be an array in the JSON string but got `%s`",
+                jsonObj.get("exchange").toString()));
+        }
+
+        JsonArray jsonArrayexchange = jsonObj.getAsJsonArray("exchange");
+        // validate the required field `exchange` (array)
+        for (int i = 0; i < jsonArrayexchange.size(); i++) {
+            TradeGood.validateJsonElement(jsonArrayexchange.get(i));
+        }
+        if (jsonObj.get("transactions") != null && !jsonObj.get("transactions").isJsonNull()) {
+            JsonArray jsonArraytransactions = jsonObj.getAsJsonArray("transactions");
+            if (jsonArraytransactions != null) {
+                // ensure the json data is an array
+                if (!jsonObj.get("transactions").isJsonArray()) {
+                    throw new IllegalArgumentException(String.format(java.util.Locale.ROOT,
+                        "Expected the field `transactions` to be an array in the JSON string but got `%s`",
+                        jsonObj.get("transactions").toString()));
+                }
+
+                // validate the optional field `transactions` (array)
+                for (int i = 0; i < jsonArraytransactions.size(); i++) {
+                    MarketTransaction.validateJsonElement(jsonArraytransactions.get(i));
+                }
+            }
+        }
+        if (jsonObj.get("tradeGoods") != null && !jsonObj.get("tradeGoods").isJsonNull()) {
+            JsonArray jsonArraytradeGoods = jsonObj.getAsJsonArray("tradeGoods");
+            if (jsonArraytradeGoods != null) {
+                // ensure the json data is an array
+                if (!jsonObj.get("tradeGoods").isJsonArray()) {
+                    throw new IllegalArgumentException(String.format(java.util.Locale.ROOT,
+                        "Expected the field `tradeGoods` to be an array in the JSON string but got `%s`",
+                        jsonObj.get("tradeGoods").toString()));
+                }
+
+                // validate the optional field `tradeGoods` (array)
+                for (int i = 0; i < jsonArraytradeGoods.size(); i++) {
+                    MarketTradeGood.validateJsonElement(jsonArraytradeGoods.get(i));
+                }
+            }
+        }
     }
 
     public void setTransactions(@javax.annotation.Nullable List<MarketTransaction> transactions) {
@@ -207,7 +318,39 @@ public class Market {
     }
 
     /**
-     * The list of goods that are traded at this market. Visible only when a ship is present at the market.
+     * The symbol of the market. The symbol is the same as the waypoint where the market is
+     * located.
+     *
+     * @return symbol
+     */
+    @javax.annotation.Nonnull
+    public String getSymbol() {
+        return symbol;
+    }
+
+    public void setTradeGoods(@javax.annotation.Nullable List<MarketTradeGood> tradeGoods) {
+        this.tradeGoods = tradeGoods;
+    }
+
+    /**
+     * The list of recent transactions at this market. Visible only when a ship is present at the
+     * market.
+     *
+     * @return transactions
+     */
+    @javax.annotation.Nullable
+    public List<MarketTransaction> getTransactions() {
+        return transactions;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(symbol, exports, imports, exchange, transactions, tradeGoods);
+    }
+
+    /**
+     * The list of goods that are traded at this market. Visible only when a ship is present at the
+     * market.
      *
      * @return tradeGoods
      */
@@ -215,11 +358,6 @@ public class Market {
     public List<MarketTradeGood> getTradeGoods() {
         return tradeGoods;
     }
-
-    public void setTradeGoods(@javax.annotation.Nullable List<MarketTradeGood> tradeGoods) {
-        this.tradeGoods = tradeGoods;
-    }
-
 
     @Override
     public boolean equals(Object o) {
@@ -231,34 +369,33 @@ public class Market {
         }
         Market market = (Market) o;
         return Objects.equals(this.symbol, market.symbol) &&
-                Objects.equals(this.exports, market.exports) &&
-                Objects.equals(this.imports, market.imports) &&
-                Objects.equals(this.exchange, market.exchange) &&
-                Objects.equals(this.transactions, market.transactions) &&
-                Objects.equals(this.tradeGoods, market.tradeGoods);
+            Objects.equals(this.exports, market.exports) &&
+            Objects.equals(this.imports, market.imports) &&
+            Objects.equals(this.exchange, market.exchange) &&
+            Objects.equals(this.transactions, market.transactions) &&
+            Objects.equals(this.tradeGoods, market.tradeGoods);
     }
 
-    @Override
-    public int hashCode() {
-        return Objects.hash(symbol, exports, imports, exchange, transactions, tradeGoods);
-    }
+
+    public static HashSet<String> openapiFields;
+    public static HashSet<String> openapiRequiredFields;
 
     @Override
     public String toString() {
         String sb = "class Market {\n" +
-                "    symbol: " + toIndentedString(symbol) + "\n" +
-                "    exports: " + toIndentedString(exports) + "\n" +
-                "    imports: " + toIndentedString(imports) + "\n" +
-                "    exchange: " + toIndentedString(exchange) + "\n" +
-                "    transactions: " + toIndentedString(transactions) + "\n" +
-                "    tradeGoods: " + toIndentedString(tradeGoods) + "\n" +
-                "}";
+            "    symbol: " + toIndentedString(symbol) + "\n" +
+            "    exports: " + toIndentedString(exports) + "\n" +
+            "    imports: " + toIndentedString(imports) + "\n" +
+            "    exchange: " + toIndentedString(exchange) + "\n" +
+            "    transactions: " + toIndentedString(transactions) + "\n" +
+            "    tradeGoods: " + toIndentedString(tradeGoods) + "\n" +
+            "}";
         return sb;
     }
 
     /**
-     * Convert the given object to string with each line indented by 4 spaces
-     * (except the first line).
+     * Convert the given object to string with each line indented by 4 spaces (except the first
+     * line).
      */
     private String toIndentedString(Object o) {
         if (o == null) {
@@ -267,110 +404,8 @@ public class Market {
         return o.toString().replace("\n", "\n    ");
     }
 
-
-    public static HashSet<String> openapiFields;
-    public static HashSet<String> openapiRequiredFields;
-
-    static {
-        // a set of all properties/fields (JSON key names)
-        openapiFields = new HashSet<String>(Arrays.asList("symbol", "exports", "imports", "exchange", "transactions", "tradeGoods"));
-
-        // a set of required properties/fields (JSON key names)
-        openapiRequiredFields = new HashSet<String>(Arrays.asList("symbol", "exports", "imports", "exchange"));
-    }
-
-    /**
-     * Validates the JSON Element and throws an exception if issues found
-     *
-     * @param jsonElement JSON Element
-     * @throws IOException if the JSON Element is invalid with respect to Market
-     */
-    public static void validateJsonElement(JsonElement jsonElement) throws IOException {
-        if (jsonElement == null) {
-            if (!Market.openapiRequiredFields.isEmpty()) { // has required fields but JSON element is null
-                throw new IllegalArgumentException(String.format(java.util.Locale.ROOT, "The required field(s) %s in Market is not found in the empty JSON string", Market.openapiRequiredFields));
-            }
-        }
-
-        Set<Map.Entry<String, JsonElement>> entries = jsonElement.getAsJsonObject().entrySet();
-        // check to see if the JSON string contains additional fields
-        for (Map.Entry<String, JsonElement> entry : entries) {
-            if (!Market.openapiFields.contains(entry.getKey())) {
-                throw new IllegalArgumentException(String.format(java.util.Locale.ROOT, "The field `%s` in the JSON string is not defined in the `Market` properties. JSON: %s", entry.getKey(), jsonElement));
-            }
-        }
-
-        // check to make sure all required properties/fields are present in the JSON string
-        for (String requiredField : Market.openapiRequiredFields) {
-            if (jsonElement.getAsJsonObject().get(requiredField) == null) {
-                throw new IllegalArgumentException(String.format(java.util.Locale.ROOT, "The required field `%s` is not found in the JSON string: %s", requiredField, jsonElement));
-            }
-        }
-        JsonObject jsonObj = jsonElement.getAsJsonObject();
-        if (!jsonObj.get("symbol").isJsonPrimitive()) {
-            throw new IllegalArgumentException(String.format(java.util.Locale.ROOT, "Expected the field `symbol` to be a primitive type in the JSON string but got `%s`", jsonObj.get("symbol").toString()));
-        }
-        // ensure the json data is an array
-        if (!jsonObj.get("exports").isJsonArray()) {
-            throw new IllegalArgumentException(String.format(java.util.Locale.ROOT, "Expected the field `exports` to be an array in the JSON string but got `%s`", jsonObj.get("exports").toString()));
-        }
-
-        JsonArray jsonArrayexports = jsonObj.getAsJsonArray("exports");
-        // validate the required field `exports` (array)
-        for (int i = 0; i < jsonArrayexports.size(); i++) {
-            TradeGood.validateJsonElement(jsonArrayexports.get(i));
-        }
-        // ensure the json data is an array
-        if (!jsonObj.get("imports").isJsonArray()) {
-            throw new IllegalArgumentException(String.format(java.util.Locale.ROOT, "Expected the field `imports` to be an array in the JSON string but got `%s`", jsonObj.get("imports").toString()));
-        }
-
-        JsonArray jsonArrayimports = jsonObj.getAsJsonArray("imports");
-        // validate the required field `imports` (array)
-        for (int i = 0; i < jsonArrayimports.size(); i++) {
-            TradeGood.validateJsonElement(jsonArrayimports.get(i));
-        }
-        // ensure the json data is an array
-        if (!jsonObj.get("exchange").isJsonArray()) {
-            throw new IllegalArgumentException(String.format(java.util.Locale.ROOT, "Expected the field `exchange` to be an array in the JSON string but got `%s`", jsonObj.get("exchange").toString()));
-        }
-
-        JsonArray jsonArrayexchange = jsonObj.getAsJsonArray("exchange");
-        // validate the required field `exchange` (array)
-        for (int i = 0; i < jsonArrayexchange.size(); i++) {
-            TradeGood.validateJsonElement(jsonArrayexchange.get(i));
-        }
-        if (jsonObj.get("transactions") != null && !jsonObj.get("transactions").isJsonNull()) {
-            JsonArray jsonArraytransactions = jsonObj.getAsJsonArray("transactions");
-            if (jsonArraytransactions != null) {
-                // ensure the json data is an array
-                if (!jsonObj.get("transactions").isJsonArray()) {
-                    throw new IllegalArgumentException(String.format(java.util.Locale.ROOT, "Expected the field `transactions` to be an array in the JSON string but got `%s`", jsonObj.get("transactions").toString()));
-                }
-
-                // validate the optional field `transactions` (array)
-                for (int i = 0; i < jsonArraytransactions.size(); i++) {
-                    MarketTransaction.validateJsonElement(jsonArraytransactions.get(i));
-                }
-            }
-        }
-        if (jsonObj.get("tradeGoods") != null && !jsonObj.get("tradeGoods").isJsonNull()) {
-            JsonArray jsonArraytradeGoods = jsonObj.getAsJsonArray("tradeGoods");
-            if (jsonArraytradeGoods != null) {
-                // ensure the json data is an array
-                if (!jsonObj.get("tradeGoods").isJsonArray()) {
-                    throw new IllegalArgumentException(String.format(java.util.Locale.ROOT, "Expected the field `tradeGoods` to be an array in the JSON string but got `%s`", jsonObj.get("tradeGoods").toString()));
-                }
-
-                // validate the optional field `tradeGoods` (array)
-                for (int i = 0; i < jsonArraytradeGoods.size(); i++) {
-                    MarketTradeGood.validateJsonElement(jsonArraytradeGoods.get(i));
-                }
-            }
-        }
-    }
-
     public static class CustomTypeAdapterFactory implements TypeAdapterFactory {
+
         @SuppressWarnings("unchecked")
         @Override
         public <T> TypeAdapter<T> create(Gson gson, TypeToken<T> type) {
@@ -379,7 +414,7 @@ public class Market {
             }
             final TypeAdapter<JsonElement> elementAdapter = gson.getAdapter(JsonElement.class);
             final TypeAdapter<Market> thisAdapter
-                    = gson.getDelegateAdapter(this, TypeToken.get(Market.class));
+                = gson.getDelegateAdapter(this, TypeToken.get(Market.class));
 
             return (TypeAdapter<T>) new TypeAdapter<Market>() {
                 @Override

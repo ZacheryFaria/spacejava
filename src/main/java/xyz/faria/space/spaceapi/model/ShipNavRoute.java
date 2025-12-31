@@ -13,24 +13,32 @@
 
 package xyz.faria.space.spaceapi.model;
 
-import com.google.gson.*;
+import com.google.gson.Gson;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.TypeAdapter;
+import com.google.gson.TypeAdapterFactory;
 import com.google.gson.annotations.SerializedName;
 import com.google.gson.reflect.TypeToken;
 import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonWriter;
 import jakarta.persistence.Embeddable;
 import jakarta.persistence.Embedded;
-import xyz.faria.space.spaceapi.client.JSON;
-
 import java.io.IOException;
 import java.time.OffsetDateTime;
-import java.util.*;
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Objects;
+import java.util.Set;
+import xyz.faria.space.spaceapi.client.JSON;
 
 /**
  * The routing information for the ship&#39;s most recent transit or current location.
  */
 @Embeddable
 public class ShipNavRoute {
+
     public static final String SERIALIZED_NAME_DESTINATION = "destination";
     @SerializedName(SERIALIZED_NAME_DESTINATION)
     @javax.annotation.Nonnull
@@ -121,73 +129,18 @@ public class ShipNavRoute {
         return this;
     }
 
-    /**
-     * The date time of the ship&#39;s arrival. If the ship is in-transit, this is the expected time of arrival.
-     *
-     * @return arrival
-     */
-    @javax.annotation.Nonnull
-    public OffsetDateTime getArrival() {
-        return arrival;
+    static {
+        // a set of all properties/fields (JSON key names)
+        openapiFields = new HashSet<String>(
+            Arrays.asList("destination", "origin", "departureTime", "arrival"));
+
+        // a set of required properties/fields (JSON key names)
+        openapiRequiredFields = new HashSet<String>(
+            Arrays.asList("destination", "origin", "departureTime", "arrival"));
     }
 
     public void setArrival(@javax.annotation.Nonnull OffsetDateTime arrival) {
         this.arrival = arrival;
-    }
-
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (o == null || getClass() != o.getClass()) {
-            return false;
-        }
-        ShipNavRoute shipNavRoute = (ShipNavRoute) o;
-        return Objects.equals(this.destination, shipNavRoute.destination) &&
-                Objects.equals(this.origin, shipNavRoute.origin) &&
-                Objects.equals(this.departureTime, shipNavRoute.departureTime) &&
-                Objects.equals(this.arrival, shipNavRoute.arrival);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(destination, origin, departureTime, arrival);
-    }
-
-    @Override
-    public String toString() {
-        String sb = "class ShipNavRoute {\n" +
-                "    destination: " + toIndentedString(destination) + "\n" +
-                "    origin: " + toIndentedString(origin) + "\n" +
-                "    departureTime: " + toIndentedString(departureTime) + "\n" +
-                "    arrival: " + toIndentedString(arrival) + "\n" +
-                "}";
-        return sb;
-    }
-
-    /**
-     * Convert the given object to string with each line indented by 4 spaces
-     * (except the first line).
-     */
-    private String toIndentedString(Object o) {
-        if (o == null) {
-            return "null";
-        }
-        return o.toString().replace("\n", "\n    ");
-    }
-
-
-    public static HashSet<String> openapiFields;
-    public static HashSet<String> openapiRequiredFields;
-
-    static {
-        // a set of all properties/fields (JSON key names)
-        openapiFields = new HashSet<String>(Arrays.asList("destination", "origin", "departureTime", "arrival"));
-
-        // a set of required properties/fields (JSON key names)
-        openapiRequiredFields = new HashSet<String>(Arrays.asList("destination", "origin", "departureTime", "arrival"));
     }
 
     /**
@@ -199,7 +152,9 @@ public class ShipNavRoute {
     public static void validateJsonElement(JsonElement jsonElement) throws IOException {
         if (jsonElement == null) {
             if (!ShipNavRoute.openapiRequiredFields.isEmpty()) { // has required fields but JSON element is null
-                throw new IllegalArgumentException(String.format(java.util.Locale.ROOT, "The required field(s) %s in ShipNavRoute is not found in the empty JSON string", ShipNavRoute.openapiRequiredFields));
+                throw new IllegalArgumentException(String.format(java.util.Locale.ROOT,
+                    "The required field(s) %s in ShipNavRoute is not found in the empty JSON string",
+                    ShipNavRoute.openapiRequiredFields));
             }
         }
 
@@ -207,14 +162,18 @@ public class ShipNavRoute {
         // check to see if the JSON string contains additional fields
         for (Map.Entry<String, JsonElement> entry : entries) {
             if (!ShipNavRoute.openapiFields.contains(entry.getKey())) {
-                throw new IllegalArgumentException(String.format(java.util.Locale.ROOT, "The field `%s` in the JSON string is not defined in the `ShipNavRoute` properties. JSON: %s", entry.getKey(), jsonElement));
+                throw new IllegalArgumentException(String.format(java.util.Locale.ROOT,
+                    "The field `%s` in the JSON string is not defined in the `ShipNavRoute` properties. JSON: %s",
+                    entry.getKey(), jsonElement));
             }
         }
 
         // check to make sure all required properties/fields are present in the JSON string
         for (String requiredField : ShipNavRoute.openapiRequiredFields) {
             if (jsonElement.getAsJsonObject().get(requiredField) == null) {
-                throw new IllegalArgumentException(String.format(java.util.Locale.ROOT, "The required field `%s` is not found in the JSON string: %s", requiredField, jsonElement));
+                throw new IllegalArgumentException(String.format(java.util.Locale.ROOT,
+                    "The required field `%s` is not found in the JSON string: %s", requiredField,
+                    jsonElement));
             }
         }
         JsonObject jsonObj = jsonElement.getAsJsonObject();
@@ -224,7 +183,65 @@ public class ShipNavRoute {
         ShipNavRouteWaypoint.validateJsonElement(jsonObj.get("origin"));
     }
 
+    @Override
+    public int hashCode() {
+        return Objects.hash(destination, origin, departureTime, arrival);
+    }
+
+    /**
+     * The date time of the ship&#39;s arrival. If the ship is in-transit, this is the expected time
+     * of arrival.
+     *
+     * @return arrival
+     */
+    @javax.annotation.Nonnull
+    public OffsetDateTime getArrival() {
+        return arrival;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        ShipNavRoute shipNavRoute = (ShipNavRoute) o;
+        return Objects.equals(this.destination, shipNavRoute.destination) &&
+            Objects.equals(this.origin, shipNavRoute.origin) &&
+            Objects.equals(this.departureTime, shipNavRoute.departureTime) &&
+            Objects.equals(this.arrival, shipNavRoute.arrival);
+    }
+
+
+    public static HashSet<String> openapiFields;
+    public static HashSet<String> openapiRequiredFields;
+
+    @Override
+    public String toString() {
+        String sb = "class ShipNavRoute {\n" +
+            "    destination: " + toIndentedString(destination) + "\n" +
+            "    origin: " + toIndentedString(origin) + "\n" +
+            "    departureTime: " + toIndentedString(departureTime) + "\n" +
+            "    arrival: " + toIndentedString(arrival) + "\n" +
+            "}";
+        return sb;
+    }
+
+    /**
+     * Convert the given object to string with each line indented by 4 spaces (except the first
+     * line).
+     */
+    private String toIndentedString(Object o) {
+        if (o == null) {
+            return "null";
+        }
+        return o.toString().replace("\n", "\n    ");
+    }
+
     public static class CustomTypeAdapterFactory implements TypeAdapterFactory {
+
         @SuppressWarnings("unchecked")
         @Override
         public <T> TypeAdapter<T> create(Gson gson, TypeToken<T> type) {
@@ -233,7 +250,7 @@ public class ShipNavRoute {
             }
             final TypeAdapter<JsonElement> elementAdapter = gson.getAdapter(JsonElement.class);
             final TypeAdapter<ShipNavRoute> thisAdapter
-                    = gson.getDelegateAdapter(this, TypeToken.get(ShipNavRoute.class));
+                = gson.getDelegateAdapter(this, TypeToken.get(ShipNavRoute.class));
 
             return (TypeAdapter<T>) new TypeAdapter<ShipNavRoute>() {
                 @Override

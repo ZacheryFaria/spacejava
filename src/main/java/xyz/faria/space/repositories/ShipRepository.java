@@ -7,5 +7,5 @@ import xyz.faria.space.models.Ship;
 
 public interface ShipRepository extends CrudRepository<Ship, Long> {
 
-    public Optional<Ship> findBySymbol(String symbol);
+    Optional<Ship> findBySymbol(String symbol);
 }

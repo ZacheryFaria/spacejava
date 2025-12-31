@@ -13,7 +13,11 @@
 
 package xyz.faria.space.spaceapi.model;
 
-import com.google.gson.*;
+import com.google.gson.Gson;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.TypeAdapter;
+import com.google.gson.TypeAdapterFactory;
 import com.google.gson.annotations.JsonAdapter;
 import com.google.gson.annotations.SerializedName;
 import com.google.gson.reflect.TypeToken;
@@ -21,11 +25,14 @@ import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonWriter;
 import jakarta.persistence.Embeddable;
 import jakarta.persistence.Embedded;
-import xyz.faria.space.spaceapi.client.JSON;
-
 import java.io.IOException;
 import java.math.BigDecimal;
-import java.util.*;
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Objects;
+import java.util.Set;
+import xyz.faria.space.spaceapi.client.JSON;
 
 /**
  * The engine determines how quickly a ship travels between waypoints.
@@ -33,60 +40,17 @@ import java.util.*;
 
 @Embeddable
 public class ShipEngine {
-    /**
-     * The symbol of the engine.
-     */
-    @JsonAdapter(SymbolEnum.Adapter.class)
-    public enum SymbolEnum {
-        ENGINE_IMPULSE_DRIVE_I("ENGINE_IMPULSE_DRIVE_I"),
 
-        ENGINE_ION_DRIVE_I("ENGINE_ION_DRIVE_I"),
+    static {
+        // a set of all properties/fields (JSON key names)
+        openapiFields = new HashSet<String>(
+            Arrays.asList("symbol", "name", "description", "condition", "integrity", "speed",
+                "requirements", "quality"));
 
-        ENGINE_ION_DRIVE_II("ENGINE_ION_DRIVE_II"),
-
-        ENGINE_HYPER_DRIVE_I("ENGINE_HYPER_DRIVE_I");
-
-        private final String value;
-
-        SymbolEnum(String value) {
-            this.value = value;
-        }
-
-        public String getValue() {
-            return value;
-        }
-
-        @Override
-        public String toString() {
-            return String.valueOf(value);
-        }
-
-        public static SymbolEnum fromValue(String value) {
-            for (SymbolEnum b : SymbolEnum.values()) {
-                if (b.value.equals(value)) {
-                    return b;
-                }
-            }
-            throw new IllegalArgumentException("Unexpected value '" + value + "'");
-        }
-
-        public static class Adapter extends TypeAdapter<SymbolEnum> {
-            @Override
-            public void write(final JsonWriter jsonWriter, final SymbolEnum enumeration) throws IOException {
-                jsonWriter.value(enumeration.getValue());
-            }
-
-            @Override
-            public SymbolEnum read(final JsonReader jsonReader) throws IOException {
-                String value = jsonReader.nextString();
-                return SymbolEnum.fromValue(value);
-            }
-        }
-
-        public static void validateJsonElement(JsonElement jsonElement) throws IOException {
-            String value = jsonElement.getAsString();
-            SymbolEnum.fromValue(value);
-        }
+        // a set of required properties/fields (JSON key names)
+        openapiRequiredFields = new HashSet<String>(
+            Arrays.asList("symbol", "name", "description", "condition", "integrity", "speed",
+                "requirements", "quality"));
     }
 
     public static final String SERIALIZED_NAME_SYMBOL = "symbol";
@@ -199,15 +163,58 @@ public class ShipEngine {
     }
 
     /**
-     * The repairable condition of a component. A value of 0 indicates the component needs significant repairs, while a value of 1 indicates the component is in near perfect condition. As the condition of a component is repaired, the overall integrity of the component decreases.
-     * minimum: 0
-     * maximum: 1
+     * Validates the JSON Element and throws an exception if issues found
      *
-     * @return condition
+     * @param jsonElement JSON Element
+     * @throws IOException if the JSON Element is invalid with respect to ShipEngine
      */
-    @javax.annotation.Nonnull
-    public Double getCondition() {
-        return condition;
+    public static void validateJsonElement(JsonElement jsonElement) throws IOException {
+        if (jsonElement == null) {
+            if (!ShipEngine.openapiRequiredFields.isEmpty()) { // has required fields but JSON element is null
+                throw new IllegalArgumentException(String.format(java.util.Locale.ROOT,
+                    "The required field(s) %s in ShipEngine is not found in the empty JSON string",
+                    ShipEngine.openapiRequiredFields));
+            }
+        }
+
+        Set<Map.Entry<String, JsonElement>> entries = jsonElement.getAsJsonObject().entrySet();
+        // check to see if the JSON string contains additional fields
+        for (Map.Entry<String, JsonElement> entry : entries) {
+            if (!ShipEngine.openapiFields.contains(entry.getKey())) {
+                throw new IllegalArgumentException(String.format(java.util.Locale.ROOT,
+                    "The field `%s` in the JSON string is not defined in the `ShipEngine` properties. JSON: %s",
+                    entry.getKey(), jsonElement));
+            }
+        }
+
+        // check to make sure all required properties/fields are present in the JSON string
+        for (String requiredField : ShipEngine.openapiRequiredFields) {
+            if (jsonElement.getAsJsonObject().get(requiredField) == null) {
+                throw new IllegalArgumentException(String.format(java.util.Locale.ROOT,
+                    "The required field `%s` is not found in the JSON string: %s", requiredField,
+                    jsonElement));
+            }
+        }
+        JsonObject jsonObj = jsonElement.getAsJsonObject();
+        if (!jsonObj.get("symbol").isJsonPrimitive()) {
+            throw new IllegalArgumentException(String.format(java.util.Locale.ROOT,
+                "Expected the field `symbol` to be a primitive type in the JSON string but got `%s`",
+                jsonObj.get("symbol").toString()));
+        }
+        // validate the required field `symbol`
+        SymbolEnum.validateJsonElement(jsonObj.get("symbol"));
+        if (!jsonObj.get("name").isJsonPrimitive()) {
+            throw new IllegalArgumentException(String.format(java.util.Locale.ROOT,
+                "Expected the field `name` to be a primitive type in the JSON string but got `%s`",
+                jsonObj.get("name").toString()));
+        }
+        if (!jsonObj.get("description").isJsonPrimitive()) {
+            throw new IllegalArgumentException(String.format(java.util.Locale.ROOT,
+                "Expected the field `description` to be a primitive type in the JSON string but got `%s`",
+                jsonObj.get("description").toString()));
+        }
+        // validate the required field `requirements`
+        ShipRequirements.validateJsonElement(jsonObj.get("requirements"));
     }
 
     public void setCondition(@javax.annotation.Nonnull Double condition) {
@@ -221,15 +228,16 @@ public class ShipEngine {
     }
 
     /**
-     * The overall integrity of the component, which determines the performance of the component. A value of 0 indicates that the component is almost completely degraded, while a value of 1 indicates that the component is in near perfect condition. The integrity of the component is non-repairable, and represents permanent wear over time.
-     * minimum: 0
-     * maximum: 1
+     * The repairable condition of a component. A value of 0 indicates the component needs
+     * significant repairs, while a value of 1 indicates the component is in near perfect condition.
+     * As the condition of a component is repaired, the overall integrity of the component
+     * decreases. minimum: 0 maximum: 1
      *
-     * @return integrity
+     * @return condition
      */
     @javax.annotation.Nonnull
-    public Double getIntegrity() {
-        return integrity;
+    public Double getCondition() {
+        return condition;
     }
 
     public void setIntegrity(@javax.annotation.Nonnull Double integrity) {
@@ -243,14 +251,16 @@ public class ShipEngine {
     }
 
     /**
-     * The speed stat of this engine. The higher the speed, the faster a ship can travel from one point to another. Reduces the time of arrival when navigating the ship.
-     * minimum: 1
+     * The overall integrity of the component, which determines the performance of the component. A
+     * value of 0 indicates that the component is almost completely degraded, while a value of 1
+     * indicates that the component is in near perfect condition. The integrity of the component is
+     * non-repairable, and represents permanent wear over time. minimum: 0 maximum: 1
      *
-     * @return speed
+     * @return integrity
      */
     @javax.annotation.Nonnull
-    public Integer getSpeed() {
-        return speed;
+    public Double getIntegrity() {
+        return integrity;
     }
 
     public void setSpeed(@javax.annotation.Nonnull Integer speed) {
@@ -284,7 +294,25 @@ public class ShipEngine {
     }
 
     /**
-     * The overall quality of the component, which determines the quality of the component. High quality components return more ships parts and ship plating when a ship is scrapped. But also require more of these parts to repair. This is transparent to the player, as the parts are bought from/sold to the marketplace.
+     * The speed stat of this engine. The higher the speed, the faster a ship can travel from one
+     * point to another. Reduces the time of arrival when navigating the ship. minimum: 1
+     *
+     * @return speed
+     */
+    @javax.annotation.Nonnull
+    public Integer getSpeed() {
+        return speed;
+    }
+
+    public void setQuality(@javax.annotation.Nonnull BigDecimal quality) {
+        this.quality = quality;
+    }
+
+    /**
+     * The overall quality of the component, which determines the quality of the component. High
+     * quality components return more ships parts and ship plating when a ship is scrapped. But also
+     * require more of these parts to repair. This is transparent to the player, as the parts are
+     * bought from/sold to the marketplace.
      *
      * @return quality
      */
@@ -292,11 +320,6 @@ public class ShipEngine {
     public BigDecimal getQuality() {
         return quality;
     }
-
-    public void setQuality(@javax.annotation.Nonnull BigDecimal quality) {
-        this.quality = quality;
-    }
-
 
     @Override
     public boolean equals(Object o) {
@@ -308,38 +331,43 @@ public class ShipEngine {
         }
         ShipEngine shipEngine = (ShipEngine) o;
         return Objects.equals(this.symbol, shipEngine.symbol) &&
-                Objects.equals(this.name, shipEngine.name) &&
-                Objects.equals(this.description, shipEngine.description) &&
-                Objects.equals(this.condition, shipEngine.condition) &&
-                Objects.equals(this.integrity, shipEngine.integrity) &&
-                Objects.equals(this.speed, shipEngine.speed) &&
-                Objects.equals(this.requirements, shipEngine.requirements) &&
-                Objects.equals(this.quality, shipEngine.quality);
+            Objects.equals(this.name, shipEngine.name) &&
+            Objects.equals(this.description, shipEngine.description) &&
+            Objects.equals(this.condition, shipEngine.condition) &&
+            Objects.equals(this.integrity, shipEngine.integrity) &&
+            Objects.equals(this.speed, shipEngine.speed) &&
+            Objects.equals(this.requirements, shipEngine.requirements) &&
+            Objects.equals(this.quality, shipEngine.quality);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(symbol, name, description, condition, integrity, speed, requirements, quality);
+        return Objects.hash(symbol, name, description, condition, integrity, speed, requirements,
+            quality);
     }
 
     @Override
     public String toString() {
         String sb = "class ShipEngine {\n" +
-                "    symbol: " + toIndentedString(symbol) + "\n" +
-                "    name: " + toIndentedString(name) + "\n" +
-                "    description: " + toIndentedString(description) + "\n" +
-                "    condition: " + toIndentedString(condition) + "\n" +
-                "    integrity: " + toIndentedString(integrity) + "\n" +
-                "    speed: " + toIndentedString(speed) + "\n" +
-                "    requirements: " + toIndentedString(requirements) + "\n" +
-                "    quality: " + toIndentedString(quality) + "\n" +
-                "}";
+            "    symbol: " + toIndentedString(symbol) + "\n" +
+            "    name: " + toIndentedString(name) + "\n" +
+            "    description: " + toIndentedString(description) + "\n" +
+            "    condition: " + toIndentedString(condition) + "\n" +
+            "    integrity: " + toIndentedString(integrity) + "\n" +
+            "    speed: " + toIndentedString(speed) + "\n" +
+            "    requirements: " + toIndentedString(requirements) + "\n" +
+            "    quality: " + toIndentedString(quality) + "\n" +
+            "}";
         return sb;
     }
 
+
+    public static HashSet<String> openapiFields;
+    public static HashSet<String> openapiRequiredFields;
+
     /**
-     * Convert the given object to string with each line indented by 4 spaces
-     * (except the first line).
+     * Convert the given object to string with each line indented by 4 spaces (except the first
+     * line).
      */
     private String toIndentedString(Object o) {
         if (o == null) {
@@ -348,62 +376,66 @@ public class ShipEngine {
         return o.toString().replace("\n", "\n    ");
     }
 
-
-    public static HashSet<String> openapiFields;
-    public static HashSet<String> openapiRequiredFields;
-
-    static {
-        // a set of all properties/fields (JSON key names)
-        openapiFields = new HashSet<String>(Arrays.asList("symbol", "name", "description", "condition", "integrity", "speed", "requirements", "quality"));
-
-        // a set of required properties/fields (JSON key names)
-        openapiRequiredFields = new HashSet<String>(Arrays.asList("symbol", "name", "description", "condition", "integrity", "speed", "requirements", "quality"));
-    }
-
     /**
-     * Validates the JSON Element and throws an exception if issues found
-     *
-     * @param jsonElement JSON Element
-     * @throws IOException if the JSON Element is invalid with respect to ShipEngine
+     * The symbol of the engine.
      */
-    public static void validateJsonElement(JsonElement jsonElement) throws IOException {
-        if (jsonElement == null) {
-            if (!ShipEngine.openapiRequiredFields.isEmpty()) { // has required fields but JSON element is null
-                throw new IllegalArgumentException(String.format(java.util.Locale.ROOT, "The required field(s) %s in ShipEngine is not found in the empty JSON string", ShipEngine.openapiRequiredFields));
+    @JsonAdapter(SymbolEnum.Adapter.class)
+    public enum SymbolEnum {
+        ENGINE_IMPULSE_DRIVE_I("ENGINE_IMPULSE_DRIVE_I"),
+
+        ENGINE_ION_DRIVE_I("ENGINE_ION_DRIVE_I"),
+
+        ENGINE_ION_DRIVE_II("ENGINE_ION_DRIVE_II"),
+
+        ENGINE_HYPER_DRIVE_I("ENGINE_HYPER_DRIVE_I");
+
+        private final String value;
+
+        SymbolEnum(String value) {
+            this.value = value;
+        }
+
+        public String getValue() {
+            return value;
+        }
+
+        @Override
+        public String toString() {
+            return String.valueOf(value);
+        }
+
+        public static SymbolEnum fromValue(String value) {
+            for (SymbolEnum b : SymbolEnum.values()) {
+                if (b.value.equals(value)) {
+                    return b;
+                }
+            }
+            throw new IllegalArgumentException("Unexpected value '" + value + "'");
+        }
+
+        public static class Adapter extends TypeAdapter<SymbolEnum> {
+
+            @Override
+            public void write(final JsonWriter jsonWriter, final SymbolEnum enumeration)
+                throws IOException {
+                jsonWriter.value(enumeration.getValue());
+            }
+
+            @Override
+            public SymbolEnum read(final JsonReader jsonReader) throws IOException {
+                String value = jsonReader.nextString();
+                return SymbolEnum.fromValue(value);
             }
         }
 
-        Set<Map.Entry<String, JsonElement>> entries = jsonElement.getAsJsonObject().entrySet();
-        // check to see if the JSON string contains additional fields
-        for (Map.Entry<String, JsonElement> entry : entries) {
-            if (!ShipEngine.openapiFields.contains(entry.getKey())) {
-                throw new IllegalArgumentException(String.format(java.util.Locale.ROOT, "The field `%s` in the JSON string is not defined in the `ShipEngine` properties. JSON: %s", entry.getKey(), jsonElement));
-            }
+        public static void validateJsonElement(JsonElement jsonElement) throws IOException {
+            String value = jsonElement.getAsString();
+            SymbolEnum.fromValue(value);
         }
-
-        // check to make sure all required properties/fields are present in the JSON string
-        for (String requiredField : ShipEngine.openapiRequiredFields) {
-            if (jsonElement.getAsJsonObject().get(requiredField) == null) {
-                throw new IllegalArgumentException(String.format(java.util.Locale.ROOT, "The required field `%s` is not found in the JSON string: %s", requiredField, jsonElement));
-            }
-        }
-        JsonObject jsonObj = jsonElement.getAsJsonObject();
-        if (!jsonObj.get("symbol").isJsonPrimitive()) {
-            throw new IllegalArgumentException(String.format(java.util.Locale.ROOT, "Expected the field `symbol` to be a primitive type in the JSON string but got `%s`", jsonObj.get("symbol").toString()));
-        }
-        // validate the required field `symbol`
-        SymbolEnum.validateJsonElement(jsonObj.get("symbol"));
-        if (!jsonObj.get("name").isJsonPrimitive()) {
-            throw new IllegalArgumentException(String.format(java.util.Locale.ROOT, "Expected the field `name` to be a primitive type in the JSON string but got `%s`", jsonObj.get("name").toString()));
-        }
-        if (!jsonObj.get("description").isJsonPrimitive()) {
-            throw new IllegalArgumentException(String.format(java.util.Locale.ROOT, "Expected the field `description` to be a primitive type in the JSON string but got `%s`", jsonObj.get("description").toString()));
-        }
-        // validate the required field `requirements`
-        ShipRequirements.validateJsonElement(jsonObj.get("requirements"));
     }
 
     public static class CustomTypeAdapterFactory implements TypeAdapterFactory {
+
         @SuppressWarnings("unchecked")
         @Override
         public <T> TypeAdapter<T> create(Gson gson, TypeToken<T> type) {
@@ -412,7 +444,7 @@ public class ShipEngine {
             }
             final TypeAdapter<JsonElement> elementAdapter = gson.getAdapter(JsonElement.class);
             final TypeAdapter<ShipEngine> thisAdapter
-                    = gson.getDelegateAdapter(this, TypeToken.get(ShipEngine.class));
+                = gson.getDelegateAdapter(this, TypeToken.get(ShipEngine.class));
 
             return (TypeAdapter<T>) new TypeAdapter<ShipEngine>() {
                 @Override

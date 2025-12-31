@@ -6,10 +6,9 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Index;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
-import jakarta.persistence.Temporal;
-import jakarta.persistence.TemporalType;
-import java.sql.Date;
 import lombok.Getter;
 import lombok.Setter;
 import xyz.faria.space.spaceapi.client.ApiClient;
@@ -18,7 +17,7 @@ import xyz.faria.space.spaceapi.client.ApiClient;
 @Setter
 @Entity
 @Table(name = "agent", indexes = {
-    @Index(name = "idx_agent_symbol", columnList = "symbol,reset_date", unique = true)})
+    @Index(name = "idx_agent_symbol", columnList = "symbol,reset_id", unique = true)})
 public class Agent {
 
     @Id
@@ -44,9 +43,9 @@ public class Agent {
     @Column(name = "token", nullable = false, columnDefinition = "TEXT")
     private String token;
 
-    @Column(name = "reset_date", nullable = false)
-    @Temporal(TemporalType.DATE)
-    private Date resetDate;
+    @ManyToOne
+    @JoinColumn(name = "reset_id")
+    private Reset reset;
 
     public ApiClient getAgentClient() {
         return ApiClient.getAgentApiClient(this.getToken());

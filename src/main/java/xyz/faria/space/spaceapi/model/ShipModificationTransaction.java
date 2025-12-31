@@ -13,21 +13,29 @@
 
 package xyz.faria.space.spaceapi.model;
 
-import com.google.gson.*;
+import com.google.gson.Gson;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.TypeAdapter;
+import com.google.gson.TypeAdapterFactory;
 import com.google.gson.annotations.SerializedName;
 import com.google.gson.reflect.TypeToken;
 import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonWriter;
-import xyz.faria.space.spaceapi.client.JSON;
-
 import java.io.IOException;
 import java.time.OffsetDateTime;
-import java.util.*;
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Objects;
+import java.util.Set;
+import xyz.faria.space.spaceapi.client.JSON;
 
 /**
  * Result of a transaction for a ship modification, such as installing a mount or a module.
  */
 public class ShipModificationTransaction {
+
     public static final String SERIALIZED_NAME_WAYPOINT_SYMBOL = "waypointSymbol";
     @SerializedName(SERIALIZED_NAME_WAYPOINT_SYMBOL)
     @javax.annotation.Nonnull
@@ -56,9 +64,16 @@ public class ShipModificationTransaction {
     public ShipModificationTransaction() {
     }
 
-    public ShipModificationTransaction waypointSymbol(@javax.annotation.Nonnull String waypointSymbol) {
-        this.waypointSymbol = waypointSymbol;
-        return this;
+    static {
+        // a set of all properties/fields (JSON key names)
+        openapiFields = new HashSet<String>(
+            Arrays.asList("waypointSymbol", "shipSymbol", "tradeSymbol", "totalPrice",
+                "timestamp"));
+
+        // a set of required properties/fields (JSON key names)
+        openapiRequiredFields = new HashSet<String>(
+            Arrays.asList("waypointSymbol", "shipSymbol", "tradeSymbol", "totalPrice",
+                "timestamp"));
     }
 
     /**
@@ -122,24 +137,72 @@ public class ShipModificationTransaction {
     }
 
     /**
-     * The total price of the transaction.
-     * minimum: 0
+     * Validates the JSON Element and throws an exception if issues found
      *
-     * @return totalPrice
+     * @param jsonElement JSON Element
+     * @throws IOException if the JSON Element is invalid with respect to
+     *                     ShipModificationTransaction
      */
-    @javax.annotation.Nonnull
-    public Integer getTotalPrice() {
-        return totalPrice;
+    public static void validateJsonElement(JsonElement jsonElement) throws IOException {
+        if (jsonElement == null) {
+            if (!ShipModificationTransaction.openapiRequiredFields.isEmpty()) { // has required fields but JSON element is null
+                throw new IllegalArgumentException(String.format(java.util.Locale.ROOT,
+                    "The required field(s) %s in ShipModificationTransaction is not found in the empty JSON string",
+                    ShipModificationTransaction.openapiRequiredFields));
+            }
+        }
+
+        Set<Map.Entry<String, JsonElement>> entries = jsonElement.getAsJsonObject().entrySet();
+        // check to see if the JSON string contains additional fields
+        for (Map.Entry<String, JsonElement> entry : entries) {
+            if (!ShipModificationTransaction.openapiFields.contains(entry.getKey())) {
+                throw new IllegalArgumentException(String.format(java.util.Locale.ROOT,
+                    "The field `%s` in the JSON string is not defined in the `ShipModificationTransaction` properties. JSON: %s",
+                    entry.getKey(), jsonElement));
+            }
+        }
+
+        // check to make sure all required properties/fields are present in the JSON string
+        for (String requiredField : ShipModificationTransaction.openapiRequiredFields) {
+            if (jsonElement.getAsJsonObject().get(requiredField) == null) {
+                throw new IllegalArgumentException(String.format(java.util.Locale.ROOT,
+                    "The required field `%s` is not found in the JSON string: %s",
+                    requiredField,
+                    jsonElement));
+            }
+        }
+        JsonObject jsonObj = jsonElement.getAsJsonObject();
+        if (!jsonObj.get("waypointSymbol").isJsonPrimitive()) {
+            throw new IllegalArgumentException(String.format(java.util.Locale.ROOT,
+                "Expected the field `waypointSymbol` to be a primitive type in the JSON string but got `%s`",
+                jsonObj.get("waypointSymbol").toString()));
+        }
+        if (!jsonObj.get("shipSymbol").isJsonPrimitive()) {
+            throw new IllegalArgumentException(String.format(java.util.Locale.ROOT,
+                "Expected the field `shipSymbol` to be a primitive type in the JSON string but got `%s`",
+                jsonObj.get("shipSymbol").toString()));
+        }
+        if (!jsonObj.get("tradeSymbol").isJsonPrimitive()) {
+            throw new IllegalArgumentException(String.format(java.util.Locale.ROOT,
+                "Expected the field `tradeSymbol` to be a primitive type in the JSON string but got `%s`",
+                jsonObj.get("tradeSymbol").toString()));
+        }
     }
 
     public void setTotalPrice(@javax.annotation.Nonnull Integer totalPrice) {
         this.totalPrice = totalPrice;
     }
 
-
-    public ShipModificationTransaction timestamp(@javax.annotation.Nonnull OffsetDateTime timestamp) {
-        this.timestamp = timestamp;
-        return this;
+    /**
+     * Create an instance of ShipModificationTransaction given an JSON string
+     *
+     * @param jsonString JSON string
+     * @return An instance of ShipModificationTransaction
+     * @throws IOException if the JSON string is invalid with respect to
+     *                     ShipModificationTransaction
+     */
+    public static ShipModificationTransaction fromJson(String jsonString) throws IOException {
+        return JSON.getGson().fromJson(jsonString, ShipModificationTransaction.class);
     }
 
     /**
@@ -156,6 +219,36 @@ public class ShipModificationTransaction {
         this.timestamp = timestamp;
     }
 
+    public ShipModificationTransaction waypointSymbol(
+        @javax.annotation.Nonnull String waypointSymbol) {
+        this.waypointSymbol = waypointSymbol;
+        return this;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(waypointSymbol, shipSymbol, tradeSymbol, totalPrice, timestamp);
+    }
+
+    /**
+     * The total price of the transaction. minimum: 0
+     *
+     * @return totalPrice
+     */
+    @javax.annotation.Nonnull
+    public Integer getTotalPrice() {
+        return totalPrice;
+    }
+
+    public ShipModificationTransaction timestamp(
+        @javax.annotation.Nonnull OffsetDateTime timestamp) {
+        this.timestamp = timestamp;
+        return this;
+    }
+
+
+    public static HashSet<String> openapiFields;
+    public static HashSet<String> openapiRequiredFields;
 
     @Override
     public boolean equals(Object o) {
@@ -167,32 +260,27 @@ public class ShipModificationTransaction {
         }
         ShipModificationTransaction shipModificationTransaction = (ShipModificationTransaction) o;
         return Objects.equals(this.waypointSymbol, shipModificationTransaction.waypointSymbol) &&
-                Objects.equals(this.shipSymbol, shipModificationTransaction.shipSymbol) &&
-                Objects.equals(this.tradeSymbol, shipModificationTransaction.tradeSymbol) &&
-                Objects.equals(this.totalPrice, shipModificationTransaction.totalPrice) &&
-                Objects.equals(this.timestamp, shipModificationTransaction.timestamp);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(waypointSymbol, shipSymbol, tradeSymbol, totalPrice, timestamp);
+            Objects.equals(this.shipSymbol, shipModificationTransaction.shipSymbol) &&
+            Objects.equals(this.tradeSymbol, shipModificationTransaction.tradeSymbol) &&
+            Objects.equals(this.totalPrice, shipModificationTransaction.totalPrice) &&
+            Objects.equals(this.timestamp, shipModificationTransaction.timestamp);
     }
 
     @Override
     public String toString() {
         String sb = "class ShipModificationTransaction {\n" +
-                "    waypointSymbol: " + toIndentedString(waypointSymbol) + "\n" +
-                "    shipSymbol: " + toIndentedString(shipSymbol) + "\n" +
-                "    tradeSymbol: " + toIndentedString(tradeSymbol) + "\n" +
-                "    totalPrice: " + toIndentedString(totalPrice) + "\n" +
-                "    timestamp: " + toIndentedString(timestamp) + "\n" +
-                "}";
+            "    waypointSymbol: " + toIndentedString(waypointSymbol) + "\n" +
+            "    shipSymbol: " + toIndentedString(shipSymbol) + "\n" +
+            "    tradeSymbol: " + toIndentedString(tradeSymbol) + "\n" +
+            "    totalPrice: " + toIndentedString(totalPrice) + "\n" +
+            "    timestamp: " + toIndentedString(timestamp) + "\n" +
+            "}";
         return sb;
     }
 
     /**
-     * Convert the given object to string with each line indented by 4 spaces
-     * (except the first line).
+     * Convert the given object to string with each line indented by 4 spaces (except the first
+     * line).
      */
     private String toIndentedString(Object o) {
         if (o == null) {
@@ -201,58 +289,8 @@ public class ShipModificationTransaction {
         return o.toString().replace("\n", "\n    ");
     }
 
-
-    public static HashSet<String> openapiFields;
-    public static HashSet<String> openapiRequiredFields;
-
-    static {
-        // a set of all properties/fields (JSON key names)
-        openapiFields = new HashSet<String>(Arrays.asList("waypointSymbol", "shipSymbol", "tradeSymbol", "totalPrice", "timestamp"));
-
-        // a set of required properties/fields (JSON key names)
-        openapiRequiredFields = new HashSet<String>(Arrays.asList("waypointSymbol", "shipSymbol", "tradeSymbol", "totalPrice", "timestamp"));
-    }
-
-    /**
-     * Validates the JSON Element and throws an exception if issues found
-     *
-     * @param jsonElement JSON Element
-     * @throws IOException if the JSON Element is invalid with respect to ShipModificationTransaction
-     */
-    public static void validateJsonElement(JsonElement jsonElement) throws IOException {
-        if (jsonElement == null) {
-            if (!ShipModificationTransaction.openapiRequiredFields.isEmpty()) { // has required fields but JSON element is null
-                throw new IllegalArgumentException(String.format(java.util.Locale.ROOT, "The required field(s) %s in ShipModificationTransaction is not found in the empty JSON string", ShipModificationTransaction.openapiRequiredFields));
-            }
-        }
-
-        Set<Map.Entry<String, JsonElement>> entries = jsonElement.getAsJsonObject().entrySet();
-        // check to see if the JSON string contains additional fields
-        for (Map.Entry<String, JsonElement> entry : entries) {
-            if (!ShipModificationTransaction.openapiFields.contains(entry.getKey())) {
-                throw new IllegalArgumentException(String.format(java.util.Locale.ROOT, "The field `%s` in the JSON string is not defined in the `ShipModificationTransaction` properties. JSON: %s", entry.getKey(), jsonElement));
-            }
-        }
-
-        // check to make sure all required properties/fields are present in the JSON string
-        for (String requiredField : ShipModificationTransaction.openapiRequiredFields) {
-            if (jsonElement.getAsJsonObject().get(requiredField) == null) {
-                throw new IllegalArgumentException(String.format(java.util.Locale.ROOT, "The required field `%s` is not found in the JSON string: %s", requiredField, jsonElement));
-            }
-        }
-        JsonObject jsonObj = jsonElement.getAsJsonObject();
-        if (!jsonObj.get("waypointSymbol").isJsonPrimitive()) {
-            throw new IllegalArgumentException(String.format(java.util.Locale.ROOT, "Expected the field `waypointSymbol` to be a primitive type in the JSON string but got `%s`", jsonObj.get("waypointSymbol").toString()));
-        }
-        if (!jsonObj.get("shipSymbol").isJsonPrimitive()) {
-            throw new IllegalArgumentException(String.format(java.util.Locale.ROOT, "Expected the field `shipSymbol` to be a primitive type in the JSON string but got `%s`", jsonObj.get("shipSymbol").toString()));
-        }
-        if (!jsonObj.get("tradeSymbol").isJsonPrimitive()) {
-            throw new IllegalArgumentException(String.format(java.util.Locale.ROOT, "Expected the field `tradeSymbol` to be a primitive type in the JSON string but got `%s`", jsonObj.get("tradeSymbol").toString()));
-        }
-    }
-
     public static class CustomTypeAdapterFactory implements TypeAdapterFactory {
+
         @SuppressWarnings("unchecked")
         @Override
         public <T> TypeAdapter<T> create(Gson gson, TypeToken<T> type) {
@@ -261,11 +299,13 @@ public class ShipModificationTransaction {
             }
             final TypeAdapter<JsonElement> elementAdapter = gson.getAdapter(JsonElement.class);
             final TypeAdapter<ShipModificationTransaction> thisAdapter
-                    = gson.getDelegateAdapter(this, TypeToken.get(ShipModificationTransaction.class));
+                = gson.getDelegateAdapter(this,
+                TypeToken.get(ShipModificationTransaction.class));
 
             return (TypeAdapter<T>) new TypeAdapter<ShipModificationTransaction>() {
                 @Override
-                public void write(JsonWriter out, ShipModificationTransaction value) throws IOException {
+                public void write(JsonWriter out, ShipModificationTransaction value)
+                    throws IOException {
                     JsonObject obj = thisAdapter.toJsonTree(value).getAsJsonObject();
                     elementAdapter.write(out, obj);
                 }
@@ -279,17 +319,6 @@ public class ShipModificationTransaction {
 
             }.nullSafe();
         }
-    }
-
-    /**
-     * Create an instance of ShipModificationTransaction given an JSON string
-     *
-     * @param jsonString JSON string
-     * @return An instance of ShipModificationTransaction
-     * @throws IOException if the JSON string is invalid with respect to ShipModificationTransaction
-     */
-    public static ShipModificationTransaction fromJson(String jsonString) throws IOException {
-        return JSON.getGson().fromJson(jsonString, ShipModificationTransaction.class);
     }
 
     /**

@@ -19,13 +19,15 @@ import java.util.function.Supplier;
 
 
 public class Configuration {
+
     public static final String VERSION = "2.3.0";
 
     private static final AtomicReference<ApiClient> defaultApiClient = new AtomicReference<>();
     private static volatile Supplier<ApiClient> apiClientFactory = ApiClient::new;
 
     /**
-     * Get the default API client, which would be used when creating API instances without providing an API client.
+     * Get the default API client, which would be used when creating API instances without providing
+     * an API client.
      *
      * @return Default API client
      */
@@ -43,7 +45,8 @@ public class Configuration {
     }
 
     /**
-     * Set the default API client, which would be used when creating API instances without providing an API client.
+     * Set the default API client, which would be used when creating API instances without providing
+     * an API client.
      *
      * @param apiClient API client
      */

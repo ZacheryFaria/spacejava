@@ -13,21 +13,29 @@
 
 package xyz.faria.space.spaceapi.model;
 
-import com.google.gson.*;
+import com.google.gson.Gson;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.TypeAdapter;
+import com.google.gson.TypeAdapterFactory;
 import com.google.gson.annotations.SerializedName;
 import com.google.gson.reflect.TypeToken;
 import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonWriter;
-import xyz.faria.space.spaceapi.client.JSON;
-
 import java.io.IOException;
-import java.util.*;
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Objects;
+import java.util.Set;
+import xyz.faria.space.spaceapi.client.JSON;
 
 /**
  * The details of the required construction materials for a given waypoint under construction.
  */
 
 public class ConstructionMaterial {
+
     public static final String SERIALIZED_NAME_TRADE_SYMBOL = "tradeSymbol";
     @SerializedName(SERIALIZED_NAME_TRADE_SYMBOL)
     @javax.annotation.Nonnull
@@ -106,56 +114,18 @@ public class ConstructionMaterial {
     }
 
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (o == null || getClass() != o.getClass()) {
-            return false;
-        }
-        ConstructionMaterial constructionMaterial = (ConstructionMaterial) o;
-        return Objects.equals(this.tradeSymbol, constructionMaterial.tradeSymbol) &&
-                Objects.equals(this.required, constructionMaterial.required) &&
-                Objects.equals(this.fulfilled, constructionMaterial.fulfilled);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(tradeSymbol, required, fulfilled);
-    }
-
-    @Override
-    public String toString() {
-        String sb = "class ConstructionMaterial {\n" +
-                "    tradeSymbol: " + toIndentedString(tradeSymbol) + "\n" +
-                "    required: " + toIndentedString(required) + "\n" +
-                "    fulfilled: " + toIndentedString(fulfilled) + "\n" +
-                "}";
-        return sb;
-    }
-
-    /**
-     * Convert the given object to string with each line indented by 4 spaces
-     * (except the first line).
-     */
-    private String toIndentedString(Object o) {
-        if (o == null) {
-            return "null";
-        }
-        return o.toString().replace("\n", "\n    ");
-    }
-
-
-    public static HashSet<String> openapiFields;
-    public static HashSet<String> openapiRequiredFields;
-
     static {
         // a set of all properties/fields (JSON key names)
         openapiFields = new HashSet<String>(Arrays.asList("tradeSymbol", "required", "fulfilled"));
 
         // a set of required properties/fields (JSON key names)
-        openapiRequiredFields = new HashSet<String>(Arrays.asList("tradeSymbol", "required", "fulfilled"));
+        openapiRequiredFields = new HashSet<String>(
+            Arrays.asList("tradeSymbol", "required", "fulfilled"));
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(tradeSymbol, required, fulfilled);
     }
 
     /**
@@ -167,7 +137,9 @@ public class ConstructionMaterial {
     public static void validateJsonElement(JsonElement jsonElement) throws IOException {
         if (jsonElement == null) {
             if (!ConstructionMaterial.openapiRequiredFields.isEmpty()) { // has required fields but JSON element is null
-                throw new IllegalArgumentException(String.format(java.util.Locale.ROOT, "The required field(s) %s in ConstructionMaterial is not found in the empty JSON string", ConstructionMaterial.openapiRequiredFields));
+                throw new IllegalArgumentException(String.format(java.util.Locale.ROOT,
+                    "The required field(s) %s in ConstructionMaterial is not found in the empty JSON string",
+                    ConstructionMaterial.openapiRequiredFields));
             }
         }
 
@@ -175,14 +147,19 @@ public class ConstructionMaterial {
         // check to see if the JSON string contains additional fields
         for (Map.Entry<String, JsonElement> entry : entries) {
             if (!ConstructionMaterial.openapiFields.contains(entry.getKey())) {
-                throw new IllegalArgumentException(String.format(java.util.Locale.ROOT, "The field `%s` in the JSON string is not defined in the `ConstructionMaterial` properties. JSON: %s", entry.getKey(), jsonElement));
+                throw new IllegalArgumentException(String.format(java.util.Locale.ROOT,
+                    "The field `%s` in the JSON string is not defined in the `ConstructionMaterial` properties. JSON: %s",
+                    entry.getKey(), jsonElement));
             }
         }
 
         // check to make sure all required properties/fields are present in the JSON string
         for (String requiredField : ConstructionMaterial.openapiRequiredFields) {
             if (jsonElement.getAsJsonObject().get(requiredField) == null) {
-                throw new IllegalArgumentException(String.format(java.util.Locale.ROOT, "The required field `%s` is not found in the JSON string: %s", requiredField, jsonElement));
+                throw new IllegalArgumentException(String.format(java.util.Locale.ROOT,
+                    "The required field `%s` is not found in the JSON string: %s",
+                    requiredField,
+                    jsonElement));
             }
         }
         JsonObject jsonObj = jsonElement.getAsJsonObject();
@@ -190,7 +167,47 @@ public class ConstructionMaterial {
         TradeSymbol.validateJsonElement(jsonObj.get("tradeSymbol"));
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        ConstructionMaterial constructionMaterial = (ConstructionMaterial) o;
+        return Objects.equals(this.tradeSymbol, constructionMaterial.tradeSymbol) &&
+            Objects.equals(this.required, constructionMaterial.required) &&
+            Objects.equals(this.fulfilled, constructionMaterial.fulfilled);
+    }
+
+
+    public static HashSet<String> openapiFields;
+    public static HashSet<String> openapiRequiredFields;
+
+    @Override
+    public String toString() {
+        String sb = "class ConstructionMaterial {\n" +
+            "    tradeSymbol: " + toIndentedString(tradeSymbol) + "\n" +
+            "    required: " + toIndentedString(required) + "\n" +
+            "    fulfilled: " + toIndentedString(fulfilled) + "\n" +
+            "}";
+        return sb;
+    }
+
+    /**
+     * Convert the given object to string with each line indented by 4 spaces (except the first
+     * line).
+     */
+    private String toIndentedString(Object o) {
+        if (o == null) {
+            return "null";
+        }
+        return o.toString().replace("\n", "\n    ");
+    }
+
     public static class CustomTypeAdapterFactory implements TypeAdapterFactory {
+
         @SuppressWarnings("unchecked")
         @Override
         public <T> TypeAdapter<T> create(Gson gson, TypeToken<T> type) {
@@ -199,7 +216,7 @@ public class ConstructionMaterial {
             }
             final TypeAdapter<JsonElement> elementAdapter = gson.getAdapter(JsonElement.class);
             final TypeAdapter<ConstructionMaterial> thisAdapter
-                    = gson.getDelegateAdapter(this, TypeToken.get(ConstructionMaterial.class));
+                = gson.getDelegateAdapter(this, TypeToken.get(ConstructionMaterial.class));
 
             return (TypeAdapter<T>) new TypeAdapter<ConstructionMaterial>() {
                 @Override

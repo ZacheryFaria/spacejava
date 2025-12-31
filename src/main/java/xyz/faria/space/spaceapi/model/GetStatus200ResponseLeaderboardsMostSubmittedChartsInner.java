@@ -13,21 +13,29 @@
 
 package xyz.faria.space.spaceapi.model;
 
-import com.google.gson.*;
+import com.google.gson.Gson;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.TypeAdapter;
+import com.google.gson.TypeAdapterFactory;
 import com.google.gson.annotations.SerializedName;
 import com.google.gson.reflect.TypeToken;
 import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonWriter;
-import xyz.faria.space.spaceapi.client.JSON;
-
 import java.io.IOException;
-import java.util.*;
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Objects;
+import java.util.Set;
+import xyz.faria.space.spaceapi.client.JSON;
 
 /**
  * GetStatus200ResponseLeaderboardsMostSubmittedChartsInner
  */
 
 public class GetStatus200ResponseLeaderboardsMostSubmittedChartsInner {
+
     public static final String SERIALIZED_NAME_AGENT_SYMBOL = "agentSymbol";
     @SerializedName(SERIALIZED_NAME_AGENT_SYMBOL)
     @javax.annotation.Nonnull
@@ -41,9 +49,48 @@ public class GetStatus200ResponseLeaderboardsMostSubmittedChartsInner {
     public GetStatus200ResponseLeaderboardsMostSubmittedChartsInner() {
     }
 
-    public GetStatus200ResponseLeaderboardsMostSubmittedChartsInner agentSymbol(@javax.annotation.Nonnull String agentSymbol) {
-        this.agentSymbol = agentSymbol;
-        return this;
+    /**
+     * Validates the JSON Element and throws an exception if issues found
+     *
+     * @param jsonElement JSON Element
+     * @throws IOException if the JSON Element is invalid with respect to
+     *                     GetStatus200ResponseLeaderboardsMostSubmittedChartsInner
+     */
+    public static void validateJsonElement(JsonElement jsonElement) throws IOException {
+        if (jsonElement == null) {
+            if (!GetStatus200ResponseLeaderboardsMostSubmittedChartsInner.openapiRequiredFields.isEmpty()) { // has required fields but JSON element is null
+                throw new IllegalArgumentException(String.format(java.util.Locale.ROOT,
+                    "The required field(s) %s in GetStatus200ResponseLeaderboardsMostSubmittedChartsInner is not found in the empty JSON string",
+                    GetStatus200ResponseLeaderboardsMostSubmittedChartsInner.openapiRequiredFields));
+            }
+        }
+
+        Set<Map.Entry<String, JsonElement>> entries = jsonElement.getAsJsonObject().entrySet();
+        // check to see if the JSON string contains additional fields
+        for (Map.Entry<String, JsonElement> entry : entries) {
+            if (!GetStatus200ResponseLeaderboardsMostSubmittedChartsInner.openapiFields.contains(
+                entry.getKey())) {
+                throw new IllegalArgumentException(String.format(java.util.Locale.ROOT,
+                    "The field `%s` in the JSON string is not defined in the `GetStatus200ResponseLeaderboardsMostSubmittedChartsInner` properties. JSON: %s",
+                    entry.getKey(), jsonElement));
+            }
+        }
+
+        // check to make sure all required properties/fields are present in the JSON string
+        for (String requiredField : GetStatus200ResponseLeaderboardsMostSubmittedChartsInner.openapiRequiredFields) {
+            if (jsonElement.getAsJsonObject().get(requiredField) == null) {
+                throw new IllegalArgumentException(String.format(java.util.Locale.ROOT,
+                    "The required field `%s` is not found in the JSON string: %s",
+                    requiredField,
+                    jsonElement));
+            }
+        }
+        JsonObject jsonObj = jsonElement.getAsJsonObject();
+        if (!jsonObj.get("agentSymbol").isJsonPrimitive()) {
+            throw new IllegalArgumentException(String.format(java.util.Locale.ROOT,
+                "Expected the field `agentSymbol` to be a primitive type in the JSON string but got `%s`",
+                jsonObj.get("agentSymbol").toString()));
+        }
     }
 
     /**
@@ -60,10 +107,20 @@ public class GetStatus200ResponseLeaderboardsMostSubmittedChartsInner {
         this.agentSymbol = agentSymbol;
     }
 
-
-    public GetStatus200ResponseLeaderboardsMostSubmittedChartsInner chartCount(@javax.annotation.Nonnull Integer chartCount) {
-        this.chartCount = chartCount;
-        return this;
+    /**
+     * Create an instance of GetStatus200ResponseLeaderboardsMostSubmittedChartsInner given an JSON
+     * string
+     *
+     * @param jsonString JSON string
+     * @return An instance of GetStatus200ResponseLeaderboardsMostSubmittedChartsInner
+     * @throws IOException if the JSON string is invalid with respect to
+     *                     GetStatus200ResponseLeaderboardsMostSubmittedChartsInner
+     */
+    public static GetStatus200ResponseLeaderboardsMostSubmittedChartsInner fromJson(
+        String jsonString) throws IOException {
+        return JSON.getGson()
+            .fromJson(jsonString,
+                GetStatus200ResponseLeaderboardsMostSubmittedChartsInner.class);
     }
 
     /**
@@ -80,6 +137,22 @@ public class GetStatus200ResponseLeaderboardsMostSubmittedChartsInner {
         this.chartCount = chartCount;
     }
 
+    public GetStatus200ResponseLeaderboardsMostSubmittedChartsInner agentSymbol(
+        @javax.annotation.Nonnull String agentSymbol) {
+        this.agentSymbol = agentSymbol;
+        return this;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(agentSymbol, chartCount);
+    }
+
+    public GetStatus200ResponseLeaderboardsMostSubmittedChartsInner chartCount(
+        @javax.annotation.Nonnull Integer chartCount) {
+        this.chartCount = chartCount;
+        return this;
+    }
 
     @Override
     public boolean equals(Object o) {
@@ -90,33 +163,10 @@ public class GetStatus200ResponseLeaderboardsMostSubmittedChartsInner {
             return false;
         }
         GetStatus200ResponseLeaderboardsMostSubmittedChartsInner getStatus200ResponseLeaderboardsMostSubmittedChartsInner = (GetStatus200ResponseLeaderboardsMostSubmittedChartsInner) o;
-        return Objects.equals(this.agentSymbol, getStatus200ResponseLeaderboardsMostSubmittedChartsInner.agentSymbol) &&
-                Objects.equals(this.chartCount, getStatus200ResponseLeaderboardsMostSubmittedChartsInner.chartCount);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(agentSymbol, chartCount);
-    }
-
-    @Override
-    public String toString() {
-        String sb = "class GetStatus200ResponseLeaderboardsMostSubmittedChartsInner {\n" +
-                "    agentSymbol: " + toIndentedString(agentSymbol) + "\n" +
-                "    chartCount: " + toIndentedString(chartCount) + "\n" +
-                "}";
-        return sb;
-    }
-
-    /**
-     * Convert the given object to string with each line indented by 4 spaces
-     * (except the first line).
-     */
-    private String toIndentedString(Object o) {
-        if (o == null) {
-            return "null";
-        }
-        return o.toString().replace("\n", "\n    ");
+        return Objects.equals(this.agentSymbol,
+            getStatus200ResponseLeaderboardsMostSubmittedChartsInner.agentSymbol) &&
+            Objects.equals(this.chartCount,
+                getStatus200ResponseLeaderboardsMostSubmittedChartsInner.chartCount);
     }
 
 
@@ -131,59 +181,62 @@ public class GetStatus200ResponseLeaderboardsMostSubmittedChartsInner {
         openapiRequiredFields = new HashSet<String>(Arrays.asList("agentSymbol", "chartCount"));
     }
 
+    @Override
+    public String toString() {
+        String sb = "class GetStatus200ResponseLeaderboardsMostSubmittedChartsInner {\n" +
+            "    agentSymbol: " + toIndentedString(agentSymbol) + "\n" +
+            "    chartCount: " + toIndentedString(chartCount) + "\n" +
+            "}";
+        return sb;
+    }
+
     /**
-     * Validates the JSON Element and throws an exception if issues found
-     *
-     * @param jsonElement JSON Element
-     * @throws IOException if the JSON Element is invalid with respect to GetStatus200ResponseLeaderboardsMostSubmittedChartsInner
+     * Convert the given object to string with each line indented by 4 spaces (except the first
+     * line).
      */
-    public static void validateJsonElement(JsonElement jsonElement) throws IOException {
-        if (jsonElement == null) {
-            if (!GetStatus200ResponseLeaderboardsMostSubmittedChartsInner.openapiRequiredFields.isEmpty()) { // has required fields but JSON element is null
-                throw new IllegalArgumentException(String.format(java.util.Locale.ROOT, "The required field(s) %s in GetStatus200ResponseLeaderboardsMostSubmittedChartsInner is not found in the empty JSON string", GetStatus200ResponseLeaderboardsMostSubmittedChartsInner.openapiRequiredFields));
-            }
+    private String toIndentedString(Object o) {
+        if (o == null) {
+            return "null";
         }
+        return o.toString().replace("\n", "\n    ");
+    }
 
-        Set<Map.Entry<String, JsonElement>> entries = jsonElement.getAsJsonObject().entrySet();
-        // check to see if the JSON string contains additional fields
-        for (Map.Entry<String, JsonElement> entry : entries) {
-            if (!GetStatus200ResponseLeaderboardsMostSubmittedChartsInner.openapiFields.contains(entry.getKey())) {
-                throw new IllegalArgumentException(String.format(java.util.Locale.ROOT, "The field `%s` in the JSON string is not defined in the `GetStatus200ResponseLeaderboardsMostSubmittedChartsInner` properties. JSON: %s", entry.getKey(), jsonElement));
-            }
-        }
-
-        // check to make sure all required properties/fields are present in the JSON string
-        for (String requiredField : GetStatus200ResponseLeaderboardsMostSubmittedChartsInner.openapiRequiredFields) {
-            if (jsonElement.getAsJsonObject().get(requiredField) == null) {
-                throw new IllegalArgumentException(String.format(java.util.Locale.ROOT, "The required field `%s` is not found in the JSON string: %s", requiredField, jsonElement));
-            }
-        }
-        JsonObject jsonObj = jsonElement.getAsJsonObject();
-        if (!jsonObj.get("agentSymbol").isJsonPrimitive()) {
-            throw new IllegalArgumentException(String.format(java.util.Locale.ROOT, "Expected the field `agentSymbol` to be a primitive type in the JSON string but got `%s`", jsonObj.get("agentSymbol").toString()));
-        }
+    /**
+     * Convert an instance of GetStatus200ResponseLeaderboardsMostSubmittedChartsInner to an JSON
+     * string
+     *
+     * @return JSON string
+     */
+    public String toJson() {
+        return JSON.getGson().toJson(this);
     }
 
     public static class CustomTypeAdapterFactory implements TypeAdapterFactory {
+
         @SuppressWarnings("unchecked")
         @Override
         public <T> TypeAdapter<T> create(Gson gson, TypeToken<T> type) {
-            if (!GetStatus200ResponseLeaderboardsMostSubmittedChartsInner.class.isAssignableFrom(type.getRawType())) {
+            if (!GetStatus200ResponseLeaderboardsMostSubmittedChartsInner.class.isAssignableFrom(
+                type.getRawType())) {
                 return null; // this class only serializes 'GetStatus200ResponseLeaderboardsMostSubmittedChartsInner' and its subtypes
             }
             final TypeAdapter<JsonElement> elementAdapter = gson.getAdapter(JsonElement.class);
             final TypeAdapter<GetStatus200ResponseLeaderboardsMostSubmittedChartsInner> thisAdapter
-                    = gson.getDelegateAdapter(this, TypeToken.get(GetStatus200ResponseLeaderboardsMostSubmittedChartsInner.class));
+                = gson.getDelegateAdapter(this,
+                TypeToken.get(GetStatus200ResponseLeaderboardsMostSubmittedChartsInner.class));
 
             return (TypeAdapter<T>) new TypeAdapter<GetStatus200ResponseLeaderboardsMostSubmittedChartsInner>() {
                 @Override
-                public void write(JsonWriter out, GetStatus200ResponseLeaderboardsMostSubmittedChartsInner value) throws IOException {
+                public void write(JsonWriter out,
+                    GetStatus200ResponseLeaderboardsMostSubmittedChartsInner value)
+                    throws IOException {
                     JsonObject obj = thisAdapter.toJsonTree(value).getAsJsonObject();
                     elementAdapter.write(out, obj);
                 }
 
                 @Override
-                public GetStatus200ResponseLeaderboardsMostSubmittedChartsInner read(JsonReader in) throws IOException {
+                public GetStatus200ResponseLeaderboardsMostSubmittedChartsInner read(JsonReader in)
+                    throws IOException {
                     JsonElement jsonElement = elementAdapter.read(in);
                     validateJsonElement(jsonElement);
                     return thisAdapter.fromJsonTree(jsonElement);
@@ -191,26 +244,6 @@ public class GetStatus200ResponseLeaderboardsMostSubmittedChartsInner {
 
             }.nullSafe();
         }
-    }
-
-    /**
-     * Create an instance of GetStatus200ResponseLeaderboardsMostSubmittedChartsInner given an JSON string
-     *
-     * @param jsonString JSON string
-     * @return An instance of GetStatus200ResponseLeaderboardsMostSubmittedChartsInner
-     * @throws IOException if the JSON string is invalid with respect to GetStatus200ResponseLeaderboardsMostSubmittedChartsInner
-     */
-    public static GetStatus200ResponseLeaderboardsMostSubmittedChartsInner fromJson(String jsonString) throws IOException {
-        return JSON.getGson().fromJson(jsonString, GetStatus200ResponseLeaderboardsMostSubmittedChartsInner.class);
-    }
-
-    /**
-     * Convert an instance of GetStatus200ResponseLeaderboardsMostSubmittedChartsInner to an JSON string
-     *
-     * @return JSON string
-     */
-    public String toJson() {
-        return JSON.getGson().toJson(this);
     }
 }
 

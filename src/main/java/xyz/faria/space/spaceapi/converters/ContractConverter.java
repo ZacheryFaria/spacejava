@@ -3,7 +3,9 @@ package xyz.faria.space.spaceapi.converters;
 import xyz.faria.space.models.Contract;
 
 public class ContractConverter {
-    public static Contract fromApiContract(Contract contract, xyz.faria.space.spaceapi.model.Contract apiContract) {
+
+    public static Contract fromApiContract(Contract contract,
+        xyz.faria.space.spaceapi.model.Contract apiContract) {
         contract.setId(apiContract.getId());
         contract.setAccepted(apiContract.getAccepted());
         contract.setFulfilled(apiContract.getFulfilled());

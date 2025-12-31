@@ -13,21 +13,32 @@
 
 package xyz.faria.space.spaceapi.model;
 
-import com.google.gson.*;
+import com.google.gson.Gson;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.TypeAdapter;
+import com.google.gson.TypeAdapterFactory;
 import com.google.gson.annotations.SerializedName;
 import com.google.gson.reflect.TypeToken;
 import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonWriter;
-import xyz.faria.space.spaceapi.client.JSON;
-
 import java.io.IOException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
+import java.util.Set;
+import xyz.faria.space.spaceapi.client.JSON;
 
 /**
  * ExtractResources201ResponseData
  */
 
 public class ExtractResources201ResponseData {
+
     public static final String SERIALIZED_NAME_COOLDOWN = "cooldown";
     @SerializedName(SERIALIZED_NAME_COOLDOWN)
     @javax.annotation.Nonnull
@@ -76,9 +87,14 @@ public class ExtractResources201ResponseData {
     }
 
 
-    public ExtractResources201ResponseData extraction(@javax.annotation.Nonnull Extraction extraction) {
-        this.extraction = extraction;
-        return this;
+    static {
+        // a set of all properties/fields (JSON key names)
+        openapiFields = new HashSet<String>(
+            Arrays.asList("cooldown", "extraction", "cargo", "modifiers", "events"));
+
+        // a set of required properties/fields (JSON key names)
+        openapiRequiredFields = new HashSet<String>(
+            Arrays.asList("cooldown", "extraction", "cargo", "events"));
     }
 
     /**
@@ -115,10 +131,76 @@ public class ExtractResources201ResponseData {
         this.cargo = cargo;
     }
 
+    /**
+     * Validates the JSON Element and throws an exception if issues found
+     *
+     * @param jsonElement JSON Element
+     * @throws IOException if the JSON Element is invalid with respect to
+     *                     ExtractResources201ResponseData
+     */
+    public static void validateJsonElement(JsonElement jsonElement) throws IOException {
+        if (jsonElement == null) {
+            if (!ExtractResources201ResponseData.openapiRequiredFields.isEmpty()) { // has required fields but JSON element is null
+                throw new IllegalArgumentException(String.format(java.util.Locale.ROOT,
+                    "The required field(s) %s in ExtractResources201ResponseData is not found in the empty JSON string",
+                    ExtractResources201ResponseData.openapiRequiredFields));
+            }
+        }
 
-    public ExtractResources201ResponseData modifiers(@javax.annotation.Nullable List<WaypointModifier> modifiers) {
-        this.modifiers = modifiers;
-        return this;
+        Set<Map.Entry<String, JsonElement>> entries = jsonElement.getAsJsonObject().entrySet();
+        // check to see if the JSON string contains additional fields
+        for (Map.Entry<String, JsonElement> entry : entries) {
+            if (!ExtractResources201ResponseData.openapiFields.contains(entry.getKey())) {
+                throw new IllegalArgumentException(String.format(java.util.Locale.ROOT,
+                    "The field `%s` in the JSON string is not defined in the `ExtractResources201ResponseData` properties. JSON: %s",
+                    entry.getKey(), jsonElement));
+            }
+        }
+
+        // check to make sure all required properties/fields are present in the JSON string
+        for (String requiredField : ExtractResources201ResponseData.openapiRequiredFields) {
+            if (jsonElement.getAsJsonObject().get(requiredField) == null) {
+                throw new IllegalArgumentException(String.format(java.util.Locale.ROOT,
+                    "The required field `%s` is not found in the JSON string: %s",
+                    requiredField,
+                    jsonElement));
+            }
+        }
+        JsonObject jsonObj = jsonElement.getAsJsonObject();
+        // validate the required field `cooldown`
+        Cooldown.validateJsonElement(jsonObj.get("cooldown"));
+        // validate the required field `extraction`
+        Extraction.validateJsonElement(jsonObj.get("extraction"));
+        // validate the required field `cargo`
+        ShipCargo.validateJsonElement(jsonObj.get("cargo"));
+        if (jsonObj.get("modifiers") != null && !jsonObj.get("modifiers").isJsonNull()) {
+            JsonArray jsonArraymodifiers = jsonObj.getAsJsonArray("modifiers");
+            if (jsonArraymodifiers != null) {
+                // ensure the json data is an array
+                if (!jsonObj.get("modifiers").isJsonArray()) {
+                    throw new IllegalArgumentException(String.format(java.util.Locale.ROOT,
+                        "Expected the field `modifiers` to be an array in the JSON string but got `%s`",
+                        jsonObj.get("modifiers").toString()));
+                }
+
+                // validate the optional field `modifiers` (array)
+                for (int i = 0; i < jsonArraymodifiers.size(); i++) {
+                    WaypointModifier.validateJsonElement(jsonArraymodifiers.get(i));
+                }
+            }
+        }
+        // ensure the json data is an array
+        if (!jsonObj.get("events").isJsonArray()) {
+            throw new IllegalArgumentException(String.format(java.util.Locale.ROOT,
+                "Expected the field `events` to be an array in the JSON string but got `%s`",
+                jsonObj.get("events").toString()));
+        }
+
+        JsonArray jsonArrayevents = jsonObj.getAsJsonArray("events");
+        // validate the required field `events` (array)
+        for (int i = 0; i < jsonArrayevents.size(); i++) {
+            ShipConditionEvent.validateJsonElement(jsonArrayevents.get(i));
+        }
     }
 
     public ExtractResources201ResponseData addModifiersItem(WaypointModifier modifiersItem) {
@@ -143,10 +225,16 @@ public class ExtractResources201ResponseData {
         this.modifiers = modifiers;
     }
 
-
-    public ExtractResources201ResponseData events(@javax.annotation.Nonnull List<ShipConditionEvent> events) {
-        this.events = events;
-        return this;
+    /**
+     * Create an instance of ExtractResources201ResponseData given an JSON string
+     *
+     * @param jsonString JSON string
+     * @return An instance of ExtractResources201ResponseData
+     * @throws IOException if the JSON string is invalid with respect to
+     *                     ExtractResources201ResponseData
+     */
+    public static ExtractResources201ResponseData fromJson(String jsonString) throws IOException {
+        return JSON.getGson().fromJson(jsonString, ExtractResources201ResponseData.class);
     }
 
     public ExtractResources201ResponseData addEventsItem(ShipConditionEvent eventsItem) {
@@ -171,6 +259,32 @@ public class ExtractResources201ResponseData {
         this.events = events;
     }
 
+    public ExtractResources201ResponseData extraction(
+        @javax.annotation.Nonnull Extraction extraction) {
+        this.extraction = extraction;
+        return this;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(cooldown, extraction, cargo, modifiers, events);
+    }
+
+    public ExtractResources201ResponseData modifiers(
+        @javax.annotation.Nullable List<WaypointModifier> modifiers) {
+        this.modifiers = modifiers;
+        return this;
+    }
+
+    public ExtractResources201ResponseData events(
+        @javax.annotation.Nonnull List<ShipConditionEvent> events) {
+        this.events = events;
+        return this;
+    }
+
+
+    public static HashSet<String> openapiFields;
+    public static HashSet<String> openapiRequiredFields;
 
     @Override
     public boolean equals(Object o) {
@@ -182,32 +296,27 @@ public class ExtractResources201ResponseData {
         }
         ExtractResources201ResponseData extractResources201ResponseData = (ExtractResources201ResponseData) o;
         return Objects.equals(this.cooldown, extractResources201ResponseData.cooldown) &&
-                Objects.equals(this.extraction, extractResources201ResponseData.extraction) &&
-                Objects.equals(this.cargo, extractResources201ResponseData.cargo) &&
-                Objects.equals(this.modifiers, extractResources201ResponseData.modifiers) &&
-                Objects.equals(this.events, extractResources201ResponseData.events);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(cooldown, extraction, cargo, modifiers, events);
+            Objects.equals(this.extraction, extractResources201ResponseData.extraction) &&
+            Objects.equals(this.cargo, extractResources201ResponseData.cargo) &&
+            Objects.equals(this.modifiers, extractResources201ResponseData.modifiers) &&
+            Objects.equals(this.events, extractResources201ResponseData.events);
     }
 
     @Override
     public String toString() {
         String sb = "class ExtractResources201ResponseData {\n" +
-                "    cooldown: " + toIndentedString(cooldown) + "\n" +
-                "    extraction: " + toIndentedString(extraction) + "\n" +
-                "    cargo: " + toIndentedString(cargo) + "\n" +
-                "    modifiers: " + toIndentedString(modifiers) + "\n" +
-                "    events: " + toIndentedString(events) + "\n" +
-                "}";
+            "    cooldown: " + toIndentedString(cooldown) + "\n" +
+            "    extraction: " + toIndentedString(extraction) + "\n" +
+            "    cargo: " + toIndentedString(cargo) + "\n" +
+            "    modifiers: " + toIndentedString(modifiers) + "\n" +
+            "    events: " + toIndentedString(events) + "\n" +
+            "}";
         return sb;
     }
 
     /**
-     * Convert the given object to string with each line indented by 4 spaces
-     * (except the first line).
+     * Convert the given object to string with each line indented by 4 spaces (except the first
+     * line).
      */
     private String toIndentedString(Object o) {
         if (o == null) {
@@ -216,79 +325,8 @@ public class ExtractResources201ResponseData {
         return o.toString().replace("\n", "\n    ");
     }
 
-
-    public static HashSet<String> openapiFields;
-    public static HashSet<String> openapiRequiredFields;
-
-    static {
-        // a set of all properties/fields (JSON key names)
-        openapiFields = new HashSet<String>(Arrays.asList("cooldown", "extraction", "cargo", "modifiers", "events"));
-
-        // a set of required properties/fields (JSON key names)
-        openapiRequiredFields = new HashSet<String>(Arrays.asList("cooldown", "extraction", "cargo", "events"));
-    }
-
-    /**
-     * Validates the JSON Element and throws an exception if issues found
-     *
-     * @param jsonElement JSON Element
-     * @throws IOException if the JSON Element is invalid with respect to ExtractResources201ResponseData
-     */
-    public static void validateJsonElement(JsonElement jsonElement) throws IOException {
-        if (jsonElement == null) {
-            if (!ExtractResources201ResponseData.openapiRequiredFields.isEmpty()) { // has required fields but JSON element is null
-                throw new IllegalArgumentException(String.format(java.util.Locale.ROOT, "The required field(s) %s in ExtractResources201ResponseData is not found in the empty JSON string", ExtractResources201ResponseData.openapiRequiredFields));
-            }
-        }
-
-        Set<Map.Entry<String, JsonElement>> entries = jsonElement.getAsJsonObject().entrySet();
-        // check to see if the JSON string contains additional fields
-        for (Map.Entry<String, JsonElement> entry : entries) {
-            if (!ExtractResources201ResponseData.openapiFields.contains(entry.getKey())) {
-                throw new IllegalArgumentException(String.format(java.util.Locale.ROOT, "The field `%s` in the JSON string is not defined in the `ExtractResources201ResponseData` properties. JSON: %s", entry.getKey(), jsonElement));
-            }
-        }
-
-        // check to make sure all required properties/fields are present in the JSON string
-        for (String requiredField : ExtractResources201ResponseData.openapiRequiredFields) {
-            if (jsonElement.getAsJsonObject().get(requiredField) == null) {
-                throw new IllegalArgumentException(String.format(java.util.Locale.ROOT, "The required field `%s` is not found in the JSON string: %s", requiredField, jsonElement));
-            }
-        }
-        JsonObject jsonObj = jsonElement.getAsJsonObject();
-        // validate the required field `cooldown`
-        Cooldown.validateJsonElement(jsonObj.get("cooldown"));
-        // validate the required field `extraction`
-        Extraction.validateJsonElement(jsonObj.get("extraction"));
-        // validate the required field `cargo`
-        ShipCargo.validateJsonElement(jsonObj.get("cargo"));
-        if (jsonObj.get("modifiers") != null && !jsonObj.get("modifiers").isJsonNull()) {
-            JsonArray jsonArraymodifiers = jsonObj.getAsJsonArray("modifiers");
-            if (jsonArraymodifiers != null) {
-                // ensure the json data is an array
-                if (!jsonObj.get("modifiers").isJsonArray()) {
-                    throw new IllegalArgumentException(String.format(java.util.Locale.ROOT, "Expected the field `modifiers` to be an array in the JSON string but got `%s`", jsonObj.get("modifiers").toString()));
-                }
-
-                // validate the optional field `modifiers` (array)
-                for (int i = 0; i < jsonArraymodifiers.size(); i++) {
-                    WaypointModifier.validateJsonElement(jsonArraymodifiers.get(i));
-                }
-            }
-        }
-        // ensure the json data is an array
-        if (!jsonObj.get("events").isJsonArray()) {
-            throw new IllegalArgumentException(String.format(java.util.Locale.ROOT, "Expected the field `events` to be an array in the JSON string but got `%s`", jsonObj.get("events").toString()));
-        }
-
-        JsonArray jsonArrayevents = jsonObj.getAsJsonArray("events");
-        // validate the required field `events` (array)
-        for (int i = 0; i < jsonArrayevents.size(); i++) {
-            ShipConditionEvent.validateJsonElement(jsonArrayevents.get(i));
-        }
-    }
-
     public static class CustomTypeAdapterFactory implements TypeAdapterFactory {
+
         @SuppressWarnings("unchecked")
         @Override
         public <T> TypeAdapter<T> create(Gson gson, TypeToken<T> type) {
@@ -297,11 +335,13 @@ public class ExtractResources201ResponseData {
             }
             final TypeAdapter<JsonElement> elementAdapter = gson.getAdapter(JsonElement.class);
             final TypeAdapter<ExtractResources201ResponseData> thisAdapter
-                    = gson.getDelegateAdapter(this, TypeToken.get(ExtractResources201ResponseData.class));
+                = gson.getDelegateAdapter(this,
+                TypeToken.get(ExtractResources201ResponseData.class));
 
             return (TypeAdapter<T>) new TypeAdapter<ExtractResources201ResponseData>() {
                 @Override
-                public void write(JsonWriter out, ExtractResources201ResponseData value) throws IOException {
+                public void write(JsonWriter out, ExtractResources201ResponseData value)
+                    throws IOException {
                     JsonObject obj = thisAdapter.toJsonTree(value).getAsJsonObject();
                     elementAdapter.write(out, obj);
                 }
@@ -315,17 +355,6 @@ public class ExtractResources201ResponseData {
 
             }.nullSafe();
         }
-    }
-
-    /**
-     * Create an instance of ExtractResources201ResponseData given an JSON string
-     *
-     * @param jsonString JSON string
-     * @return An instance of ExtractResources201ResponseData
-     * @throws IOException if the JSON string is invalid with respect to ExtractResources201ResponseData
-     */
-    public static ExtractResources201ResponseData fromJson(String jsonString) throws IOException {
-        return JSON.getGson().fromJson(jsonString, ExtractResources201ResponseData.class);
     }
 
     /**

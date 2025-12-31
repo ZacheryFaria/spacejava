@@ -13,22 +13,33 @@
 
 package xyz.faria.space.spaceapi.model;
 
-import com.google.gson.*;
+import com.google.gson.Gson;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.TypeAdapter;
+import com.google.gson.TypeAdapterFactory;
 import com.google.gson.annotations.SerializedName;
 import com.google.gson.reflect.TypeToken;
 import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonWriter;
 import jakarta.persistence.ElementCollection;
-import xyz.faria.space.spaceapi.client.JSON;
-
 import java.io.IOException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
+import java.util.Set;
+import xyz.faria.space.spaceapi.client.JSON;
 
 /**
  * Ship details.
  */
 
 public class Ship {
+
     public static final String SERIALIZED_NAME_SYMBOL = "symbol";
     @SerializedName(SERIALIZED_NAME_SYMBOL)
     @javax.annotation.Nonnull
@@ -99,14 +110,16 @@ public class Ship {
         return this;
     }
 
-    /**
-     * The globally unique identifier of the ship in the following format: &#x60;[AGENT_SYMBOL]-[HEX_ID]&#x60;
-     *
-     * @return symbol
-     */
-    @javax.annotation.Nonnull
-    public String getSymbol() {
-        return symbol;
+    static {
+        // a set of all properties/fields (JSON key names)
+        openapiFields = new HashSet<String>(
+            Arrays.asList("symbol", "registration", "nav", "crew", "frame", "reactor", "engine",
+                "cooldown", "modules", "mounts", "cargo", "fuel"));
+
+        // a set of required properties/fields (JSON key names)
+        openapiRequiredFields = new HashSet<String>(
+            Arrays.asList("symbol", "registration", "nav", "crew", "frame", "reactor", "engine",
+                "cooldown", "modules", "mounts", "cargo", "fuel"));
     }
 
     public void setSymbol(@javax.annotation.Nonnull String symbol) {
@@ -349,77 +362,6 @@ public class Ship {
         this.fuel = fuel;
     }
 
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (o == null || getClass() != o.getClass()) {
-            return false;
-        }
-        Ship ship = (Ship) o;
-        return Objects.equals(this.symbol, ship.symbol) &&
-                Objects.equals(this.registration, ship.registration) &&
-                Objects.equals(this.nav, ship.nav) &&
-                Objects.equals(this.crew, ship.crew) &&
-                Objects.equals(this.frame, ship.frame) &&
-                Objects.equals(this.reactor, ship.reactor) &&
-                Objects.equals(this.engine, ship.engine) &&
-                Objects.equals(this.cooldown, ship.cooldown) &&
-                Objects.equals(this.modules, ship.modules) &&
-                Objects.equals(this.mounts, ship.mounts) &&
-                Objects.equals(this.cargo, ship.cargo) &&
-                Objects.equals(this.fuel, ship.fuel);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(symbol, registration, nav, crew, frame, reactor, engine, cooldown, modules, mounts, cargo, fuel);
-    }
-
-    @Override
-    public String toString() {
-        String sb = "class Ship {\n" +
-                "    symbol: " + toIndentedString(symbol) + "\n" +
-                "    registration: " + toIndentedString(registration) + "\n" +
-                "    nav: " + toIndentedString(nav) + "\n" +
-                "    crew: " + toIndentedString(crew) + "\n" +
-                "    frame: " + toIndentedString(frame) + "\n" +
-                "    reactor: " + toIndentedString(reactor) + "\n" +
-                "    engine: " + toIndentedString(engine) + "\n" +
-                "    cooldown: " + toIndentedString(cooldown) + "\n" +
-                "    modules: " + toIndentedString(modules) + "\n" +
-                "    mounts: " + toIndentedString(mounts) + "\n" +
-                "    cargo: " + toIndentedString(cargo) + "\n" +
-                "    fuel: " + toIndentedString(fuel) + "\n" +
-                "}";
-        return sb;
-    }
-
-    /**
-     * Convert the given object to string with each line indented by 4 spaces
-     * (except the first line).
-     */
-    private String toIndentedString(Object o) {
-        if (o == null) {
-            return "null";
-        }
-        return o.toString().replace("\n", "\n    ");
-    }
-
-
-    public static HashSet<String> openapiFields;
-    public static HashSet<String> openapiRequiredFields;
-
-    static {
-        // a set of all properties/fields (JSON key names)
-        openapiFields = new HashSet<String>(Arrays.asList("symbol", "registration", "nav", "crew", "frame", "reactor", "engine", "cooldown", "modules", "mounts", "cargo", "fuel"));
-
-        // a set of required properties/fields (JSON key names)
-        openapiRequiredFields = new HashSet<String>(Arrays.asList("symbol", "registration", "nav", "crew", "frame", "reactor", "engine", "cooldown", "modules", "mounts", "cargo", "fuel"));
-    }
-
     /**
      * Validates the JSON Element and throws an exception if issues found
      *
@@ -429,7 +371,9 @@ public class Ship {
     public static void validateJsonElement(JsonElement jsonElement) throws IOException {
         if (jsonElement == null) {
             if (!Ship.openapiRequiredFields.isEmpty()) { // has required fields but JSON element is null
-                throw new IllegalArgumentException(String.format(java.util.Locale.ROOT, "The required field(s) %s in Ship is not found in the empty JSON string", Ship.openapiRequiredFields));
+                throw new IllegalArgumentException(String.format(java.util.Locale.ROOT,
+                    "The required field(s) %s in Ship is not found in the empty JSON string",
+                    Ship.openapiRequiredFields));
             }
         }
 
@@ -437,19 +381,25 @@ public class Ship {
         // check to see if the JSON string contains additional fields
         for (Map.Entry<String, JsonElement> entry : entries) {
             if (!Ship.openapiFields.contains(entry.getKey())) {
-                throw new IllegalArgumentException(String.format(java.util.Locale.ROOT, "The field `%s` in the JSON string is not defined in the `Ship` properties. JSON: %s", entry.getKey(), jsonElement));
+                throw new IllegalArgumentException(String.format(java.util.Locale.ROOT,
+                    "The field `%s` in the JSON string is not defined in the `Ship` properties. JSON: %s",
+                    entry.getKey(), jsonElement));
             }
         }
 
         // check to make sure all required properties/fields are present in the JSON string
         for (String requiredField : Ship.openapiRequiredFields) {
             if (jsonElement.getAsJsonObject().get(requiredField) == null) {
-                throw new IllegalArgumentException(String.format(java.util.Locale.ROOT, "The required field `%s` is not found in the JSON string: %s", requiredField, jsonElement));
+                throw new IllegalArgumentException(String.format(java.util.Locale.ROOT,
+                    "The required field `%s` is not found in the JSON string: %s", requiredField,
+                    jsonElement));
             }
         }
         JsonObject jsonObj = jsonElement.getAsJsonObject();
         if (!jsonObj.get("symbol").isJsonPrimitive()) {
-            throw new IllegalArgumentException(String.format(java.util.Locale.ROOT, "Expected the field `symbol` to be a primitive type in the JSON string but got `%s`", jsonObj.get("symbol").toString()));
+            throw new IllegalArgumentException(String.format(java.util.Locale.ROOT,
+                "Expected the field `symbol` to be a primitive type in the JSON string but got `%s`",
+                jsonObj.get("symbol").toString()));
         }
         // validate the required field `registration`
         ShipRegistration.validateJsonElement(jsonObj.get("registration"));
@@ -467,7 +417,9 @@ public class Ship {
         Cooldown.validateJsonElement(jsonObj.get("cooldown"));
         // ensure the json data is an array
         if (!jsonObj.get("modules").isJsonArray()) {
-            throw new IllegalArgumentException(String.format(java.util.Locale.ROOT, "Expected the field `modules` to be an array in the JSON string but got `%s`", jsonObj.get("modules").toString()));
+            throw new IllegalArgumentException(String.format(java.util.Locale.ROOT,
+                "Expected the field `modules` to be an array in the JSON string but got `%s`",
+                jsonObj.get("modules").toString()));
         }
 
         JsonArray jsonArraymodules = jsonObj.getAsJsonArray("modules");
@@ -477,7 +429,9 @@ public class Ship {
         }
         // ensure the json data is an array
         if (!jsonObj.get("mounts").isJsonArray()) {
-            throw new IllegalArgumentException(String.format(java.util.Locale.ROOT, "Expected the field `mounts` to be an array in the JSON string but got `%s`", jsonObj.get("mounts").toString()));
+            throw new IllegalArgumentException(String.format(java.util.Locale.ROOT,
+                "Expected the field `mounts` to be an array in the JSON string but got `%s`",
+                jsonObj.get("mounts").toString()));
         }
 
         JsonArray jsonArraymounts = jsonObj.getAsJsonArray("mounts");
@@ -491,7 +445,82 @@ public class Ship {
         ShipFuel.validateJsonElement(jsonObj.get("fuel"));
     }
 
+    /**
+     * The globally unique identifier of the ship in the following format:
+     * &#x60;[AGENT_SYMBOL]-[HEX_ID]&#x60;
+     *
+     * @return symbol
+     */
+    @javax.annotation.Nonnull
+    public String getSymbol() {
+        return symbol;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        Ship ship = (Ship) o;
+        return Objects.equals(this.symbol, ship.symbol) &&
+            Objects.equals(this.registration, ship.registration) &&
+            Objects.equals(this.nav, ship.nav) &&
+            Objects.equals(this.crew, ship.crew) &&
+            Objects.equals(this.frame, ship.frame) &&
+            Objects.equals(this.reactor, ship.reactor) &&
+            Objects.equals(this.engine, ship.engine) &&
+            Objects.equals(this.cooldown, ship.cooldown) &&
+            Objects.equals(this.modules, ship.modules) &&
+            Objects.equals(this.mounts, ship.mounts) &&
+            Objects.equals(this.cargo, ship.cargo) &&
+            Objects.equals(this.fuel, ship.fuel);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(symbol, registration, nav, crew, frame, reactor, engine, cooldown,
+            modules, mounts, cargo, fuel);
+    }
+
+
+    public static HashSet<String> openapiFields;
+    public static HashSet<String> openapiRequiredFields;
+
+    @Override
+    public String toString() {
+        String sb = "class Ship {\n" +
+            "    symbol: " + toIndentedString(symbol) + "\n" +
+            "    registration: " + toIndentedString(registration) + "\n" +
+            "    nav: " + toIndentedString(nav) + "\n" +
+            "    crew: " + toIndentedString(crew) + "\n" +
+            "    frame: " + toIndentedString(frame) + "\n" +
+            "    reactor: " + toIndentedString(reactor) + "\n" +
+            "    engine: " + toIndentedString(engine) + "\n" +
+            "    cooldown: " + toIndentedString(cooldown) + "\n" +
+            "    modules: " + toIndentedString(modules) + "\n" +
+            "    mounts: " + toIndentedString(mounts) + "\n" +
+            "    cargo: " + toIndentedString(cargo) + "\n" +
+            "    fuel: " + toIndentedString(fuel) + "\n" +
+            "}";
+        return sb;
+    }
+
+    /**
+     * Convert the given object to string with each line indented by 4 spaces (except the first
+     * line).
+     */
+    private String toIndentedString(Object o) {
+        if (o == null) {
+            return "null";
+        }
+        return o.toString().replace("\n", "\n    ");
+    }
+
     public static class CustomTypeAdapterFactory implements TypeAdapterFactory {
+
         @SuppressWarnings("unchecked")
         @Override
         public <T> TypeAdapter<T> create(Gson gson, TypeToken<T> type) {
@@ -500,7 +529,7 @@ public class Ship {
             }
             final TypeAdapter<JsonElement> elementAdapter = gson.getAdapter(JsonElement.class);
             final TypeAdapter<Ship> thisAdapter
-                    = gson.getDelegateAdapter(this, TypeToken.get(Ship.class));
+                = gson.getDelegateAdapter(this, TypeToken.get(Ship.class));
 
             return (TypeAdapter<T>) new TypeAdapter<Ship>() {
                 @Override

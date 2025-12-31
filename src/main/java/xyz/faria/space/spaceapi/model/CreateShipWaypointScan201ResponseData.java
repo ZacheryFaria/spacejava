@@ -13,21 +13,32 @@
 
 package xyz.faria.space.spaceapi.model;
 
-import com.google.gson.*;
+import com.google.gson.Gson;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.TypeAdapter;
+import com.google.gson.TypeAdapterFactory;
 import com.google.gson.annotations.SerializedName;
 import com.google.gson.reflect.TypeToken;
 import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonWriter;
-import xyz.faria.space.spaceapi.client.JSON;
-
 import java.io.IOException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
+import java.util.Set;
+import xyz.faria.space.spaceapi.client.JSON;
 
 /**
  * CreateShipWaypointScan201ResponseData
  */
 
 public class CreateShipWaypointScan201ResponseData {
+
     public static final String SERIALIZED_NAME_COOLDOWN = "cooldown";
     @SerializedName(SERIALIZED_NAME_COOLDOWN)
     @javax.annotation.Nonnull
@@ -41,9 +52,56 @@ public class CreateShipWaypointScan201ResponseData {
     public CreateShipWaypointScan201ResponseData() {
     }
 
-    public CreateShipWaypointScan201ResponseData cooldown(@javax.annotation.Nonnull Cooldown cooldown) {
-        this.cooldown = cooldown;
-        return this;
+    /**
+     * Validates the JSON Element and throws an exception if issues found
+     *
+     * @param jsonElement JSON Element
+     * @throws IOException if the JSON Element is invalid with respect to
+     *                     CreateShipWaypointScan201ResponseData
+     */
+    public static void validateJsonElement(JsonElement jsonElement) throws IOException {
+        if (jsonElement == null) {
+            if (!CreateShipWaypointScan201ResponseData.openapiRequiredFields.isEmpty()) { // has required fields but JSON element is null
+                throw new IllegalArgumentException(String.format(java.util.Locale.ROOT,
+                    "The required field(s) %s in CreateShipWaypointScan201ResponseData is not found in the empty JSON string",
+                    CreateShipWaypointScan201ResponseData.openapiRequiredFields));
+            }
+        }
+
+        Set<Map.Entry<String, JsonElement>> entries = jsonElement.getAsJsonObject().entrySet();
+        // check to see if the JSON string contains additional fields
+        for (Map.Entry<String, JsonElement> entry : entries) {
+            if (!CreateShipWaypointScan201ResponseData.openapiFields.contains(entry.getKey())) {
+                throw new IllegalArgumentException(String.format(java.util.Locale.ROOT,
+                    "The field `%s` in the JSON string is not defined in the `CreateShipWaypointScan201ResponseData` properties. JSON: %s",
+                    entry.getKey(), jsonElement));
+            }
+        }
+
+        // check to make sure all required properties/fields are present in the JSON string
+        for (String requiredField : CreateShipWaypointScan201ResponseData.openapiRequiredFields) {
+            if (jsonElement.getAsJsonObject().get(requiredField) == null) {
+                throw new IllegalArgumentException(String.format(java.util.Locale.ROOT,
+                    "The required field `%s` is not found in the JSON string: %s",
+                    requiredField,
+                    jsonElement));
+            }
+        }
+        JsonObject jsonObj = jsonElement.getAsJsonObject();
+        // validate the required field `cooldown`
+        Cooldown.validateJsonElement(jsonObj.get("cooldown"));
+        // ensure the json data is an array
+        if (!jsonObj.get("waypoints").isJsonArray()) {
+            throw new IllegalArgumentException(String.format(java.util.Locale.ROOT,
+                "Expected the field `waypoints` to be an array in the JSON string but got `%s`",
+                jsonObj.get("waypoints").toString()));
+        }
+
+        JsonArray jsonArraywaypoints = jsonObj.getAsJsonArray("waypoints");
+        // validate the required field `waypoints` (array)
+        for (int i = 0; i < jsonArraywaypoints.size(); i++) {
+            ScannedWaypoint.validateJsonElement(jsonArraywaypoints.get(i));
+        }
     }
 
     /**
@@ -60,10 +118,17 @@ public class CreateShipWaypointScan201ResponseData {
         this.cooldown = cooldown;
     }
 
-
-    public CreateShipWaypointScan201ResponseData waypoints(@javax.annotation.Nonnull List<ScannedWaypoint> waypoints) {
-        this.waypoints = waypoints;
-        return this;
+    /**
+     * Create an instance of CreateShipWaypointScan201ResponseData given an JSON string
+     *
+     * @param jsonString JSON string
+     * @return An instance of CreateShipWaypointScan201ResponseData
+     * @throws IOException if the JSON string is invalid with respect to
+     *                     CreateShipWaypointScan201ResponseData
+     */
+    public static CreateShipWaypointScan201ResponseData fromJson(String jsonString)
+        throws IOException {
+        return JSON.getGson().fromJson(jsonString, CreateShipWaypointScan201ResponseData.class);
     }
 
     public CreateShipWaypointScan201ResponseData addWaypointsItem(ScannedWaypoint waypointsItem) {
@@ -88,6 +153,22 @@ public class CreateShipWaypointScan201ResponseData {
         this.waypoints = waypoints;
     }
 
+    public CreateShipWaypointScan201ResponseData cooldown(
+        @javax.annotation.Nonnull Cooldown cooldown) {
+        this.cooldown = cooldown;
+        return this;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(cooldown, waypoints);
+    }
+
+    public CreateShipWaypointScan201ResponseData waypoints(
+        @javax.annotation.Nonnull List<ScannedWaypoint> waypoints) {
+        this.waypoints = waypoints;
+        return this;
+    }
 
     @Override
     public boolean equals(Object o) {
@@ -99,32 +180,7 @@ public class CreateShipWaypointScan201ResponseData {
         }
         CreateShipWaypointScan201ResponseData createShipWaypointScan201ResponseData = (CreateShipWaypointScan201ResponseData) o;
         return Objects.equals(this.cooldown, createShipWaypointScan201ResponseData.cooldown) &&
-                Objects.equals(this.waypoints, createShipWaypointScan201ResponseData.waypoints);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(cooldown, waypoints);
-    }
-
-    @Override
-    public String toString() {
-        String sb = "class CreateShipWaypointScan201ResponseData {\n" +
-                "    cooldown: " + toIndentedString(cooldown) + "\n" +
-                "    waypoints: " + toIndentedString(waypoints) + "\n" +
-                "}";
-        return sb;
-    }
-
-    /**
-     * Convert the given object to string with each line indented by 4 spaces
-     * (except the first line).
-     */
-    private String toIndentedString(Object o) {
-        if (o == null) {
-            return "null";
-        }
-        return o.toString().replace("\n", "\n    ");
+            Objects.equals(this.waypoints, createShipWaypointScan201ResponseData.waypoints);
     }
 
 
@@ -139,49 +195,28 @@ public class CreateShipWaypointScan201ResponseData {
         openapiRequiredFields = new HashSet<String>(Arrays.asList("cooldown", "waypoints"));
     }
 
+    @Override
+    public String toString() {
+        String sb = "class CreateShipWaypointScan201ResponseData {\n" +
+            "    cooldown: " + toIndentedString(cooldown) + "\n" +
+            "    waypoints: " + toIndentedString(waypoints) + "\n" +
+            "}";
+        return sb;
+    }
+
     /**
-     * Validates the JSON Element and throws an exception if issues found
-     *
-     * @param jsonElement JSON Element
-     * @throws IOException if the JSON Element is invalid with respect to CreateShipWaypointScan201ResponseData
+     * Convert the given object to string with each line indented by 4 spaces (except the first
+     * line).
      */
-    public static void validateJsonElement(JsonElement jsonElement) throws IOException {
-        if (jsonElement == null) {
-            if (!CreateShipWaypointScan201ResponseData.openapiRequiredFields.isEmpty()) { // has required fields but JSON element is null
-                throw new IllegalArgumentException(String.format(java.util.Locale.ROOT, "The required field(s) %s in CreateShipWaypointScan201ResponseData is not found in the empty JSON string", CreateShipWaypointScan201ResponseData.openapiRequiredFields));
-            }
+    private String toIndentedString(Object o) {
+        if (o == null) {
+            return "null";
         }
-
-        Set<Map.Entry<String, JsonElement>> entries = jsonElement.getAsJsonObject().entrySet();
-        // check to see if the JSON string contains additional fields
-        for (Map.Entry<String, JsonElement> entry : entries) {
-            if (!CreateShipWaypointScan201ResponseData.openapiFields.contains(entry.getKey())) {
-                throw new IllegalArgumentException(String.format(java.util.Locale.ROOT, "The field `%s` in the JSON string is not defined in the `CreateShipWaypointScan201ResponseData` properties. JSON: %s", entry.getKey(), jsonElement));
-            }
-        }
-
-        // check to make sure all required properties/fields are present in the JSON string
-        for (String requiredField : CreateShipWaypointScan201ResponseData.openapiRequiredFields) {
-            if (jsonElement.getAsJsonObject().get(requiredField) == null) {
-                throw new IllegalArgumentException(String.format(java.util.Locale.ROOT, "The required field `%s` is not found in the JSON string: %s", requiredField, jsonElement));
-            }
-        }
-        JsonObject jsonObj = jsonElement.getAsJsonObject();
-        // validate the required field `cooldown`
-        Cooldown.validateJsonElement(jsonObj.get("cooldown"));
-        // ensure the json data is an array
-        if (!jsonObj.get("waypoints").isJsonArray()) {
-            throw new IllegalArgumentException(String.format(java.util.Locale.ROOT, "Expected the field `waypoints` to be an array in the JSON string but got `%s`", jsonObj.get("waypoints").toString()));
-        }
-
-        JsonArray jsonArraywaypoints = jsonObj.getAsJsonArray("waypoints");
-        // validate the required field `waypoints` (array)
-        for (int i = 0; i < jsonArraywaypoints.size(); i++) {
-            ScannedWaypoint.validateJsonElement(jsonArraywaypoints.get(i));
-        }
+        return o.toString().replace("\n", "\n    ");
     }
 
     public static class CustomTypeAdapterFactory implements TypeAdapterFactory {
+
         @SuppressWarnings("unchecked")
         @Override
         public <T> TypeAdapter<T> create(Gson gson, TypeToken<T> type) {
@@ -190,17 +225,20 @@ public class CreateShipWaypointScan201ResponseData {
             }
             final TypeAdapter<JsonElement> elementAdapter = gson.getAdapter(JsonElement.class);
             final TypeAdapter<CreateShipWaypointScan201ResponseData> thisAdapter
-                    = gson.getDelegateAdapter(this, TypeToken.get(CreateShipWaypointScan201ResponseData.class));
+                = gson.getDelegateAdapter(this,
+                TypeToken.get(CreateShipWaypointScan201ResponseData.class));
 
             return (TypeAdapter<T>) new TypeAdapter<CreateShipWaypointScan201ResponseData>() {
                 @Override
-                public void write(JsonWriter out, CreateShipWaypointScan201ResponseData value) throws IOException {
+                public void write(JsonWriter out, CreateShipWaypointScan201ResponseData value)
+                    throws IOException {
                     JsonObject obj = thisAdapter.toJsonTree(value).getAsJsonObject();
                     elementAdapter.write(out, obj);
                 }
 
                 @Override
-                public CreateShipWaypointScan201ResponseData read(JsonReader in) throws IOException {
+                public CreateShipWaypointScan201ResponseData read(JsonReader in)
+                    throws IOException {
                     JsonElement jsonElement = elementAdapter.read(in);
                     validateJsonElement(jsonElement);
                     return thisAdapter.fromJsonTree(jsonElement);
@@ -208,17 +246,6 @@ public class CreateShipWaypointScan201ResponseData {
 
             }.nullSafe();
         }
-    }
-
-    /**
-     * Create an instance of CreateShipWaypointScan201ResponseData given an JSON string
-     *
-     * @param jsonString JSON string
-     * @return An instance of CreateShipWaypointScan201ResponseData
-     * @throws IOException if the JSON string is invalid with respect to CreateShipWaypointScan201ResponseData
-     */
-    public static CreateShipWaypointScan201ResponseData fromJson(String jsonString) throws IOException {
-        return JSON.getGson().fromJson(jsonString, CreateShipWaypointScan201ResponseData.class);
     }
 
     /**

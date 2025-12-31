@@ -13,23 +13,31 @@
 
 package xyz.faria.space.spaceapi.model;
 
-import com.google.gson.*;
+import com.google.gson.Gson;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.TypeAdapter;
+import com.google.gson.TypeAdapterFactory;
 import com.google.gson.annotations.JsonAdapter;
 import com.google.gson.annotations.SerializedName;
 import com.google.gson.reflect.TypeToken;
 import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonWriter;
 import jakarta.persistence.Embeddable;
-import xyz.faria.space.spaceapi.client.JSON;
-
 import java.io.IOException;
-import java.util.*;
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Objects;
+import java.util.Set;
+import xyz.faria.space.spaceapi.client.JSON;
 
 /**
  * The ship&#39;s crew service and maintain the ship&#39;s systems and equipment.
  */
 @Embeddable
 public class ShipCrew {
+
     public static final String SERIALIZED_NAME_CURRENT = "current";
     @SerializedName(SERIALIZED_NAME_CURRENT)
     @javax.annotation.Nonnull
@@ -45,56 +53,14 @@ public class ShipCrew {
     @javax.annotation.Nonnull
     private Integer capacity;
 
-    /**
-     * The rotation of crew shifts. A stricter shift improves the ship&#39;s performance. A more relaxed shift improves the crew&#39;s morale.
-     */
-    @JsonAdapter(RotationEnum.Adapter.class)
-    public enum RotationEnum {
-        STRICT("STRICT"),
+    static {
+        // a set of all properties/fields (JSON key names)
+        openapiFields = new HashSet<String>(
+            Arrays.asList("current", "required", "capacity", "rotation", "morale", "wages"));
 
-        RELAXED("RELAXED");
-
-        private final String value;
-
-        RotationEnum(String value) {
-            this.value = value;
-        }
-
-        public String getValue() {
-            return value;
-        }
-
-        @Override
-        public String toString() {
-            return String.valueOf(value);
-        }
-
-        public static RotationEnum fromValue(String value) {
-            for (RotationEnum b : RotationEnum.values()) {
-                if (b.value.equals(value)) {
-                    return b;
-                }
-            }
-            throw new IllegalArgumentException("Unexpected value '" + value + "'");
-        }
-
-        public static class Adapter extends TypeAdapter<RotationEnum> {
-            @Override
-            public void write(final JsonWriter jsonWriter, final RotationEnum enumeration) throws IOException {
-                jsonWriter.value(enumeration.getValue());
-            }
-
-            @Override
-            public RotationEnum read(final JsonReader jsonReader) throws IOException {
-                String value = jsonReader.nextString();
-                return RotationEnum.fromValue(value);
-            }
-        }
-
-        public static void validateJsonElement(JsonElement jsonElement) throws IOException {
-            String value = jsonElement.getAsString();
-            RotationEnum.fromValue(value);
-        }
+        // a set of required properties/fields (JSON key names)
+        openapiRequiredFields = new HashSet<String>(
+            Arrays.asList("current", "required", "capacity", "rotation", "morale", "wages"));
     }
 
     public static final String SERIALIZED_NAME_ROTATION = "rotation";
@@ -181,13 +147,46 @@ public class ShipCrew {
     }
 
     /**
-     * The rotation of crew shifts. A stricter shift improves the ship&#39;s performance. A more relaxed shift improves the crew&#39;s morale.
+     * Validates the JSON Element and throws an exception if issues found
      *
-     * @return rotation
+     * @param jsonElement JSON Element
+     * @throws IOException if the JSON Element is invalid with respect to ShipCrew
      */
-    @javax.annotation.Nonnull
-    public RotationEnum getRotation() {
-        return rotation;
+    public static void validateJsonElement(JsonElement jsonElement) throws IOException {
+        if (jsonElement == null) {
+            if (!ShipCrew.openapiRequiredFields.isEmpty()) { // has required fields but JSON element is null
+                throw new IllegalArgumentException(String.format(java.util.Locale.ROOT,
+                    "The required field(s) %s in ShipCrew is not found in the empty JSON string",
+                    ShipCrew.openapiRequiredFields));
+            }
+        }
+
+        Set<Map.Entry<String, JsonElement>> entries = jsonElement.getAsJsonObject().entrySet();
+        // check to see if the JSON string contains additional fields
+        for (Map.Entry<String, JsonElement> entry : entries) {
+            if (!ShipCrew.openapiFields.contains(entry.getKey())) {
+                throw new IllegalArgumentException(String.format(java.util.Locale.ROOT,
+                    "The field `%s` in the JSON string is not defined in the `ShipCrew` properties. JSON: %s",
+                    entry.getKey(), jsonElement));
+            }
+        }
+
+        // check to make sure all required properties/fields are present in the JSON string
+        for (String requiredField : ShipCrew.openapiRequiredFields) {
+            if (jsonElement.getAsJsonObject().get(requiredField) == null) {
+                throw new IllegalArgumentException(String.format(java.util.Locale.ROOT,
+                    "The required field `%s` is not found in the JSON string: %s", requiredField,
+                    jsonElement));
+            }
+        }
+        JsonObject jsonObj = jsonElement.getAsJsonObject();
+        if (!jsonObj.get("rotation").isJsonPrimitive()) {
+            throw new IllegalArgumentException(String.format(java.util.Locale.ROOT,
+                "Expected the field `rotation` to be a primitive type in the JSON string but got `%s`",
+                jsonObj.get("rotation").toString()));
+        }
+        // validate the required field `rotation`
+        RotationEnum.validateJsonElement(jsonObj.get("rotation"));
     }
 
     public void setRotation(@javax.annotation.Nonnull RotationEnum rotation) {
@@ -201,15 +200,14 @@ public class ShipCrew {
     }
 
     /**
-     * A rough measure of the crew&#39;s morale. A higher morale means the crew is happier and more productive. A lower morale means the ship is more prone to accidents.
-     * minimum: 0
-     * maximum: 100
+     * The rotation of crew shifts. A stricter shift improves the ship&#39;s performance. A more
+     * relaxed shift improves the crew&#39;s morale.
      *
-     * @return morale
+     * @return rotation
      */
     @javax.annotation.Nonnull
-    public Integer getMorale() {
-        return morale;
+    public RotationEnum getRotation() {
+        return rotation;
     }
 
     public void setMorale(@javax.annotation.Nonnull Integer morale) {
@@ -223,8 +221,24 @@ public class ShipCrew {
     }
 
     /**
-     * The amount of credits per crew member paid per hour. Wages are paid when a ship docks at a civilized waypoint.
-     * minimum: 0
+     * A rough measure of the crew&#39;s morale. A higher morale means the crew is happier and more
+     * productive. A lower morale means the ship is more prone to accidents. minimum: 0 maximum:
+     * 100
+     *
+     * @return morale
+     */
+    @javax.annotation.Nonnull
+    public Integer getMorale() {
+        return morale;
+    }
+
+    public void setWages(@javax.annotation.Nonnull Integer wages) {
+        this.wages = wages;
+    }
+
+    /**
+     * The amount of credits per crew member paid per hour. Wages are paid when a ship docks at a
+     * civilized waypoint. minimum: 0
      *
      * @return wages
      */
@@ -233,10 +247,10 @@ public class ShipCrew {
         return wages;
     }
 
-    public void setWages(@javax.annotation.Nonnull Integer wages) {
-        this.wages = wages;
+    @Override
+    public int hashCode() {
+        return Objects.hash(current, required, capacity, rotation, morale, wages);
     }
-
 
     @Override
     public boolean equals(Object o) {
@@ -248,34 +262,33 @@ public class ShipCrew {
         }
         ShipCrew shipCrew = (ShipCrew) o;
         return Objects.equals(this.current, shipCrew.current) &&
-                Objects.equals(this.required, shipCrew.required) &&
-                Objects.equals(this.capacity, shipCrew.capacity) &&
-                Objects.equals(this.rotation, shipCrew.rotation) &&
-                Objects.equals(this.morale, shipCrew.morale) &&
-                Objects.equals(this.wages, shipCrew.wages);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(current, required, capacity, rotation, morale, wages);
+            Objects.equals(this.required, shipCrew.required) &&
+            Objects.equals(this.capacity, shipCrew.capacity) &&
+            Objects.equals(this.rotation, shipCrew.rotation) &&
+            Objects.equals(this.morale, shipCrew.morale) &&
+            Objects.equals(this.wages, shipCrew.wages);
     }
 
     @Override
     public String toString() {
         String sb = "class ShipCrew {\n" +
-                "    current: " + toIndentedString(current) + "\n" +
-                "    required: " + toIndentedString(required) + "\n" +
-                "    capacity: " + toIndentedString(capacity) + "\n" +
-                "    rotation: " + toIndentedString(rotation) + "\n" +
-                "    morale: " + toIndentedString(morale) + "\n" +
-                "    wages: " + toIndentedString(wages) + "\n" +
-                "}";
+            "    current: " + toIndentedString(current) + "\n" +
+            "    required: " + toIndentedString(required) + "\n" +
+            "    capacity: " + toIndentedString(capacity) + "\n" +
+            "    rotation: " + toIndentedString(rotation) + "\n" +
+            "    morale: " + toIndentedString(morale) + "\n" +
+            "    wages: " + toIndentedString(wages) + "\n" +
+            "}";
         return sb;
     }
 
+
+    public static HashSet<String> openapiFields;
+    public static HashSet<String> openapiRequiredFields;
+
     /**
-     * Convert the given object to string with each line indented by 4 spaces
-     * (except the first line).
+     * Convert the given object to string with each line indented by 4 spaces (except the first
+     * line).
      */
     private String toIndentedString(Object o) {
         if (o == null) {
@@ -284,54 +297,63 @@ public class ShipCrew {
         return o.toString().replace("\n", "\n    ");
     }
 
-
-    public static HashSet<String> openapiFields;
-    public static HashSet<String> openapiRequiredFields;
-
-    static {
-        // a set of all properties/fields (JSON key names)
-        openapiFields = new HashSet<String>(Arrays.asList("current", "required", "capacity", "rotation", "morale", "wages"));
-
-        // a set of required properties/fields (JSON key names)
-        openapiRequiredFields = new HashSet<String>(Arrays.asList("current", "required", "capacity", "rotation", "morale", "wages"));
-    }
-
     /**
-     * Validates the JSON Element and throws an exception if issues found
-     *
-     * @param jsonElement JSON Element
-     * @throws IOException if the JSON Element is invalid with respect to ShipCrew
+     * The rotation of crew shifts. A stricter shift improves the ship&#39;s performance. A more
+     * relaxed shift improves the crew&#39;s morale.
      */
-    public static void validateJsonElement(JsonElement jsonElement) throws IOException {
-        if (jsonElement == null) {
-            if (!ShipCrew.openapiRequiredFields.isEmpty()) { // has required fields but JSON element is null
-                throw new IllegalArgumentException(String.format(java.util.Locale.ROOT, "The required field(s) %s in ShipCrew is not found in the empty JSON string", ShipCrew.openapiRequiredFields));
+    @JsonAdapter(RotationEnum.Adapter.class)
+    public enum RotationEnum {
+        STRICT("STRICT"),
+
+        RELAXED("RELAXED");
+
+        private final String value;
+
+        RotationEnum(String value) {
+            this.value = value;
+        }
+
+        public String getValue() {
+            return value;
+        }
+
+        @Override
+        public String toString() {
+            return String.valueOf(value);
+        }
+
+        public static RotationEnum fromValue(String value) {
+            for (RotationEnum b : RotationEnum.values()) {
+                if (b.value.equals(value)) {
+                    return b;
+                }
+            }
+            throw new IllegalArgumentException("Unexpected value '" + value + "'");
+        }
+
+        public static class Adapter extends TypeAdapter<RotationEnum> {
+
+            @Override
+            public void write(final JsonWriter jsonWriter, final RotationEnum enumeration)
+                throws IOException {
+                jsonWriter.value(enumeration.getValue());
+            }
+
+            @Override
+            public RotationEnum read(final JsonReader jsonReader) throws IOException {
+                String value = jsonReader.nextString();
+                return RotationEnum.fromValue(value);
             }
         }
 
-        Set<Map.Entry<String, JsonElement>> entries = jsonElement.getAsJsonObject().entrySet();
-        // check to see if the JSON string contains additional fields
-        for (Map.Entry<String, JsonElement> entry : entries) {
-            if (!ShipCrew.openapiFields.contains(entry.getKey())) {
-                throw new IllegalArgumentException(String.format(java.util.Locale.ROOT, "The field `%s` in the JSON string is not defined in the `ShipCrew` properties. JSON: %s", entry.getKey(), jsonElement));
-            }
+        public static void validateJsonElement(JsonElement jsonElement) throws IOException {
+            String value = jsonElement.getAsString();
+            RotationEnum.fromValue(value);
         }
-
-        // check to make sure all required properties/fields are present in the JSON string
-        for (String requiredField : ShipCrew.openapiRequiredFields) {
-            if (jsonElement.getAsJsonObject().get(requiredField) == null) {
-                throw new IllegalArgumentException(String.format(java.util.Locale.ROOT, "The required field `%s` is not found in the JSON string: %s", requiredField, jsonElement));
-            }
-        }
-        JsonObject jsonObj = jsonElement.getAsJsonObject();
-        if (!jsonObj.get("rotation").isJsonPrimitive()) {
-            throw new IllegalArgumentException(String.format(java.util.Locale.ROOT, "Expected the field `rotation` to be a primitive type in the JSON string but got `%s`", jsonObj.get("rotation").toString()));
-        }
-        // validate the required field `rotation`
-        RotationEnum.validateJsonElement(jsonObj.get("rotation"));
     }
 
     public static class CustomTypeAdapterFactory implements TypeAdapterFactory {
+
         @SuppressWarnings("unchecked")
         @Override
         public <T> TypeAdapter<T> create(Gson gson, TypeToken<T> type) {
@@ -340,7 +362,7 @@ public class ShipCrew {
             }
             final TypeAdapter<JsonElement> elementAdapter = gson.getAdapter(JsonElement.class);
             final TypeAdapter<ShipCrew> thisAdapter
-                    = gson.getDelegateAdapter(this, TypeToken.get(ShipCrew.class));
+                = gson.getDelegateAdapter(this, TypeToken.get(ShipCrew.class));
 
             return (TypeAdapter<T>) new TypeAdapter<ShipCrew>() {
                 @Override

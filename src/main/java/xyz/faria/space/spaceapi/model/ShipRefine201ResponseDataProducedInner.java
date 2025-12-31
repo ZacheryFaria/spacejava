@@ -13,20 +13,28 @@
 
 package xyz.faria.space.spaceapi.model;
 
-import com.google.gson.*;
+import com.google.gson.Gson;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.TypeAdapter;
+import com.google.gson.TypeAdapterFactory;
 import com.google.gson.annotations.SerializedName;
 import com.google.gson.reflect.TypeToken;
 import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonWriter;
-import xyz.faria.space.spaceapi.client.JSON;
-
 import java.io.IOException;
-import java.util.*;
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Objects;
+import java.util.Set;
+import xyz.faria.space.spaceapi.client.JSON;
 
 /**
  * ShipRefine201ResponseDataProducedInner
  */
 public class ShipRefine201ResponseDataProducedInner {
+
     public static final String SERIALIZED_NAME_TRADE_SYMBOL = "tradeSymbol";
     @SerializedName(SERIALIZED_NAME_TRADE_SYMBOL)
     @javax.annotation.Nonnull
@@ -40,9 +48,47 @@ public class ShipRefine201ResponseDataProducedInner {
     public ShipRefine201ResponseDataProducedInner() {
     }
 
-    public ShipRefine201ResponseDataProducedInner tradeSymbol(@javax.annotation.Nonnull String tradeSymbol) {
-        this.tradeSymbol = tradeSymbol;
-        return this;
+    /**
+     * Validates the JSON Element and throws an exception if issues found
+     *
+     * @param jsonElement JSON Element
+     * @throws IOException if the JSON Element is invalid with respect to
+     *                     ShipRefine201ResponseDataProducedInner
+     */
+    public static void validateJsonElement(JsonElement jsonElement) throws IOException {
+        if (jsonElement == null) {
+            if (!ShipRefine201ResponseDataProducedInner.openapiRequiredFields.isEmpty()) { // has required fields but JSON element is null
+                throw new IllegalArgumentException(String.format(java.util.Locale.ROOT,
+                    "The required field(s) %s in ShipRefine201ResponseDataProducedInner is not found in the empty JSON string",
+                    ShipRefine201ResponseDataProducedInner.openapiRequiredFields));
+            }
+        }
+
+        Set<Map.Entry<String, JsonElement>> entries = jsonElement.getAsJsonObject().entrySet();
+        // check to see if the JSON string contains additional fields
+        for (Map.Entry<String, JsonElement> entry : entries) {
+            if (!ShipRefine201ResponseDataProducedInner.openapiFields.contains(entry.getKey())) {
+                throw new IllegalArgumentException(String.format(java.util.Locale.ROOT,
+                    "The field `%s` in the JSON string is not defined in the `ShipRefine201ResponseDataProducedInner` properties. JSON: %s",
+                    entry.getKey(), jsonElement));
+            }
+        }
+
+        // check to make sure all required properties/fields are present in the JSON string
+        for (String requiredField : ShipRefine201ResponseDataProducedInner.openapiRequiredFields) {
+            if (jsonElement.getAsJsonObject().get(requiredField) == null) {
+                throw new IllegalArgumentException(String.format(java.util.Locale.ROOT,
+                    "The required field `%s` is not found in the JSON string: %s",
+                    requiredField,
+                    jsonElement));
+            }
+        }
+        JsonObject jsonObj = jsonElement.getAsJsonObject();
+        if (!jsonObj.get("tradeSymbol").isJsonPrimitive()) {
+            throw new IllegalArgumentException(String.format(java.util.Locale.ROOT,
+                "Expected the field `tradeSymbol` to be a primitive type in the JSON string but got `%s`",
+                jsonObj.get("tradeSymbol").toString()));
+        }
     }
 
     /**
@@ -79,6 +125,29 @@ public class ShipRefine201ResponseDataProducedInner {
         this.units = units;
     }
 
+    /**
+     * Create an instance of ShipRefine201ResponseDataProducedInner given an JSON string
+     *
+     * @param jsonString JSON string
+     * @return An instance of ShipRefine201ResponseDataProducedInner
+     * @throws IOException if the JSON string is invalid with respect to
+     *                     ShipRefine201ResponseDataProducedInner
+     */
+    public static ShipRefine201ResponseDataProducedInner fromJson(String jsonString)
+        throws IOException {
+        return JSON.getGson().fromJson(jsonString, ShipRefine201ResponseDataProducedInner.class);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(tradeSymbol, units);
+    }
+
+    public ShipRefine201ResponseDataProducedInner tradeSymbol(
+        @javax.annotation.Nonnull String tradeSymbol) {
+        this.tradeSymbol = tradeSymbol;
+        return this;
+    }
 
     @Override
     public boolean equals(Object o) {
@@ -89,33 +158,9 @@ public class ShipRefine201ResponseDataProducedInner {
             return false;
         }
         ShipRefine201ResponseDataProducedInner shipRefine201ResponseDataProducedInner = (ShipRefine201ResponseDataProducedInner) o;
-        return Objects.equals(this.tradeSymbol, shipRefine201ResponseDataProducedInner.tradeSymbol) &&
-                Objects.equals(this.units, shipRefine201ResponseDataProducedInner.units);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(tradeSymbol, units);
-    }
-
-    @Override
-    public String toString() {
-        String sb = "class ShipRefine201ResponseDataProducedInner {\n" +
-                "    tradeSymbol: " + toIndentedString(tradeSymbol) + "\n" +
-                "    units: " + toIndentedString(units) + "\n" +
-                "}";
-        return sb;
-    }
-
-    /**
-     * Convert the given object to string with each line indented by 4 spaces
-     * (except the first line).
-     */
-    private String toIndentedString(Object o) {
-        if (o == null) {
-            return "null";
-        }
-        return o.toString().replace("\n", "\n    ");
+        return Objects.equals(this.tradeSymbol, shipRefine201ResponseDataProducedInner.tradeSymbol)
+            &&
+            Objects.equals(this.units, shipRefine201ResponseDataProducedInner.units);
     }
 
 
@@ -130,40 +175,28 @@ public class ShipRefine201ResponseDataProducedInner {
         openapiRequiredFields = new HashSet<String>(Arrays.asList("tradeSymbol", "units"));
     }
 
+    @Override
+    public String toString() {
+        String sb = "class ShipRefine201ResponseDataProducedInner {\n" +
+            "    tradeSymbol: " + toIndentedString(tradeSymbol) + "\n" +
+            "    units: " + toIndentedString(units) + "\n" +
+            "}";
+        return sb;
+    }
+
     /**
-     * Validates the JSON Element and throws an exception if issues found
-     *
-     * @param jsonElement JSON Element
-     * @throws IOException if the JSON Element is invalid with respect to ShipRefine201ResponseDataProducedInner
+     * Convert the given object to string with each line indented by 4 spaces (except the first
+     * line).
      */
-    public static void validateJsonElement(JsonElement jsonElement) throws IOException {
-        if (jsonElement == null) {
-            if (!ShipRefine201ResponseDataProducedInner.openapiRequiredFields.isEmpty()) { // has required fields but JSON element is null
-                throw new IllegalArgumentException(String.format(java.util.Locale.ROOT, "The required field(s) %s in ShipRefine201ResponseDataProducedInner is not found in the empty JSON string", ShipRefine201ResponseDataProducedInner.openapiRequiredFields));
-            }
+    private String toIndentedString(Object o) {
+        if (o == null) {
+            return "null";
         }
-
-        Set<Map.Entry<String, JsonElement>> entries = jsonElement.getAsJsonObject().entrySet();
-        // check to see if the JSON string contains additional fields
-        for (Map.Entry<String, JsonElement> entry : entries) {
-            if (!ShipRefine201ResponseDataProducedInner.openapiFields.contains(entry.getKey())) {
-                throw new IllegalArgumentException(String.format(java.util.Locale.ROOT, "The field `%s` in the JSON string is not defined in the `ShipRefine201ResponseDataProducedInner` properties. JSON: %s", entry.getKey(), jsonElement));
-            }
-        }
-
-        // check to make sure all required properties/fields are present in the JSON string
-        for (String requiredField : ShipRefine201ResponseDataProducedInner.openapiRequiredFields) {
-            if (jsonElement.getAsJsonObject().get(requiredField) == null) {
-                throw new IllegalArgumentException(String.format(java.util.Locale.ROOT, "The required field `%s` is not found in the JSON string: %s", requiredField, jsonElement));
-            }
-        }
-        JsonObject jsonObj = jsonElement.getAsJsonObject();
-        if (!jsonObj.get("tradeSymbol").isJsonPrimitive()) {
-            throw new IllegalArgumentException(String.format(java.util.Locale.ROOT, "Expected the field `tradeSymbol` to be a primitive type in the JSON string but got `%s`", jsonObj.get("tradeSymbol").toString()));
-        }
+        return o.toString().replace("\n", "\n    ");
     }
 
     public static class CustomTypeAdapterFactory implements TypeAdapterFactory {
+
         @SuppressWarnings("unchecked")
         @Override
         public <T> TypeAdapter<T> create(Gson gson, TypeToken<T> type) {
@@ -172,17 +205,20 @@ public class ShipRefine201ResponseDataProducedInner {
             }
             final TypeAdapter<JsonElement> elementAdapter = gson.getAdapter(JsonElement.class);
             final TypeAdapter<ShipRefine201ResponseDataProducedInner> thisAdapter
-                    = gson.getDelegateAdapter(this, TypeToken.get(ShipRefine201ResponseDataProducedInner.class));
+                = gson.getDelegateAdapter(this,
+                TypeToken.get(ShipRefine201ResponseDataProducedInner.class));
 
             return (TypeAdapter<T>) new TypeAdapter<ShipRefine201ResponseDataProducedInner>() {
                 @Override
-                public void write(JsonWriter out, ShipRefine201ResponseDataProducedInner value) throws IOException {
+                public void write(JsonWriter out, ShipRefine201ResponseDataProducedInner value)
+                    throws IOException {
                     JsonObject obj = thisAdapter.toJsonTree(value).getAsJsonObject();
                     elementAdapter.write(out, obj);
                 }
 
                 @Override
-                public ShipRefine201ResponseDataProducedInner read(JsonReader in) throws IOException {
+                public ShipRefine201ResponseDataProducedInner read(JsonReader in)
+                    throws IOException {
                     JsonElement jsonElement = elementAdapter.read(in);
                     validateJsonElement(jsonElement);
                     return thisAdapter.fromJsonTree(jsonElement);
@@ -190,17 +226,6 @@ public class ShipRefine201ResponseDataProducedInner {
 
             }.nullSafe();
         }
-    }
-
-    /**
-     * Create an instance of ShipRefine201ResponseDataProducedInner given an JSON string
-     *
-     * @param jsonString JSON string
-     * @return An instance of ShipRefine201ResponseDataProducedInner
-     * @throws IOException if the JSON string is invalid with respect to ShipRefine201ResponseDataProducedInner
-     */
-    public static ShipRefine201ResponseDataProducedInner fromJson(String jsonString) throws IOException {
-        return JSON.getGson().fromJson(jsonString, ShipRefine201ResponseDataProducedInner.class);
     }
 
     /**

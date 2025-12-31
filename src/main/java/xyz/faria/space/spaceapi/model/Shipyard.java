@@ -13,20 +13,31 @@
 
 package xyz.faria.space.spaceapi.model;
 
-import com.google.gson.*;
+import com.google.gson.Gson;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.TypeAdapter;
+import com.google.gson.TypeAdapterFactory;
 import com.google.gson.annotations.SerializedName;
 import com.google.gson.reflect.TypeToken;
 import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonWriter;
-import xyz.faria.space.spaceapi.client.JSON;
-
 import java.io.IOException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
+import java.util.Set;
+import xyz.faria.space.spaceapi.client.JSON;
 
 /**
  * Shipyard details.
  */
 public class Shipyard {
+
     public static final String SERIALIZED_NAME_SYMBOL = "symbol";
     @SerializedName(SERIALIZED_NAME_SYMBOL)
     @javax.annotation.Nonnull
@@ -60,14 +71,14 @@ public class Shipyard {
         return this;
     }
 
-    /**
-     * The symbol of the shipyard. The symbol is the same as the waypoint where the shipyard is located.
-     *
-     * @return symbol
-     */
-    @javax.annotation.Nonnull
-    public String getSymbol() {
-        return symbol;
+    static {
+        // a set of all properties/fields (JSON key names)
+        openapiFields = new HashSet<String>(
+            Arrays.asList("symbol", "shipTypes", "transactions", "ships", "modificationsFee"));
+
+        // a set of required properties/fields (JSON key names)
+        openapiRequiredFields = new HashSet<String>(
+            Arrays.asList("symbol", "shipTypes", "modificationsFee"));
     }
 
     public void setSymbol(@javax.annotation.Nonnull String symbol) {
@@ -102,10 +113,90 @@ public class Shipyard {
         this.shipTypes = shipTypes;
     }
 
+    /**
+     * Validates the JSON Element and throws an exception if issues found
+     *
+     * @param jsonElement JSON Element
+     * @throws IOException if the JSON Element is invalid with respect to Shipyard
+     */
+    public static void validateJsonElement(JsonElement jsonElement) throws IOException {
+        if (jsonElement == null) {
+            if (!Shipyard.openapiRequiredFields.isEmpty()) { // has required fields but JSON element is null
+                throw new IllegalArgumentException(String.format(java.util.Locale.ROOT,
+                    "The required field(s) %s in Shipyard is not found in the empty JSON string",
+                    Shipyard.openapiRequiredFields));
+            }
+        }
 
-    public Shipyard transactions(@javax.annotation.Nullable List<ShipyardTransaction> transactions) {
-        this.transactions = transactions;
-        return this;
+        Set<Map.Entry<String, JsonElement>> entries = jsonElement.getAsJsonObject().entrySet();
+        // check to see if the JSON string contains additional fields
+        for (Map.Entry<String, JsonElement> entry : entries) {
+            if (!Shipyard.openapiFields.contains(entry.getKey())) {
+                throw new IllegalArgumentException(String.format(java.util.Locale.ROOT,
+                    "The field `%s` in the JSON string is not defined in the `Shipyard` properties. JSON: %s",
+                    entry.getKey(), jsonElement));
+            }
+        }
+
+        // check to make sure all required properties/fields are present in the JSON string
+        for (String requiredField : Shipyard.openapiRequiredFields) {
+            if (jsonElement.getAsJsonObject().get(requiredField) == null) {
+                throw new IllegalArgumentException(String.format(java.util.Locale.ROOT,
+                    "The required field `%s` is not found in the JSON string: %s",
+                    requiredField,
+                    jsonElement));
+            }
+        }
+        JsonObject jsonObj = jsonElement.getAsJsonObject();
+        if (!jsonObj.get("symbol").isJsonPrimitive()) {
+            throw new IllegalArgumentException(String.format(java.util.Locale.ROOT,
+                "Expected the field `symbol` to be a primitive type in the JSON string but got `%s`",
+                jsonObj.get("symbol").toString()));
+        }
+        // ensure the json data is an array
+        if (!jsonObj.get("shipTypes").isJsonArray()) {
+            throw new IllegalArgumentException(String.format(java.util.Locale.ROOT,
+                "Expected the field `shipTypes` to be an array in the JSON string but got `%s`",
+                jsonObj.get("shipTypes").toString()));
+        }
+
+        JsonArray jsonArrayshipTypes = jsonObj.getAsJsonArray("shipTypes");
+        // validate the required field `shipTypes` (array)
+        for (int i = 0; i < jsonArrayshipTypes.size(); i++) {
+            ShipyardShipTypesInner.validateJsonElement(jsonArrayshipTypes.get(i));
+        }
+        if (jsonObj.get("transactions") != null && !jsonObj.get("transactions").isJsonNull()) {
+            JsonArray jsonArraytransactions = jsonObj.getAsJsonArray("transactions");
+            if (jsonArraytransactions != null) {
+                // ensure the json data is an array
+                if (!jsonObj.get("transactions").isJsonArray()) {
+                    throw new IllegalArgumentException(String.format(java.util.Locale.ROOT,
+                        "Expected the field `transactions` to be an array in the JSON string but got `%s`",
+                        jsonObj.get("transactions").toString()));
+                }
+
+                // validate the optional field `transactions` (array)
+                for (int i = 0; i < jsonArraytransactions.size(); i++) {
+                    ShipyardTransaction.validateJsonElement(jsonArraytransactions.get(i));
+                }
+            }
+        }
+        if (jsonObj.get("ships") != null && !jsonObj.get("ships").isJsonNull()) {
+            JsonArray jsonArrayships = jsonObj.getAsJsonArray("ships");
+            if (jsonArrayships != null) {
+                // ensure the json data is an array
+                if (!jsonObj.get("ships").isJsonArray()) {
+                    throw new IllegalArgumentException(String.format(java.util.Locale.ROOT,
+                        "Expected the field `ships` to be an array in the JSON string but got `%s`",
+                        jsonObj.get("ships").toString()));
+                }
+
+                // validate the optional field `ships` (array)
+                for (int i = 0; i < jsonArrayships.size(); i++) {
+                    ShipyardShip.validateJsonElement(jsonArrayships.get(i));
+                }
+            }
+        }
     }
 
     public Shipyard addTransactionsItem(ShipyardTransaction transactionsItem) {
@@ -165,7 +256,35 @@ public class Shipyard {
     }
 
     /**
-     * The fee to modify a ship at this shipyard. This includes installing or removing modules and mounts on a ship. In the case of mounts, the fee is a flat rate per mount. In the case of modules, the fee is per slot the module occupies.
+     * The symbol of the shipyard. The symbol is the same as the waypoint where the shipyard is
+     * located.
+     *
+     * @return symbol
+     */
+    @javax.annotation.Nonnull
+    public String getSymbol() {
+        return symbol;
+    }
+
+    public void setModificationsFee(@javax.annotation.Nonnull Integer modificationsFee) {
+        this.modificationsFee = modificationsFee;
+    }
+
+    public Shipyard transactions(
+        @javax.annotation.Nullable List<ShipyardTransaction> transactions) {
+        this.transactions = transactions;
+        return this;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(symbol, shipTypes, transactions, ships, modificationsFee);
+    }
+
+    /**
+     * The fee to modify a ship at this shipyard. This includes installing or removing modules and
+     * mounts on a ship. In the case of mounts, the fee is a flat rate per mount. In the case of
+     * modules, the fee is per slot the module occupies.
      *
      * @return modificationsFee
      */
@@ -173,11 +292,6 @@ public class Shipyard {
     public Integer getModificationsFee() {
         return modificationsFee;
     }
-
-    public void setModificationsFee(@javax.annotation.Nonnull Integer modificationsFee) {
-        this.modificationsFee = modificationsFee;
-    }
-
 
     @Override
     public boolean equals(Object o) {
@@ -189,32 +303,31 @@ public class Shipyard {
         }
         Shipyard shipyard = (Shipyard) o;
         return Objects.equals(this.symbol, shipyard.symbol) &&
-                Objects.equals(this.shipTypes, shipyard.shipTypes) &&
-                Objects.equals(this.transactions, shipyard.transactions) &&
-                Objects.equals(this.ships, shipyard.ships) &&
-                Objects.equals(this.modificationsFee, shipyard.modificationsFee);
+            Objects.equals(this.shipTypes, shipyard.shipTypes) &&
+            Objects.equals(this.transactions, shipyard.transactions) &&
+            Objects.equals(this.ships, shipyard.ships) &&
+            Objects.equals(this.modificationsFee, shipyard.modificationsFee);
     }
 
-    @Override
-    public int hashCode() {
-        return Objects.hash(symbol, shipTypes, transactions, ships, modificationsFee);
-    }
+
+    public static HashSet<String> openapiFields;
+    public static HashSet<String> openapiRequiredFields;
 
     @Override
     public String toString() {
         String sb = "class Shipyard {\n" +
-                "    symbol: " + toIndentedString(symbol) + "\n" +
-                "    shipTypes: " + toIndentedString(shipTypes) + "\n" +
-                "    transactions: " + toIndentedString(transactions) + "\n" +
-                "    ships: " + toIndentedString(ships) + "\n" +
-                "    modificationsFee: " + toIndentedString(modificationsFee) + "\n" +
-                "}";
+            "    symbol: " + toIndentedString(symbol) + "\n" +
+            "    shipTypes: " + toIndentedString(shipTypes) + "\n" +
+            "    transactions: " + toIndentedString(transactions) + "\n" +
+            "    ships: " + toIndentedString(ships) + "\n" +
+            "    modificationsFee: " + toIndentedString(modificationsFee) + "\n" +
+            "}";
         return sb;
     }
 
     /**
-     * Convert the given object to string with each line indented by 4 spaces
-     * (except the first line).
+     * Convert the given object to string with each line indented by 4 spaces (except the first
+     * line).
      */
     private String toIndentedString(Object o) {
         if (o == null) {
@@ -223,90 +336,8 @@ public class Shipyard {
         return o.toString().replace("\n", "\n    ");
     }
 
-
-    public static HashSet<String> openapiFields;
-    public static HashSet<String> openapiRequiredFields;
-
-    static {
-        // a set of all properties/fields (JSON key names)
-        openapiFields = new HashSet<String>(Arrays.asList("symbol", "shipTypes", "transactions", "ships", "modificationsFee"));
-
-        // a set of required properties/fields (JSON key names)
-        openapiRequiredFields = new HashSet<String>(Arrays.asList("symbol", "shipTypes", "modificationsFee"));
-    }
-
-    /**
-     * Validates the JSON Element and throws an exception if issues found
-     *
-     * @param jsonElement JSON Element
-     * @throws IOException if the JSON Element is invalid with respect to Shipyard
-     */
-    public static void validateJsonElement(JsonElement jsonElement) throws IOException {
-        if (jsonElement == null) {
-            if (!Shipyard.openapiRequiredFields.isEmpty()) { // has required fields but JSON element is null
-                throw new IllegalArgumentException(String.format(java.util.Locale.ROOT, "The required field(s) %s in Shipyard is not found in the empty JSON string", Shipyard.openapiRequiredFields));
-            }
-        }
-
-        Set<Map.Entry<String, JsonElement>> entries = jsonElement.getAsJsonObject().entrySet();
-        // check to see if the JSON string contains additional fields
-        for (Map.Entry<String, JsonElement> entry : entries) {
-            if (!Shipyard.openapiFields.contains(entry.getKey())) {
-                throw new IllegalArgumentException(String.format(java.util.Locale.ROOT, "The field `%s` in the JSON string is not defined in the `Shipyard` properties. JSON: %s", entry.getKey(), jsonElement));
-            }
-        }
-
-        // check to make sure all required properties/fields are present in the JSON string
-        for (String requiredField : Shipyard.openapiRequiredFields) {
-            if (jsonElement.getAsJsonObject().get(requiredField) == null) {
-                throw new IllegalArgumentException(String.format(java.util.Locale.ROOT, "The required field `%s` is not found in the JSON string: %s", requiredField, jsonElement));
-            }
-        }
-        JsonObject jsonObj = jsonElement.getAsJsonObject();
-        if (!jsonObj.get("symbol").isJsonPrimitive()) {
-            throw new IllegalArgumentException(String.format(java.util.Locale.ROOT, "Expected the field `symbol` to be a primitive type in the JSON string but got `%s`", jsonObj.get("symbol").toString()));
-        }
-        // ensure the json data is an array
-        if (!jsonObj.get("shipTypes").isJsonArray()) {
-            throw new IllegalArgumentException(String.format(java.util.Locale.ROOT, "Expected the field `shipTypes` to be an array in the JSON string but got `%s`", jsonObj.get("shipTypes").toString()));
-        }
-
-        JsonArray jsonArrayshipTypes = jsonObj.getAsJsonArray("shipTypes");
-        // validate the required field `shipTypes` (array)
-        for (int i = 0; i < jsonArrayshipTypes.size(); i++) {
-            ShipyardShipTypesInner.validateJsonElement(jsonArrayshipTypes.get(i));
-        }
-        if (jsonObj.get("transactions") != null && !jsonObj.get("transactions").isJsonNull()) {
-            JsonArray jsonArraytransactions = jsonObj.getAsJsonArray("transactions");
-            if (jsonArraytransactions != null) {
-                // ensure the json data is an array
-                if (!jsonObj.get("transactions").isJsonArray()) {
-                    throw new IllegalArgumentException(String.format(java.util.Locale.ROOT, "Expected the field `transactions` to be an array in the JSON string but got `%s`", jsonObj.get("transactions").toString()));
-                }
-
-                // validate the optional field `transactions` (array)
-                for (int i = 0; i < jsonArraytransactions.size(); i++) {
-                    ShipyardTransaction.validateJsonElement(jsonArraytransactions.get(i));
-                }
-            }
-        }
-        if (jsonObj.get("ships") != null && !jsonObj.get("ships").isJsonNull()) {
-            JsonArray jsonArrayships = jsonObj.getAsJsonArray("ships");
-            if (jsonArrayships != null) {
-                // ensure the json data is an array
-                if (!jsonObj.get("ships").isJsonArray()) {
-                    throw new IllegalArgumentException(String.format(java.util.Locale.ROOT, "Expected the field `ships` to be an array in the JSON string but got `%s`", jsonObj.get("ships").toString()));
-                }
-
-                // validate the optional field `ships` (array)
-                for (int i = 0; i < jsonArrayships.size(); i++) {
-                    ShipyardShip.validateJsonElement(jsonArrayships.get(i));
-                }
-            }
-        }
-    }
-
     public static class CustomTypeAdapterFactory implements TypeAdapterFactory {
+
         @SuppressWarnings("unchecked")
         @Override
         public <T> TypeAdapter<T> create(Gson gson, TypeToken<T> type) {
@@ -315,7 +346,7 @@ public class Shipyard {
             }
             final TypeAdapter<JsonElement> elementAdapter = gson.getAdapter(JsonElement.class);
             final TypeAdapter<Shipyard> thisAdapter
-                    = gson.getDelegateAdapter(this, TypeToken.get(Shipyard.class));
+                = gson.getDelegateAdapter(this, TypeToken.get(Shipyard.class));
 
             return (TypeAdapter<T>) new TypeAdapter<Shipyard>() {
                 @Override

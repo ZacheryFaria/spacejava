@@ -13,20 +13,28 @@
 
 package xyz.faria.space.spaceapi.model;
 
-import com.google.gson.*;
+import com.google.gson.Gson;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.TypeAdapter;
+import com.google.gson.TypeAdapterFactory;
 import com.google.gson.annotations.SerializedName;
 import com.google.gson.reflect.TypeToken;
 import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonWriter;
-import xyz.faria.space.spaceapi.client.JSON;
-
 import java.io.IOException;
-import java.util.*;
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Objects;
+import java.util.Set;
+import xyz.faria.space.spaceapi.client.JSON;
 
 /**
  * TransferCargoRequest
  */
 public class TransferCargoRequest {
+
     public static final String SERIALIZED_NAME_TRADE_SYMBOL = "tradeSymbol";
     @SerializedName(SERIALIZED_NAME_TRADE_SYMBOL)
     @javax.annotation.Nonnull
@@ -105,56 +113,18 @@ public class TransferCargoRequest {
     }
 
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (o == null || getClass() != o.getClass()) {
-            return false;
-        }
-        TransferCargoRequest transferCargoRequest = (TransferCargoRequest) o;
-        return Objects.equals(this.tradeSymbol, transferCargoRequest.tradeSymbol) &&
-                Objects.equals(this.units, transferCargoRequest.units) &&
-                Objects.equals(this.shipSymbol, transferCargoRequest.shipSymbol);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(tradeSymbol, units, shipSymbol);
-    }
-
-    @Override
-    public String toString() {
-        String sb = "class TransferCargoRequest {\n" +
-                "    tradeSymbol: " + toIndentedString(tradeSymbol) + "\n" +
-                "    units: " + toIndentedString(units) + "\n" +
-                "    shipSymbol: " + toIndentedString(shipSymbol) + "\n" +
-                "}";
-        return sb;
-    }
-
-    /**
-     * Convert the given object to string with each line indented by 4 spaces
-     * (except the first line).
-     */
-    private String toIndentedString(Object o) {
-        if (o == null) {
-            return "null";
-        }
-        return o.toString().replace("\n", "\n    ");
-    }
-
-
-    public static HashSet<String> openapiFields;
-    public static HashSet<String> openapiRequiredFields;
-
     static {
         // a set of all properties/fields (JSON key names)
         openapiFields = new HashSet<String>(Arrays.asList("tradeSymbol", "units", "shipSymbol"));
 
         // a set of required properties/fields (JSON key names)
-        openapiRequiredFields = new HashSet<String>(Arrays.asList("tradeSymbol", "units", "shipSymbol"));
+        openapiRequiredFields = new HashSet<String>(
+            Arrays.asList("tradeSymbol", "units", "shipSymbol"));
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(tradeSymbol, units, shipSymbol);
     }
 
     /**
@@ -166,7 +136,9 @@ public class TransferCargoRequest {
     public static void validateJsonElement(JsonElement jsonElement) throws IOException {
         if (jsonElement == null) {
             if (!TransferCargoRequest.openapiRequiredFields.isEmpty()) { // has required fields but JSON element is null
-                throw new IllegalArgumentException(String.format(java.util.Locale.ROOT, "The required field(s) %s in TransferCargoRequest is not found in the empty JSON string", TransferCargoRequest.openapiRequiredFields));
+                throw new IllegalArgumentException(String.format(java.util.Locale.ROOT,
+                    "The required field(s) %s in TransferCargoRequest is not found in the empty JSON string",
+                    TransferCargoRequest.openapiRequiredFields));
             }
         }
 
@@ -174,25 +146,71 @@ public class TransferCargoRequest {
         // check to see if the JSON string contains additional fields
         for (Map.Entry<String, JsonElement> entry : entries) {
             if (!TransferCargoRequest.openapiFields.contains(entry.getKey())) {
-                throw new IllegalArgumentException(String.format(java.util.Locale.ROOT, "The field `%s` in the JSON string is not defined in the `TransferCargoRequest` properties. JSON: %s", entry.getKey(), jsonElement));
+                throw new IllegalArgumentException(String.format(java.util.Locale.ROOT,
+                    "The field `%s` in the JSON string is not defined in the `TransferCargoRequest` properties. JSON: %s",
+                    entry.getKey(), jsonElement));
             }
         }
 
         // check to make sure all required properties/fields are present in the JSON string
         for (String requiredField : TransferCargoRequest.openapiRequiredFields) {
             if (jsonElement.getAsJsonObject().get(requiredField) == null) {
-                throw new IllegalArgumentException(String.format(java.util.Locale.ROOT, "The required field `%s` is not found in the JSON string: %s", requiredField, jsonElement));
+                throw new IllegalArgumentException(String.format(java.util.Locale.ROOT,
+                    "The required field `%s` is not found in the JSON string: %s", requiredField,
+                    jsonElement));
             }
         }
         JsonObject jsonObj = jsonElement.getAsJsonObject();
         // validate the required field `tradeSymbol`
         TradeSymbol.validateJsonElement(jsonObj.get("tradeSymbol"));
         if (!jsonObj.get("shipSymbol").isJsonPrimitive()) {
-            throw new IllegalArgumentException(String.format(java.util.Locale.ROOT, "Expected the field `shipSymbol` to be a primitive type in the JSON string but got `%s`", jsonObj.get("shipSymbol").toString()));
+            throw new IllegalArgumentException(String.format(java.util.Locale.ROOT,
+                "Expected the field `shipSymbol` to be a primitive type in the JSON string but got `%s`",
+                jsonObj.get("shipSymbol").toString()));
         }
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        TransferCargoRequest transferCargoRequest = (TransferCargoRequest) o;
+        return Objects.equals(this.tradeSymbol, transferCargoRequest.tradeSymbol) &&
+            Objects.equals(this.units, transferCargoRequest.units) &&
+            Objects.equals(this.shipSymbol, transferCargoRequest.shipSymbol);
+    }
+
+
+    public static HashSet<String> openapiFields;
+    public static HashSet<String> openapiRequiredFields;
+
+    @Override
+    public String toString() {
+        String sb = "class TransferCargoRequest {\n" +
+            "    tradeSymbol: " + toIndentedString(tradeSymbol) + "\n" +
+            "    units: " + toIndentedString(units) + "\n" +
+            "    shipSymbol: " + toIndentedString(shipSymbol) + "\n" +
+            "}";
+        return sb;
+    }
+
+    /**
+     * Convert the given object to string with each line indented by 4 spaces (except the first
+     * line).
+     */
+    private String toIndentedString(Object o) {
+        if (o == null) {
+            return "null";
+        }
+        return o.toString().replace("\n", "\n    ");
+    }
+
     public static class CustomTypeAdapterFactory implements TypeAdapterFactory {
+
         @SuppressWarnings("unchecked")
         @Override
         public <T> TypeAdapter<T> create(Gson gson, TypeToken<T> type) {
@@ -201,7 +219,7 @@ public class TransferCargoRequest {
             }
             final TypeAdapter<JsonElement> elementAdapter = gson.getAdapter(JsonElement.class);
             final TypeAdapter<TransferCargoRequest> thisAdapter
-                    = gson.getDelegateAdapter(this, TypeToken.get(TransferCargoRequest.class));
+                = gson.getDelegateAdapter(this, TypeToken.get(TransferCargoRequest.class));
 
             return (TypeAdapter<T>) new TypeAdapter<TransferCargoRequest>() {
                 @Override

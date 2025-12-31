@@ -13,15 +13,15 @@
 
 package xyz.faria.space.spaceapi.client.auth;
 
+import java.net.URI;
+import java.util.List;
+import java.util.Map;
 import okhttp3.Credentials;
 import xyz.faria.space.spaceapi.client.ApiException;
 import xyz.faria.space.spaceapi.client.Pair;
 
-import java.net.URI;
-import java.util.List;
-import java.util.Map;
-
 public class HttpBasicAuth implements Authentication {
+
     private String username;
     private String password;
 
@@ -42,13 +42,14 @@ public class HttpBasicAuth implements Authentication {
     }
 
     @Override
-    public void applyToParams(List<Pair> queryParams, Map<String, String> headerParams, Map<String, String> cookieParams,
-                              String payload, String method, URI uri) throws ApiException {
+    public void applyToParams(List<Pair> queryParams, Map<String, String> headerParams,
+        Map<String, String> cookieParams,
+        String payload, String method, URI uri) throws ApiException {
         if (username == null && password == null) {
             return;
         }
         headerParams.put("Authorization", Credentials.basic(
-                username == null ? "" : username,
-                password == null ? "" : password));
+            username == null ? "" : username,
+            password == null ? "" : password));
     }
 }

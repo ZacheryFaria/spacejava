@@ -13,21 +13,29 @@
 
 package xyz.faria.space.spaceapi.model;
 
-import com.google.gson.*;
+import com.google.gson.Gson;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.TypeAdapter;
+import com.google.gson.TypeAdapterFactory;
 import com.google.gson.annotations.SerializedName;
 import com.google.gson.reflect.TypeToken;
 import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonWriter;
-import xyz.faria.space.spaceapi.client.JSON;
-
 import java.io.IOException;
-import java.util.*;
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Objects;
+import java.util.Set;
+import xyz.faria.space.spaceapi.client.JSON;
 
 /**
  * Details of a system was that scanned.
  */
 
 public class ScannedSystem {
+
     public static final String SERIALIZED_NAME_SYMBOL = "symbol";
     @SerializedName(SERIALIZED_NAME_SYMBOL)
     @javax.annotation.Nonnull
@@ -181,62 +189,19 @@ public class ScannedSystem {
     }
 
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (o == null || getClass() != o.getClass()) {
-            return false;
-        }
-        ScannedSystem scannedSystem = (ScannedSystem) o;
-        return Objects.equals(this.symbol, scannedSystem.symbol) &&
-                Objects.equals(this.sectorSymbol, scannedSystem.sectorSymbol) &&
-                Objects.equals(this.type, scannedSystem.type) &&
-                Objects.equals(this.x, scannedSystem.x) &&
-                Objects.equals(this.y, scannedSystem.y) &&
-                Objects.equals(this.distance, scannedSystem.distance);
+    static {
+        // a set of all properties/fields (JSON key names)
+        openapiFields = new HashSet<String>(
+            Arrays.asList("symbol", "sectorSymbol", "type", "x", "y", "distance"));
+
+        // a set of required properties/fields (JSON key names)
+        openapiRequiredFields = new HashSet<String>(
+            Arrays.asList("symbol", "sectorSymbol", "type", "x", "y", "distance"));
     }
 
     @Override
     public int hashCode() {
         return Objects.hash(symbol, sectorSymbol, type, x, y, distance);
-    }
-
-    @Override
-    public String toString() {
-        String sb = "class ScannedSystem {\n" +
-                "    symbol: " + toIndentedString(symbol) + "\n" +
-                "    sectorSymbol: " + toIndentedString(sectorSymbol) + "\n" +
-                "    type: " + toIndentedString(type) + "\n" +
-                "    x: " + toIndentedString(x) + "\n" +
-                "    y: " + toIndentedString(y) + "\n" +
-                "    distance: " + toIndentedString(distance) + "\n" +
-                "}";
-        return sb;
-    }
-
-    /**
-     * Convert the given object to string with each line indented by 4 spaces
-     * (except the first line).
-     */
-    private String toIndentedString(Object o) {
-        if (o == null) {
-            return "null";
-        }
-        return o.toString().replace("\n", "\n    ");
-    }
-
-
-    public static HashSet<String> openapiFields;
-    public static HashSet<String> openapiRequiredFields;
-
-    static {
-        // a set of all properties/fields (JSON key names)
-        openapiFields = new HashSet<String>(Arrays.asList("symbol", "sectorSymbol", "type", "x", "y", "distance"));
-
-        // a set of required properties/fields (JSON key names)
-        openapiRequiredFields = new HashSet<String>(Arrays.asList("symbol", "sectorSymbol", "type", "x", "y", "distance"));
     }
 
     /**
@@ -248,7 +213,9 @@ public class ScannedSystem {
     public static void validateJsonElement(JsonElement jsonElement) throws IOException {
         if (jsonElement == null) {
             if (!ScannedSystem.openapiRequiredFields.isEmpty()) { // has required fields but JSON element is null
-                throw new IllegalArgumentException(String.format(java.util.Locale.ROOT, "The required field(s) %s in ScannedSystem is not found in the empty JSON string", ScannedSystem.openapiRequiredFields));
+                throw new IllegalArgumentException(String.format(java.util.Locale.ROOT,
+                    "The required field(s) %s in ScannedSystem is not found in the empty JSON string",
+                    ScannedSystem.openapiRequiredFields));
             }
         }
 
@@ -256,28 +223,83 @@ public class ScannedSystem {
         // check to see if the JSON string contains additional fields
         for (Map.Entry<String, JsonElement> entry : entries) {
             if (!ScannedSystem.openapiFields.contains(entry.getKey())) {
-                throw new IllegalArgumentException(String.format(java.util.Locale.ROOT, "The field `%s` in the JSON string is not defined in the `ScannedSystem` properties. JSON: %s", entry.getKey(), jsonElement));
+                throw new IllegalArgumentException(String.format(java.util.Locale.ROOT,
+                    "The field `%s` in the JSON string is not defined in the `ScannedSystem` properties. JSON: %s",
+                    entry.getKey(), jsonElement));
             }
         }
 
         // check to make sure all required properties/fields are present in the JSON string
         for (String requiredField : ScannedSystem.openapiRequiredFields) {
             if (jsonElement.getAsJsonObject().get(requiredField) == null) {
-                throw new IllegalArgumentException(String.format(java.util.Locale.ROOT, "The required field `%s` is not found in the JSON string: %s", requiredField, jsonElement));
+                throw new IllegalArgumentException(String.format(java.util.Locale.ROOT,
+                    "The required field `%s` is not found in the JSON string: %s",
+                    requiredField,
+                    jsonElement));
             }
         }
         JsonObject jsonObj = jsonElement.getAsJsonObject();
         if (!jsonObj.get("symbol").isJsonPrimitive()) {
-            throw new IllegalArgumentException(String.format(java.util.Locale.ROOT, "Expected the field `symbol` to be a primitive type in the JSON string but got `%s`", jsonObj.get("symbol").toString()));
+            throw new IllegalArgumentException(String.format(java.util.Locale.ROOT,
+                "Expected the field `symbol` to be a primitive type in the JSON string but got `%s`",
+                jsonObj.get("symbol").toString()));
         }
         if (!jsonObj.get("sectorSymbol").isJsonPrimitive()) {
-            throw new IllegalArgumentException(String.format(java.util.Locale.ROOT, "Expected the field `sectorSymbol` to be a primitive type in the JSON string but got `%s`", jsonObj.get("sectorSymbol").toString()));
+            throw new IllegalArgumentException(String.format(java.util.Locale.ROOT,
+                "Expected the field `sectorSymbol` to be a primitive type in the JSON string but got `%s`",
+                jsonObj.get("sectorSymbol").toString()));
         }
         // validate the required field `type`
         SystemType.validateJsonElement(jsonObj.get("type"));
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        ScannedSystem scannedSystem = (ScannedSystem) o;
+        return Objects.equals(this.symbol, scannedSystem.symbol) &&
+            Objects.equals(this.sectorSymbol, scannedSystem.sectorSymbol) &&
+            Objects.equals(this.type, scannedSystem.type) &&
+            Objects.equals(this.x, scannedSystem.x) &&
+            Objects.equals(this.y, scannedSystem.y) &&
+            Objects.equals(this.distance, scannedSystem.distance);
+    }
+
+
+    public static HashSet<String> openapiFields;
+    public static HashSet<String> openapiRequiredFields;
+
+    @Override
+    public String toString() {
+        String sb = "class ScannedSystem {\n" +
+            "    symbol: " + toIndentedString(symbol) + "\n" +
+            "    sectorSymbol: " + toIndentedString(sectorSymbol) + "\n" +
+            "    type: " + toIndentedString(type) + "\n" +
+            "    x: " + toIndentedString(x) + "\n" +
+            "    y: " + toIndentedString(y) + "\n" +
+            "    distance: " + toIndentedString(distance) + "\n" +
+            "}";
+        return sb;
+    }
+
+    /**
+     * Convert the given object to string with each line indented by 4 spaces (except the first
+     * line).
+     */
+    private String toIndentedString(Object o) {
+        if (o == null) {
+            return "null";
+        }
+        return o.toString().replace("\n", "\n    ");
+    }
+
     public static class CustomTypeAdapterFactory implements TypeAdapterFactory {
+
         @SuppressWarnings("unchecked")
         @Override
         public <T> TypeAdapter<T> create(Gson gson, TypeToken<T> type) {
@@ -286,7 +308,7 @@ public class ScannedSystem {
             }
             final TypeAdapter<JsonElement> elementAdapter = gson.getAdapter(JsonElement.class);
             final TypeAdapter<ScannedSystem> thisAdapter
-                    = gson.getDelegateAdapter(this, TypeToken.get(ScannedSystem.class));
+                = gson.getDelegateAdapter(this, TypeToken.get(ScannedSystem.class));
 
             return (TypeAdapter<T>) new TypeAdapter<ScannedSystem>() {
                 @Override

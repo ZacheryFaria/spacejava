@@ -13,20 +13,28 @@
 
 package xyz.faria.space.spaceapi.model;
 
-import com.google.gson.*;
+import com.google.gson.Gson;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.TypeAdapter;
+import com.google.gson.TypeAdapterFactory;
 import com.google.gson.annotations.SerializedName;
 import com.google.gson.reflect.TypeToken;
 import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonWriter;
-import xyz.faria.space.spaceapi.client.JSON;
-
 import java.io.IOException;
-import java.util.*;
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Objects;
+import java.util.Set;
+import xyz.faria.space.spaceapi.client.JSON;
 
 /**
  * ShipyardShipCrew
  */
 public class ShipyardShipCrew {
+
     public static final String SERIALIZED_NAME_REQUIRED = "required";
     @SerializedName(SERIALIZED_NAME_REQUIRED)
     @javax.annotation.Nonnull
@@ -80,6 +88,48 @@ public class ShipyardShipCrew {
     }
 
 
+    /**
+     * Validates the JSON Element and throws an exception if issues found
+     *
+     * @param jsonElement JSON Element
+     * @throws IOException if the JSON Element is invalid with respect to ShipyardShipCrew
+     */
+    public static void validateJsonElement(JsonElement jsonElement) throws IOException {
+        if (jsonElement == null) {
+            if (!ShipyardShipCrew.openapiRequiredFields.isEmpty()) { // has required fields but JSON element is null
+                throw new IllegalArgumentException(String.format(java.util.Locale.ROOT,
+                    "The required field(s) %s in ShipyardShipCrew is not found in the empty JSON string",
+                    ShipyardShipCrew.openapiRequiredFields));
+            }
+        }
+
+        Set<Map.Entry<String, JsonElement>> entries = jsonElement.getAsJsonObject().entrySet();
+        // check to see if the JSON string contains additional fields
+        for (Map.Entry<String, JsonElement> entry : entries) {
+            if (!ShipyardShipCrew.openapiFields.contains(entry.getKey())) {
+                throw new IllegalArgumentException(String.format(java.util.Locale.ROOT,
+                    "The field `%s` in the JSON string is not defined in the `ShipyardShipCrew` properties. JSON: %s",
+                    entry.getKey(), jsonElement));
+            }
+        }
+
+        // check to make sure all required properties/fields are present in the JSON string
+        for (String requiredField : ShipyardShipCrew.openapiRequiredFields) {
+            if (jsonElement.getAsJsonObject().get(requiredField) == null) {
+                throw new IllegalArgumentException(String.format(java.util.Locale.ROOT,
+                    "The required field `%s` is not found in the JSON string: %s",
+                    requiredField,
+                    jsonElement));
+            }
+        }
+        JsonObject jsonObj = jsonElement.getAsJsonObject();
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(required, capacity);
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) {
@@ -90,32 +140,16 @@ public class ShipyardShipCrew {
         }
         ShipyardShipCrew shipyardShipCrew = (ShipyardShipCrew) o;
         return Objects.equals(this.required, shipyardShipCrew.required) &&
-                Objects.equals(this.capacity, shipyardShipCrew.capacity);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(required, capacity);
+            Objects.equals(this.capacity, shipyardShipCrew.capacity);
     }
 
     @Override
     public String toString() {
         String sb = "class ShipyardShipCrew {\n" +
-                "    required: " + toIndentedString(required) + "\n" +
-                "    capacity: " + toIndentedString(capacity) + "\n" +
-                "}";
+            "    required: " + toIndentedString(required) + "\n" +
+            "    capacity: " + toIndentedString(capacity) + "\n" +
+            "}";
         return sb;
-    }
-
-    /**
-     * Convert the given object to string with each line indented by 4 spaces
-     * (except the first line).
-     */
-    private String toIndentedString(Object o) {
-        if (o == null) {
-            return "null";
-        }
-        return o.toString().replace("\n", "\n    ");
     }
 
 
@@ -131,36 +165,18 @@ public class ShipyardShipCrew {
     }
 
     /**
-     * Validates the JSON Element and throws an exception if issues found
-     *
-     * @param jsonElement JSON Element
-     * @throws IOException if the JSON Element is invalid with respect to ShipyardShipCrew
+     * Convert the given object to string with each line indented by 4 spaces (except the first
+     * line).
      */
-    public static void validateJsonElement(JsonElement jsonElement) throws IOException {
-        if (jsonElement == null) {
-            if (!ShipyardShipCrew.openapiRequiredFields.isEmpty()) { // has required fields but JSON element is null
-                throw new IllegalArgumentException(String.format(java.util.Locale.ROOT, "The required field(s) %s in ShipyardShipCrew is not found in the empty JSON string", ShipyardShipCrew.openapiRequiredFields));
-            }
+    private String toIndentedString(Object o) {
+        if (o == null) {
+            return "null";
         }
-
-        Set<Map.Entry<String, JsonElement>> entries = jsonElement.getAsJsonObject().entrySet();
-        // check to see if the JSON string contains additional fields
-        for (Map.Entry<String, JsonElement> entry : entries) {
-            if (!ShipyardShipCrew.openapiFields.contains(entry.getKey())) {
-                throw new IllegalArgumentException(String.format(java.util.Locale.ROOT, "The field `%s` in the JSON string is not defined in the `ShipyardShipCrew` properties. JSON: %s", entry.getKey(), jsonElement));
-            }
-        }
-
-        // check to make sure all required properties/fields are present in the JSON string
-        for (String requiredField : ShipyardShipCrew.openapiRequiredFields) {
-            if (jsonElement.getAsJsonObject().get(requiredField) == null) {
-                throw new IllegalArgumentException(String.format(java.util.Locale.ROOT, "The required field `%s` is not found in the JSON string: %s", requiredField, jsonElement));
-            }
-        }
-        JsonObject jsonObj = jsonElement.getAsJsonObject();
+        return o.toString().replace("\n", "\n    ");
     }
 
     public static class CustomTypeAdapterFactory implements TypeAdapterFactory {
+
         @SuppressWarnings("unchecked")
         @Override
         public <T> TypeAdapter<T> create(Gson gson, TypeToken<T> type) {
@@ -169,7 +185,7 @@ public class ShipyardShipCrew {
             }
             final TypeAdapter<JsonElement> elementAdapter = gson.getAdapter(JsonElement.class);
             final TypeAdapter<ShipyardShipCrew> thisAdapter
-                    = gson.getDelegateAdapter(this, TypeToken.get(ShipyardShipCrew.class));
+                = gson.getDelegateAdapter(this, TypeToken.get(ShipyardShipCrew.class));
 
             return (TypeAdapter<T>) new TypeAdapter<ShipyardShipCrew>() {
                 @Override

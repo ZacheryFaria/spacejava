@@ -13,21 +13,32 @@
 
 package xyz.faria.space.spaceapi.model;
 
-import com.google.gson.*;
+import com.google.gson.Gson;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.TypeAdapter;
+import com.google.gson.TypeAdapterFactory;
 import com.google.gson.annotations.SerializedName;
 import com.google.gson.reflect.TypeToken;
 import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonWriter;
-import xyz.faria.space.spaceapi.client.JSON;
-
 import java.io.IOException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
+import java.util.Set;
+import xyz.faria.space.spaceapi.client.JSON;
 
 /**
  * A waypoint that was scanned by a ship.
  */
 
 public class ScannedWaypoint {
+
     public static final String SERIALIZED_NAME_SYMBOL = "symbol";
     @SerializedName(SERIALIZED_NAME_SYMBOL)
     @javax.annotation.Nonnull
@@ -272,68 +283,20 @@ public class ScannedWaypoint {
     }
 
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (o == null || getClass() != o.getClass()) {
-            return false;
-        }
-        ScannedWaypoint scannedWaypoint = (ScannedWaypoint) o;
-        return Objects.equals(this.symbol, scannedWaypoint.symbol) &&
-                Objects.equals(this.type, scannedWaypoint.type) &&
-                Objects.equals(this.systemSymbol, scannedWaypoint.systemSymbol) &&
-                Objects.equals(this.x, scannedWaypoint.x) &&
-                Objects.equals(this.y, scannedWaypoint.y) &&
-                Objects.equals(this.orbitals, scannedWaypoint.orbitals) &&
-                Objects.equals(this.faction, scannedWaypoint.faction) &&
-                Objects.equals(this.traits, scannedWaypoint.traits) &&
-                Objects.equals(this.chart, scannedWaypoint.chart);
+    static {
+        // a set of all properties/fields (JSON key names)
+        openapiFields = new HashSet<String>(
+            Arrays.asList("symbol", "type", "systemSymbol", "x", "y", "orbitals", "faction",
+                "traits", "chart"));
+
+        // a set of required properties/fields (JSON key names)
+        openapiRequiredFields = new HashSet<String>(
+            Arrays.asList("symbol", "type", "systemSymbol", "x", "y", "orbitals", "traits"));
     }
 
     @Override
     public int hashCode() {
         return Objects.hash(symbol, type, systemSymbol, x, y, orbitals, faction, traits, chart);
-    }
-
-    @Override
-    public String toString() {
-        String sb = "class ScannedWaypoint {\n" +
-                "    symbol: " + toIndentedString(symbol) + "\n" +
-                "    type: " + toIndentedString(type) + "\n" +
-                "    systemSymbol: " + toIndentedString(systemSymbol) + "\n" +
-                "    x: " + toIndentedString(x) + "\n" +
-                "    y: " + toIndentedString(y) + "\n" +
-                "    orbitals: " + toIndentedString(orbitals) + "\n" +
-                "    faction: " + toIndentedString(faction) + "\n" +
-                "    traits: " + toIndentedString(traits) + "\n" +
-                "    chart: " + toIndentedString(chart) + "\n" +
-                "}";
-        return sb;
-    }
-
-    /**
-     * Convert the given object to string with each line indented by 4 spaces
-     * (except the first line).
-     */
-    private String toIndentedString(Object o) {
-        if (o == null) {
-            return "null";
-        }
-        return o.toString().replace("\n", "\n    ");
-    }
-
-
-    public static HashSet<String> openapiFields;
-    public static HashSet<String> openapiRequiredFields;
-
-    static {
-        // a set of all properties/fields (JSON key names)
-        openapiFields = new HashSet<String>(Arrays.asList("symbol", "type", "systemSymbol", "x", "y", "orbitals", "faction", "traits", "chart"));
-
-        // a set of required properties/fields (JSON key names)
-        openapiRequiredFields = new HashSet<String>(Arrays.asList("symbol", "type", "systemSymbol", "x", "y", "orbitals", "traits"));
     }
 
     /**
@@ -345,7 +308,9 @@ public class ScannedWaypoint {
     public static void validateJsonElement(JsonElement jsonElement) throws IOException {
         if (jsonElement == null) {
             if (!ScannedWaypoint.openapiRequiredFields.isEmpty()) { // has required fields but JSON element is null
-                throw new IllegalArgumentException(String.format(java.util.Locale.ROOT, "The required field(s) %s in ScannedWaypoint is not found in the empty JSON string", ScannedWaypoint.openapiRequiredFields));
+                throw new IllegalArgumentException(String.format(java.util.Locale.ROOT,
+                    "The required field(s) %s in ScannedWaypoint is not found in the empty JSON string",
+                    ScannedWaypoint.openapiRequiredFields));
             }
         }
 
@@ -353,28 +318,39 @@ public class ScannedWaypoint {
         // check to see if the JSON string contains additional fields
         for (Map.Entry<String, JsonElement> entry : entries) {
             if (!ScannedWaypoint.openapiFields.contains(entry.getKey())) {
-                throw new IllegalArgumentException(String.format(java.util.Locale.ROOT, "The field `%s` in the JSON string is not defined in the `ScannedWaypoint` properties. JSON: %s", entry.getKey(), jsonElement));
+                throw new IllegalArgumentException(String.format(java.util.Locale.ROOT,
+                    "The field `%s` in the JSON string is not defined in the `ScannedWaypoint` properties. JSON: %s",
+                    entry.getKey(), jsonElement));
             }
         }
 
         // check to make sure all required properties/fields are present in the JSON string
         for (String requiredField : ScannedWaypoint.openapiRequiredFields) {
             if (jsonElement.getAsJsonObject().get(requiredField) == null) {
-                throw new IllegalArgumentException(String.format(java.util.Locale.ROOT, "The required field `%s` is not found in the JSON string: %s", requiredField, jsonElement));
+                throw new IllegalArgumentException(String.format(java.util.Locale.ROOT,
+                    "The required field `%s` is not found in the JSON string: %s",
+                    requiredField,
+                    jsonElement));
             }
         }
         JsonObject jsonObj = jsonElement.getAsJsonObject();
         if (!jsonObj.get("symbol").isJsonPrimitive()) {
-            throw new IllegalArgumentException(String.format(java.util.Locale.ROOT, "Expected the field `symbol` to be a primitive type in the JSON string but got `%s`", jsonObj.get("symbol").toString()));
+            throw new IllegalArgumentException(String.format(java.util.Locale.ROOT,
+                "Expected the field `symbol` to be a primitive type in the JSON string but got `%s`",
+                jsonObj.get("symbol").toString()));
         }
         // validate the required field `type`
         WaypointType.validateJsonElement(jsonObj.get("type"));
         if (!jsonObj.get("systemSymbol").isJsonPrimitive()) {
-            throw new IllegalArgumentException(String.format(java.util.Locale.ROOT, "Expected the field `systemSymbol` to be a primitive type in the JSON string but got `%s`", jsonObj.get("systemSymbol").toString()));
+            throw new IllegalArgumentException(String.format(java.util.Locale.ROOT,
+                "Expected the field `systemSymbol` to be a primitive type in the JSON string but got `%s`",
+                jsonObj.get("systemSymbol").toString()));
         }
         // ensure the json data is an array
         if (!jsonObj.get("orbitals").isJsonArray()) {
-            throw new IllegalArgumentException(String.format(java.util.Locale.ROOT, "Expected the field `orbitals` to be an array in the JSON string but got `%s`", jsonObj.get("orbitals").toString()));
+            throw new IllegalArgumentException(String.format(java.util.Locale.ROOT,
+                "Expected the field `orbitals` to be an array in the JSON string but got `%s`",
+                jsonObj.get("orbitals").toString()));
         }
 
         JsonArray jsonArrayorbitals = jsonObj.getAsJsonArray("orbitals");
@@ -388,7 +364,9 @@ public class ScannedWaypoint {
         }
         // ensure the json data is an array
         if (!jsonObj.get("traits").isJsonArray()) {
-            throw new IllegalArgumentException(String.format(java.util.Locale.ROOT, "Expected the field `traits` to be an array in the JSON string but got `%s`", jsonObj.get("traits").toString()));
+            throw new IllegalArgumentException(String.format(java.util.Locale.ROOT,
+                "Expected the field `traits` to be an array in the JSON string but got `%s`",
+                jsonObj.get("traits").toString()));
         }
 
         JsonArray jsonArraytraits = jsonObj.getAsJsonArray("traits");
@@ -402,7 +380,59 @@ public class ScannedWaypoint {
         }
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        ScannedWaypoint scannedWaypoint = (ScannedWaypoint) o;
+        return Objects.equals(this.symbol, scannedWaypoint.symbol) &&
+            Objects.equals(this.type, scannedWaypoint.type) &&
+            Objects.equals(this.systemSymbol, scannedWaypoint.systemSymbol) &&
+            Objects.equals(this.x, scannedWaypoint.x) &&
+            Objects.equals(this.y, scannedWaypoint.y) &&
+            Objects.equals(this.orbitals, scannedWaypoint.orbitals) &&
+            Objects.equals(this.faction, scannedWaypoint.faction) &&
+            Objects.equals(this.traits, scannedWaypoint.traits) &&
+            Objects.equals(this.chart, scannedWaypoint.chart);
+    }
+
+
+    public static HashSet<String> openapiFields;
+    public static HashSet<String> openapiRequiredFields;
+
+    @Override
+    public String toString() {
+        String sb = "class ScannedWaypoint {\n" +
+            "    symbol: " + toIndentedString(symbol) + "\n" +
+            "    type: " + toIndentedString(type) + "\n" +
+            "    systemSymbol: " + toIndentedString(systemSymbol) + "\n" +
+            "    x: " + toIndentedString(x) + "\n" +
+            "    y: " + toIndentedString(y) + "\n" +
+            "    orbitals: " + toIndentedString(orbitals) + "\n" +
+            "    faction: " + toIndentedString(faction) + "\n" +
+            "    traits: " + toIndentedString(traits) + "\n" +
+            "    chart: " + toIndentedString(chart) + "\n" +
+            "}";
+        return sb;
+    }
+
+    /**
+     * Convert the given object to string with each line indented by 4 spaces (except the first
+     * line).
+     */
+    private String toIndentedString(Object o) {
+        if (o == null) {
+            return "null";
+        }
+        return o.toString().replace("\n", "\n    ");
+    }
+
     public static class CustomTypeAdapterFactory implements TypeAdapterFactory {
+
         @SuppressWarnings("unchecked")
         @Override
         public <T> TypeAdapter<T> create(Gson gson, TypeToken<T> type) {
@@ -411,7 +441,7 @@ public class ScannedWaypoint {
             }
             final TypeAdapter<JsonElement> elementAdapter = gson.getAdapter(JsonElement.class);
             final TypeAdapter<ScannedWaypoint> thisAdapter
-                    = gson.getDelegateAdapter(this, TypeToken.get(ScannedWaypoint.class));
+                = gson.getDelegateAdapter(this, TypeToken.get(ScannedWaypoint.class));
 
             return (TypeAdapter<T>) new TypeAdapter<ScannedWaypoint>() {
                 @Override

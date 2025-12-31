@@ -13,12 +13,14 @@
 
 package xyz.faria.space.spaceapi.model;
 
-import com.google.gson.*;
+import com.google.gson.Gson;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
+import com.google.gson.TypeAdapter;
+import com.google.gson.TypeAdapterFactory;
 import com.google.gson.reflect.TypeToken;
 import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonWriter;
-import xyz.faria.space.spaceapi.client.JSON;
-
 import java.io.IOException;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
@@ -27,101 +29,56 @@ import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import xyz.faria.space.spaceapi.client.JSON;
 
 
 public class GetSystemWaypointsTraitsParameter extends AbstractOpenApiSchema {
-    private static final Logger log = Logger.getLogger(GetSystemWaypointsTraitsParameter.class.getName());
 
-    public static class CustomTypeAdapterFactory implements TypeAdapterFactory {
-        @SuppressWarnings("unchecked")
-        @Override
-        public <T> TypeAdapter<T> create(Gson gson, TypeToken<T> type) {
-            if (!GetSystemWaypointsTraitsParameter.class.isAssignableFrom(type.getRawType())) {
-                return null; // this class only serializes 'GetSystemWaypointsTraitsParameter' and its subtypes
+    private static final Logger log = Logger.getLogger(
+        GetSystemWaypointsTraitsParameter.class.getName());
+
+    /**
+     * Validates the JSON Element and throws an exception if issues found
+     *
+     * @param jsonElement JSON Element
+     * @throws IOException if the JSON Element is invalid with respect to
+     *                     GetSystemWaypointsTraitsParameter
+     */
+    public static void validateJsonElement(JsonElement jsonElement) throws IOException {
+        // validate oneOf schemas one by one
+        int validCount = 0;
+        ArrayList<String> errorMessages = new ArrayList<>();
+        // validate the json string with WaypointTraitSymbol
+        try {
+            WaypointTraitSymbol.validateJsonElement(jsonElement);
+            validCount++;
+        } catch (Exception e) {
+            errorMessages.add(String.format(java.util.Locale.ROOT,
+                "Deserialization for WaypointTraitSymbol failed with `%s`.", e.getMessage()));
+            // continue to the next one
+        }
+        // validate the json string with List<WaypointTraitSymbol>
+        try {
+            if (!jsonElement.isJsonArray()) {
+                throw new IllegalArgumentException(String.format(java.util.Locale.ROOT,
+                    "Expected json element to be a array type in the JSON string but got `%s`",
+                    jsonElement));
             }
-            final TypeAdapter<JsonElement> elementAdapter = gson.getAdapter(JsonElement.class);
-            final TypeAdapter<WaypointTraitSymbol> adapterWaypointTraitSymbol = gson.getDelegateAdapter(this, TypeToken.get(WaypointTraitSymbol.class));
-
-            final Type typeInstanceListWaypointTraitSymbol = new TypeToken<List<WaypointTraitSymbol>>() {
-            }.getType();
-            final TypeAdapter<List<WaypointTraitSymbol>> adapterListWaypointTraitSymbol = (TypeAdapter<List<WaypointTraitSymbol>>) gson.getDelegateAdapter(this, TypeToken.get(typeInstanceListWaypointTraitSymbol));
-
-            return (TypeAdapter<T>) new TypeAdapter<GetSystemWaypointsTraitsParameter>() {
-                @Override
-                public void write(JsonWriter out, GetSystemWaypointsTraitsParameter value) throws IOException {
-                    if (value == null || value.getActualInstance() == null) {
-                        elementAdapter.write(out, null);
-                        return;
-                    }
-
-                    // check if the actual instance is of the type `WaypointTraitSymbol`
-                    if (value.getActualInstance() instanceof WaypointTraitSymbol) {
-                        JsonElement element = adapterWaypointTraitSymbol.toJsonTree((WaypointTraitSymbol) value.getActualInstance());
-                        elementAdapter.write(out, element);
-                        return;
-                    }
-                    // check if the actual instance is of the type `List<WaypointTraitSymbol>`
-                    if (value.getActualInstance() instanceof List<?> list) {
-                        if (!list.isEmpty() && list.get(0) instanceof WaypointTraitSymbol) {
-                            JsonArray array = adapterListWaypointTraitSymbol.toJsonTree((List<WaypointTraitSymbol>) value.getActualInstance()).getAsJsonArray();
-                            elementAdapter.write(out, array);
-                            return;
-                        }
-                    }
-                    throw new IOException("Failed to serialize as the type doesn't match oneOf schemas: List<WaypointTraitSymbol>, WaypointTraitSymbol");
-                }
-
-                @Override
-                public GetSystemWaypointsTraitsParameter read(JsonReader in) throws IOException {
-                    Object deserialized = null;
-                    JsonElement jsonElement = elementAdapter.read(in);
-
-                    int match = 0;
-                    ArrayList<String> errorMessages = new ArrayList<>();
-                    TypeAdapter actualAdapter = elementAdapter;
-
-                    // deserialize WaypointTraitSymbol
-                    try {
-                        // validate the JSON object to see if any exception is thrown
-                        WaypointTraitSymbol.validateJsonElement(jsonElement);
-                        actualAdapter = adapterWaypointTraitSymbol;
-                        match++;
-                        log.log(Level.FINER, "Input data matches schema 'WaypointTraitSymbol'");
-                    } catch (Exception e) {
-                        // deserialization failed, continue
-                        errorMessages.add(String.format(java.util.Locale.ROOT, "Deserialization for WaypointTraitSymbol failed with `%s`.", e.getMessage()));
-                        log.log(Level.FINER, "Input data does not match schema 'WaypointTraitSymbol'", e);
-                    }
-                    // deserialize List<WaypointTraitSymbol>
-                    try {
-                        // validate the JSON object to see if any exception is thrown
-                        if (!jsonElement.isJsonArray()) {
-                            throw new IllegalArgumentException(String.format(java.util.Locale.ROOT, "Expected json element to be a array type in the JSON string but got `%s`", jsonElement));
-                        }
-
-                        JsonArray array = jsonElement.getAsJsonArray();
-                        // validate array items
-                        for (JsonElement element : array) {
-                            WaypointTraitSymbol.validateJsonElement(element);
-                        }
-                        actualAdapter = adapterListWaypointTraitSymbol;
-                        match++;
-                        log.log(Level.FINER, "Input data matches schema 'List<WaypointTraitSymbol>'");
-                    } catch (Exception e) {
-                        // deserialization failed, continue
-                        errorMessages.add(String.format(java.util.Locale.ROOT, "Deserialization for List<WaypointTraitSymbol> failed with `%s`.", e.getMessage()));
-                        log.log(Level.FINER, "Input data does not match schema 'List<WaypointTraitSymbol>'", e);
-                    }
-
-                    if (match == 1) {
-                        GetSystemWaypointsTraitsParameter ret = new GetSystemWaypointsTraitsParameter();
-                        ret.setActualInstance(actualAdapter.fromJsonTree(jsonElement));
-                        return ret;
-                    }
-
-                    throw new IOException(String.format(java.util.Locale.ROOT, "Failed deserialization for GetSystemWaypointsTraitsParameter: %d classes match result, expected 1. Detailed failure message for oneOf schemas: %s. JSON: %s", match, errorMessages, jsonElement.toString()));
-                }
-            }.nullSafe();
+            JsonArray array = jsonElement.getAsJsonArray();
+            // validate array items
+            for (JsonElement element : array) {
+                WaypointTraitSymbol.validateJsonElement(element);
+            }
+            validCount++;
+        } catch (Exception e) {
+            errorMessages.add(String.format(java.util.Locale.ROOT,
+                "Deserialization for List<WaypointTraitSymbol> failed with `%s`.", e.getMessage()));
+            // continue to the next one
+        }
+        if (validCount != 1) {
+            throw new IOException(String.format(java.util.Locale.ROOT,
+                "The JSON string is invalid for GetSystemWaypointsTraitsParameter with oneOf schemas: List<WaypointTraitSymbol>, WaypointTraitSymbol. %d class(es) match the result, expected 1. Detailed failure message for oneOf schemas: %s. JSON: %s",
+                validCount, errorMessages, jsonElement.toString()));
         }
     }
 
@@ -148,9 +105,32 @@ public class GetSystemWaypointsTraitsParameter extends AbstractOpenApiSchema {
     }
 
     /**
-     * Set the instance that matches the oneOf child schema, check
-     * the instance parameter is valid against the oneOf child schemas:
-     * List<WaypointTraitSymbol>, WaypointTraitSymbol
+     * Create an instance of GetSystemWaypointsTraitsParameter given an JSON string
+     *
+     * @param jsonString JSON string
+     * @return An instance of GetSystemWaypointsTraitsParameter
+     * @throws IOException if the JSON string is invalid with respect to
+     *                     GetSystemWaypointsTraitsParameter
+     */
+    public static GetSystemWaypointsTraitsParameter fromJson(String jsonString) throws IOException {
+        return JSON.getGson().fromJson(jsonString, GetSystemWaypointsTraitsParameter.class);
+    }
+
+    /**
+     * Get the actual instance, which can be the following: List<WaypointTraitSymbol>,
+     * WaypointTraitSymbol
+     *
+     * @return The actual instance (List<WaypointTraitSymbol>, WaypointTraitSymbol)
+     */
+    @SuppressWarnings("unchecked")
+    @Override
+    public Object getActualInstance() {
+        return super.getActualInstance();
+    }
+
+    /**
+     * Set the instance that matches the oneOf child schema, check the instance parameter is valid
+     * against the oneOf child schemas: List<WaypointTraitSymbol>, WaypointTraitSymbol
      * <p>
      * It could be an instance of the 'oneOf' schemas.
      */
@@ -168,24 +148,13 @@ public class GetSystemWaypointsTraitsParameter extends AbstractOpenApiSchema {
             }
         }
 
-        throw new RuntimeException("Invalid instance type. Must be List<WaypointTraitSymbol>, WaypointTraitSymbol");
+        throw new RuntimeException(
+            "Invalid instance type. Must be List<WaypointTraitSymbol>, WaypointTraitSymbol");
     }
 
     /**
-     * Get the actual instance, which can be the following:
-     * List<WaypointTraitSymbol>, WaypointTraitSymbol
-     *
-     * @return The actual instance (List<WaypointTraitSymbol>, WaypointTraitSymbol)
-     */
-    @SuppressWarnings("unchecked")
-    @Override
-    public Object getActualInstance() {
-        return super.getActualInstance();
-    }
-
-    /**
-     * Get the actual instance of `WaypointTraitSymbol`. If the actual instance is not `WaypointTraitSymbol`,
-     * the ClassCastException will be thrown.
+     * Get the actual instance of `WaypointTraitSymbol`. If the actual instance is not
+     * `WaypointTraitSymbol`, the ClassCastException will be thrown.
      *
      * @return The actual instance of `WaypointTraitSymbol`
      * @throws ClassCastException if the instance is not `WaypointTraitSymbol`
@@ -195,8 +164,8 @@ public class GetSystemWaypointsTraitsParameter extends AbstractOpenApiSchema {
     }
 
     /**
-     * Get the actual instance of `List<WaypointTraitSymbol>`. If the actual instance is not `List<WaypointTraitSymbol>`,
-     * the ClassCastException will be thrown.
+     * Get the actual instance of `List<WaypointTraitSymbol>`. If the actual instance is not
+     * `List<WaypointTraitSymbol>`, the ClassCastException will be thrown.
      *
      * @return The actual instance of `List<WaypointTraitSymbol>`
      * @throws ClassCastException if the instance is not `List<WaypointTraitSymbol>`
@@ -205,53 +174,116 @@ public class GetSystemWaypointsTraitsParameter extends AbstractOpenApiSchema {
         return (List<WaypointTraitSymbol>) super.getActualInstance();
     }
 
-    /**
-     * Validates the JSON Element and throws an exception if issues found
-     *
-     * @param jsonElement JSON Element
-     * @throws IOException if the JSON Element is invalid with respect to GetSystemWaypointsTraitsParameter
-     */
-    public static void validateJsonElement(JsonElement jsonElement) throws IOException {
-        // validate oneOf schemas one by one
-        int validCount = 0;
-        ArrayList<String> errorMessages = new ArrayList<>();
-        // validate the json string with WaypointTraitSymbol
-        try {
-            WaypointTraitSymbol.validateJsonElement(jsonElement);
-            validCount++;
-        } catch (Exception e) {
-            errorMessages.add(String.format(java.util.Locale.ROOT, "Deserialization for WaypointTraitSymbol failed with `%s`.", e.getMessage()));
-            // continue to the next one
-        }
-        // validate the json string with List<WaypointTraitSymbol>
-        try {
-            if (!jsonElement.isJsonArray()) {
-                throw new IllegalArgumentException(String.format(java.util.Locale.ROOT, "Expected json element to be a array type in the JSON string but got `%s`", jsonElement));
-            }
-            JsonArray array = jsonElement.getAsJsonArray();
-            // validate array items
-            for (JsonElement element : array) {
-                WaypointTraitSymbol.validateJsonElement(element);
-            }
-            validCount++;
-        } catch (Exception e) {
-            errorMessages.add(String.format(java.util.Locale.ROOT, "Deserialization for List<WaypointTraitSymbol> failed with `%s`.", e.getMessage()));
-            // continue to the next one
-        }
-        if (validCount != 1) {
-            throw new IOException(String.format(java.util.Locale.ROOT, "The JSON string is invalid for GetSystemWaypointsTraitsParameter with oneOf schemas: List<WaypointTraitSymbol>, WaypointTraitSymbol. %d class(es) match the result, expected 1. Detailed failure message for oneOf schemas: %s. JSON: %s", validCount, errorMessages, jsonElement.toString()));
-        }
-    }
+    public static class CustomTypeAdapterFactory implements TypeAdapterFactory {
 
-    /**
-     * Create an instance of GetSystemWaypointsTraitsParameter given an JSON string
-     *
-     * @param jsonString JSON string
-     * @return An instance of GetSystemWaypointsTraitsParameter
-     * @throws IOException if the JSON string is invalid with respect to GetSystemWaypointsTraitsParameter
-     */
-    public static GetSystemWaypointsTraitsParameter fromJson(String jsonString) throws IOException {
-        return JSON.getGson().fromJson(jsonString, GetSystemWaypointsTraitsParameter.class);
+        @SuppressWarnings("unchecked")
+        @Override
+        public <T> TypeAdapter<T> create(Gson gson, TypeToken<T> type) {
+            if (!GetSystemWaypointsTraitsParameter.class.isAssignableFrom(type.getRawType())) {
+                return null; // this class only serializes 'GetSystemWaypointsTraitsParameter' and its subtypes
+            }
+            final TypeAdapter<JsonElement> elementAdapter = gson.getAdapter(JsonElement.class);
+            final TypeAdapter<WaypointTraitSymbol> adapterWaypointTraitSymbol = gson.getDelegateAdapter(
+                this, TypeToken.get(WaypointTraitSymbol.class));
+
+            final Type typeInstanceListWaypointTraitSymbol = new TypeToken<List<WaypointTraitSymbol>>() {
+            }.getType();
+            final TypeAdapter<List<WaypointTraitSymbol>> adapterListWaypointTraitSymbol = (TypeAdapter<List<WaypointTraitSymbol>>) gson.getDelegateAdapter(
+                this, TypeToken.get(typeInstanceListWaypointTraitSymbol));
+
+            return (TypeAdapter<T>) new TypeAdapter<GetSystemWaypointsTraitsParameter>() {
+                @Override
+                public void write(JsonWriter out, GetSystemWaypointsTraitsParameter value)
+                    throws IOException {
+                    if (value == null || value.getActualInstance() == null) {
+                        elementAdapter.write(out, null);
+                        return;
+                    }
+
+                    // check if the actual instance is of the type `WaypointTraitSymbol`
+                    if (value.getActualInstance() instanceof WaypointTraitSymbol) {
+                        JsonElement element = adapterWaypointTraitSymbol.toJsonTree(
+                            (WaypointTraitSymbol) value.getActualInstance());
+                        elementAdapter.write(out, element);
+                        return;
+                    }
+                    // check if the actual instance is of the type `List<WaypointTraitSymbol>`
+                    if (value.getActualInstance() instanceof List<?> list) {
+                        if (!list.isEmpty() && list.get(0) instanceof WaypointTraitSymbol) {
+                            JsonArray array = adapterListWaypointTraitSymbol.toJsonTree(
+                                    (List<WaypointTraitSymbol>) value.getActualInstance())
+                                .getAsJsonArray();
+                            elementAdapter.write(out, array);
+                            return;
+                        }
+                    }
+                    throw new IOException(
+                        "Failed to serialize as the type doesn't match oneOf schemas: List<WaypointTraitSymbol>, WaypointTraitSymbol");
+                }
+
+                @Override
+                public GetSystemWaypointsTraitsParameter read(JsonReader in) throws IOException {
+                    Object deserialized = null;
+                    JsonElement jsonElement = elementAdapter.read(in);
+
+                    int match = 0;
+                    ArrayList<String> errorMessages = new ArrayList<>();
+                    TypeAdapter actualAdapter = elementAdapter;
+
+                    // deserialize WaypointTraitSymbol
+                    try {
+                        // validate the JSON object to see if any exception is thrown
+                        WaypointTraitSymbol.validateJsonElement(jsonElement);
+                        actualAdapter = adapterWaypointTraitSymbol;
+                        match++;
+                        log.log(Level.FINER, "Input data matches schema 'WaypointTraitSymbol'");
+                    } catch (Exception e) {
+                        // deserialization failed, continue
+                        errorMessages.add(String.format(java.util.Locale.ROOT,
+                            "Deserialization for WaypointTraitSymbol failed with `%s`.",
+                            e.getMessage()));
+                        log.log(Level.FINER,
+                            "Input data does not match schema 'WaypointTraitSymbol'", e);
+                    }
+                    // deserialize List<WaypointTraitSymbol>
+                    try {
+                        // validate the JSON object to see if any exception is thrown
+                        if (!jsonElement.isJsonArray()) {
+                            throw new IllegalArgumentException(String.format(java.util.Locale.ROOT,
+                                "Expected json element to be a array type in the JSON string but got `%s`",
+                                jsonElement));
+                        }
+
+                        JsonArray array = jsonElement.getAsJsonArray();
+                        // validate array items
+                        for (JsonElement element : array) {
+                            WaypointTraitSymbol.validateJsonElement(element);
+                        }
+                        actualAdapter = adapterListWaypointTraitSymbol;
+                        match++;
+                        log.log(Level.FINER,
+                            "Input data matches schema 'List<WaypointTraitSymbol>'");
+                    } catch (Exception e) {
+                        // deserialization failed, continue
+                        errorMessages.add(String.format(java.util.Locale.ROOT,
+                            "Deserialization for List<WaypointTraitSymbol> failed with `%s`.",
+                            e.getMessage()));
+                        log.log(Level.FINER,
+                            "Input data does not match schema 'List<WaypointTraitSymbol>'", e);
+                    }
+
+                    if (match == 1) {
+                        GetSystemWaypointsTraitsParameter ret = new GetSystemWaypointsTraitsParameter();
+                        ret.setActualInstance(actualAdapter.fromJsonTree(jsonElement));
+                        return ret;
+                    }
+
+                    throw new IOException(String.format(java.util.Locale.ROOT,
+                        "Failed deserialization for GetSystemWaypointsTraitsParameter: %d classes match result, expected 1. Detailed failure message for oneOf schemas: %s. JSON: %s",
+                        match, errorMessages, jsonElement.toString()));
+                }
+            }.nullSafe();
+        }
     }
 
     /**

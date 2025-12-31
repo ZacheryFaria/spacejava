@@ -14,16 +14,32 @@
 package xyz.faria.space.spaceapi.api;
 
 import com.google.gson.reflect.TypeToken;
-import xyz.faria.space.spaceapi.client.*;
-import xyz.faria.space.spaceapi.model.*;
-
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import xyz.faria.space.spaceapi.client.ApiCallback;
+import xyz.faria.space.spaceapi.client.ApiClient;
+import xyz.faria.space.spaceapi.client.ApiException;
+import xyz.faria.space.spaceapi.client.ApiResponse;
+import xyz.faria.space.spaceapi.client.Configuration;
+import xyz.faria.space.spaceapi.client.Pair;
+import xyz.faria.space.spaceapi.model.GetConstruction200Response;
+import xyz.faria.space.spaceapi.model.GetJumpGate200Response;
+import xyz.faria.space.spaceapi.model.GetMarket200Response;
+import xyz.faria.space.spaceapi.model.GetShipyard200Response;
+import xyz.faria.space.spaceapi.model.GetSystem200Response;
+import xyz.faria.space.spaceapi.model.GetSystemWaypoints200Response;
+import xyz.faria.space.spaceapi.model.GetSystemWaypointsTraitsParameter;
+import xyz.faria.space.spaceapi.model.GetSystems200Response;
+import xyz.faria.space.spaceapi.model.GetWaypoint200Response;
+import xyz.faria.space.spaceapi.model.SupplyConstruction201Response;
+import xyz.faria.space.spaceapi.model.SupplyConstructionRequest;
+import xyz.faria.space.spaceapi.model.WaypointType;
 
 public class SystemsApi {
+
     private ApiClient localVarApiClient;
     private int localHostIndex;
     private String localCustomBaseUrl;
@@ -74,7 +90,9 @@ public class SystemsApi {
      * <tr><td> 200 </td><td> Successfully fetched construction site. </td><td>  -  </td></tr>
      * </table>
      */
-    public okhttp3.Call getConstructionCall(@javax.annotation.Nonnull String systemSymbol, @javax.annotation.Nonnull String waypointSymbol, final ApiCallback _callback) throws ApiException {
+    public okhttp3.Call getConstructionCall(@javax.annotation.Nonnull String systemSymbol,
+        @javax.annotation.Nonnull String waypointSymbol, final ApiCallback _callback)
+        throws ApiException {
         String basePath = null;
         // Operation Servers
         String[] localBasePaths = new String[]{};
@@ -92,8 +110,8 @@ public class SystemsApi {
 
         // create path and map variables
         String localVarPath = "/systems/{systemSymbol}/waypoints/{waypointSymbol}/construction"
-                .replace("{" + "systemSymbol" + "}", localVarApiClient.escapeString(systemSymbol))
-                .replace("{" + "waypointSymbol" + "}", localVarApiClient.escapeString(waypointSymbol));
+            .replace("{" + "systemSymbol" + "}", localVarApiClient.escapeString(systemSymbol))
+            .replace("{" + "waypointSymbol" + "}", localVarApiClient.escapeString(waypointSymbol));
 
         List<Pair> localVarQueryParams = new ArrayList<Pair>();
         List<Pair> localVarCollectionQueryParams = new ArrayList<Pair>();
@@ -102,7 +120,7 @@ public class SystemsApi {
         Map<String, Object> localVarFormParams = new HashMap<String, Object>();
 
         final String[] localVarAccepts = {
-                "application/json"
+            "application/json"
         };
         final String localVarAccept = localVarApiClient.selectHeaderAccept(localVarAccepts);
         if (localVarAccept != null) {
@@ -111,25 +129,33 @@ public class SystemsApi {
 
         final String[] localVarContentTypes = {
         };
-        final String localVarContentType = localVarApiClient.selectHeaderContentType(localVarContentTypes);
+        final String localVarContentType = localVarApiClient.selectHeaderContentType(
+            localVarContentTypes);
         if (localVarContentType != null) {
             localVarHeaderParams.put("Content-Type", localVarContentType);
         }
 
         String[] localVarAuthNames = new String[]{"AgentToken"};
-        return localVarApiClient.buildCall(basePath, localVarPath, "GET", localVarQueryParams, localVarCollectionQueryParams, localVarPostBody, localVarHeaderParams, localVarCookieParams, localVarFormParams, localVarAuthNames, _callback);
+        return localVarApiClient.buildCall(basePath, localVarPath, "GET", localVarQueryParams,
+            localVarCollectionQueryParams, localVarPostBody, localVarHeaderParams,
+            localVarCookieParams, localVarFormParams, localVarAuthNames, _callback);
     }
 
     @SuppressWarnings("rawtypes")
-    private okhttp3.Call getConstructionValidateBeforeCall(@javax.annotation.Nonnull String systemSymbol, @javax.annotation.Nonnull String waypointSymbol, final ApiCallback _callback) throws ApiException {
+    private okhttp3.Call getConstructionValidateBeforeCall(
+        @javax.annotation.Nonnull String systemSymbol,
+        @javax.annotation.Nonnull String waypointSymbol, final ApiCallback _callback)
+        throws ApiException {
         // verify the required parameter 'systemSymbol' is set
         if (systemSymbol == null) {
-            throw new ApiException("Missing the required parameter 'systemSymbol' when calling getConstruction(Async)");
+            throw new ApiException(
+                "Missing the required parameter 'systemSymbol' when calling getConstruction(Async)");
         }
 
         // verify the required parameter 'waypointSymbol' is set
         if (waypointSymbol == null) {
-            throw new ApiException("Missing the required parameter 'waypointSymbol' when calling getConstruction(Async)");
+            throw new ApiException(
+                "Missing the required parameter 'waypointSymbol' when calling getConstruction(Async)");
         }
 
         return getConstructionCall(systemSymbol, waypointSymbol, _callback);
@@ -137,63 +163,74 @@ public class SystemsApi {
     }
 
     /**
-     * Get Construction Site
-     * Get construction details for a waypoint. Requires a waypoint with a property of &#x60;isUnderConstruction&#x60; to be true.
+     * Get Construction Site Get construction details for a waypoint. Requires a waypoint with a
+     * property of &#x60;isUnderConstruction&#x60; to be true.
      *
      * @param systemSymbol   The system symbol (required)
      * @param waypointSymbol The waypoint symbol (required)
      * @return GetConstruction200Response
-     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
+     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the
+     *                      response body
      * @http.response.details <table border="1">
      * <caption>Response Details</caption>
      * <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
      * <tr><td> 200 </td><td> Successfully fetched construction site. </td><td>  -  </td></tr>
      * </table>
      */
-    public GetConstruction200Response getConstruction(@javax.annotation.Nonnull String systemSymbol, @javax.annotation.Nonnull String waypointSymbol) throws ApiException {
-        ApiResponse<GetConstruction200Response> localVarResp = getConstructionWithHttpInfo(systemSymbol, waypointSymbol);
+    public GetConstruction200Response getConstruction(@javax.annotation.Nonnull String systemSymbol,
+        @javax.annotation.Nonnull String waypointSymbol) throws ApiException {
+        ApiResponse<GetConstruction200Response> localVarResp = getConstructionWithHttpInfo(
+            systemSymbol, waypointSymbol);
         return localVarResp.data();
     }
 
     /**
-     * Get Construction Site
-     * Get construction details for a waypoint. Requires a waypoint with a property of &#x60;isUnderConstruction&#x60; to be true.
+     * Get Construction Site Get construction details for a waypoint. Requires a waypoint with a
+     * property of &#x60;isUnderConstruction&#x60; to be true.
      *
      * @param systemSymbol   The system symbol (required)
      * @param waypointSymbol The waypoint symbol (required)
      * @return ApiResponse&lt;GetConstruction200Response&gt;
-     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
+     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the
+     *                      response body
      * @http.response.details <table border="1">
      * <caption>Response Details</caption>
      * <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
      * <tr><td> 200 </td><td> Successfully fetched construction site. </td><td>  -  </td></tr>
      * </table>
      */
-    public ApiResponse<GetConstruction200Response> getConstructionWithHttpInfo(@javax.annotation.Nonnull String systemSymbol, @javax.annotation.Nonnull String waypointSymbol) throws ApiException {
-        okhttp3.Call localVarCall = getConstructionValidateBeforeCall(systemSymbol, waypointSymbol, null);
+    public ApiResponse<GetConstruction200Response> getConstructionWithHttpInfo(
+        @javax.annotation.Nonnull String systemSymbol,
+        @javax.annotation.Nonnull String waypointSymbol) throws ApiException {
+        okhttp3.Call localVarCall = getConstructionValidateBeforeCall(systemSymbol, waypointSymbol,
+            null);
         Type localVarReturnType = new TypeToken<GetConstruction200Response>() {
         }.getType();
         return localVarApiClient.execute(localVarCall, localVarReturnType);
     }
 
     /**
-     * Get Construction Site (asynchronously)
-     * Get construction details for a waypoint. Requires a waypoint with a property of &#x60;isUnderConstruction&#x60; to be true.
+     * Get Construction Site (asynchronously) Get construction details for a waypoint. Requires a
+     * waypoint with a property of &#x60;isUnderConstruction&#x60; to be true.
      *
      * @param systemSymbol   The system symbol (required)
      * @param waypointSymbol The waypoint symbol (required)
      * @param _callback      The callback to be executed when the API call finishes
      * @return The request call
-     * @throws ApiException If fail to process the API call, e.g. serializing the request body object
+     * @throws ApiException If fail to process the API call, e.g. serializing the request body
+     *                      object
      * @http.response.details <table border="1">
      * <caption>Response Details</caption>
      * <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
      * <tr><td> 200 </td><td> Successfully fetched construction site. </td><td>  -  </td></tr>
      * </table>
      */
-    public okhttp3.Call getConstructionAsync(@javax.annotation.Nonnull String systemSymbol, @javax.annotation.Nonnull String waypointSymbol, final ApiCallback<GetConstruction200Response> _callback) throws ApiException {
+    public okhttp3.Call getConstructionAsync(@javax.annotation.Nonnull String systemSymbol,
+        @javax.annotation.Nonnull String waypointSymbol,
+        final ApiCallback<GetConstruction200Response> _callback) throws ApiException {
 
-        okhttp3.Call localVarCall = getConstructionValidateBeforeCall(systemSymbol, waypointSymbol, _callback);
+        okhttp3.Call localVarCall = getConstructionValidateBeforeCall(systemSymbol, waypointSymbol,
+            _callback);
         Type localVarReturnType = new TypeToken<GetConstruction200Response>() {
         }.getType();
         localVarApiClient.executeAsync(localVarCall, localVarReturnType, _callback);
@@ -214,7 +251,9 @@ public class SystemsApi {
      * <tr><td> 200 </td><td> Successfully fetched jump gate. </td><td>  -  </td></tr>
      * </table>
      */
-    public okhttp3.Call getJumpGateCall(@javax.annotation.Nonnull String systemSymbol, @javax.annotation.Nonnull String waypointSymbol, final ApiCallback _callback) throws ApiException {
+    public okhttp3.Call getJumpGateCall(@javax.annotation.Nonnull String systemSymbol,
+        @javax.annotation.Nonnull String waypointSymbol, final ApiCallback _callback)
+        throws ApiException {
         String basePath = null;
         // Operation Servers
         String[] localBasePaths = new String[]{};
@@ -232,8 +271,8 @@ public class SystemsApi {
 
         // create path and map variables
         String localVarPath = "/systems/{systemSymbol}/waypoints/{waypointSymbol}/jump-gate"
-                .replace("{" + "systemSymbol" + "}", localVarApiClient.escapeString(systemSymbol))
-                .replace("{" + "waypointSymbol" + "}", localVarApiClient.escapeString(waypointSymbol));
+            .replace("{" + "systemSymbol" + "}", localVarApiClient.escapeString(systemSymbol))
+            .replace("{" + "waypointSymbol" + "}", localVarApiClient.escapeString(waypointSymbol));
 
         List<Pair> localVarQueryParams = new ArrayList<Pair>();
         List<Pair> localVarCollectionQueryParams = new ArrayList<Pair>();
@@ -242,7 +281,7 @@ public class SystemsApi {
         Map<String, Object> localVarFormParams = new HashMap<String, Object>();
 
         final String[] localVarAccepts = {
-                "application/json"
+            "application/json"
         };
         final String localVarAccept = localVarApiClient.selectHeaderAccept(localVarAccepts);
         if (localVarAccept != null) {
@@ -251,25 +290,33 @@ public class SystemsApi {
 
         final String[] localVarContentTypes = {
         };
-        final String localVarContentType = localVarApiClient.selectHeaderContentType(localVarContentTypes);
+        final String localVarContentType = localVarApiClient.selectHeaderContentType(
+            localVarContentTypes);
         if (localVarContentType != null) {
             localVarHeaderParams.put("Content-Type", localVarContentType);
         }
 
         String[] localVarAuthNames = new String[]{"AgentToken"};
-        return localVarApiClient.buildCall(basePath, localVarPath, "GET", localVarQueryParams, localVarCollectionQueryParams, localVarPostBody, localVarHeaderParams, localVarCookieParams, localVarFormParams, localVarAuthNames, _callback);
+        return localVarApiClient.buildCall(basePath, localVarPath, "GET", localVarQueryParams,
+            localVarCollectionQueryParams, localVarPostBody, localVarHeaderParams,
+            localVarCookieParams, localVarFormParams, localVarAuthNames, _callback);
     }
 
     @SuppressWarnings("rawtypes")
-    private okhttp3.Call getJumpGateValidateBeforeCall(@javax.annotation.Nonnull String systemSymbol, @javax.annotation.Nonnull String waypointSymbol, final ApiCallback _callback) throws ApiException {
+    private okhttp3.Call getJumpGateValidateBeforeCall(
+        @javax.annotation.Nonnull String systemSymbol,
+        @javax.annotation.Nonnull String waypointSymbol, final ApiCallback _callback)
+        throws ApiException {
         // verify the required parameter 'systemSymbol' is set
         if (systemSymbol == null) {
-            throw new ApiException("Missing the required parameter 'systemSymbol' when calling getJumpGate(Async)");
+            throw new ApiException(
+                "Missing the required parameter 'systemSymbol' when calling getJumpGate(Async)");
         }
 
         // verify the required parameter 'waypointSymbol' is set
         if (waypointSymbol == null) {
-            throw new ApiException("Missing the required parameter 'waypointSymbol' when calling getJumpGate(Async)");
+            throw new ApiException(
+                "Missing the required parameter 'waypointSymbol' when calling getJumpGate(Async)");
         }
 
         return getJumpGateCall(systemSymbol, waypointSymbol, _callback);
@@ -277,63 +324,74 @@ public class SystemsApi {
     }
 
     /**
-     * Get Jump Gate
-     * Get jump gate details for a waypoint. Requires a waypoint of type &#x60;JUMP_GATE&#x60; to use.  Waypoints connected to this jump gate can be
+     * Get Jump Gate Get jump gate details for a waypoint. Requires a waypoint of type
+     * &#x60;JUMP_GATE&#x60; to use.  Waypoints connected to this jump gate can be
      *
      * @param systemSymbol   The system symbol (required)
      * @param waypointSymbol The waypoint symbol (required)
      * @return GetJumpGate200Response
-     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
+     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the
+     *                      response body
      * @http.response.details <table border="1">
      * <caption>Response Details</caption>
      * <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
      * <tr><td> 200 </td><td> Successfully fetched jump gate. </td><td>  -  </td></tr>
      * </table>
      */
-    public GetJumpGate200Response getJumpGate(@javax.annotation.Nonnull String systemSymbol, @javax.annotation.Nonnull String waypointSymbol) throws ApiException {
-        ApiResponse<GetJumpGate200Response> localVarResp = getJumpGateWithHttpInfo(systemSymbol, waypointSymbol);
+    public GetJumpGate200Response getJumpGate(@javax.annotation.Nonnull String systemSymbol,
+        @javax.annotation.Nonnull String waypointSymbol) throws ApiException {
+        ApiResponse<GetJumpGate200Response> localVarResp = getJumpGateWithHttpInfo(systemSymbol,
+            waypointSymbol);
         return localVarResp.data();
     }
 
     /**
-     * Get Jump Gate
-     * Get jump gate details for a waypoint. Requires a waypoint of type &#x60;JUMP_GATE&#x60; to use.  Waypoints connected to this jump gate can be
+     * Get Jump Gate Get jump gate details for a waypoint. Requires a waypoint of type
+     * &#x60;JUMP_GATE&#x60; to use.  Waypoints connected to this jump gate can be
      *
      * @param systemSymbol   The system symbol (required)
      * @param waypointSymbol The waypoint symbol (required)
      * @return ApiResponse&lt;GetJumpGate200Response&gt;
-     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
+     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the
+     *                      response body
      * @http.response.details <table border="1">
      * <caption>Response Details</caption>
      * <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
      * <tr><td> 200 </td><td> Successfully fetched jump gate. </td><td>  -  </td></tr>
      * </table>
      */
-    public ApiResponse<GetJumpGate200Response> getJumpGateWithHttpInfo(@javax.annotation.Nonnull String systemSymbol, @javax.annotation.Nonnull String waypointSymbol) throws ApiException {
-        okhttp3.Call localVarCall = getJumpGateValidateBeforeCall(systemSymbol, waypointSymbol, null);
+    public ApiResponse<GetJumpGate200Response> getJumpGateWithHttpInfo(
+        @javax.annotation.Nonnull String systemSymbol,
+        @javax.annotation.Nonnull String waypointSymbol) throws ApiException {
+        okhttp3.Call localVarCall = getJumpGateValidateBeforeCall(systemSymbol, waypointSymbol,
+            null);
         Type localVarReturnType = new TypeToken<GetJumpGate200Response>() {
         }.getType();
         return localVarApiClient.execute(localVarCall, localVarReturnType);
     }
 
     /**
-     * Get Jump Gate (asynchronously)
-     * Get jump gate details for a waypoint. Requires a waypoint of type &#x60;JUMP_GATE&#x60; to use.  Waypoints connected to this jump gate can be
+     * Get Jump Gate (asynchronously) Get jump gate details for a waypoint. Requires a waypoint of
+     * type &#x60;JUMP_GATE&#x60; to use.  Waypoints connected to this jump gate can be
      *
      * @param systemSymbol   The system symbol (required)
      * @param waypointSymbol The waypoint symbol (required)
      * @param _callback      The callback to be executed when the API call finishes
      * @return The request call
-     * @throws ApiException If fail to process the API call, e.g. serializing the request body object
+     * @throws ApiException If fail to process the API call, e.g. serializing the request body
+     *                      object
      * @http.response.details <table border="1">
      * <caption>Response Details</caption>
      * <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
      * <tr><td> 200 </td><td> Successfully fetched jump gate. </td><td>  -  </td></tr>
      * </table>
      */
-    public okhttp3.Call getJumpGateAsync(@javax.annotation.Nonnull String systemSymbol, @javax.annotation.Nonnull String waypointSymbol, final ApiCallback<GetJumpGate200Response> _callback) throws ApiException {
+    public okhttp3.Call getJumpGateAsync(@javax.annotation.Nonnull String systemSymbol,
+        @javax.annotation.Nonnull String waypointSymbol,
+        final ApiCallback<GetJumpGate200Response> _callback) throws ApiException {
 
-        okhttp3.Call localVarCall = getJumpGateValidateBeforeCall(systemSymbol, waypointSymbol, _callback);
+        okhttp3.Call localVarCall = getJumpGateValidateBeforeCall(systemSymbol, waypointSymbol,
+            _callback);
         Type localVarReturnType = new TypeToken<GetJumpGate200Response>() {
         }.getType();
         localVarApiClient.executeAsync(localVarCall, localVarReturnType, _callback);
@@ -354,7 +412,9 @@ public class SystemsApi {
      * <tr><td> 200 </td><td> Successfully fetched the market. </td><td>  -  </td></tr>
      * </table>
      */
-    public okhttp3.Call getMarketCall(@javax.annotation.Nonnull String systemSymbol, @javax.annotation.Nonnull String waypointSymbol, final ApiCallback _callback) throws ApiException {
+    public okhttp3.Call getMarketCall(@javax.annotation.Nonnull String systemSymbol,
+        @javax.annotation.Nonnull String waypointSymbol, final ApiCallback _callback)
+        throws ApiException {
         String basePath = null;
         // Operation Servers
         String[] localBasePaths = new String[]{};
@@ -372,8 +432,8 @@ public class SystemsApi {
 
         // create path and map variables
         String localVarPath = "/systems/{systemSymbol}/waypoints/{waypointSymbol}/market"
-                .replace("{" + "systemSymbol" + "}", localVarApiClient.escapeString(systemSymbol))
-                .replace("{" + "waypointSymbol" + "}", localVarApiClient.escapeString(waypointSymbol));
+            .replace("{" + "systemSymbol" + "}", localVarApiClient.escapeString(systemSymbol))
+            .replace("{" + "waypointSymbol" + "}", localVarApiClient.escapeString(waypointSymbol));
 
         List<Pair> localVarQueryParams = new ArrayList<Pair>();
         List<Pair> localVarCollectionQueryParams = new ArrayList<Pair>();
@@ -382,7 +442,7 @@ public class SystemsApi {
         Map<String, Object> localVarFormParams = new HashMap<String, Object>();
 
         final String[] localVarAccepts = {
-                "application/json"
+            "application/json"
         };
         final String localVarAccept = localVarApiClient.selectHeaderAccept(localVarAccepts);
         if (localVarAccept != null) {
@@ -391,25 +451,32 @@ public class SystemsApi {
 
         final String[] localVarContentTypes = {
         };
-        final String localVarContentType = localVarApiClient.selectHeaderContentType(localVarContentTypes);
+        final String localVarContentType = localVarApiClient.selectHeaderContentType(
+            localVarContentTypes);
         if (localVarContentType != null) {
             localVarHeaderParams.put("Content-Type", localVarContentType);
         }
 
         String[] localVarAuthNames = new String[]{"AgentToken"};
-        return localVarApiClient.buildCall(basePath, localVarPath, "GET", localVarQueryParams, localVarCollectionQueryParams, localVarPostBody, localVarHeaderParams, localVarCookieParams, localVarFormParams, localVarAuthNames, _callback);
+        return localVarApiClient.buildCall(basePath, localVarPath, "GET", localVarQueryParams,
+            localVarCollectionQueryParams, localVarPostBody, localVarHeaderParams,
+            localVarCookieParams, localVarFormParams, localVarAuthNames, _callback);
     }
 
     @SuppressWarnings("rawtypes")
-    private okhttp3.Call getMarketValidateBeforeCall(@javax.annotation.Nonnull String systemSymbol, @javax.annotation.Nonnull String waypointSymbol, final ApiCallback _callback) throws ApiException {
+    private okhttp3.Call getMarketValidateBeforeCall(@javax.annotation.Nonnull String systemSymbol,
+        @javax.annotation.Nonnull String waypointSymbol, final ApiCallback _callback)
+        throws ApiException {
         // verify the required parameter 'systemSymbol' is set
         if (systemSymbol == null) {
-            throw new ApiException("Missing the required parameter 'systemSymbol' when calling getMarket(Async)");
+            throw new ApiException(
+                "Missing the required parameter 'systemSymbol' when calling getMarket(Async)");
         }
 
         // verify the required parameter 'waypointSymbol' is set
         if (waypointSymbol == null) {
-            throw new ApiException("Missing the required parameter 'waypointSymbol' when calling getMarket(Async)");
+            throw new ApiException(
+                "Missing the required parameter 'waypointSymbol' when calling getMarket(Async)");
         }
 
         return getMarketCall(systemSymbol, waypointSymbol, _callback);
@@ -417,39 +484,51 @@ public class SystemsApi {
     }
 
     /**
-     * Get Market
-     * Retrieve imports, exports and exchange data from a marketplace. Requires a waypoint that has the &#x60;Marketplace&#x60; trait to use.  Send a ship to the waypoint to access trade good prices and recent transactions. Refer to the [Market Overview page](https://docs.spacetraders.io/game-concepts/markets) to gain better a understanding of the market in the game.
+     * Get Market Retrieve imports, exports and exchange data from a marketplace. Requires a
+     * waypoint that has the &#x60;Marketplace&#x60; trait to use.  Send a ship to the waypoint to
+     * access trade good prices and recent transactions. Refer to the [Market Overview
+     * page](https://docs.spacetraders.io/game-concepts/markets) to gain better a understanding of
+     * the market in the game.
      *
      * @param systemSymbol   The system symbol (required)
      * @param waypointSymbol The waypoint symbol (required)
      * @return GetMarket200Response
-     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
+     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the
+     *                      response body
      * @http.response.details <table border="1">
      * <caption>Response Details</caption>
      * <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
      * <tr><td> 200 </td><td> Successfully fetched the market. </td><td>  -  </td></tr>
      * </table>
      */
-    public GetMarket200Response getMarket(@javax.annotation.Nonnull String systemSymbol, @javax.annotation.Nonnull String waypointSymbol) throws ApiException {
-        ApiResponse<GetMarket200Response> localVarResp = getMarketWithHttpInfo(systemSymbol, waypointSymbol);
+    public GetMarket200Response getMarket(@javax.annotation.Nonnull String systemSymbol,
+        @javax.annotation.Nonnull String waypointSymbol) throws ApiException {
+        ApiResponse<GetMarket200Response> localVarResp = getMarketWithHttpInfo(systemSymbol,
+            waypointSymbol);
         return localVarResp.data();
     }
 
     /**
-     * Get Market
-     * Retrieve imports, exports and exchange data from a marketplace. Requires a waypoint that has the &#x60;Marketplace&#x60; trait to use.  Send a ship to the waypoint to access trade good prices and recent transactions. Refer to the [Market Overview page](https://docs.spacetraders.io/game-concepts/markets) to gain better a understanding of the market in the game.
+     * Get Market Retrieve imports, exports and exchange data from a marketplace. Requires a
+     * waypoint that has the &#x60;Marketplace&#x60; trait to use.  Send a ship to the waypoint to
+     * access trade good prices and recent transactions. Refer to the [Market Overview
+     * page](https://docs.spacetraders.io/game-concepts/markets) to gain better a understanding of
+     * the market in the game.
      *
      * @param systemSymbol   The system symbol (required)
      * @param waypointSymbol The waypoint symbol (required)
      * @return ApiResponse&lt;GetMarket200Response&gt;
-     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
+     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the
+     *                      response body
      * @http.response.details <table border="1">
      * <caption>Response Details</caption>
      * <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
      * <tr><td> 200 </td><td> Successfully fetched the market. </td><td>  -  </td></tr>
      * </table>
      */
-    public ApiResponse<GetMarket200Response> getMarketWithHttpInfo(@javax.annotation.Nonnull String systemSymbol, @javax.annotation.Nonnull String waypointSymbol) throws ApiException {
+    public ApiResponse<GetMarket200Response> getMarketWithHttpInfo(
+        @javax.annotation.Nonnull String systemSymbol,
+        @javax.annotation.Nonnull String waypointSymbol) throws ApiException {
         okhttp3.Call localVarCall = getMarketValidateBeforeCall(systemSymbol, waypointSymbol, null);
         Type localVarReturnType = new TypeToken<GetMarket200Response>() {
         }.getType();
@@ -457,23 +536,30 @@ public class SystemsApi {
     }
 
     /**
-     * Get Market (asynchronously)
-     * Retrieve imports, exports and exchange data from a marketplace. Requires a waypoint that has the &#x60;Marketplace&#x60; trait to use.  Send a ship to the waypoint to access trade good prices and recent transactions. Refer to the [Market Overview page](https://docs.spacetraders.io/game-concepts/markets) to gain better a understanding of the market in the game.
+     * Get Market (asynchronously) Retrieve imports, exports and exchange data from a marketplace.
+     * Requires a waypoint that has the &#x60;Marketplace&#x60; trait to use.  Send a ship to the
+     * waypoint to access trade good prices and recent transactions. Refer to the [Market Overview
+     * page](https://docs.spacetraders.io/game-concepts/markets) to gain better a understanding of
+     * the market in the game.
      *
      * @param systemSymbol   The system symbol (required)
      * @param waypointSymbol The waypoint symbol (required)
      * @param _callback      The callback to be executed when the API call finishes
      * @return The request call
-     * @throws ApiException If fail to process the API call, e.g. serializing the request body object
+     * @throws ApiException If fail to process the API call, e.g. serializing the request body
+     *                      object
      * @http.response.details <table border="1">
      * <caption>Response Details</caption>
      * <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
      * <tr><td> 200 </td><td> Successfully fetched the market. </td><td>  -  </td></tr>
      * </table>
      */
-    public okhttp3.Call getMarketAsync(@javax.annotation.Nonnull String systemSymbol, @javax.annotation.Nonnull String waypointSymbol, final ApiCallback<GetMarket200Response> _callback) throws ApiException {
+    public okhttp3.Call getMarketAsync(@javax.annotation.Nonnull String systemSymbol,
+        @javax.annotation.Nonnull String waypointSymbol,
+        final ApiCallback<GetMarket200Response> _callback) throws ApiException {
 
-        okhttp3.Call localVarCall = getMarketValidateBeforeCall(systemSymbol, waypointSymbol, _callback);
+        okhttp3.Call localVarCall = getMarketValidateBeforeCall(systemSymbol, waypointSymbol,
+            _callback);
         Type localVarReturnType = new TypeToken<GetMarket200Response>() {
         }.getType();
         localVarApiClient.executeAsync(localVarCall, localVarReturnType, _callback);
@@ -494,7 +580,9 @@ public class SystemsApi {
      * <tr><td> 200 </td><td> Successfully fetched the shipyard. </td><td>  -  </td></tr>
      * </table>
      */
-    public okhttp3.Call getShipyardCall(@javax.annotation.Nonnull String systemSymbol, @javax.annotation.Nonnull String waypointSymbol, final ApiCallback _callback) throws ApiException {
+    public okhttp3.Call getShipyardCall(@javax.annotation.Nonnull String systemSymbol,
+        @javax.annotation.Nonnull String waypointSymbol, final ApiCallback _callback)
+        throws ApiException {
         String basePath = null;
         // Operation Servers
         String[] localBasePaths = new String[]{};
@@ -512,8 +600,8 @@ public class SystemsApi {
 
         // create path and map variables
         String localVarPath = "/systems/{systemSymbol}/waypoints/{waypointSymbol}/shipyard"
-                .replace("{" + "systemSymbol" + "}", localVarApiClient.escapeString(systemSymbol))
-                .replace("{" + "waypointSymbol" + "}", localVarApiClient.escapeString(waypointSymbol));
+            .replace("{" + "systemSymbol" + "}", localVarApiClient.escapeString(systemSymbol))
+            .replace("{" + "waypointSymbol" + "}", localVarApiClient.escapeString(waypointSymbol));
 
         List<Pair> localVarQueryParams = new ArrayList<Pair>();
         List<Pair> localVarCollectionQueryParams = new ArrayList<Pair>();
@@ -522,7 +610,7 @@ public class SystemsApi {
         Map<String, Object> localVarFormParams = new HashMap<String, Object>();
 
         final String[] localVarAccepts = {
-                "application/json"
+            "application/json"
         };
         final String localVarAccept = localVarApiClient.selectHeaderAccept(localVarAccepts);
         if (localVarAccept != null) {
@@ -531,25 +619,33 @@ public class SystemsApi {
 
         final String[] localVarContentTypes = {
         };
-        final String localVarContentType = localVarApiClient.selectHeaderContentType(localVarContentTypes);
+        final String localVarContentType = localVarApiClient.selectHeaderContentType(
+            localVarContentTypes);
         if (localVarContentType != null) {
             localVarHeaderParams.put("Content-Type", localVarContentType);
         }
 
         String[] localVarAuthNames = new String[]{"AgentToken"};
-        return localVarApiClient.buildCall(basePath, localVarPath, "GET", localVarQueryParams, localVarCollectionQueryParams, localVarPostBody, localVarHeaderParams, localVarCookieParams, localVarFormParams, localVarAuthNames, _callback);
+        return localVarApiClient.buildCall(basePath, localVarPath, "GET", localVarQueryParams,
+            localVarCollectionQueryParams, localVarPostBody, localVarHeaderParams,
+            localVarCookieParams, localVarFormParams, localVarAuthNames, _callback);
     }
 
     @SuppressWarnings("rawtypes")
-    private okhttp3.Call getShipyardValidateBeforeCall(@javax.annotation.Nonnull String systemSymbol, @javax.annotation.Nonnull String waypointSymbol, final ApiCallback _callback) throws ApiException {
+    private okhttp3.Call getShipyardValidateBeforeCall(
+        @javax.annotation.Nonnull String systemSymbol,
+        @javax.annotation.Nonnull String waypointSymbol, final ApiCallback _callback)
+        throws ApiException {
         // verify the required parameter 'systemSymbol' is set
         if (systemSymbol == null) {
-            throw new ApiException("Missing the required parameter 'systemSymbol' when calling getShipyard(Async)");
+            throw new ApiException(
+                "Missing the required parameter 'systemSymbol' when calling getShipyard(Async)");
         }
 
         // verify the required parameter 'waypointSymbol' is set
         if (waypointSymbol == null) {
-            throw new ApiException("Missing the required parameter 'waypointSymbol' when calling getShipyard(Async)");
+            throw new ApiException(
+                "Missing the required parameter 'waypointSymbol' when calling getShipyard(Async)");
         }
 
         return getShipyardCall(systemSymbol, waypointSymbol, _callback);
@@ -557,63 +653,77 @@ public class SystemsApi {
     }
 
     /**
-     * Get Shipyard
-     * Get the shipyard for a waypoint. Requires a waypoint that has the &#x60;Shipyard&#x60; trait to use. Send a ship to the waypoint to access data on ships that are currently available for purchase and recent transactions.
+     * Get Shipyard Get the shipyard for a waypoint. Requires a waypoint that has the
+     * &#x60;Shipyard&#x60; trait to use. Send a ship to the waypoint to access data on ships that
+     * are currently available for purchase and recent transactions.
      *
      * @param systemSymbol   The system symbol (required)
      * @param waypointSymbol The waypoint symbol (required)
      * @return GetShipyard200Response
-     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
+     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the
+     *                      response body
      * @http.response.details <table border="1">
      * <caption>Response Details</caption>
      * <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
      * <tr><td> 200 </td><td> Successfully fetched the shipyard. </td><td>  -  </td></tr>
      * </table>
      */
-    public GetShipyard200Response getShipyard(@javax.annotation.Nonnull String systemSymbol, @javax.annotation.Nonnull String waypointSymbol) throws ApiException {
-        ApiResponse<GetShipyard200Response> localVarResp = getShipyardWithHttpInfo(systemSymbol, waypointSymbol);
+    public GetShipyard200Response getShipyard(@javax.annotation.Nonnull String systemSymbol,
+        @javax.annotation.Nonnull String waypointSymbol) throws ApiException {
+        ApiResponse<GetShipyard200Response> localVarResp = getShipyardWithHttpInfo(systemSymbol,
+            waypointSymbol);
         return localVarResp.data();
     }
 
     /**
-     * Get Shipyard
-     * Get the shipyard for a waypoint. Requires a waypoint that has the &#x60;Shipyard&#x60; trait to use. Send a ship to the waypoint to access data on ships that are currently available for purchase and recent transactions.
+     * Get Shipyard Get the shipyard for a waypoint. Requires a waypoint that has the
+     * &#x60;Shipyard&#x60; trait to use. Send a ship to the waypoint to access data on ships that
+     * are currently available for purchase and recent transactions.
      *
      * @param systemSymbol   The system symbol (required)
      * @param waypointSymbol The waypoint symbol (required)
      * @return ApiResponse&lt;GetShipyard200Response&gt;
-     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
+     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the
+     *                      response body
      * @http.response.details <table border="1">
      * <caption>Response Details</caption>
      * <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
      * <tr><td> 200 </td><td> Successfully fetched the shipyard. </td><td>  -  </td></tr>
      * </table>
      */
-    public ApiResponse<GetShipyard200Response> getShipyardWithHttpInfo(@javax.annotation.Nonnull String systemSymbol, @javax.annotation.Nonnull String waypointSymbol) throws ApiException {
-        okhttp3.Call localVarCall = getShipyardValidateBeforeCall(systemSymbol, waypointSymbol, null);
+    public ApiResponse<GetShipyard200Response> getShipyardWithHttpInfo(
+        @javax.annotation.Nonnull String systemSymbol,
+        @javax.annotation.Nonnull String waypointSymbol) throws ApiException {
+        okhttp3.Call localVarCall = getShipyardValidateBeforeCall(systemSymbol, waypointSymbol,
+            null);
         Type localVarReturnType = new TypeToken<GetShipyard200Response>() {
         }.getType();
         return localVarApiClient.execute(localVarCall, localVarReturnType);
     }
 
     /**
-     * Get Shipyard (asynchronously)
-     * Get the shipyard for a waypoint. Requires a waypoint that has the &#x60;Shipyard&#x60; trait to use. Send a ship to the waypoint to access data on ships that are currently available for purchase and recent transactions.
+     * Get Shipyard (asynchronously) Get the shipyard for a waypoint. Requires a waypoint that has
+     * the &#x60;Shipyard&#x60; trait to use. Send a ship to the waypoint to access data on ships
+     * that are currently available for purchase and recent transactions.
      *
      * @param systemSymbol   The system symbol (required)
      * @param waypointSymbol The waypoint symbol (required)
      * @param _callback      The callback to be executed when the API call finishes
      * @return The request call
-     * @throws ApiException If fail to process the API call, e.g. serializing the request body object
+     * @throws ApiException If fail to process the API call, e.g. serializing the request body
+     *                      object
      * @http.response.details <table border="1">
      * <caption>Response Details</caption>
      * <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
      * <tr><td> 200 </td><td> Successfully fetched the shipyard. </td><td>  -  </td></tr>
      * </table>
      */
-    public okhttp3.Call getShipyardAsync(@javax.annotation.Nonnull String systemSymbol, @javax.annotation.Nonnull String waypointSymbol, final ApiCallback<GetShipyard200Response> _callback) throws ApiException {
+    public okhttp3.Call getShipyardAsync(@javax.annotation.Nonnull String systemSymbol,
+        @javax.annotation.Nonnull String waypointSymbol,
+        final ApiCallback<GetShipyard200Response> _callback) throws ApiException {
 
-        okhttp3.Call localVarCall = getShipyardValidateBeforeCall(systemSymbol, waypointSymbol, _callback);
+        okhttp3.Call localVarCall = getShipyardValidateBeforeCall(systemSymbol, waypointSymbol,
+            _callback);
         Type localVarReturnType = new TypeToken<GetShipyard200Response>() {
         }.getType();
         localVarApiClient.executeAsync(localVarCall, localVarReturnType, _callback);
@@ -633,7 +743,8 @@ public class SystemsApi {
      * <tr><td> 200 </td><td> Successfully fetched the system. </td><td>  -  </td></tr>
      * </table>
      */
-    public okhttp3.Call getSystemCall(@javax.annotation.Nonnull String systemSymbol, final ApiCallback _callback) throws ApiException {
+    public okhttp3.Call getSystemCall(@javax.annotation.Nonnull String systemSymbol,
+        final ApiCallback _callback) throws ApiException {
         String basePath = null;
         // Operation Servers
         String[] localBasePaths = new String[]{};
@@ -651,7 +762,7 @@ public class SystemsApi {
 
         // create path and map variables
         String localVarPath = "/systems/{systemSymbol}"
-                .replace("{" + "systemSymbol" + "}", localVarApiClient.escapeString(systemSymbol));
+            .replace("{" + "systemSymbol" + "}", localVarApiClient.escapeString(systemSymbol));
 
         List<Pair> localVarQueryParams = new ArrayList<Pair>();
         List<Pair> localVarCollectionQueryParams = new ArrayList<Pair>();
@@ -660,7 +771,7 @@ public class SystemsApi {
         Map<String, Object> localVarFormParams = new HashMap<String, Object>();
 
         final String[] localVarAccepts = {
-                "application/json"
+            "application/json"
         };
         final String localVarAccept = localVarApiClient.selectHeaderAccept(localVarAccepts);
         if (localVarAccept != null) {
@@ -669,20 +780,25 @@ public class SystemsApi {
 
         final String[] localVarContentTypes = {
         };
-        final String localVarContentType = localVarApiClient.selectHeaderContentType(localVarContentTypes);
+        final String localVarContentType = localVarApiClient.selectHeaderContentType(
+            localVarContentTypes);
         if (localVarContentType != null) {
             localVarHeaderParams.put("Content-Type", localVarContentType);
         }
 
         String[] localVarAuthNames = new String[]{"AgentToken"};
-        return localVarApiClient.buildCall(basePath, localVarPath, "GET", localVarQueryParams, localVarCollectionQueryParams, localVarPostBody, localVarHeaderParams, localVarCookieParams, localVarFormParams, localVarAuthNames, _callback);
+        return localVarApiClient.buildCall(basePath, localVarPath, "GET", localVarQueryParams,
+            localVarCollectionQueryParams, localVarPostBody, localVarHeaderParams,
+            localVarCookieParams, localVarFormParams, localVarAuthNames, _callback);
     }
 
     @SuppressWarnings("rawtypes")
-    private okhttp3.Call getSystemValidateBeforeCall(@javax.annotation.Nonnull String systemSymbol, final ApiCallback _callback) throws ApiException {
+    private okhttp3.Call getSystemValidateBeforeCall(@javax.annotation.Nonnull String systemSymbol,
+        final ApiCallback _callback) throws ApiException {
         // verify the required parameter 'systemSymbol' is set
         if (systemSymbol == null) {
-            throw new ApiException("Missing the required parameter 'systemSymbol' when calling getSystem(Async)");
+            throw new ApiException(
+                "Missing the required parameter 'systemSymbol' when calling getSystem(Async)");
         }
 
         return getSystemCall(systemSymbol, _callback);
@@ -690,37 +806,39 @@ public class SystemsApi {
     }
 
     /**
-     * Get System
-     * Get the details of a system.
+     * Get System Get the details of a system.
      *
      * @param systemSymbol The system symbol (required)
      * @return GetSystem200Response
-     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
+     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the
+     *                      response body
      * @http.response.details <table border="1">
      * <caption>Response Details</caption>
      * <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
      * <tr><td> 200 </td><td> Successfully fetched the system. </td><td>  -  </td></tr>
      * </table>
      */
-    public GetSystem200Response getSystem(@javax.annotation.Nonnull String systemSymbol) throws ApiException {
+    public GetSystem200Response getSystem(@javax.annotation.Nonnull String systemSymbol)
+        throws ApiException {
         ApiResponse<GetSystem200Response> localVarResp = getSystemWithHttpInfo(systemSymbol);
         return localVarResp.data();
     }
 
     /**
-     * Get System
-     * Get the details of a system.
+     * Get System Get the details of a system.
      *
      * @param systemSymbol The system symbol (required)
      * @return ApiResponse&lt;GetSystem200Response&gt;
-     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
+     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the
+     *                      response body
      * @http.response.details <table border="1">
      * <caption>Response Details</caption>
      * <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
      * <tr><td> 200 </td><td> Successfully fetched the system. </td><td>  -  </td></tr>
      * </table>
      */
-    public ApiResponse<GetSystem200Response> getSystemWithHttpInfo(@javax.annotation.Nonnull String systemSymbol) throws ApiException {
+    public ApiResponse<GetSystem200Response> getSystemWithHttpInfo(
+        @javax.annotation.Nonnull String systemSymbol) throws ApiException {
         okhttp3.Call localVarCall = getSystemValidateBeforeCall(systemSymbol, null);
         Type localVarReturnType = new TypeToken<GetSystem200Response>() {
         }.getType();
@@ -728,20 +846,21 @@ public class SystemsApi {
     }
 
     /**
-     * Get System (asynchronously)
-     * Get the details of a system.
+     * Get System (asynchronously) Get the details of a system.
      *
      * @param systemSymbol The system symbol (required)
      * @param _callback    The callback to be executed when the API call finishes
      * @return The request call
-     * @throws ApiException If fail to process the API call, e.g. serializing the request body object
+     * @throws ApiException If fail to process the API call, e.g. serializing the request body
+     *                      object
      * @http.response.details <table border="1">
      * <caption>Response Details</caption>
      * <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
      * <tr><td> 200 </td><td> Successfully fetched the system. </td><td>  -  </td></tr>
      * </table>
      */
-    public okhttp3.Call getSystemAsync(@javax.annotation.Nonnull String systemSymbol, final ApiCallback<GetSystem200Response> _callback) throws ApiException {
+    public okhttp3.Call getSystemAsync(@javax.annotation.Nonnull String systemSymbol,
+        final ApiCallback<GetSystem200Response> _callback) throws ApiException {
 
         okhttp3.Call localVarCall = getSystemValidateBeforeCall(systemSymbol, _callback);
         Type localVarReturnType = new TypeToken<GetSystem200Response>() {
@@ -764,10 +883,15 @@ public class SystemsApi {
      * @http.response.details <table border="1">
      * <caption>Response Details</caption>
      * <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-     * <tr><td> 200 </td><td> Successfully fetched all waypoints in the system. </td><td>  -  </td></tr>
+     * <tr><td> 200 </td><td> Successfully fetched all waypoints in the system. </td><td>  -
+     * </td></tr>
      * </table>
      */
-    public okhttp3.Call getSystemWaypointsCall(@javax.annotation.Nonnull String systemSymbol, @javax.annotation.Nullable Integer page, @javax.annotation.Nullable Integer limit, @javax.annotation.Nullable WaypointType type, @javax.annotation.Nullable GetSystemWaypointsTraitsParameter traits, final ApiCallback _callback) throws ApiException {
+    public okhttp3.Call getSystemWaypointsCall(@javax.annotation.Nonnull String systemSymbol,
+        @javax.annotation.Nullable Integer page, @javax.annotation.Nullable Integer limit,
+        @javax.annotation.Nullable WaypointType type,
+        @javax.annotation.Nullable GetSystemWaypointsTraitsParameter traits,
+        final ApiCallback _callback) throws ApiException {
         String basePath = null;
         // Operation Servers
         String[] localBasePaths = new String[]{};
@@ -785,7 +909,7 @@ public class SystemsApi {
 
         // create path and map variables
         String localVarPath = "/systems/{systemSymbol}/waypoints"
-                .replace("{" + "systemSymbol" + "}", localVarApiClient.escapeString(systemSymbol));
+            .replace("{" + "systemSymbol" + "}", localVarApiClient.escapeString(systemSymbol));
 
         List<Pair> localVarQueryParams = new ArrayList<Pair>();
         List<Pair> localVarCollectionQueryParams = new ArrayList<Pair>();
@@ -810,7 +934,7 @@ public class SystemsApi {
         }
 
         final String[] localVarAccepts = {
-                "application/json"
+            "application/json"
         };
         final String localVarAccept = localVarApiClient.selectHeaderAccept(localVarAccepts);
         if (localVarAccept != null) {
@@ -819,20 +943,28 @@ public class SystemsApi {
 
         final String[] localVarContentTypes = {
         };
-        final String localVarContentType = localVarApiClient.selectHeaderContentType(localVarContentTypes);
+        final String localVarContentType = localVarApiClient.selectHeaderContentType(
+            localVarContentTypes);
         if (localVarContentType != null) {
             localVarHeaderParams.put("Content-Type", localVarContentType);
         }
 
         String[] localVarAuthNames = new String[]{"AgentToken"};
-        return localVarApiClient.buildCall(basePath, localVarPath, "GET", localVarQueryParams, localVarCollectionQueryParams, localVarPostBody, localVarHeaderParams, localVarCookieParams, localVarFormParams, localVarAuthNames, _callback);
+        return localVarApiClient.buildCall(basePath, localVarPath, "GET", localVarQueryParams,
+            localVarCollectionQueryParams, localVarPostBody, localVarHeaderParams,
+            localVarCookieParams, localVarFormParams, localVarAuthNames, _callback);
     }
 
     @SuppressWarnings("rawtypes")
-    private okhttp3.Call getSystemWaypointsValidateBeforeCall(@javax.annotation.Nonnull String systemSymbol, @javax.annotation.Nullable Integer page, @javax.annotation.Nullable Integer limit, @javax.annotation.Nullable WaypointType type, @javax.annotation.Nullable GetSystemWaypointsTraitsParameter traits, final ApiCallback _callback) throws ApiException {
+    private okhttp3.Call getSystemWaypointsValidateBeforeCall(
+        @javax.annotation.Nonnull String systemSymbol, @javax.annotation.Nullable Integer page,
+        @javax.annotation.Nullable Integer limit, @javax.annotation.Nullable WaypointType type,
+        @javax.annotation.Nullable GetSystemWaypointsTraitsParameter traits,
+        final ApiCallback _callback) throws ApiException {
         // verify the required parameter 'systemSymbol' is set
         if (systemSymbol == null) {
-            throw new ApiException("Missing the required parameter 'systemSymbol' when calling getSystemWaypoints(Async)");
+            throw new ApiException(
+                "Missing the required parameter 'systemSymbol' when calling getSystemWaypoints(Async)");
         }
 
         return getSystemWaypointsCall(systemSymbol, page, limit, type, traits, _callback);
@@ -840,8 +972,9 @@ public class SystemsApi {
     }
 
     /**
-     * List Waypoints in System
-     * Return a paginated list of all of the waypoints for a given system.  If a waypoint is uncharted, it will return the &#x60;Uncharted&#x60; trait instead of its actual traits.
+     * List Waypoints in System Return a paginated list of all of the waypoints for a given system.
+     * If a waypoint is uncharted, it will return the &#x60;Uncharted&#x60; trait instead of its
+     * actual traits.
      *
      * @param systemSymbol The system symbol (required)
      * @param page         What entry offset to request (optional, default to 1)
@@ -849,21 +982,28 @@ public class SystemsApi {
      * @param type         Filter waypoints by type. (optional)
      * @param traits       Filter waypoints by one or more traits. (optional)
      * @return GetSystemWaypoints200Response
-     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
+     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the
+     *                      response body
      * @http.response.details <table border="1">
      * <caption>Response Details</caption>
      * <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-     * <tr><td> 200 </td><td> Successfully fetched all waypoints in the system. </td><td>  -  </td></tr>
+     * <tr><td> 200 </td><td> Successfully fetched all waypoints in the system. </td><td>  -
+     * </td></tr>
      * </table>
      */
-    public GetSystemWaypoints200Response getSystemWaypoints(@javax.annotation.Nonnull String systemSymbol, @javax.annotation.Nullable Integer page, @javax.annotation.Nullable Integer limit, @javax.annotation.Nullable WaypointType type, @javax.annotation.Nullable GetSystemWaypointsTraitsParameter traits) throws ApiException {
-        ApiResponse<GetSystemWaypoints200Response> localVarResp = getSystemWaypointsWithHttpInfo(systemSymbol, page, limit, type, traits);
+    public GetSystemWaypoints200Response getSystemWaypoints(
+        @javax.annotation.Nonnull String systemSymbol, @javax.annotation.Nullable Integer page,
+        @javax.annotation.Nullable Integer limit, @javax.annotation.Nullable WaypointType type,
+        @javax.annotation.Nullable GetSystemWaypointsTraitsParameter traits) throws ApiException {
+        ApiResponse<GetSystemWaypoints200Response> localVarResp = getSystemWaypointsWithHttpInfo(
+            systemSymbol, page, limit, type, traits);
         return localVarResp.data();
     }
 
     /**
-     * List Waypoints in System
-     * Return a paginated list of all of the waypoints for a given system.  If a waypoint is uncharted, it will return the &#x60;Uncharted&#x60; trait instead of its actual traits.
+     * List Waypoints in System Return a paginated list of all of the waypoints for a given system.
+     * If a waypoint is uncharted, it will return the &#x60;Uncharted&#x60; trait instead of its
+     * actual traits.
      *
      * @param systemSymbol The system symbol (required)
      * @param page         What entry offset to request (optional, default to 1)
@@ -871,23 +1011,30 @@ public class SystemsApi {
      * @param type         Filter waypoints by type. (optional)
      * @param traits       Filter waypoints by one or more traits. (optional)
      * @return ApiResponse&lt;GetSystemWaypoints200Response&gt;
-     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
+     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the
+     *                      response body
      * @http.response.details <table border="1">
      * <caption>Response Details</caption>
      * <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-     * <tr><td> 200 </td><td> Successfully fetched all waypoints in the system. </td><td>  -  </td></tr>
+     * <tr><td> 200 </td><td> Successfully fetched all waypoints in the system. </td><td>  -
+     * </td></tr>
      * </table>
      */
-    public ApiResponse<GetSystemWaypoints200Response> getSystemWaypointsWithHttpInfo(@javax.annotation.Nonnull String systemSymbol, @javax.annotation.Nullable Integer page, @javax.annotation.Nullable Integer limit, @javax.annotation.Nullable WaypointType type, @javax.annotation.Nullable GetSystemWaypointsTraitsParameter traits) throws ApiException {
-        okhttp3.Call localVarCall = getSystemWaypointsValidateBeforeCall(systemSymbol, page, limit, type, traits, null);
+    public ApiResponse<GetSystemWaypoints200Response> getSystemWaypointsWithHttpInfo(
+        @javax.annotation.Nonnull String systemSymbol, @javax.annotation.Nullable Integer page,
+        @javax.annotation.Nullable Integer limit, @javax.annotation.Nullable WaypointType type,
+        @javax.annotation.Nullable GetSystemWaypointsTraitsParameter traits) throws ApiException {
+        okhttp3.Call localVarCall = getSystemWaypointsValidateBeforeCall(systemSymbol, page, limit,
+            type, traits, null);
         Type localVarReturnType = new TypeToken<GetSystemWaypoints200Response>() {
         }.getType();
         return localVarApiClient.execute(localVarCall, localVarReturnType);
     }
 
     /**
-     * List Waypoints in System (asynchronously)
-     * Return a paginated list of all of the waypoints for a given system.  If a waypoint is uncharted, it will return the &#x60;Uncharted&#x60; trait instead of its actual traits.
+     * List Waypoints in System (asynchronously) Return a paginated list of all of the waypoints for
+     * a given system.  If a waypoint is uncharted, it will return the &#x60;Uncharted&#x60; trait
+     * instead of its actual traits.
      *
      * @param systemSymbol The system symbol (required)
      * @param page         What entry offset to request (optional, default to 1)
@@ -896,16 +1043,23 @@ public class SystemsApi {
      * @param traits       Filter waypoints by one or more traits. (optional)
      * @param _callback    The callback to be executed when the API call finishes
      * @return The request call
-     * @throws ApiException If fail to process the API call, e.g. serializing the request body object
+     * @throws ApiException If fail to process the API call, e.g. serializing the request body
+     *                      object
      * @http.response.details <table border="1">
      * <caption>Response Details</caption>
      * <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-     * <tr><td> 200 </td><td> Successfully fetched all waypoints in the system. </td><td>  -  </td></tr>
+     * <tr><td> 200 </td><td> Successfully fetched all waypoints in the system. </td><td>  -
+     * </td></tr>
      * </table>
      */
-    public okhttp3.Call getSystemWaypointsAsync(@javax.annotation.Nonnull String systemSymbol, @javax.annotation.Nullable Integer page, @javax.annotation.Nullable Integer limit, @javax.annotation.Nullable WaypointType type, @javax.annotation.Nullable GetSystemWaypointsTraitsParameter traits, final ApiCallback<GetSystemWaypoints200Response> _callback) throws ApiException {
+    public okhttp3.Call getSystemWaypointsAsync(@javax.annotation.Nonnull String systemSymbol,
+        @javax.annotation.Nullable Integer page, @javax.annotation.Nullable Integer limit,
+        @javax.annotation.Nullable WaypointType type,
+        @javax.annotation.Nullable GetSystemWaypointsTraitsParameter traits,
+        final ApiCallback<GetSystemWaypoints200Response> _callback) throws ApiException {
 
-        okhttp3.Call localVarCall = getSystemWaypointsValidateBeforeCall(systemSymbol, page, limit, type, traits, _callback);
+        okhttp3.Call localVarCall = getSystemWaypointsValidateBeforeCall(systemSymbol, page, limit,
+            type, traits, _callback);
         Type localVarReturnType = new TypeToken<GetSystemWaypoints200Response>() {
         }.getType();
         localVarApiClient.executeAsync(localVarCall, localVarReturnType, _callback);
@@ -926,7 +1080,8 @@ public class SystemsApi {
      * <tr><td> 200 </td><td> Successfully listed systems. </td><td>  -  </td></tr>
      * </table>
      */
-    public okhttp3.Call getSystemsCall(@javax.annotation.Nullable Integer page, @javax.annotation.Nullable Integer limit, final ApiCallback _callback) throws ApiException {
+    public okhttp3.Call getSystemsCall(@javax.annotation.Nullable Integer page,
+        @javax.annotation.Nullable Integer limit, final ApiCallback _callback) throws ApiException {
         String basePath = null;
         // Operation Servers
         String[] localBasePaths = new String[]{};
@@ -960,7 +1115,7 @@ public class SystemsApi {
         }
 
         final String[] localVarAccepts = {
-                "application/json"
+            "application/json"
         };
         final String localVarAccept = localVarApiClient.selectHeaderAccept(localVarAccepts);
         if (localVarAccept != null) {
@@ -969,55 +1124,62 @@ public class SystemsApi {
 
         final String[] localVarContentTypes = {
         };
-        final String localVarContentType = localVarApiClient.selectHeaderContentType(localVarContentTypes);
+        final String localVarContentType = localVarApiClient.selectHeaderContentType(
+            localVarContentTypes);
         if (localVarContentType != null) {
             localVarHeaderParams.put("Content-Type", localVarContentType);
         }
 
         String[] localVarAuthNames = new String[]{"AgentToken"};
-        return localVarApiClient.buildCall(basePath, localVarPath, "GET", localVarQueryParams, localVarCollectionQueryParams, localVarPostBody, localVarHeaderParams, localVarCookieParams, localVarFormParams, localVarAuthNames, _callback);
+        return localVarApiClient.buildCall(basePath, localVarPath, "GET", localVarQueryParams,
+            localVarCollectionQueryParams, localVarPostBody, localVarHeaderParams,
+            localVarCookieParams, localVarFormParams, localVarAuthNames, _callback);
     }
 
     @SuppressWarnings("rawtypes")
-    private okhttp3.Call getSystemsValidateBeforeCall(@javax.annotation.Nullable Integer page, @javax.annotation.Nullable Integer limit, final ApiCallback _callback) throws ApiException {
+    private okhttp3.Call getSystemsValidateBeforeCall(@javax.annotation.Nullable Integer page,
+        @javax.annotation.Nullable Integer limit, final ApiCallback _callback) throws ApiException {
         return getSystemsCall(page, limit, _callback);
 
     }
 
     /**
-     * List Systems
-     * Return a paginated list of all systems.
+     * List Systems Return a paginated list of all systems.
      *
      * @param page  What entry offset to request (optional, default to 1)
      * @param limit How many entries to return per page (optional, default to 10)
      * @return GetSystems200Response
-     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
+     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the
+     *                      response body
      * @http.response.details <table border="1">
      * <caption>Response Details</caption>
      * <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
      * <tr><td> 200 </td><td> Successfully listed systems. </td><td>  -  </td></tr>
      * </table>
      */
-    public GetSystems200Response getSystems(@javax.annotation.Nullable Integer page, @javax.annotation.Nullable Integer limit) throws ApiException {
+    public GetSystems200Response getSystems(@javax.annotation.Nullable Integer page,
+        @javax.annotation.Nullable Integer limit) throws ApiException {
         ApiResponse<GetSystems200Response> localVarResp = getSystemsWithHttpInfo(page, limit);
         return localVarResp.data();
     }
 
     /**
-     * List Systems
-     * Return a paginated list of all systems.
+     * List Systems Return a paginated list of all systems.
      *
      * @param page  What entry offset to request (optional, default to 1)
      * @param limit How many entries to return per page (optional, default to 10)
      * @return ApiResponse&lt;GetSystems200Response&gt;
-     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
+     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the
+     *                      response body
      * @http.response.details <table border="1">
      * <caption>Response Details</caption>
      * <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
      * <tr><td> 200 </td><td> Successfully listed systems. </td><td>  -  </td></tr>
      * </table>
      */
-    public ApiResponse<GetSystems200Response> getSystemsWithHttpInfo(@javax.annotation.Nullable Integer page, @javax.annotation.Nullable Integer limit) throws ApiException {
+    public ApiResponse<GetSystems200Response> getSystemsWithHttpInfo(
+        @javax.annotation.Nullable Integer page, @javax.annotation.Nullable Integer limit)
+        throws ApiException {
         okhttp3.Call localVarCall = getSystemsValidateBeforeCall(page, limit, null);
         Type localVarReturnType = new TypeToken<GetSystems200Response>() {
         }.getType();
@@ -1025,21 +1187,23 @@ public class SystemsApi {
     }
 
     /**
-     * List Systems (asynchronously)
-     * Return a paginated list of all systems.
+     * List Systems (asynchronously) Return a paginated list of all systems.
      *
      * @param page      What entry offset to request (optional, default to 1)
      * @param limit     How many entries to return per page (optional, default to 10)
      * @param _callback The callback to be executed when the API call finishes
      * @return The request call
-     * @throws ApiException If fail to process the API call, e.g. serializing the request body object
+     * @throws ApiException If fail to process the API call, e.g. serializing the request body
+     *                      object
      * @http.response.details <table border="1">
      * <caption>Response Details</caption>
      * <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
      * <tr><td> 200 </td><td> Successfully listed systems. </td><td>  -  </td></tr>
      * </table>
      */
-    public okhttp3.Call getSystemsAsync(@javax.annotation.Nullable Integer page, @javax.annotation.Nullable Integer limit, final ApiCallback<GetSystems200Response> _callback) throws ApiException {
+    public okhttp3.Call getSystemsAsync(@javax.annotation.Nullable Integer page,
+        @javax.annotation.Nullable Integer limit,
+        final ApiCallback<GetSystems200Response> _callback) throws ApiException {
 
         okhttp3.Call localVarCall = getSystemsValidateBeforeCall(page, limit, _callback);
         Type localVarReturnType = new TypeToken<GetSystems200Response>() {
@@ -1062,7 +1226,9 @@ public class SystemsApi {
      * <tr><td> 200 </td><td> Successfully fetched waypoint. </td><td>  -  </td></tr>
      * </table>
      */
-    public okhttp3.Call getWaypointCall(@javax.annotation.Nonnull String systemSymbol, @javax.annotation.Nonnull String waypointSymbol, final ApiCallback _callback) throws ApiException {
+    public okhttp3.Call getWaypointCall(@javax.annotation.Nonnull String systemSymbol,
+        @javax.annotation.Nonnull String waypointSymbol, final ApiCallback _callback)
+        throws ApiException {
         String basePath = null;
         // Operation Servers
         String[] localBasePaths = new String[]{};
@@ -1080,8 +1246,8 @@ public class SystemsApi {
 
         // create path and map variables
         String localVarPath = "/systems/{systemSymbol}/waypoints/{waypointSymbol}"
-                .replace("{" + "systemSymbol" + "}", localVarApiClient.escapeString(systemSymbol))
-                .replace("{" + "waypointSymbol" + "}", localVarApiClient.escapeString(waypointSymbol));
+            .replace("{" + "systemSymbol" + "}", localVarApiClient.escapeString(systemSymbol))
+            .replace("{" + "waypointSymbol" + "}", localVarApiClient.escapeString(waypointSymbol));
 
         List<Pair> localVarQueryParams = new ArrayList<Pair>();
         List<Pair> localVarCollectionQueryParams = new ArrayList<Pair>();
@@ -1090,7 +1256,7 @@ public class SystemsApi {
         Map<String, Object> localVarFormParams = new HashMap<String, Object>();
 
         final String[] localVarAccepts = {
-                "application/json"
+            "application/json"
         };
         final String localVarAccept = localVarApiClient.selectHeaderAccept(localVarAccepts);
         if (localVarAccept != null) {
@@ -1099,25 +1265,33 @@ public class SystemsApi {
 
         final String[] localVarContentTypes = {
         };
-        final String localVarContentType = localVarApiClient.selectHeaderContentType(localVarContentTypes);
+        final String localVarContentType = localVarApiClient.selectHeaderContentType(
+            localVarContentTypes);
         if (localVarContentType != null) {
             localVarHeaderParams.put("Content-Type", localVarContentType);
         }
 
         String[] localVarAuthNames = new String[]{"AgentToken"};
-        return localVarApiClient.buildCall(basePath, localVarPath, "GET", localVarQueryParams, localVarCollectionQueryParams, localVarPostBody, localVarHeaderParams, localVarCookieParams, localVarFormParams, localVarAuthNames, _callback);
+        return localVarApiClient.buildCall(basePath, localVarPath, "GET", localVarQueryParams,
+            localVarCollectionQueryParams, localVarPostBody, localVarHeaderParams,
+            localVarCookieParams, localVarFormParams, localVarAuthNames, _callback);
     }
 
     @SuppressWarnings("rawtypes")
-    private okhttp3.Call getWaypointValidateBeforeCall(@javax.annotation.Nonnull String systemSymbol, @javax.annotation.Nonnull String waypointSymbol, final ApiCallback _callback) throws ApiException {
+    private okhttp3.Call getWaypointValidateBeforeCall(
+        @javax.annotation.Nonnull String systemSymbol,
+        @javax.annotation.Nonnull String waypointSymbol, final ApiCallback _callback)
+        throws ApiException {
         // verify the required parameter 'systemSymbol' is set
         if (systemSymbol == null) {
-            throw new ApiException("Missing the required parameter 'systemSymbol' when calling getWaypoint(Async)");
+            throw new ApiException(
+                "Missing the required parameter 'systemSymbol' when calling getWaypoint(Async)");
         }
 
         // verify the required parameter 'waypointSymbol' is set
         if (waypointSymbol == null) {
-            throw new ApiException("Missing the required parameter 'waypointSymbol' when calling getWaypoint(Async)");
+            throw new ApiException(
+                "Missing the required parameter 'waypointSymbol' when calling getWaypoint(Async)");
         }
 
         return getWaypointCall(systemSymbol, waypointSymbol, _callback);
@@ -1125,63 +1299,74 @@ public class SystemsApi {
     }
 
     /**
-     * Get Waypoint
-     * View the details of a waypoint.  If the waypoint is uncharted, it will return the &#39;Uncharted&#39; trait instead of its actual traits.
+     * Get Waypoint View the details of a waypoint.  If the waypoint is uncharted, it will return
+     * the &#39;Uncharted&#39; trait instead of its actual traits.
      *
      * @param systemSymbol   The system symbol (required)
      * @param waypointSymbol The waypoint symbol (required)
      * @return GetWaypoint200Response
-     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
+     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the
+     *                      response body
      * @http.response.details <table border="1">
      * <caption>Response Details</caption>
      * <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
      * <tr><td> 200 </td><td> Successfully fetched waypoint. </td><td>  -  </td></tr>
      * </table>
      */
-    public GetWaypoint200Response getWaypoint(@javax.annotation.Nonnull String systemSymbol, @javax.annotation.Nonnull String waypointSymbol) throws ApiException {
-        ApiResponse<GetWaypoint200Response> localVarResp = getWaypointWithHttpInfo(systemSymbol, waypointSymbol);
+    public GetWaypoint200Response getWaypoint(@javax.annotation.Nonnull String systemSymbol,
+        @javax.annotation.Nonnull String waypointSymbol) throws ApiException {
+        ApiResponse<GetWaypoint200Response> localVarResp = getWaypointWithHttpInfo(systemSymbol,
+            waypointSymbol);
         return localVarResp.data();
     }
 
     /**
-     * Get Waypoint
-     * View the details of a waypoint.  If the waypoint is uncharted, it will return the &#39;Uncharted&#39; trait instead of its actual traits.
+     * Get Waypoint View the details of a waypoint.  If the waypoint is uncharted, it will return
+     * the &#39;Uncharted&#39; trait instead of its actual traits.
      *
      * @param systemSymbol   The system symbol (required)
      * @param waypointSymbol The waypoint symbol (required)
      * @return ApiResponse&lt;GetWaypoint200Response&gt;
-     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
+     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the
+     *                      response body
      * @http.response.details <table border="1">
      * <caption>Response Details</caption>
      * <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
      * <tr><td> 200 </td><td> Successfully fetched waypoint. </td><td>  -  </td></tr>
      * </table>
      */
-    public ApiResponse<GetWaypoint200Response> getWaypointWithHttpInfo(@javax.annotation.Nonnull String systemSymbol, @javax.annotation.Nonnull String waypointSymbol) throws ApiException {
-        okhttp3.Call localVarCall = getWaypointValidateBeforeCall(systemSymbol, waypointSymbol, null);
+    public ApiResponse<GetWaypoint200Response> getWaypointWithHttpInfo(
+        @javax.annotation.Nonnull String systemSymbol,
+        @javax.annotation.Nonnull String waypointSymbol) throws ApiException {
+        okhttp3.Call localVarCall = getWaypointValidateBeforeCall(systemSymbol, waypointSymbol,
+            null);
         Type localVarReturnType = new TypeToken<GetWaypoint200Response>() {
         }.getType();
         return localVarApiClient.execute(localVarCall, localVarReturnType);
     }
 
     /**
-     * Get Waypoint (asynchronously)
-     * View the details of a waypoint.  If the waypoint is uncharted, it will return the &#39;Uncharted&#39; trait instead of its actual traits.
+     * Get Waypoint (asynchronously) View the details of a waypoint.  If the waypoint is uncharted,
+     * it will return the &#39;Uncharted&#39; trait instead of its actual traits.
      *
      * @param systemSymbol   The system symbol (required)
      * @param waypointSymbol The waypoint symbol (required)
      * @param _callback      The callback to be executed when the API call finishes
      * @return The request call
-     * @throws ApiException If fail to process the API call, e.g. serializing the request body object
+     * @throws ApiException If fail to process the API call, e.g. serializing the request body
+     *                      object
      * @http.response.details <table border="1">
      * <caption>Response Details</caption>
      * <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
      * <tr><td> 200 </td><td> Successfully fetched waypoint. </td><td>  -  </td></tr>
      * </table>
      */
-    public okhttp3.Call getWaypointAsync(@javax.annotation.Nonnull String systemSymbol, @javax.annotation.Nonnull String waypointSymbol, final ApiCallback<GetWaypoint200Response> _callback) throws ApiException {
+    public okhttp3.Call getWaypointAsync(@javax.annotation.Nonnull String systemSymbol,
+        @javax.annotation.Nonnull String waypointSymbol,
+        final ApiCallback<GetWaypoint200Response> _callback) throws ApiException {
 
-        okhttp3.Call localVarCall = getWaypointValidateBeforeCall(systemSymbol, waypointSymbol, _callback);
+        okhttp3.Call localVarCall = getWaypointValidateBeforeCall(systemSymbol, waypointSymbol,
+            _callback);
         Type localVarReturnType = new TypeToken<GetWaypoint200Response>() {
         }.getType();
         localVarApiClient.executeAsync(localVarCall, localVarReturnType, _callback);
@@ -1203,7 +1388,10 @@ public class SystemsApi {
      * <tr><td> 201 </td><td> Successfully supplied construction site. </td><td>  -  </td></tr>
      * </table>
      */
-    public okhttp3.Call supplyConstructionCall(@javax.annotation.Nonnull String systemSymbol, @javax.annotation.Nonnull String waypointSymbol, @javax.annotation.Nullable SupplyConstructionRequest supplyConstructionRequest, final ApiCallback _callback) throws ApiException {
+    public okhttp3.Call supplyConstructionCall(@javax.annotation.Nonnull String systemSymbol,
+        @javax.annotation.Nonnull String waypointSymbol,
+        @javax.annotation.Nullable SupplyConstructionRequest supplyConstructionRequest,
+        final ApiCallback _callback) throws ApiException {
         String basePath = null;
         // Operation Servers
         String[] localBasePaths = new String[]{};
@@ -1221,8 +1409,8 @@ public class SystemsApi {
 
         // create path and map variables
         String localVarPath = "/systems/{systemSymbol}/waypoints/{waypointSymbol}/construction/supply"
-                .replace("{" + "systemSymbol" + "}", localVarApiClient.escapeString(systemSymbol))
-                .replace("{" + "waypointSymbol" + "}", localVarApiClient.escapeString(waypointSymbol));
+            .replace("{" + "systemSymbol" + "}", localVarApiClient.escapeString(systemSymbol))
+            .replace("{" + "waypointSymbol" + "}", localVarApiClient.escapeString(waypointSymbol));
 
         List<Pair> localVarQueryParams = new ArrayList<Pair>();
         List<Pair> localVarCollectionQueryParams = new ArrayList<Pair>();
@@ -1231,7 +1419,7 @@ public class SystemsApi {
         Map<String, Object> localVarFormParams = new HashMap<String, Object>();
 
         final String[] localVarAccepts = {
-                "application/json"
+            "application/json"
         };
         final String localVarAccept = localVarApiClient.selectHeaderAccept(localVarAccepts);
         if (localVarAccept != null) {
@@ -1239,94 +1427,127 @@ public class SystemsApi {
         }
 
         final String[] localVarContentTypes = {
-                "application/json"
+            "application/json"
         };
-        final String localVarContentType = localVarApiClient.selectHeaderContentType(localVarContentTypes);
+        final String localVarContentType = localVarApiClient.selectHeaderContentType(
+            localVarContentTypes);
         if (localVarContentType != null) {
             localVarHeaderParams.put("Content-Type", localVarContentType);
         }
 
         String[] localVarAuthNames = new String[]{"AgentToken"};
-        return localVarApiClient.buildCall(basePath, localVarPath, "POST", localVarQueryParams, localVarCollectionQueryParams, localVarPostBody, localVarHeaderParams, localVarCookieParams, localVarFormParams, localVarAuthNames, _callback);
+        return localVarApiClient.buildCall(basePath, localVarPath, "POST", localVarQueryParams,
+            localVarCollectionQueryParams, localVarPostBody, localVarHeaderParams,
+            localVarCookieParams, localVarFormParams, localVarAuthNames, _callback);
     }
 
     @SuppressWarnings("rawtypes")
-    private okhttp3.Call supplyConstructionValidateBeforeCall(@javax.annotation.Nonnull String systemSymbol, @javax.annotation.Nonnull String waypointSymbol, @javax.annotation.Nullable SupplyConstructionRequest supplyConstructionRequest, final ApiCallback _callback) throws ApiException {
+    private okhttp3.Call supplyConstructionValidateBeforeCall(
+        @javax.annotation.Nonnull String systemSymbol,
+        @javax.annotation.Nonnull String waypointSymbol,
+        @javax.annotation.Nullable SupplyConstructionRequest supplyConstructionRequest,
+        final ApiCallback _callback) throws ApiException {
         // verify the required parameter 'systemSymbol' is set
         if (systemSymbol == null) {
-            throw new ApiException("Missing the required parameter 'systemSymbol' when calling supplyConstruction(Async)");
+            throw new ApiException(
+                "Missing the required parameter 'systemSymbol' when calling supplyConstruction(Async)");
         }
 
         // verify the required parameter 'waypointSymbol' is set
         if (waypointSymbol == null) {
-            throw new ApiException("Missing the required parameter 'waypointSymbol' when calling supplyConstruction(Async)");
+            throw new ApiException(
+                "Missing the required parameter 'waypointSymbol' when calling supplyConstruction(Async)");
         }
 
-        return supplyConstructionCall(systemSymbol, waypointSymbol, supplyConstructionRequest, _callback);
+        return supplyConstructionCall(systemSymbol, waypointSymbol, supplyConstructionRequest,
+            _callback);
 
     }
 
     /**
-     * Supply Construction Site
-     * Supply a construction site with the specified good. Requires a waypoint with a property of &#x60;isUnderConstruction&#x60; to be true.  The good must be in your ship&#39;s cargo. The good will be removed from your ship&#39;s cargo and added to the construction site&#39;s materials.
+     * Supply Construction Site Supply a construction site with the specified good. Requires a
+     * waypoint with a property of &#x60;isUnderConstruction&#x60; to be true.  The good must be in
+     * your ship&#39;s cargo. The good will be removed from your ship&#39;s cargo and added to the
+     * construction site&#39;s materials.
      *
      * @param systemSymbol              The system symbol (required)
      * @param waypointSymbol            The waypoint symbol (required)
      * @param supplyConstructionRequest (optional)
      * @return SupplyConstruction201Response
-     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
+     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the
+     *                      response body
      * @http.response.details <table border="1">
      * <caption>Response Details</caption>
      * <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
      * <tr><td> 201 </td><td> Successfully supplied construction site. </td><td>  -  </td></tr>
      * </table>
      */
-    public SupplyConstruction201Response supplyConstruction(@javax.annotation.Nonnull String systemSymbol, @javax.annotation.Nonnull String waypointSymbol, @javax.annotation.Nullable SupplyConstructionRequest supplyConstructionRequest) throws ApiException {
-        ApiResponse<SupplyConstruction201Response> localVarResp = supplyConstructionWithHttpInfo(systemSymbol, waypointSymbol, supplyConstructionRequest);
+    public SupplyConstruction201Response supplyConstruction(
+        @javax.annotation.Nonnull String systemSymbol,
+        @javax.annotation.Nonnull String waypointSymbol,
+        @javax.annotation.Nullable SupplyConstructionRequest supplyConstructionRequest)
+        throws ApiException {
+        ApiResponse<SupplyConstruction201Response> localVarResp = supplyConstructionWithHttpInfo(
+            systemSymbol, waypointSymbol, supplyConstructionRequest);
         return localVarResp.data();
     }
 
     /**
-     * Supply Construction Site
-     * Supply a construction site with the specified good. Requires a waypoint with a property of &#x60;isUnderConstruction&#x60; to be true.  The good must be in your ship&#39;s cargo. The good will be removed from your ship&#39;s cargo and added to the construction site&#39;s materials.
+     * Supply Construction Site Supply a construction site with the specified good. Requires a
+     * waypoint with a property of &#x60;isUnderConstruction&#x60; to be true.  The good must be in
+     * your ship&#39;s cargo. The good will be removed from your ship&#39;s cargo and added to the
+     * construction site&#39;s materials.
      *
      * @param systemSymbol              The system symbol (required)
      * @param waypointSymbol            The waypoint symbol (required)
      * @param supplyConstructionRequest (optional)
      * @return ApiResponse&lt;SupplyConstruction201Response&gt;
-     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
+     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the
+     *                      response body
      * @http.response.details <table border="1">
      * <caption>Response Details</caption>
      * <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
      * <tr><td> 201 </td><td> Successfully supplied construction site. </td><td>  -  </td></tr>
      * </table>
      */
-    public ApiResponse<SupplyConstruction201Response> supplyConstructionWithHttpInfo(@javax.annotation.Nonnull String systemSymbol, @javax.annotation.Nonnull String waypointSymbol, @javax.annotation.Nullable SupplyConstructionRequest supplyConstructionRequest) throws ApiException {
-        okhttp3.Call localVarCall = supplyConstructionValidateBeforeCall(systemSymbol, waypointSymbol, supplyConstructionRequest, null);
+    public ApiResponse<SupplyConstruction201Response> supplyConstructionWithHttpInfo(
+        @javax.annotation.Nonnull String systemSymbol,
+        @javax.annotation.Nonnull String waypointSymbol,
+        @javax.annotation.Nullable SupplyConstructionRequest supplyConstructionRequest)
+        throws ApiException {
+        okhttp3.Call localVarCall = supplyConstructionValidateBeforeCall(systemSymbol,
+            waypointSymbol, supplyConstructionRequest, null);
         Type localVarReturnType = new TypeToken<SupplyConstruction201Response>() {
         }.getType();
         return localVarApiClient.execute(localVarCall, localVarReturnType);
     }
 
     /**
-     * Supply Construction Site (asynchronously)
-     * Supply a construction site with the specified good. Requires a waypoint with a property of &#x60;isUnderConstruction&#x60; to be true.  The good must be in your ship&#39;s cargo. The good will be removed from your ship&#39;s cargo and added to the construction site&#39;s materials.
+     * Supply Construction Site (asynchronously) Supply a construction site with the specified good.
+     * Requires a waypoint with a property of &#x60;isUnderConstruction&#x60; to be true.  The good
+     * must be in your ship&#39;s cargo. The good will be removed from your ship&#39;s cargo and
+     * added to the construction site&#39;s materials.
      *
      * @param systemSymbol              The system symbol (required)
      * @param waypointSymbol            The waypoint symbol (required)
      * @param supplyConstructionRequest (optional)
      * @param _callback                 The callback to be executed when the API call finishes
      * @return The request call
-     * @throws ApiException If fail to process the API call, e.g. serializing the request body object
+     * @throws ApiException If fail to process the API call, e.g. serializing the request body
+     *                      object
      * @http.response.details <table border="1">
      * <caption>Response Details</caption>
      * <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
      * <tr><td> 201 </td><td> Successfully supplied construction site. </td><td>  -  </td></tr>
      * </table>
      */
-    public okhttp3.Call supplyConstructionAsync(@javax.annotation.Nonnull String systemSymbol, @javax.annotation.Nonnull String waypointSymbol, @javax.annotation.Nullable SupplyConstructionRequest supplyConstructionRequest, final ApiCallback<SupplyConstruction201Response> _callback) throws ApiException {
+    public okhttp3.Call supplyConstructionAsync(@javax.annotation.Nonnull String systemSymbol,
+        @javax.annotation.Nonnull String waypointSymbol,
+        @javax.annotation.Nullable SupplyConstructionRequest supplyConstructionRequest,
+        final ApiCallback<SupplyConstruction201Response> _callback) throws ApiException {
 
-        okhttp3.Call localVarCall = supplyConstructionValidateBeforeCall(systemSymbol, waypointSymbol, supplyConstructionRequest, _callback);
+        okhttp3.Call localVarCall = supplyConstructionValidateBeforeCall(systemSymbol,
+            waypointSymbol, supplyConstructionRequest, _callback);
         Type localVarReturnType = new TypeToken<SupplyConstruction201Response>() {
         }.getType();
         localVarApiClient.executeAsync(localVarCall, localVarReturnType, _callback);

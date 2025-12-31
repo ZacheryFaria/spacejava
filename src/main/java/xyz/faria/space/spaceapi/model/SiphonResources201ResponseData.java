@@ -13,20 +13,31 @@
 
 package xyz.faria.space.spaceapi.model;
 
-import com.google.gson.*;
+import com.google.gson.Gson;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.TypeAdapter;
+import com.google.gson.TypeAdapterFactory;
 import com.google.gson.annotations.SerializedName;
 import com.google.gson.reflect.TypeToken;
 import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonWriter;
-import xyz.faria.space.spaceapi.client.JSON;
-
 import java.io.IOException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
+import java.util.Set;
+import xyz.faria.space.spaceapi.client.JSON;
 
 /**
  * SiphonResources201ResponseData
  */
 public class SiphonResources201ResponseData {
+
     public static final String SERIALIZED_NAME_COOLDOWN = "cooldown";
     @SerializedName(SERIALIZED_NAME_COOLDOWN)
     @javax.annotation.Nonnull
@@ -110,9 +121,13 @@ public class SiphonResources201ResponseData {
     }
 
 
-    public SiphonResources201ResponseData events(@javax.annotation.Nonnull List<ShipConditionEvent> events) {
-        this.events = events;
-        return this;
+    static {
+        // a set of all properties/fields (JSON key names)
+        openapiFields = new HashSet<String>(Arrays.asList("cooldown", "siphon", "cargo", "events"));
+
+        // a set of required properties/fields (JSON key names)
+        openapiRequiredFields = new HashSet<String>(
+            Arrays.asList("cooldown", "siphon", "cargo", "events"));
     }
 
     public SiphonResources201ResponseData addEventsItem(ShipConditionEvent eventsItem) {
@@ -137,71 +152,19 @@ public class SiphonResources201ResponseData {
         this.events = events;
     }
 
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (o == null || getClass() != o.getClass()) {
-            return false;
-        }
-        SiphonResources201ResponseData siphonResources201ResponseData = (SiphonResources201ResponseData) o;
-        return Objects.equals(this.cooldown, siphonResources201ResponseData.cooldown) &&
-                Objects.equals(this.siphon, siphonResources201ResponseData.siphon) &&
-                Objects.equals(this.cargo, siphonResources201ResponseData.cargo) &&
-                Objects.equals(this.events, siphonResources201ResponseData.events);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(cooldown, siphon, cargo, events);
-    }
-
-    @Override
-    public String toString() {
-        String sb = "class SiphonResources201ResponseData {\n" +
-                "    cooldown: " + toIndentedString(cooldown) + "\n" +
-                "    siphon: " + toIndentedString(siphon) + "\n" +
-                "    cargo: " + toIndentedString(cargo) + "\n" +
-                "    events: " + toIndentedString(events) + "\n" +
-                "}";
-        return sb;
-    }
-
-    /**
-     * Convert the given object to string with each line indented by 4 spaces
-     * (except the first line).
-     */
-    private String toIndentedString(Object o) {
-        if (o == null) {
-            return "null";
-        }
-        return o.toString().replace("\n", "\n    ");
-    }
-
-
-    public static HashSet<String> openapiFields;
-    public static HashSet<String> openapiRequiredFields;
-
-    static {
-        // a set of all properties/fields (JSON key names)
-        openapiFields = new HashSet<String>(Arrays.asList("cooldown", "siphon", "cargo", "events"));
-
-        // a set of required properties/fields (JSON key names)
-        openapiRequiredFields = new HashSet<String>(Arrays.asList("cooldown", "siphon", "cargo", "events"));
-    }
-
     /**
      * Validates the JSON Element and throws an exception if issues found
      *
      * @param jsonElement JSON Element
-     * @throws IOException if the JSON Element is invalid with respect to SiphonResources201ResponseData
+     * @throws IOException if the JSON Element is invalid with respect to
+     *                     SiphonResources201ResponseData
      */
     public static void validateJsonElement(JsonElement jsonElement) throws IOException {
         if (jsonElement == null) {
             if (!SiphonResources201ResponseData.openapiRequiredFields.isEmpty()) { // has required fields but JSON element is null
-                throw new IllegalArgumentException(String.format(java.util.Locale.ROOT, "The required field(s) %s in SiphonResources201ResponseData is not found in the empty JSON string", SiphonResources201ResponseData.openapiRequiredFields));
+                throw new IllegalArgumentException(String.format(java.util.Locale.ROOT,
+                    "The required field(s) %s in SiphonResources201ResponseData is not found in the empty JSON string",
+                    SiphonResources201ResponseData.openapiRequiredFields));
             }
         }
 
@@ -209,14 +172,19 @@ public class SiphonResources201ResponseData {
         // check to see if the JSON string contains additional fields
         for (Map.Entry<String, JsonElement> entry : entries) {
             if (!SiphonResources201ResponseData.openapiFields.contains(entry.getKey())) {
-                throw new IllegalArgumentException(String.format(java.util.Locale.ROOT, "The field `%s` in the JSON string is not defined in the `SiphonResources201ResponseData` properties. JSON: %s", entry.getKey(), jsonElement));
+                throw new IllegalArgumentException(String.format(java.util.Locale.ROOT,
+                    "The field `%s` in the JSON string is not defined in the `SiphonResources201ResponseData` properties. JSON: %s",
+                    entry.getKey(), jsonElement));
             }
         }
 
         // check to make sure all required properties/fields are present in the JSON string
         for (String requiredField : SiphonResources201ResponseData.openapiRequiredFields) {
             if (jsonElement.getAsJsonObject().get(requiredField) == null) {
-                throw new IllegalArgumentException(String.format(java.util.Locale.ROOT, "The required field `%s` is not found in the JSON string: %s", requiredField, jsonElement));
+                throw new IllegalArgumentException(String.format(java.util.Locale.ROOT,
+                    "The required field `%s` is not found in the JSON string: %s",
+                    requiredField,
+                    jsonElement));
             }
         }
         JsonObject jsonObj = jsonElement.getAsJsonObject();
@@ -228,7 +196,9 @@ public class SiphonResources201ResponseData {
         ShipCargo.validateJsonElement(jsonObj.get("cargo"));
         // ensure the json data is an array
         if (!jsonObj.get("events").isJsonArray()) {
-            throw new IllegalArgumentException(String.format(java.util.Locale.ROOT, "Expected the field `events` to be an array in the JSON string but got `%s`", jsonObj.get("events").toString()));
+            throw new IllegalArgumentException(String.format(java.util.Locale.ROOT,
+                "Expected the field `events` to be an array in the JSON string but got `%s`",
+                jsonObj.get("events").toString()));
         }
 
         JsonArray jsonArrayevents = jsonObj.getAsJsonArray("events");
@@ -238,7 +208,72 @@ public class SiphonResources201ResponseData {
         }
     }
 
+    @Override
+    public int hashCode() {
+        return Objects.hash(cooldown, siphon, cargo, events);
+    }
+
+    /**
+     * Create an instance of SiphonResources201ResponseData given an JSON string
+     *
+     * @param jsonString JSON string
+     * @return An instance of SiphonResources201ResponseData
+     * @throws IOException if the JSON string is invalid with respect to
+     *                     SiphonResources201ResponseData
+     */
+    public static SiphonResources201ResponseData fromJson(String jsonString) throws IOException {
+        return JSON.getGson().fromJson(jsonString, SiphonResources201ResponseData.class);
+    }
+
+    public SiphonResources201ResponseData events(
+        @javax.annotation.Nonnull List<ShipConditionEvent> events) {
+        this.events = events;
+        return this;
+    }
+
+
+    public static HashSet<String> openapiFields;
+    public static HashSet<String> openapiRequiredFields;
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        SiphonResources201ResponseData siphonResources201ResponseData = (SiphonResources201ResponseData) o;
+        return Objects.equals(this.cooldown, siphonResources201ResponseData.cooldown) &&
+            Objects.equals(this.siphon, siphonResources201ResponseData.siphon) &&
+            Objects.equals(this.cargo, siphonResources201ResponseData.cargo) &&
+            Objects.equals(this.events, siphonResources201ResponseData.events);
+    }
+
+    @Override
+    public String toString() {
+        String sb = "class SiphonResources201ResponseData {\n" +
+            "    cooldown: " + toIndentedString(cooldown) + "\n" +
+            "    siphon: " + toIndentedString(siphon) + "\n" +
+            "    cargo: " + toIndentedString(cargo) + "\n" +
+            "    events: " + toIndentedString(events) + "\n" +
+            "}";
+        return sb;
+    }
+
+    /**
+     * Convert the given object to string with each line indented by 4 spaces (except the first
+     * line).
+     */
+    private String toIndentedString(Object o) {
+        if (o == null) {
+            return "null";
+        }
+        return o.toString().replace("\n", "\n    ");
+    }
+
     public static class CustomTypeAdapterFactory implements TypeAdapterFactory {
+
         @SuppressWarnings("unchecked")
         @Override
         public <T> TypeAdapter<T> create(Gson gson, TypeToken<T> type) {
@@ -247,11 +282,13 @@ public class SiphonResources201ResponseData {
             }
             final TypeAdapter<JsonElement> elementAdapter = gson.getAdapter(JsonElement.class);
             final TypeAdapter<SiphonResources201ResponseData> thisAdapter
-                    = gson.getDelegateAdapter(this, TypeToken.get(SiphonResources201ResponseData.class));
+                = gson.getDelegateAdapter(this,
+                TypeToken.get(SiphonResources201ResponseData.class));
 
             return (TypeAdapter<T>) new TypeAdapter<SiphonResources201ResponseData>() {
                 @Override
-                public void write(JsonWriter out, SiphonResources201ResponseData value) throws IOException {
+                public void write(JsonWriter out, SiphonResources201ResponseData value)
+                    throws IOException {
                     JsonObject obj = thisAdapter.toJsonTree(value).getAsJsonObject();
                     elementAdapter.write(out, obj);
                 }
@@ -265,17 +302,6 @@ public class SiphonResources201ResponseData {
 
             }.nullSafe();
         }
-    }
-
-    /**
-     * Create an instance of SiphonResources201ResponseData given an JSON string
-     *
-     * @param jsonString JSON string
-     * @return An instance of SiphonResources201ResponseData
-     * @throws IOException if the JSON string is invalid with respect to SiphonResources201ResponseData
-     */
-    public static SiphonResources201ResponseData fromJson(String jsonString) throws IOException {
-        return JSON.getGson().fromJson(jsonString, SiphonResources201ResponseData.class);
     }
 
     /**

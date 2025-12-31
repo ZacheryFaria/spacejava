@@ -3,6 +3,7 @@ package xyz.faria.space.spaceapi.converters;
 import xyz.faria.space.models.Ship;
 
 public class ShipConverter {
+
     public static Ship fromApiShip(Ship ship, xyz.faria.space.spaceapi.model.Ship apiShip) {
         ship.setSymbol(apiShip.getSymbol());
         ship.setCrew(apiShip.getCrew());

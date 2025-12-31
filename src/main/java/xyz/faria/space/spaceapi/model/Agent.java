@@ -13,21 +13,29 @@
 
 package xyz.faria.space.spaceapi.model;
 
-import com.google.gson.*;
+import com.google.gson.Gson;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.TypeAdapter;
+import com.google.gson.TypeAdapterFactory;
 import com.google.gson.annotations.SerializedName;
 import com.google.gson.reflect.TypeToken;
 import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonWriter;
-import xyz.faria.space.spaceapi.client.JSON;
-
 import java.io.IOException;
-import java.util.*;
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Objects;
+import java.util.Set;
+import xyz.faria.space.spaceapi.client.JSON;
 
 /**
  * Agent details.
  */
 
 public class Agent {
+
     public static final String SERIALIZED_NAME_ACCOUNT_ID = "accountId";
     @SerializedName(SERIALIZED_NAME_ACCOUNT_ID)
     @javax.annotation.Nullable
@@ -126,14 +134,15 @@ public class Agent {
         return this;
     }
 
-    /**
-     * The number of credits the agent has available. Credits can be negative if funds have been overdrawn.
-     *
-     * @return credits
-     */
-    @javax.annotation.Nonnull
-    public Long getCredits() {
-        return credits;
+    static {
+        // a set of all properties/fields (JSON key names)
+        openapiFields = new HashSet<String>(
+            Arrays.asList("accountId", "symbol", "headquarters", "credits", "startingFaction",
+                "shipCount"));
+
+        // a set of required properties/fields (JSON key names)
+        openapiRequiredFields = new HashSet<String>(
+            Arrays.asList("symbol", "headquarters", "credits", "startingFaction", "shipCount"));
     }
 
     public void setCredits(@javax.annotation.Nonnull Long credits) {
@@ -180,6 +189,79 @@ public class Agent {
         this.shipCount = shipCount;
     }
 
+    /**
+     * Validates the JSON Element and throws an exception if issues found
+     *
+     * @param jsonElement JSON Element
+     * @throws IOException if the JSON Element is invalid with respect to Agent
+     */
+    public static void validateJsonElement(JsonElement jsonElement) throws IOException {
+        if (jsonElement == null) {
+            if (!Agent.openapiRequiredFields.isEmpty()) { // has required fields but JSON element is null
+                throw new IllegalArgumentException(String.format(java.util.Locale.ROOT,
+                    "The required field(s) %s in Agent is not found in the empty JSON string",
+                    Agent.openapiRequiredFields));
+            }
+        }
+
+        Set<Map.Entry<String, JsonElement>> entries = jsonElement.getAsJsonObject().entrySet();
+        // check to see if the JSON string contains additional fields
+        for (Map.Entry<String, JsonElement> entry : entries) {
+            if (!Agent.openapiFields.contains(entry.getKey())) {
+                throw new IllegalArgumentException(String.format(java.util.Locale.ROOT,
+                    "The field `%s` in the JSON string is not defined in the `Agent` properties. JSON: %s",
+                    entry.getKey(), jsonElement));
+            }
+        }
+
+        // check to make sure all required properties/fields are present in the JSON string
+        for (String requiredField : Agent.openapiRequiredFields) {
+            if (jsonElement.getAsJsonObject().get(requiredField) == null) {
+                throw new IllegalArgumentException(String.format(java.util.Locale.ROOT,
+                    "The required field `%s` is not found in the JSON string: %s",
+                    requiredField,
+                    jsonElement));
+            }
+        }
+        JsonObject jsonObj = jsonElement.getAsJsonObject();
+        if ((jsonObj.get("accountId") != null && !jsonObj.get("accountId").isJsonNull())
+            && !jsonObj.get("accountId").isJsonPrimitive()) {
+            throw new IllegalArgumentException(String.format(java.util.Locale.ROOT,
+                "Expected the field `accountId` to be a primitive type in the JSON string but got `%s`",
+                jsonObj.get("accountId").toString()));
+        }
+        if (!jsonObj.get("symbol").isJsonPrimitive()) {
+            throw new IllegalArgumentException(String.format(java.util.Locale.ROOT,
+                "Expected the field `symbol` to be a primitive type in the JSON string but got `%s`",
+                jsonObj.get("symbol").toString()));
+        }
+        if (!jsonObj.get("headquarters").isJsonPrimitive()) {
+            throw new IllegalArgumentException(String.format(java.util.Locale.ROOT,
+                "Expected the field `headquarters` to be a primitive type in the JSON string but got `%s`",
+                jsonObj.get("headquarters").toString()));
+        }
+        if (!jsonObj.get("startingFaction").isJsonPrimitive()) {
+            throw new IllegalArgumentException(String.format(java.util.Locale.ROOT,
+                "Expected the field `startingFaction` to be a primitive type in the JSON string but got `%s`",
+                jsonObj.get("startingFaction").toString()));
+        }
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(accountId, symbol, headquarters, credits, startingFaction, shipCount);
+    }
+
+    /**
+     * The number of credits the agent has available. Credits can be negative if funds have been
+     * overdrawn.
+     *
+     * @return credits
+     */
+    @javax.annotation.Nonnull
+    public Long getCredits() {
+        return credits;
+    }
 
     @Override
     public boolean equals(Object o) {
@@ -191,34 +273,33 @@ public class Agent {
         }
         Agent agent = (Agent) o;
         return Objects.equals(this.accountId, agent.accountId) &&
-                Objects.equals(this.symbol, agent.symbol) &&
-                Objects.equals(this.headquarters, agent.headquarters) &&
-                Objects.equals(this.credits, agent.credits) &&
-                Objects.equals(this.startingFaction, agent.startingFaction) &&
-                Objects.equals(this.shipCount, agent.shipCount);
+            Objects.equals(this.symbol, agent.symbol) &&
+            Objects.equals(this.headquarters, agent.headquarters) &&
+            Objects.equals(this.credits, agent.credits) &&
+            Objects.equals(this.startingFaction, agent.startingFaction) &&
+            Objects.equals(this.shipCount, agent.shipCount);
     }
 
-    @Override
-    public int hashCode() {
-        return Objects.hash(accountId, symbol, headquarters, credits, startingFaction, shipCount);
-    }
+
+    public static HashSet<String> openapiFields;
+    public static HashSet<String> openapiRequiredFields;
 
     @Override
     public String toString() {
         String sb = "class Agent {\n" +
-                "    accountId: " + toIndentedString(accountId) + "\n" +
-                "    symbol: " + toIndentedString(symbol) + "\n" +
-                "    headquarters: " + toIndentedString(headquarters) + "\n" +
-                "    credits: " + toIndentedString(credits) + "\n" +
-                "    startingFaction: " + toIndentedString(startingFaction) + "\n" +
-                "    shipCount: " + toIndentedString(shipCount) + "\n" +
-                "}";
+            "    accountId: " + toIndentedString(accountId) + "\n" +
+            "    symbol: " + toIndentedString(symbol) + "\n" +
+            "    headquarters: " + toIndentedString(headquarters) + "\n" +
+            "    credits: " + toIndentedString(credits) + "\n" +
+            "    startingFaction: " + toIndentedString(startingFaction) + "\n" +
+            "    shipCount: " + toIndentedString(shipCount) + "\n" +
+            "}";
         return sb;
     }
 
     /**
-     * Convert the given object to string with each line indented by 4 spaces
-     * (except the first line).
+     * Convert the given object to string with each line indented by 4 spaces (except the first
+     * line).
      */
     private String toIndentedString(Object o) {
         if (o == null) {
@@ -227,61 +308,8 @@ public class Agent {
         return o.toString().replace("\n", "\n    ");
     }
 
-
-    public static HashSet<String> openapiFields;
-    public static HashSet<String> openapiRequiredFields;
-
-    static {
-        // a set of all properties/fields (JSON key names)
-        openapiFields = new HashSet<String>(Arrays.asList("accountId", "symbol", "headquarters", "credits", "startingFaction", "shipCount"));
-
-        // a set of required properties/fields (JSON key names)
-        openapiRequiredFields = new HashSet<String>(Arrays.asList("symbol", "headquarters", "credits", "startingFaction", "shipCount"));
-    }
-
-    /**
-     * Validates the JSON Element and throws an exception if issues found
-     *
-     * @param jsonElement JSON Element
-     * @throws IOException if the JSON Element is invalid with respect to Agent
-     */
-    public static void validateJsonElement(JsonElement jsonElement) throws IOException {
-        if (jsonElement == null) {
-            if (!Agent.openapiRequiredFields.isEmpty()) { // has required fields but JSON element is null
-                throw new IllegalArgumentException(String.format(java.util.Locale.ROOT, "The required field(s) %s in Agent is not found in the empty JSON string", Agent.openapiRequiredFields));
-            }
-        }
-
-        Set<Map.Entry<String, JsonElement>> entries = jsonElement.getAsJsonObject().entrySet();
-        // check to see if the JSON string contains additional fields
-        for (Map.Entry<String, JsonElement> entry : entries) {
-            if (!Agent.openapiFields.contains(entry.getKey())) {
-                throw new IllegalArgumentException(String.format(java.util.Locale.ROOT, "The field `%s` in the JSON string is not defined in the `Agent` properties. JSON: %s", entry.getKey(), jsonElement));
-            }
-        }
-
-        // check to make sure all required properties/fields are present in the JSON string
-        for (String requiredField : Agent.openapiRequiredFields) {
-            if (jsonElement.getAsJsonObject().get(requiredField) == null) {
-                throw new IllegalArgumentException(String.format(java.util.Locale.ROOT, "The required field `%s` is not found in the JSON string: %s", requiredField, jsonElement));
-            }
-        }
-        JsonObject jsonObj = jsonElement.getAsJsonObject();
-        if ((jsonObj.get("accountId") != null && !jsonObj.get("accountId").isJsonNull()) && !jsonObj.get("accountId").isJsonPrimitive()) {
-            throw new IllegalArgumentException(String.format(java.util.Locale.ROOT, "Expected the field `accountId` to be a primitive type in the JSON string but got `%s`", jsonObj.get("accountId").toString()));
-        }
-        if (!jsonObj.get("symbol").isJsonPrimitive()) {
-            throw new IllegalArgumentException(String.format(java.util.Locale.ROOT, "Expected the field `symbol` to be a primitive type in the JSON string but got `%s`", jsonObj.get("symbol").toString()));
-        }
-        if (!jsonObj.get("headquarters").isJsonPrimitive()) {
-            throw new IllegalArgumentException(String.format(java.util.Locale.ROOT, "Expected the field `headquarters` to be a primitive type in the JSON string but got `%s`", jsonObj.get("headquarters").toString()));
-        }
-        if (!jsonObj.get("startingFaction").isJsonPrimitive()) {
-            throw new IllegalArgumentException(String.format(java.util.Locale.ROOT, "Expected the field `startingFaction` to be a primitive type in the JSON string but got `%s`", jsonObj.get("startingFaction").toString()));
-        }
-    }
-
     public static class CustomTypeAdapterFactory implements TypeAdapterFactory {
+
         @SuppressWarnings("unchecked")
         @Override
         public <T> TypeAdapter<T> create(Gson gson, TypeToken<T> type) {
@@ -290,7 +318,7 @@ public class Agent {
             }
             final TypeAdapter<JsonElement> elementAdapter = gson.getAdapter(JsonElement.class);
             final TypeAdapter<Agent> thisAdapter
-                    = gson.getDelegateAdapter(this, TypeToken.get(Agent.class));
+                = gson.getDelegateAdapter(this, TypeToken.get(Agent.class));
 
             return (TypeAdapter<T>) new TypeAdapter<Agent>() {
                 @Override

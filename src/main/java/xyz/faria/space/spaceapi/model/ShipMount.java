@@ -13,99 +13,42 @@
 
 package xyz.faria.space.spaceapi.model;
 
-import com.google.gson.*;
+import com.google.gson.Gson;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.TypeAdapter;
+import com.google.gson.TypeAdapterFactory;
 import com.google.gson.annotations.JsonAdapter;
 import com.google.gson.annotations.SerializedName;
 import com.google.gson.reflect.TypeToken;
 import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonWriter;
 import jakarta.persistence.Embeddable;
-import xyz.faria.space.spaceapi.client.JSON;
-
 import java.io.IOException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
+import java.util.Set;
+import xyz.faria.space.spaceapi.client.JSON;
 
 /**
  * A mount is installed on the exterier of a ship.
  */
 @Embeddable
 public class ShipMount {
-    /**
-     * Symbo of this mount.
-     */
-    @JsonAdapter(SymbolEnum.Adapter.class)
-    public enum SymbolEnum {
-        MOUNT_GAS_SIPHON_I("MOUNT_GAS_SIPHON_I"),
 
-        MOUNT_GAS_SIPHON_II("MOUNT_GAS_SIPHON_II"),
+    static {
+        // a set of all properties/fields (JSON key names)
+        openapiFields = new HashSet<String>(
+            Arrays.asList("symbol", "name", "description", "strength", "deposits",
+                "requirements"));
 
-        MOUNT_GAS_SIPHON_III("MOUNT_GAS_SIPHON_III"),
-
-        MOUNT_SURVEYOR_I("MOUNT_SURVEYOR_I"),
-
-        MOUNT_SURVEYOR_II("MOUNT_SURVEYOR_II"),
-
-        MOUNT_SURVEYOR_III("MOUNT_SURVEYOR_III"),
-
-        MOUNT_SENSOR_ARRAY_I("MOUNT_SENSOR_ARRAY_I"),
-
-        MOUNT_SENSOR_ARRAY_II("MOUNT_SENSOR_ARRAY_II"),
-
-        MOUNT_SENSOR_ARRAY_III("MOUNT_SENSOR_ARRAY_III"),
-
-        MOUNT_MINING_LASER_I("MOUNT_MINING_LASER_I"),
-
-        MOUNT_MINING_LASER_II("MOUNT_MINING_LASER_II"),
-
-        MOUNT_MINING_LASER_III("MOUNT_MINING_LASER_III"),
-
-        MOUNT_LASER_CANNON_I("MOUNT_LASER_CANNON_I"),
-
-        MOUNT_MISSILE_LAUNCHER_I("MOUNT_MISSILE_LAUNCHER_I"),
-
-        MOUNT_TURRET_I("MOUNT_TURRET_I");
-
-        private final String value;
-
-        SymbolEnum(String value) {
-            this.value = value;
-        }
-
-        public String getValue() {
-            return value;
-        }
-
-        @Override
-        public String toString() {
-            return String.valueOf(value);
-        }
-
-        public static SymbolEnum fromValue(String value) {
-            for (SymbolEnum b : SymbolEnum.values()) {
-                if (b.value.equals(value)) {
-                    return b;
-                }
-            }
-            throw new IllegalArgumentException("Unexpected value '" + value + "'");
-        }
-
-        public static class Adapter extends TypeAdapter<SymbolEnum> {
-            @Override
-            public void write(final JsonWriter jsonWriter, final SymbolEnum enumeration) throws IOException {
-                jsonWriter.value(enumeration.getValue());
-            }
-
-            @Override
-            public SymbolEnum read(final JsonReader jsonReader) throws IOException {
-                String value = jsonReader.nextString();
-                return SymbolEnum.fromValue(value);
-            }
-        }
-
-        public static void validateJsonElement(JsonElement jsonElement) throws IOException {
-            String value = jsonElement.getAsString();
-            SymbolEnum.fromValue(value);
-        }
+        // a set of required properties/fields (JSON key names)
+        openapiRequiredFields = new HashSet<String>(
+            Arrays.asList("symbol", "name", "requirements"));
     }
 
     public static final String SERIALIZED_NAME_SYMBOL = "symbol";
@@ -129,79 +72,67 @@ public class ShipMount {
     private Integer strength;
 
     /**
-     * Gets or Sets deposits
+     * Validates the JSON Element and throws an exception if issues found
+     *
+     * @param jsonElement JSON Element
+     * @throws IOException if the JSON Element is invalid with respect to ShipMount
      */
-    @JsonAdapter(DepositsEnum.Adapter.class)
-    public enum DepositsEnum {
-        QUARTZ_SAND("QUARTZ_SAND"),
-
-        SILICON_CRYSTALS("SILICON_CRYSTALS"),
-
-        PRECIOUS_STONES("PRECIOUS_STONES"),
-
-        ICE_WATER("ICE_WATER"),
-
-        AMMONIA_ICE("AMMONIA_ICE"),
-
-        IRON_ORE("IRON_ORE"),
-
-        COPPER_ORE("COPPER_ORE"),
-
-        SILVER_ORE("SILVER_ORE"),
-
-        ALUMINUM_ORE("ALUMINUM_ORE"),
-
-        GOLD_ORE("GOLD_ORE"),
-
-        PLATINUM_ORE("PLATINUM_ORE"),
-
-        DIAMONDS("DIAMONDS"),
-
-        URANITE_ORE("URANITE_ORE"),
-
-        MERITIUM_ORE("MERITIUM_ORE");
-
-        private final String value;
-
-        DepositsEnum(String value) {
-            this.value = value;
-        }
-
-        public String getValue() {
-            return value;
-        }
-
-        @Override
-        public String toString() {
-            return String.valueOf(value);
-        }
-
-        public static DepositsEnum fromValue(String value) {
-            for (DepositsEnum b : DepositsEnum.values()) {
-                if (b.value.equals(value)) {
-                    return b;
-                }
-            }
-            throw new IllegalArgumentException("Unexpected value '" + value + "'");
-        }
-
-        public static class Adapter extends TypeAdapter<DepositsEnum> {
-            @Override
-            public void write(final JsonWriter jsonWriter, final DepositsEnum enumeration) throws IOException {
-                jsonWriter.value(enumeration.getValue());
-            }
-
-            @Override
-            public DepositsEnum read(final JsonReader jsonReader) throws IOException {
-                String value = jsonReader.nextString();
-                return DepositsEnum.fromValue(value);
+    public static void validateJsonElement(JsonElement jsonElement) throws IOException {
+        if (jsonElement == null) {
+            if (!ShipMount.openapiRequiredFields.isEmpty()) { // has required fields but JSON element is null
+                throw new IllegalArgumentException(String.format(java.util.Locale.ROOT,
+                    "The required field(s) %s in ShipMount is not found in the empty JSON string",
+                    ShipMount.openapiRequiredFields));
             }
         }
 
-        public static void validateJsonElement(JsonElement jsonElement) throws IOException {
-            String value = jsonElement.getAsString();
-            DepositsEnum.fromValue(value);
+        Set<Map.Entry<String, JsonElement>> entries = jsonElement.getAsJsonObject().entrySet();
+        // check to see if the JSON string contains additional fields
+        for (Map.Entry<String, JsonElement> entry : entries) {
+            if (!ShipMount.openapiFields.contains(entry.getKey())) {
+                throw new IllegalArgumentException(String.format(java.util.Locale.ROOT,
+                    "The field `%s` in the JSON string is not defined in the `ShipMount` properties. JSON: %s",
+                    entry.getKey(), jsonElement));
+            }
         }
+
+        // check to make sure all required properties/fields are present in the JSON string
+        for (String requiredField : ShipMount.openapiRequiredFields) {
+            if (jsonElement.getAsJsonObject().get(requiredField) == null) {
+                throw new IllegalArgumentException(String.format(java.util.Locale.ROOT,
+                    "The required field `%s` is not found in the JSON string: %s",
+                    requiredField,
+                    jsonElement));
+            }
+        }
+        JsonObject jsonObj = jsonElement.getAsJsonObject();
+        if (!jsonObj.get("symbol").isJsonPrimitive()) {
+            throw new IllegalArgumentException(String.format(java.util.Locale.ROOT,
+                "Expected the field `symbol` to be a primitive type in the JSON string but got `%s`",
+                jsonObj.get("symbol").toString()));
+        }
+        // validate the required field `symbol`
+        SymbolEnum.validateJsonElement(jsonObj.get("symbol"));
+        if (!jsonObj.get("name").isJsonPrimitive()) {
+            throw new IllegalArgumentException(String.format(java.util.Locale.ROOT,
+                "Expected the field `name` to be a primitive type in the JSON string but got `%s`",
+                jsonObj.get("name").toString()));
+        }
+        if ((jsonObj.get("description") != null && !jsonObj.get("description").isJsonNull())
+            && !jsonObj.get("description").isJsonPrimitive()) {
+            throw new IllegalArgumentException(String.format(java.util.Locale.ROOT,
+                "Expected the field `description` to be a primitive type in the JSON string but got `%s`",
+                jsonObj.get("description").toString()));
+        }
+        // ensure the optional json data is an array if present
+        if (jsonObj.get("deposits") != null && !jsonObj.get("deposits").isJsonNull()
+            && !jsonObj.get("deposits").isJsonArray()) {
+            throw new IllegalArgumentException(String.format(java.util.Locale.ROOT,
+                "Expected the field `deposits` to be an array in the JSON string but got `%s`",
+                jsonObj.get("deposits").toString()));
+        }
+        // validate the required field `requirements`
+        ShipRequirements.validateJsonElement(jsonObj.get("requirements"));
     }
 
     public static final String SERIALIZED_NAME_DEPOSITS = "deposits";
@@ -283,8 +214,8 @@ public class ShipMount {
     }
 
     /**
-     * Mounts that have this value, such as mining lasers, denote how powerful this mount&#39;s capabilities are.
-     * minimum: 0
+     * Mounts that have this value, such as mining lasers, denote how powerful this mount&#39;s
+     * capabilities are. minimum: 0
      *
      * @return strength
      */
@@ -356,11 +287,11 @@ public class ShipMount {
         }
         ShipMount shipMount = (ShipMount) o;
         return Objects.equals(this.symbol, shipMount.symbol) &&
-                Objects.equals(this.name, shipMount.name) &&
-                Objects.equals(this.description, shipMount.description) &&
-                Objects.equals(this.strength, shipMount.strength) &&
-                Objects.equals(this.deposits, shipMount.deposits) &&
-                Objects.equals(this.requirements, shipMount.requirements);
+            Objects.equals(this.name, shipMount.name) &&
+            Objects.equals(this.description, shipMount.description) &&
+            Objects.equals(this.strength, shipMount.strength) &&
+            Objects.equals(this.deposits, shipMount.deposits) &&
+            Objects.equals(this.requirements, shipMount.requirements);
     }
 
     @Override
@@ -371,19 +302,19 @@ public class ShipMount {
     @Override
     public String toString() {
         String sb = "class ShipMount {\n" +
-                "    symbol: " + toIndentedString(symbol) + "\n" +
-                "    name: " + toIndentedString(name) + "\n" +
-                "    description: " + toIndentedString(description) + "\n" +
-                "    strength: " + toIndentedString(strength) + "\n" +
-                "    deposits: " + toIndentedString(deposits) + "\n" +
-                "    requirements: " + toIndentedString(requirements) + "\n" +
-                "}";
+            "    symbol: " + toIndentedString(symbol) + "\n" +
+            "    name: " + toIndentedString(name) + "\n" +
+            "    description: " + toIndentedString(description) + "\n" +
+            "    strength: " + toIndentedString(strength) + "\n" +
+            "    deposits: " + toIndentedString(deposits) + "\n" +
+            "    requirements: " + toIndentedString(requirements) + "\n" +
+            "}";
         return sb;
     }
 
     /**
-     * Convert the given object to string with each line indented by 4 spaces
-     * (except the first line).
+     * Convert the given object to string with each line indented by 4 spaces (except the first
+     * line).
      */
     private String toIndentedString(Object o) {
         if (o == null) {
@@ -396,62 +327,166 @@ public class ShipMount {
     public static HashSet<String> openapiFields;
     public static HashSet<String> openapiRequiredFields;
 
-    static {
-        // a set of all properties/fields (JSON key names)
-        openapiFields = new HashSet<String>(Arrays.asList("symbol", "name", "description", "strength", "deposits", "requirements"));
+    /**
+     * Symbo of this mount.
+     */
+    @JsonAdapter(SymbolEnum.Adapter.class)
+    public enum SymbolEnum {
+        MOUNT_GAS_SIPHON_I("MOUNT_GAS_SIPHON_I"),
 
-        // a set of required properties/fields (JSON key names)
-        openapiRequiredFields = new HashSet<String>(Arrays.asList("symbol", "name", "requirements"));
+        MOUNT_GAS_SIPHON_II("MOUNT_GAS_SIPHON_II"),
+
+        MOUNT_GAS_SIPHON_III("MOUNT_GAS_SIPHON_III"),
+
+        MOUNT_SURVEYOR_I("MOUNT_SURVEYOR_I"),
+
+        MOUNT_SURVEYOR_II("MOUNT_SURVEYOR_II"),
+
+        MOUNT_SURVEYOR_III("MOUNT_SURVEYOR_III"),
+
+        MOUNT_SENSOR_ARRAY_I("MOUNT_SENSOR_ARRAY_I"),
+
+        MOUNT_SENSOR_ARRAY_II("MOUNT_SENSOR_ARRAY_II"),
+
+        MOUNT_SENSOR_ARRAY_III("MOUNT_SENSOR_ARRAY_III"),
+
+        MOUNT_MINING_LASER_I("MOUNT_MINING_LASER_I"),
+
+        MOUNT_MINING_LASER_II("MOUNT_MINING_LASER_II"),
+
+        MOUNT_MINING_LASER_III("MOUNT_MINING_LASER_III"),
+
+        MOUNT_LASER_CANNON_I("MOUNT_LASER_CANNON_I"),
+
+        MOUNT_MISSILE_LAUNCHER_I("MOUNT_MISSILE_LAUNCHER_I"),
+
+        MOUNT_TURRET_I("MOUNT_TURRET_I");
+
+        private final String value;
+
+        SymbolEnum(String value) {
+            this.value = value;
+        }
+
+        public String getValue() {
+            return value;
+        }
+
+        @Override
+        public String toString() {
+            return String.valueOf(value);
+        }
+
+        public static SymbolEnum fromValue(String value) {
+            for (SymbolEnum b : SymbolEnum.values()) {
+                if (b.value.equals(value)) {
+                    return b;
+                }
+            }
+            throw new IllegalArgumentException("Unexpected value '" + value + "'");
+        }
+
+        public static class Adapter extends TypeAdapter<SymbolEnum> {
+
+            @Override
+            public void write(final JsonWriter jsonWriter, final SymbolEnum enumeration)
+                throws IOException {
+                jsonWriter.value(enumeration.getValue());
+            }
+
+            @Override
+            public SymbolEnum read(final JsonReader jsonReader) throws IOException {
+                String value = jsonReader.nextString();
+                return SymbolEnum.fromValue(value);
+            }
+        }
+
+        public static void validateJsonElement(JsonElement jsonElement) throws IOException {
+            String value = jsonElement.getAsString();
+            SymbolEnum.fromValue(value);
+        }
     }
 
     /**
-     * Validates the JSON Element and throws an exception if issues found
-     *
-     * @param jsonElement JSON Element
-     * @throws IOException if the JSON Element is invalid with respect to ShipMount
+     * Gets or Sets deposits
      */
-    public static void validateJsonElement(JsonElement jsonElement) throws IOException {
-        if (jsonElement == null) {
-            if (!ShipMount.openapiRequiredFields.isEmpty()) { // has required fields but JSON element is null
-                throw new IllegalArgumentException(String.format(java.util.Locale.ROOT, "The required field(s) %s in ShipMount is not found in the empty JSON string", ShipMount.openapiRequiredFields));
+    @JsonAdapter(DepositsEnum.Adapter.class)
+    public enum DepositsEnum {
+        QUARTZ_SAND("QUARTZ_SAND"),
+
+        SILICON_CRYSTALS("SILICON_CRYSTALS"),
+
+        PRECIOUS_STONES("PRECIOUS_STONES"),
+
+        ICE_WATER("ICE_WATER"),
+
+        AMMONIA_ICE("AMMONIA_ICE"),
+
+        IRON_ORE("IRON_ORE"),
+
+        COPPER_ORE("COPPER_ORE"),
+
+        SILVER_ORE("SILVER_ORE"),
+
+        ALUMINUM_ORE("ALUMINUM_ORE"),
+
+        GOLD_ORE("GOLD_ORE"),
+
+        PLATINUM_ORE("PLATINUM_ORE"),
+
+        DIAMONDS("DIAMONDS"),
+
+        URANITE_ORE("URANITE_ORE"),
+
+        MERITIUM_ORE("MERITIUM_ORE");
+
+        private final String value;
+
+        DepositsEnum(String value) {
+            this.value = value;
+        }
+
+        public String getValue() {
+            return value;
+        }
+
+        @Override
+        public String toString() {
+            return String.valueOf(value);
+        }
+
+        public static DepositsEnum fromValue(String value) {
+            for (DepositsEnum b : DepositsEnum.values()) {
+                if (b.value.equals(value)) {
+                    return b;
+                }
+            }
+            throw new IllegalArgumentException("Unexpected value '" + value + "'");
+        }
+
+        public static class Adapter extends TypeAdapter<DepositsEnum> {
+
+            @Override
+            public void write(final JsonWriter jsonWriter, final DepositsEnum enumeration)
+                throws IOException {
+                jsonWriter.value(enumeration.getValue());
+            }
+
+            @Override
+            public DepositsEnum read(final JsonReader jsonReader) throws IOException {
+                String value = jsonReader.nextString();
+                return DepositsEnum.fromValue(value);
             }
         }
 
-        Set<Map.Entry<String, JsonElement>> entries = jsonElement.getAsJsonObject().entrySet();
-        // check to see if the JSON string contains additional fields
-        for (Map.Entry<String, JsonElement> entry : entries) {
-            if (!ShipMount.openapiFields.contains(entry.getKey())) {
-                throw new IllegalArgumentException(String.format(java.util.Locale.ROOT, "The field `%s` in the JSON string is not defined in the `ShipMount` properties. JSON: %s", entry.getKey(), jsonElement));
-            }
+        public static void validateJsonElement(JsonElement jsonElement) throws IOException {
+            String value = jsonElement.getAsString();
+            DepositsEnum.fromValue(value);
         }
-
-        // check to make sure all required properties/fields are present in the JSON string
-        for (String requiredField : ShipMount.openapiRequiredFields) {
-            if (jsonElement.getAsJsonObject().get(requiredField) == null) {
-                throw new IllegalArgumentException(String.format(java.util.Locale.ROOT, "The required field `%s` is not found in the JSON string: %s", requiredField, jsonElement));
-            }
-        }
-        JsonObject jsonObj = jsonElement.getAsJsonObject();
-        if (!jsonObj.get("symbol").isJsonPrimitive()) {
-            throw new IllegalArgumentException(String.format(java.util.Locale.ROOT, "Expected the field `symbol` to be a primitive type in the JSON string but got `%s`", jsonObj.get("symbol").toString()));
-        }
-        // validate the required field `symbol`
-        SymbolEnum.validateJsonElement(jsonObj.get("symbol"));
-        if (!jsonObj.get("name").isJsonPrimitive()) {
-            throw new IllegalArgumentException(String.format(java.util.Locale.ROOT, "Expected the field `name` to be a primitive type in the JSON string but got `%s`", jsonObj.get("name").toString()));
-        }
-        if ((jsonObj.get("description") != null && !jsonObj.get("description").isJsonNull()) && !jsonObj.get("description").isJsonPrimitive()) {
-            throw new IllegalArgumentException(String.format(java.util.Locale.ROOT, "Expected the field `description` to be a primitive type in the JSON string but got `%s`", jsonObj.get("description").toString()));
-        }
-        // ensure the optional json data is an array if present
-        if (jsonObj.get("deposits") != null && !jsonObj.get("deposits").isJsonNull() && !jsonObj.get("deposits").isJsonArray()) {
-            throw new IllegalArgumentException(String.format(java.util.Locale.ROOT, "Expected the field `deposits` to be an array in the JSON string but got `%s`", jsonObj.get("deposits").toString()));
-        }
-        // validate the required field `requirements`
-        ShipRequirements.validateJsonElement(jsonObj.get("requirements"));
     }
 
     public static class CustomTypeAdapterFactory implements TypeAdapterFactory {
+
         @SuppressWarnings("unchecked")
         @Override
         public <T> TypeAdapter<T> create(Gson gson, TypeToken<T> type) {
@@ -460,7 +495,7 @@ public class ShipMount {
             }
             final TypeAdapter<JsonElement> elementAdapter = gson.getAdapter(JsonElement.class);
             final TypeAdapter<ShipMount> thisAdapter
-                    = gson.getDelegateAdapter(this, TypeToken.get(ShipMount.class));
+                = gson.getDelegateAdapter(this, TypeToken.get(ShipMount.class));
 
             return (TypeAdapter<T>) new TypeAdapter<ShipMount>() {
                 @Override
