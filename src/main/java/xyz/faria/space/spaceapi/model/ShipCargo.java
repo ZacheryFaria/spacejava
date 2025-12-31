@@ -33,6 +33,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.Set;
 import xyz.faria.space.spaceapi.client.JSON;
 
@@ -283,6 +284,12 @@ public class ShipCargo {
      */
     public String toJson() {
         return JSON.getGson().toJson(this);
+    }
+
+    public Optional<ShipCargoItem> findItem(TradeSymbol symbol) {
+        return inventory.stream()
+            .filter(item -> item.getSymbol().equals(symbol))
+            .findFirst();
     }
 }
 

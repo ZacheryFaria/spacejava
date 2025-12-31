@@ -6,6 +6,7 @@ import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 import xyz.faria.space.models.Ship;
 import xyz.faria.space.repositories.ShipRepository;
+import xyz.faria.space.services.events.ShipUpdatedEvent;
 import xyz.faria.space.spaceapi.client.ApiException;
 import xyz.faria.space.spaceapi.model.ShipNavStatus;
 

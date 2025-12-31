@@ -1,4 +1,4 @@
-package xyz.faria.space.services;
+package xyz.faria.space.services.events;
 
 import org.springframework.context.ApplicationEvent;
 import xyz.faria.space.models.Ship;

@@ -50,5 +50,4 @@ public class ShipControlsCard extends Card {
             e.printStackTrace();
         }
     }
-
 }

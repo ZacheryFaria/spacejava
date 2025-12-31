@@ -1,6 +1,10 @@
 package xyz.faria.space.services;
 
 import jakarta.annotation.Nullable;
+import java.sql.Date;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.UUID;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -21,14 +25,10 @@ import xyz.faria.space.spaceapi.converters.ShipConverter;
 import xyz.faria.space.spaceapi.model.FactionSymbol;
 import xyz.faria.space.spaceapi.model.RegisterRequest;
 
-import java.sql.Date;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.UUID;
-
 @Service
 @RequiredArgsConstructor
 public class AgentService {
+
     private final AgentRepository agentRepository;
     private final ContractRepository contractRepository;
     private final ShipRepository shipRepository;

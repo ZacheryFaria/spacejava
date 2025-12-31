@@ -12,7 +12,7 @@ import org.springframework.stereotype.Component;
 import xyz.faria.space.models.Ship;
 import xyz.faria.space.repositories.ShipRepository;
 import xyz.faria.space.services.ShipService;
-import xyz.faria.space.services.ShipUpdatedEvent;
+import xyz.faria.space.services.events.ShipUpdatedEvent;
 import xyz.faria.space.views.components.ShipControlsCard;
 import xyz.faria.space.views.components.ShipDetailCard;
 
