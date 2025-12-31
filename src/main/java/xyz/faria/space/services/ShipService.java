@@ -4,6 +4,7 @@ import jakarta.transaction.Transactional;
 import java.util.logging.Logger;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
+import xyz.faria.space.events.ShipBus;
 import xyz.faria.space.models.Ship;
 import xyz.faria.space.repositories.ShipRepository;
 import xyz.faria.space.services.events.ShipUpdatedEvent;
@@ -28,6 +29,8 @@ public class ShipService {
         shipRepository.save(ship);
         logger.info("Ship updated, publishing event for ship " + ship.getSymbol());
         eventPublisher.publishEvent(new ShipUpdatedEvent(ship));
+
+        ShipBus.getInstance().publish(ship);
     }
 
     @Transactional

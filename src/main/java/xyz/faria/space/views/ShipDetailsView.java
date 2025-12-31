@@ -1,5 +1,6 @@
 package xyz.faria.space.views;
 
+import com.vaadin.flow.component.DetachEvent;
 import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.router.AfterNavigationEvent;
@@ -7,26 +8,28 @@ import com.vaadin.flow.router.AfterNavigationObserver;
 import com.vaadin.flow.router.BeforeEnterEvent;
 import com.vaadin.flow.router.BeforeEnterObserver;
 import com.vaadin.flow.router.Route;
-import org.springframework.context.ApplicationListener;
-import org.springframework.stereotype.Component;
+import reactor.core.Disposable;
+import xyz.faria.space.events.ShipBus;
+import xyz.faria.space.events.ShipBusSubscriber;
 import xyz.faria.space.models.Ship;
 import xyz.faria.space.repositories.ShipRepository;
 import xyz.faria.space.services.ShipService;
-import xyz.faria.space.services.events.ShipUpdatedEvent;
 import xyz.faria.space.views.components.ShipControlsCard;
 import xyz.faria.space.views.components.ShipDetailCard;
 
 @Route("/ships/:shipSymbol")
-@Component
 public class ShipDetailsView extends VerticalLayout implements BeforeEnterObserver,
-    AfterNavigationObserver, ApplicationListener<ShipUpdatedEvent> {
+    AfterNavigationObserver, ShipBusSubscriber {
 
     private final ShipRepository shipRepository;
     private final ShipService shipService;
 
     private String shipSymbol;
 
+    private Disposable subscription;
+
     private Ship ship;
+
 
     public ShipDetailsView(ShipRepository shipRepository, ShipService shipService) {
         this.shipRepository = shipRepository;
@@ -36,6 +39,7 @@ public class ShipDetailsView extends VerticalLayout implements BeforeEnterObserv
     @Override
     public void beforeEnter(BeforeEnterEvent event) {
         this.shipSymbol = event.getRouteParameters().get("shipSymbol").orElse(null);
+        this.subscription = ShipBus.getInstance().subscribe(this);
     }
 
     @Override
@@ -52,6 +56,7 @@ public class ShipDetailsView extends VerticalLayout implements BeforeEnterObserv
     }
 
     private void render() {
+        System.out.println("Rendering ship details");
         this.removeAll();
         var detailsCard = new ShipDetailCard(ship);
         add(detailsCard);
@@ -60,8 +65,20 @@ public class ShipDetailsView extends VerticalLayout implements BeforeEnterObserv
     }
 
     @Override
-    public void onApplicationEvent(ShipUpdatedEvent event) {
-        this.ship = event.getShip();
+    protected void onDetach(DetachEvent detachEvent) {
+        super.onDetach(detachEvent);
+        this.subscription.dispose();
+    }
+
+    @Override
+    public boolean shouldReceiveUpdate(String shipSymbol) {
+        return this.shipSymbol.equals(shipSymbol);
+    }
+
+    @Override
+    public void onShipUpdate(Ship ship) {
+        System.out.println("Ship updated event received");
+        this.ship = ship;
         var ui = UI.getCurrent();
         ui.access(() -> {
             render();
