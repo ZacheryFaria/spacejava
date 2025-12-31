@@ -1,28 +1,582 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <databaseChangeLog
-  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
   objectQuotingStrategy="QUOTE_ONLY_RESERVED_WORDS"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
   xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
                       http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-5.0.xsd">
-  <changeSet author="zach" id="1767149609770-3">
+  <changeSet author="zach" id="1767154175545-1">
+    <createSequence incrementBy="50" sequenceName="agent_seq" startValue="1"/>
+  </changeSet>
+  <changeSet author="zach" id="1767154175545-2">
+    <createSequence incrementBy="50" sequenceName="market_seq" startValue="1"/>
+  </changeSet>
+  <changeSet author="zach" id="1767154175545-3">
+    <createSequence incrementBy="50" sequenceName="reset_seq" startValue="1"/>
+  </changeSet>
+  <changeSet author="zach" id="1767154175545-4">
+    <createSequence incrementBy="50" sequenceName="system_seq" startValue="1"/>
+  </changeSet>
+  <changeSet author="zach" id="1767154175545-5">
+    <createSequence incrementBy="50" sequenceName="waypoint_seq" startValue="1"/>
+  </changeSet>
+  <changeSet author="zach" id="1767154175545-6">
+    <createTable tableName="agent">
+      <column name="id" type="BIGINT">
+        <constraints nullable="false" primaryKey="true" primaryKeyName="pk_agent"/>
+      </column>
+      <column name="account_id" type="VARCHAR(255)">
+        <constraints nullable="false"/>
+      </column>
+      <column name="symbol" type="VARCHAR(255)">
+        <constraints nullable="false"/>
+      </column>
+      <column name="headquarters" type="VARCHAR(255)">
+        <constraints nullable="false"/>
+      </column>
+      <column name="starting_faction" type="VARCHAR(255)">
+        <constraints nullable="false"/>
+      </column>
+      <column name="credits" type="BIGINT">
+        <constraints nullable="false"/>
+      </column>
+      <column name="token" type="TEXT">
+        <constraints nullable="false"/>
+      </column>
+      <column name="reset_id" type="BIGINT"/>
+    </createTable>
+  </changeSet>
+  <changeSet author="zach" id="1767154175545-7">
+    <createTable tableName="contract">
+      <column name="id" type="VARCHAR(255)">
+        <constraints nullable="false" primaryKey="true" primaryKeyName="pk_contract"/>
+      </column>
+      <column name="faction_symbol" type="VARCHAR(255)">
+        <constraints nullable="false"/>
+      </column>
+      <column name="agent_id" type="BIGINT"/>
+      <column name="type" type="VARCHAR(255)">
+        <constraints nullable="false"/>
+      </column>
+      <column name="accepted" type="BOOLEAN">
+        <constraints nullable="false"/>
+      </column>
+      <column name="fulfilled" type="BOOLEAN">
+        <constraints nullable="false"/>
+      </column>
+      <column name="deadline_to_accept" type="DATETIME"/>
+      <column name="terms_deadline" type="timestamp">
+        <constraints nullable="false"/>
+      </column>
+      <column name="terms_payment_on_accepted" type="INT">
+        <constraints nullable="false"/>
+      </column>
+      <column name="terms_payment_on_fulfilled" type="INT">
+        <constraints nullable="false"/>
+      </column>
+    </createTable>
+  </changeSet>
+  <changeSet author="zach" id="1767154175545-8">
+    <createTable tableName="contract_deliver">
+      <column name="contract_id" type="VARCHAR(255)">
+        <constraints nullable="false"/>
+      </column>
+      <column name="trade_symbol" type="VARCHAR(255)"/>
+      <column name="destination_symbol" type="VARCHAR(255)"/>
+      <column name="units_required" type="INT"/>
+      <column name="units_fulfilled" type="INT"/>
+    </createTable>
+  </changeSet>
+  <changeSet author="zach" id="1767154175545-9">
+    <createTable tableName="market">
+      <column name="id" type="BIGINT">
+        <constraints nullable="false" primaryKey="true" primaryKeyName="pk_market"/>
+      </column>
+      <column name="waypoint_id" type="BIGINT"/>
+      <column name="symbol" type="VARCHAR(255)">
+        <constraints nullable="false"/>
+      </column>
+    </createTable>
+  </changeSet>
+  <changeSet author="zach" id="1767154175545-10">
+    <createTable tableName="market_exchange">
+      <column name="market_id" type="BIGINT">
+        <constraints nullable="false"/>
+      </column>
+      <column name="symbol" type="VARCHAR(255)"/>
+      <column name="name" type="VARCHAR(255)"/>
+      <column name="description" type="VARCHAR(255)"/>
+    </createTable>
+  </changeSet>
+  <changeSet author="zach" id="1767154175545-11">
+    <createTable tableName="market_exports">
+      <column name="market_id" type="BIGINT">
+        <constraints nullable="false"/>
+      </column>
+      <column name="symbol" type="VARCHAR(255)"/>
+      <column name="name" type="VARCHAR(255)"/>
+      <column name="description" type="VARCHAR(255)"/>
+    </createTable>
+  </changeSet>
+  <changeSet author="zach" id="1767154175545-12">
+    <createTable tableName="market_imports">
+      <column name="market_id" type="BIGINT">
+        <constraints nullable="false"/>
+      </column>
+      <column name="symbol" type="VARCHAR(255)"/>
+      <column name="name" type="VARCHAR(255)"/>
+      <column name="description" type="VARCHAR(255)"/>
+    </createTable>
+  </changeSet>
+  <changeSet author="zach" id="1767154175545-13">
+    <createTable tableName="market_trade_goods">
+      <column name="market_id" type="BIGINT">
+        <constraints nullable="false"/>
+      </column>
+      <column name="symbol" type="VARCHAR(255)"/>
+      <column name="type" type="SMALLINT"/>
+      <column name="trade_volume" type="INT"/>
+      <column name="supply" type="SMALLINT"/>
+      <column name="activity" type="SMALLINT"/>
+      <column name="purchase_price" type="INT"/>
+      <column name="sell_price" type="INT"/>
+    </createTable>
+  </changeSet>
+  <changeSet author="zach" id="1767154175545-14">
+    <createTable tableName="market_transactions">
+      <column name="market_id" type="BIGINT">
+        <constraints nullable="false"/>
+      </column>
+      <column name="waypoint_symbol" type="VARCHAR(255)"/>
+      <column name="ship_symbol" type="VARCHAR(255)"/>
+      <column name="trade_symbol" type="VARCHAR(255)"/>
+      <column name="type" type="SMALLINT"/>
+      <column name="units" type="INT"/>
+      <column name="price_per_unit" type="INT"/>
+      <column name="total_price" type="INT"/>
+      <column name="timestamp" type="timestamp"/>
+    </createTable>
+  </changeSet>
+  <changeSet author="zach" id="1767154175545-15">
+    <createTable tableName="reset">
+      <column name="id" type="BIGINT">
+        <constraints nullable="false" primaryKey="true" primaryKeyName="pk_reset"/>
+      </column>
+      <column name="reset_date" type="timestamp">
+        <constraints nullable="false"/>
+      </column>
+      <column name="systems_collected" type="BOOLEAN">
+        <constraints nullable="false"/>
+      </column>
+    </createTable>
+  </changeSet>
+  <changeSet author="zach" id="1767154175545-16">
+    <createTable tableName="ship">
+      <column name="symbol" type="VARCHAR(255)">
+        <constraints nullable="false" primaryKey="true" primaryKeyName="pk_ship"/>
+      </column>
+      <column name="agent_id" type="BIGINT"/>
+      <column name="registration_name" type="VARCHAR(255)">
+        <constraints nullable="false"/>
+      </column>
+      <column name="registration_faction_symbol" type="VARCHAR(255)">
+        <constraints nullable="false"/>
+      </column>
+      <column name="registration_role" type="VARCHAR(255)">
+        <constraints nullable="false"/>
+      </column>
+      <column name="nav_system_symbol" type="VARCHAR(255)">
+        <constraints nullable="false"/>
+      </column>
+      <column name="nav_waypoint_symbol" type="VARCHAR(255)">
+        <constraints nullable="false"/>
+      </column>
+      <column name="nav_route_destination_symbol" type="VARCHAR(255)">
+        <constraints nullable="false"/>
+      </column>
+      <column name="nav_route_destination_type" type="SMALLINT">
+        <constraints nullable="false"/>
+      </column>
+      <column name="nav_route_destination_system_symbol" type="VARCHAR(255)">
+        <constraints nullable="false"/>
+      </column>
+      <column name="nav_route_destination_x" type="INT"/>
+      <column name="nav_route_destination_y" type="INT"/>
+      <column name="nav_route_origin_symbol" type="VARCHAR(255)">
+        <constraints nullable="false"/>
+      </column>
+      <column name="nav_route_origin_type" type="SMALLINT">
+        <constraints nullable="false"/>
+      </column>
+      <column name="nav_route_origin_system_symbol" type="VARCHAR(255)">
+        <constraints nullable="false"/>
+      </column>
+      <column name="nav_route_origin_x" type="INT"/>
+      <column name="nav_route_origin_y" type="INT"/>
+      <column name="nav_route_departure_time" type="timestamp">
+        <constraints nullable="false"/>
+      </column>
+      <column name="nav_route_arrival" type="timestamp">
+        <constraints nullable="false"/>
+      </column>
+      <column name="nav_status" type="SMALLINT">
+        <constraints nullable="false"/>
+      </column>
+      <column name="nav_flight_mode" type="SMALLINT">
+        <constraints nullable="false"/>
+      </column>
+      <column name="crew_current" type="INT">
+        <constraints nullable="false"/>
+      </column>
+      <column name="crew_required" type="INT">
+        <constraints nullable="false"/>
+      </column>
+      <column name="crew_capacity" type="INT">
+        <constraints nullable="false"/>
+      </column>
+      <column name="crew_rotation" type="SMALLINT">
+        <constraints nullable="false"/>
+      </column>
+      <column name="crew_morale" type="INT">
+        <constraints nullable="false"/>
+      </column>
+      <column name="crew_wages" type="INT">
+        <constraints nullable="false"/>
+      </column>
+      <column name="frame_symbol" type="SMALLINT">
+        <constraints nullable="false"/>
+      </column>
+      <column name="frame_name" type="VARCHAR(255)">
+        <constraints nullable="false"/>
+      </column>
+      <column name="frame_description" type="VARCHAR(255)">
+        <constraints nullable="false"/>
+      </column>
+      <column name="frame_condition" type="DOUBLE">
+        <constraints nullable="false"/>
+      </column>
+      <column name="frame_integrity" type="DOUBLE">
+        <constraints nullable="false"/>
+      </column>
+      <column name="frame_module_slots" type="INT">
+        <constraints nullable="false"/>
+      </column>
+      <column name="frame_mounting_points" type="INT">
+        <constraints nullable="false"/>
+      </column>
+      <column name="frame_fuel_capacity" type="INT">
+        <constraints nullable="false"/>
+      </column>
+      <column name="frame_req_power" type="INT"/>
+      <column name="frame_req_crew" type="INT"/>
+      <column name="frame_req_slots" type="INT"/>
+      <column name="frame_quality" type="DECIMAL">
+        <constraints nullable="false"/>
+      </column>
+      <column name="reactor_symbol" type="SMALLINT">
+        <constraints nullable="false"/>
+      </column>
+      <column name="reactor_name" type="VARCHAR(255)">
+        <constraints nullable="false"/>
+      </column>
+      <column name="reactor_description" type="VARCHAR(255)">
+        <constraints nullable="false"/>
+      </column>
+      <column name="reactor_condition" type="DOUBLE">
+        <constraints nullable="false"/>
+      </column>
+      <column name="reactor_integrity" type="DOUBLE">
+        <constraints nullable="false"/>
+      </column>
+      <column name="reactor_power_output" type="INT">
+        <constraints nullable="false"/>
+      </column>
+      <column name="reactor_req_power" type="INT"/>
+      <column name="reactor_req_crew" type="INT"/>
+      <column name="reactor_req_slots" type="INT"/>
+      <column name="reactor_quality" type="DECIMAL">
+        <constraints nullable="false"/>
+      </column>
+      <column name="engine_symbol" type="SMALLINT">
+        <constraints nullable="false"/>
+      </column>
+      <column name="engine_name" type="VARCHAR(255)">
+        <constraints nullable="false"/>
+      </column>
+      <column name="engine_description" type="VARCHAR(255)">
+        <constraints nullable="false"/>
+      </column>
+      <column name="engine_condition" type="DOUBLE">
+        <constraints nullable="false"/>
+      </column>
+      <column name="engine_integrity" type="DOUBLE">
+        <constraints nullable="false"/>
+      </column>
+      <column name="engine_speed" type="INT">
+        <constraints nullable="false"/>
+      </column>
+      <column name="engine_req_power" type="INT"/>
+      <column name="engine_req_crew" type="INT"/>
+      <column name="engine_req_slots" type="INT"/>
+      <column name="engine_quality" type="DECIMAL">
+        <constraints nullable="false"/>
+      </column>
+      <column name="cooldown_ship_symbol" type="VARCHAR(255)">
+        <constraints nullable="false"/>
+      </column>
+      <column name="cooldown_total_seconds" type="INT">
+        <constraints nullable="false"/>
+      </column>
+      <column name="cooldown_remaining_seconds" type="INT">
+        <constraints nullable="false"/>
+      </column>
+      <column name="cooldown_expiration" type="timestamp"/>
+      <column name="cargo_capacity" type="INT">
+        <constraints nullable="false"/>
+      </column>
+      <column name="cargo_units" type="INT">
+        <constraints nullable="false"/>
+      </column>
+      <column name="fuel_current" type="INT">
+        <constraints nullable="false"/>
+      </column>
+      <column name="fuel_capacity" type="INT">
+        <constraints nullable="false"/>
+      </column>
+      <column name="fuel_consumed_amount" type="INT">
+        <constraints nullable="false"/>
+      </column>
+      <column name="fuel_consumed_timestamp" type="timestamp">
+        <constraints nullable="false"/>
+      </column>
+    </createTable>
+  </changeSet>
+  <changeSet author="zach" id="1767154175545-17">
+    <createTable tableName="ship_inventory">
+      <column name="ship_symbol" type="VARCHAR(255)">
+        <constraints nullable="false"/>
+      </column>
+      <column name="symbol" type="SMALLINT"/>
+      <column name="name" type="VARCHAR(255)"/>
+      <column name="description" type="VARCHAR(255)"/>
+      <column name="units" type="INT"/>
+    </createTable>
+  </changeSet>
+  <changeSet author="zach" id="1767154175545-18">
+    <createTable tableName="ship_modules">
+      <column name="ship_symbol" type="VARCHAR(255)">
+        <constraints nullable="false"/>
+      </column>
+      <column name="symbol" type="SMALLINT"/>
+      <column name="capacity" type="INT"/>
+      <column name="range" type="INT"/>
+      <column name="name" type="VARCHAR(255)"/>
+      <column name="description" type="VARCHAR(255)"/>
+      <column name="power" type="INT"/>
+      <column name="crew" type="INT"/>
+      <column name="slots" type="INT"/>
+    </createTable>
+  </changeSet>
+  <changeSet author="zach" id="1767154175545-19">
+    <createTable tableName="ship_mounts">
+      <column name="ship_symbol" type="VARCHAR(255)">
+        <constraints nullable="false"/>
+      </column>
+      <column name="symbol" type="SMALLINT"/>
+      <column name="name" type="VARCHAR(255)"/>
+      <column name="description" type="VARCHAR(255)"/>
+      <column name="strength" type="INT"/>
+      <column name="deposits" type="SMALLINT"/>
+      <column name="power" type="INT"/>
+      <column name="crew" type="INT"/>
+      <column name="slots" type="INT"/>
+    </createTable>
+  </changeSet>
+  <changeSet author="zach" id="1767154175545-20">
+    <createTable tableName="system">
+      <column name="id" type="BIGINT">
+        <constraints nullable="false" primaryKey="true" primaryKeyName="pk_system"/>
+      </column>
+      <column name="symbol" type="VARCHAR(255)">
+        <constraints nullable="false"/>
+      </column>
+      <column name="sector_symbol" type="VARCHAR(255)">
+        <constraints nullable="false"/>
+      </column>
+      <column name="constellation" type="VARCHAR(255)"/>
+      <column name="name" type="VARCHAR(255)"/>
+      <column name="type" type="VARCHAR(255)">
+        <constraints nullable="false"/>
+      </column>
+      <column name="x" type="INT">
+        <constraints nullable="false"/>
+      </column>
+      <column name="y" type="INT">
+        <constraints nullable="false"/>
+      </column>
+      <column name="reset_id" type="BIGINT"/>
+    </createTable>
+  </changeSet>
+  <changeSet author="zach" id="1767154175545-21">
+    <createTable tableName="waypoint">
+      <column name="id" type="BIGINT">
+        <constraints nullable="false" primaryKey="true" primaryKeyName="pk_waypoint"/>
+      </column>
+      <column name="symbol" type="VARCHAR(255)">
+        <constraints nullable="false"/>
+      </column>
+      <column name="type" type="SMALLINT">
+        <constraints nullable="false"/>
+      </column>
+      <column name="system_symbol" type="VARCHAR(255)">
+        <constraints nullable="false"/>
+      </column>
+      <column name="x" type="INT">
+        <constraints nullable="false"/>
+      </column>
+      <column name="y" type="INT">
+        <constraints nullable="false"/>
+      </column>
+      <column name="orbits" type="VARCHAR(255)"/>
+      <column name="is_under_construction" type="BOOLEAN">
+        <constraints nullable="false"/>
+      </column>
+      <column name="has_been_scanned" type="BOOLEAN">
+        <constraints nullable="false"/>
+      </column>
+      <column name="faction_symbol" type="VARCHAR(255)"/>
+      <column name="system_id" type="BIGINT"/>
+    </createTable>
+  </changeSet>
+  <changeSet author="zach" id="1767154175545-22">
+    <createTable tableName="waypoint_modifiers">
+      <column name="waypoint_id" type="BIGINT">
+        <constraints nullable="false"/>
+      </column>
+      <column name="symbol" type="SMALLINT"/>
+      <column name="name" type="VARCHAR(255)"/>
+      <column name="description" type="VARCHAR(255)"/>
+    </createTable>
+  </changeSet>
+  <changeSet author="zach" id="1767154175545-23">
+    <createTable tableName="waypoint_orbitals">
+      <column name="waypoint_id" type="BIGINT">
+        <constraints nullable="false"/>
+      </column>
+      <column name="symbol" type="VARCHAR(255)"/>
+    </createTable>
+  </changeSet>
+  <changeSet author="zach" id="1767154175545-24">
+    <createTable tableName="waypoint_traits">
+      <column name="waypoint_id" type="BIGINT">
+        <constraints nullable="false"/>
+      </column>
+      <column name="symbol" type="SMALLINT"/>
+      <column name="name" type="VARCHAR(255)"/>
+      <column name="description" type="VARCHAR(255)"/>
+    </createTable>
+  </changeSet>
+  <changeSet author="zach" id="1767154175545-25">
     <addUniqueConstraint columnNames="reset_date" constraintName="uc_reset_reset_date"
       tableName="reset"/>
   </changeSet>
-  <changeSet author="zach" id="1767149609770-4">
+  <changeSet author="zach" id="1767154175545-26">
+    <createIndex indexName="idx_agent_symbol" tableName="agent" unique="true">
+      <column name="symbol"/>
+      <column name="reset_id"/>
+    </createIndex>
+  </changeSet>
+  <changeSet author="zach" id="1767154175545-27">
     <createIndex indexName="idx_system_symbol" tableName="system" unique="true">
       <column name="symbol"/>
       <column name="reset_id"/>
     </createIndex>
   </changeSet>
-  <changeSet author="zach" id="1767149609770-5">
-    <dropColumn columnName="reset_date" tableName="agent"/>
+  <changeSet author="zach" id="1767154175545-28">
+    <addForeignKeyConstraint baseColumnNames="reset_id" baseTableName="agent"
+      constraintName="FK_AGENT_ON_RESET" referencedColumnNames="id" referencedTableName="reset"/>
   </changeSet>
-  <changeSet author="zach" id="1767149609770-2">
-    <createIndex indexName="idx_agent_symbol" tableName="agent" unique="true">
-      <column name="symbol"/>
-      <column name="reset_id"/>
-    </createIndex>
+  <changeSet author="zach" id="1767154175545-29">
+    <addForeignKeyConstraint baseColumnNames="agent_id" baseTableName="contract"
+      constraintName="FK_CONTRACT_ON_AGENT" referencedColumnNames="id" referencedTableName="agent"/>
+  </changeSet>
+  <changeSet author="zach" id="1767154175545-30">
+    <addForeignKeyConstraint baseColumnNames="waypoint_id" baseTableName="market"
+      constraintName="FK_MARKET_ON_WAYPOINT" referencedColumnNames="id"
+      referencedTableName="waypoint"/>
+  </changeSet>
+  <changeSet author="zach" id="1767154175545-31">
+    <addForeignKeyConstraint baseColumnNames="agent_id" baseTableName="ship"
+      constraintName="FK_SHIP_ON_AGENT" referencedColumnNames="id" referencedTableName="agent"/>
+  </changeSet>
+  <changeSet author="zach" id="1767154175545-32">
+    <addForeignKeyConstraint baseColumnNames="reset_id" baseTableName="system"
+      constraintName="FK_SYSTEM_ON_RESET" referencedColumnNames="id" referencedTableName="reset"/>
+  </changeSet>
+  <changeSet author="zach" id="1767154175545-33">
+    <addForeignKeyConstraint baseColumnNames="system_id" baseTableName="waypoint"
+      constraintName="FK_WAYPOINT_ON_SYSTEM" referencedColumnNames="id"
+      referencedTableName="system"/>
+  </changeSet>
+  <changeSet author="zach" id="1767154175545-34">
+    <addForeignKeyConstraint baseColumnNames="contract_id" baseTableName="contract_deliver"
+      constraintName="fk_contract_deliver_on_contract" referencedColumnNames="id"
+      referencedTableName="contract"/>
+  </changeSet>
+  <changeSet author="zach" id="1767154175545-35">
+    <addForeignKeyConstraint baseColumnNames="market_id" baseTableName="market_exchange"
+      constraintName="fk_market_exchange_on_market" referencedColumnNames="id"
+      referencedTableName="market"/>
+  </changeSet>
+  <changeSet author="zach" id="1767154175545-36">
+    <addForeignKeyConstraint baseColumnNames="market_id" baseTableName="market_exports"
+      constraintName="fk_market_exports_on_market" referencedColumnNames="id"
+      referencedTableName="market"/>
+  </changeSet>
+  <changeSet author="zach" id="1767154175545-37">
+    <addForeignKeyConstraint baseColumnNames="market_id" baseTableName="market_imports"
+      constraintName="fk_market_imports_on_market" referencedColumnNames="id"
+      referencedTableName="market"/>
+  </changeSet>
+  <changeSet author="zach" id="1767154175545-38">
+    <addForeignKeyConstraint baseColumnNames="market_id" baseTableName="market_trade_goods"
+      constraintName="fk_market_tradegoods_on_market" referencedColumnNames="id"
+      referencedTableName="market"/>
+  </changeSet>
+  <changeSet author="zach" id="1767154175545-39">
+    <addForeignKeyConstraint baseColumnNames="market_id" baseTableName="market_transactions"
+      constraintName="fk_market_transactions_on_market" referencedColumnNames="id"
+      referencedTableName="market"/>
+  </changeSet>
+  <changeSet author="zach" id="1767154175545-40">
+    <addForeignKeyConstraint baseColumnNames="ship_symbol" baseTableName="ship_inventory"
+      constraintName="fk_ship_inventory_on_ship" referencedColumnNames="symbol"
+      referencedTableName="ship"/>
+  </changeSet>
+  <changeSet author="zach" id="1767154175545-41">
+    <addForeignKeyConstraint baseColumnNames="ship_symbol" baseTableName="ship_modules"
+      constraintName="fk_ship_modules_on_ship" referencedColumnNames="symbol"
+      referencedTableName="ship"/>
+  </changeSet>
+  <changeSet author="zach" id="1767154175545-42">
+    <addForeignKeyConstraint baseColumnNames="ship_symbol" baseTableName="ship_mounts"
+      constraintName="fk_ship_mounts_on_ship" referencedColumnNames="symbol"
+      referencedTableName="ship"/>
+  </changeSet>
+  <changeSet author="zach" id="1767154175545-43">
+    <addForeignKeyConstraint baseColumnNames="waypoint_id" baseTableName="waypoint_modifiers"
+      constraintName="fk_waypoint_modifiers_on_waypoint" referencedColumnNames="id"
+      referencedTableName="waypoint"/>
+  </changeSet>
+  <changeSet author="zach" id="1767154175545-44">
+    <addForeignKeyConstraint baseColumnNames="waypoint_id" baseTableName="waypoint_orbitals"
+      constraintName="fk_waypoint_orbitals_on_waypoint" referencedColumnNames="id"
+      referencedTableName="waypoint"/>
+  </changeSet>
+  <changeSet author="zach" id="1767154175545-45">
+    <addForeignKeyConstraint baseColumnNames="waypoint_id" baseTableName="waypoint_traits"
+      constraintName="fk_waypoint_traits_on_waypoint" referencedColumnNames="id"
+      referencedTableName="waypoint"/>
   </changeSet>
 
 </databaseChangeLog>

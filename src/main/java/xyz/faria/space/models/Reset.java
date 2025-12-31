@@ -26,4 +26,7 @@ public class Reset {
 
     @Column(name = "systems_collected", nullable = false)
     private boolean systemsCollected = false;
+
+    @Column(name = "systems_page", nullable = false)
+    private Integer systemsPage = 1;
 }

@@ -23,6 +23,9 @@ import com.google.gson.annotations.SerializedName;
 import com.google.gson.reflect.TypeToken;
 import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonWriter;
+import jakarta.persistence.Embeddable;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -36,6 +39,7 @@ import xyz.faria.space.spaceapi.client.JSON;
 /**
  * Waypoint details.
  */
+@Embeddable
 public class SystemWaypoint {
 
     public static final String SERIALIZED_NAME_SYMBOL = "symbol";
@@ -46,6 +50,7 @@ public class SystemWaypoint {
     public static final String SERIALIZED_NAME_TYPE = "type";
     @SerializedName(SERIALIZED_NAME_TYPE)
     @javax.annotation.Nonnull
+    @Enumerated(EnumType.STRING)
     private WaypointType type;
 
     public static final String SERIALIZED_NAME_X = "x";

@@ -12,7 +12,8 @@ public class Utils {
             .with(TemporalAdjusters.previousOrSame(DayOfWeek.SUNDAY))
             .withHour(5)
             .withMinute(0)
-            .withSecond(0);
+            .withSecond(0)
+            .withNano(0);
 
         if (date.isBefore(resetThisWeek)) {
             resetThisWeek = resetThisWeek.minusWeeks(1);
