@@ -122,7 +122,6 @@ public class GetSystemWaypointsTraitsParameter extends AbstractOpenApiSchema {
      *
      * @return The actual instance (List<WaypointTraitSymbol>, WaypointTraitSymbol)
      */
-    @SuppressWarnings("unchecked")
     @Override
     public Object getActualInstance() {
         return super.getActualInstance();
@@ -142,7 +141,7 @@ public class GetSystemWaypointsTraitsParameter extends AbstractOpenApiSchema {
         }
 
         if (instance instanceof List<?> list) {
-            if (!list.isEmpty() && list.get(0) instanceof WaypointTraitSymbol) {
+            if (!list.isEmpty() && list.getFirst() instanceof WaypointTraitSymbol) {
                 super.setActualInstance(instance);
                 return;
             }

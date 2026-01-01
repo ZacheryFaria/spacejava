@@ -78,13 +78,12 @@ public class AgentService {
         return agent;
     }
 
-    public Agent getMainAgent() {
+    public Agent getMainAgent() throws ApiException {
         var currentReset = resetService.getCurrentReset();
         String agentSymbol = System.getenv("AGENT_SYMBOL");
         var agent = agentRepository.findAgentByResetAndSymbol(currentReset, agentSymbol);
         if (agent.isEmpty()) {
-            throw new IllegalStateException(
-                "Main agent not found for reset: " + currentReset.getResetDate());
+            return this.registerAgent(agentSymbol, FactionSymbol.COSMIC);
         }
         return agent.get();
     }
