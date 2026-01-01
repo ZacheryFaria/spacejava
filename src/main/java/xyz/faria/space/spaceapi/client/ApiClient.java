@@ -113,6 +113,8 @@ public class ApiClient {
 
     protected HttpLoggingInterceptor loggingInterceptor;
 
+    private final ApiLimiter limiter;
+
     public static ApiClient getAccountApiClient() {
         ApiClient apiClient = new ApiClient();
         String apiKey = System.getenv("ACCOUNT_TOKEN");
@@ -126,12 +128,10 @@ public class ApiClient {
         return apiClient;
     }
 
-    /**
-     * Basic constructor for ApiClient
-     */
-    public ApiClient() {
+    public ApiClient(ApiLimiter limiter) {
         init();
         initHttpClient();
+        this.limiter = limiter;
 
         // Setup authentications (key: authentication name, value: authentication).
         authentications.put("AgentToken", new HttpBearerAuth("bearer"));
@@ -141,12 +141,21 @@ public class ApiClient {
     }
 
     /**
+     * Basic constructor for ApiClient
+     */
+    public ApiClient() {
+        this(ApiLimiter.getInstance());
+    }
+
+
+    /**
      * Basic constructor with custom OkHttpClient
      *
      * @param client a {@link okhttp3.OkHttpClient} object
      */
-    public ApiClient(OkHttpClient client) {
+    public ApiClient(OkHttpClient client, ApiLimiter limiter) {
         init();
+        this.limiter = limiter;
 
         httpClient = client;
 
@@ -1154,6 +1163,7 @@ public class ApiClient {
      * @throws xyz.faria.space.spaceapi.client.ApiException If fail to execute the call
      */
     public <T> ApiResponse<T> execute(Call call, Type returnType) throws ApiException {
+        limiter.acquire();
         try {
             Response response = call.execute();
             T data = handleResponse(response, returnType);

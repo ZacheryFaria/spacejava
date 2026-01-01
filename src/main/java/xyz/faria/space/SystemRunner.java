@@ -58,9 +58,8 @@ public class SystemRunner implements CommandLineRunner {
                 resetRepository.save(currentReset);
                 break;
             }
-            logger.info(String.format("Collected system page %d. Sleeping for 1 second",
+            logger.info(String.format("Collected system page %d.",
                 currentReset.getSystemsPage()));
-            Thread.sleep(1000);
         }
         loadWaypoints();
     }
@@ -98,7 +97,6 @@ public class SystemRunner implements CommandLineRunner {
                 page++;
                 logger.info(String.format("Collected waypoint page %d for system %s", page,
                     sys.getSymbol()));
-                Thread.sleep(1000);
             }
         }
     }
