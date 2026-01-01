@@ -9,4 +9,6 @@ import xyz.faria.space.models.Reset;
 public interface AgentRepository extends CrudRepository<Agent, UUID> {
 
     Optional<Agent> findAgentByReset(Reset reset);
+
+    Optional<Agent> findAgentByResetAndSymbol(Reset reset, String symbol);
 }
