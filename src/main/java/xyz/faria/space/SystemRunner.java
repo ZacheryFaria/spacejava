@@ -35,7 +35,19 @@ public class SystemRunner implements CommandLineRunner {
 
     @Override
     @Transactional
-    public void run(String @NonNull ... args) throws Exception {
+    public void run(String @NonNull ... args) throws InterruptedException {
+        try {
+            doRun();
+        } catch (Exception e) {
+            logger.severe(e.getMessage());
+            logger.severe("Ran into an exception. Restarting in 3 seconds");
+            Thread.sleep(3000);
+            run(args);
+        }
+    }
+
+    @Transactional
+    protected void doRun() throws Exception {
         currentReset = resetService.getCurrentReset();
 
         loadAgent();
