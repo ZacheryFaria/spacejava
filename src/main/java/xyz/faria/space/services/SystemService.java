@@ -9,12 +9,15 @@ import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import xyz.faria.space.models.Agent;
+import xyz.faria.space.models.Market;
 import xyz.faria.space.models.System;
 import xyz.faria.space.models.Waypoint;
+import xyz.faria.space.repositories.MarketRepository;
 import xyz.faria.space.repositories.SystemRepository;
 import xyz.faria.space.repositories.WaypointRepository;
 import xyz.faria.space.spaceapi.api.SystemsApi;
 import xyz.faria.space.spaceapi.client.ApiException;
+import xyz.faria.space.spaceapi.converters.MarketConverter;
 import xyz.faria.space.spaceapi.converters.SystemConverter;
 import xyz.faria.space.spaceapi.converters.WaypointConverter;
 
@@ -25,11 +28,11 @@ public class SystemService {
     private final SystemRepository systemRepository;
     private final WaypointRepository waypointRepository;
     private final ResetService resetService;
+    private final MarketRepository marketRepository;
 
     public Optional<System> getSystemBySymbol(String symbol) {
         return systemRepository.findBySymbol(symbol);
     }
-
 
     /**
      *
@@ -106,4 +109,18 @@ public class SystemService {
         return response.getData().size();
     }
 
+    public void loadMarketForWaypoint(Agent agent, Waypoint waypoint) throws ApiException {
+        var apiClient = agent.getAgentClient();
+        var client = new SystemsApi(apiClient);
+
+        var response = client.getMarket(waypoint.getSystemSymbol(), waypoint.getSymbol());
+
+        var marketModel = waypoint.getMarket();
+        if (marketModel == null) {
+            marketModel = new Market();
+        }
+        var market = MarketConverter.fromApiMarket(marketModel, response.getData());
+        market.setWaypoint(waypoint);
+        marketRepository.save(market);
+    }
 }

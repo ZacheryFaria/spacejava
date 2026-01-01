@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  objectQuotingStrategy="QUOTE_ONLY_RESERVED_WORDS"
+  xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+  xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                      http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-5.0.xsd">
+  <changeSet author="zach" id="1767238973763-1">
+    <createIndex indexName="idx_3373c0ecf33be29377aee7540" tableName="market_trade_goods">
+      <column name="symbol"/>
+    </createIndex>
+  </changeSet>
+  <changeSet author="zach" id="1767238973763-2">
+    <createIndex indexName="idx_4167bc0410f0014727cd25623" tableName="market_exchange">
+      <column name="symbol"/>
+    </createIndex>
+  </changeSet>
+  <changeSet author="zach" id="1767238973763-3">
+    <createIndex indexName="idx_4e88e3f045d8f52fa7f76f1a1" tableName="market_exports">
+      <column name="symbol"/>
+    </createIndex>
+  </changeSet>
+  <changeSet author="zach" id="1767238973763-4">
+    <createIndex indexName="idx_c0956531f3d46c69e2e7b046a" tableName="market_imports">
+      <column name="symbol"/>
+    </createIndex>
+  </changeSet>
+
+</databaseChangeLog>

@@ -1,13 +1,15 @@
 package xyz.faria.space.models;
 
 
+import jakarta.persistence.CollectionTable;
 import jakarta.persistence.Column;
 import jakarta.persistence.ElementCollection;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.ManyToOne;
+import jakarta.persistence.Index;
+import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import java.util.ArrayList;
 import java.util.List;
@@ -28,7 +30,7 @@ public class Market {
     @Column(name = "id", nullable = false)
     private Long id;
 
-    @ManyToOne
+    @OneToOne
     private Waypoint waypoint;
 
     @javax.annotation.Nonnull
@@ -37,14 +39,17 @@ public class Market {
 
     @javax.annotation.Nonnull
     @ElementCollection
+    @CollectionTable(indexes = {@Index(columnList = "symbol")})
     private List<TradeGood> exports = new ArrayList<>();
 
     @javax.annotation.Nonnull
     @ElementCollection
+    @CollectionTable(indexes = {@Index(columnList = "symbol")})
     private List<TradeGood> imports = new ArrayList<>();
 
     @javax.annotation.Nonnull
     @ElementCollection
+    @CollectionTable(indexes = {@Index(columnList = "symbol")})
     private List<TradeGood> exchange = new ArrayList<>();
 
     @javax.annotation.Nullable
@@ -53,5 +58,6 @@ public class Market {
 
     @javax.annotation.Nullable
     @ElementCollection
+    @CollectionTable(indexes = {@Index(columnList = "symbol")})
     private List<MarketTradeGood> tradeGoods = new ArrayList<>();
 }

@@ -6,11 +6,13 @@ import jakarta.persistence.Column;
 import jakarta.persistence.ElementCollection;
 import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Index;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import java.util.ArrayList;
 import java.util.List;
@@ -20,6 +22,7 @@ import xyz.faria.space.spaceapi.model.WaypointFaction;
 import xyz.faria.space.spaceapi.model.WaypointModifier;
 import xyz.faria.space.spaceapi.model.WaypointOrbital;
 import xyz.faria.space.spaceapi.model.WaypointTrait;
+import xyz.faria.space.spaceapi.model.WaypointTraitSymbol;
 import xyz.faria.space.spaceapi.model.WaypointType;
 
 @Getter
@@ -70,11 +73,11 @@ public class Waypoint {
     private WaypointFaction faction;
 
     @javax.annotation.Nonnull
-    @ElementCollection
+    @ElementCollection(fetch = FetchType.EAGER)
     private List<WaypointTrait> traits = new ArrayList<>();
 
     @javax.annotation.Nullable
-    @ElementCollection
+    @ElementCollection(fetch = FetchType.EAGER)
     private List<WaypointModifier> modifiers = new ArrayList<>();
 
     @javax.annotation.Nonnull
@@ -89,6 +92,19 @@ public class Waypoint {
     @Column(name = "has_been_scanned", nullable = false)
     private Boolean hasBeenScanned = false;
 
+    @OneToOne(mappedBy = "waypoint")
+    @javax.annotation.Nullable
+    private Market market;
+
     @ManyToOne
     private xyz.faria.space.models.System system;
+
+    public boolean hasMarketplace() {
+        for (var trait : this.getTraits()) {
+            if (trait.getSymbol().equals(WaypointTraitSymbol.MARKETPLACE)) {
+                return true;
+            }
+        }
+        return false;
+    }
 }

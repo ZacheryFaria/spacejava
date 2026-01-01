@@ -1,5 +1,6 @@
 package xyz.faria.space;
 
+import jakarta.transaction.Transactional;
 import java.util.List;
 import java.util.logging.Logger;
 import lombok.RequiredArgsConstructor;
@@ -9,6 +10,7 @@ import org.springframework.stereotype.Component;
 import xyz.faria.space.models.Agent;
 import xyz.faria.space.models.Reset;
 import xyz.faria.space.models.System;
+import xyz.faria.space.models.Waypoint;
 import xyz.faria.space.repositories.AgentRepository;
 import xyz.faria.space.repositories.ResetRepository;
 import xyz.faria.space.repositories.SystemRepository;
@@ -32,6 +34,7 @@ public class SystemRunner implements CommandLineRunner {
     private Agent agent;
 
     @Override
+    @Transactional
     public void run(String @NonNull ... args) throws Exception {
         currentReset = resetService.getCurrentReset();
 
@@ -61,6 +64,7 @@ public class SystemRunner implements CommandLineRunner {
             logger.info(String.format("Collected system page %d.",
                 currentReset.getSystemsPage()));
         }
+        loadAgentSystem();
         loadWaypoints();
     }
 
@@ -71,33 +75,56 @@ public class SystemRunner implements CommandLineRunner {
         }
     }
 
-    private void loadWaypoints() throws ApiException, InterruptedException {
+    @Transactional
+    protected void loadAgentSystem() throws ApiException {
+        var system = systemRepository.findBySymbolAndReset(this.agent.getHeadquartersSystem(),
+            currentReset);
+
+        if (system.isEmpty()) {
+            return;
+        }
+
+        loadSystemWaypoints(system.get());
+
+        for (var waypoint : system.get().getWaypoints()) {
+            if (waypoint.hasMarketplace() && waypoint.getMarket() == null) {
+                logger.info(String.format("Loading market for waypoint %s", waypoint.getSymbol()));
+                systemService.loadMarketForWaypoint(agent, waypoint);
+            }
+        }
+    }
+
+    @Transactional
+    protected void loadSystemWaypoints(System system) throws ApiException {
+        logger.info(String.format("Collecting waypoints for system %s", system.getSymbol()));
+
+        // check if all waypoints have been scanned
+        if (system.getWaypoints().stream().allMatch(Waypoint::getHasBeenScanned)) {
+            return;
+        }
+
+        var page = 1;
+
+        while (true) {
+            var count = systemService.loadSystemWaypoints(agent, system, page, 20);
+            logger.info(
+                String.format("Collected waypoint page %d for system %s. Received %d waypoints",
+                    page,
+                    system.getSymbol(),
+                    count));
+            if (count < 20) {
+                break;
+            }
+            page++;
+        }
+    }
+
+    @Transactional
+    protected void loadWaypoints() throws ApiException {
         List<System> systems = systemRepository.findSystemsWithUnscannedWaypoints();
 
-        systems.sort((o1, o2) -> {
-            if (o1.getSymbol().equals(agent.getHeadquartersSystem())) {
-                return -1;
-            }
-            if (o2.getSymbol().equals(agent.getHeadquartersSystem())) {
-                return 1;
-            }
-            return o1.getSymbol().compareTo(o2.getSymbol());
-        });
-
         for (var sys : systems) {
-            logger.info(String.format("Collecting waypoints for system %s", sys.getSymbol()));
-
-            var page = 1;
-
-            while (true) {
-                var count = systemService.loadSystemWaypoints(agent, sys, page, 20);
-                if (count < 20) {
-                    break;
-                }
-                page++;
-                logger.info(String.format("Collected waypoint page %d for system %s", page,
-                    sys.getSymbol()));
-            }
+            loadSystemWaypoints(sys);
         }
     }
 }
