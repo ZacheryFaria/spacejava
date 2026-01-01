@@ -50,4 +50,9 @@ public class Agent {
     public ApiClient getAgentClient() {
         return ApiClient.getAgentApiClient(this.getToken());
     }
+
+    public String getHeadquartersSystem() {
+        var waypointString = this.getHeadquarters().split("-");
+        return String.format("%s-%s", waypointString[0], waypointString[1]);
+    }
 }

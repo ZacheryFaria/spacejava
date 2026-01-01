@@ -2,7 +2,9 @@ package xyz.faria.space.services;
 
 import jakarta.transaction.Transactional;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -63,6 +65,45 @@ public class SystemService {
         waypointRepository.saveAll(waypoints);
 
         return systems.size();
+    }
+
+    @Transactional
+    public Integer loadSystemWaypoints(Agent agent, System system, Integer page, Integer pageSize)
+        throws ApiException {
+        var apiClient = agent.getAgentClient();
+        var client = new SystemsApi(apiClient);
+
+        var response = client.getSystemWaypoints(system.getSymbol(), page, pageSize, null, null);
+
+        Map<String, Waypoint> waypointMap = new HashMap<>();
+
+        List<String> waypointIds = new ArrayList<>();
+
+        for (var wp : response.getData()) {
+            waypointIds.add(wp.getSymbol());
+        }
+
+        var waypoints = waypointRepository.findWaypointsBySymbolIsInAndSystem(waypointIds, system);
+
+        for (var waypoint : waypoints) {
+            waypointMap.put(waypoint.getSymbol(), waypoint);
+        }
+
+        List<Waypoint> updatedWaypoints = new ArrayList<>();
+
+        for (var wp : response.getData()) {
+            var waypoint = waypointMap.get(wp.getSymbol());
+            if (waypoint == null) {
+                throw new IllegalArgumentException(
+                    "Waypoint not found for symbol: " + wp.getSymbol());
+            }
+            var updatedWaypoint = WaypointConverter.fromApiWaypoint(waypoint, wp);
+            updatedWaypoints.add(updatedWaypoint);
+        }
+
+        waypointRepository.saveAll(updatedWaypoints);
+
+        return response.getData().size();
     }
 
 }

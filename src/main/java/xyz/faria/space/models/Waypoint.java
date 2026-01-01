@@ -9,6 +9,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.Index;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import java.util.ArrayList;
@@ -24,7 +25,8 @@ import xyz.faria.space.spaceapi.model.WaypointType;
 @Getter
 @Setter
 @Entity
-@Table(name = "waypoint")
+@Table(name = "waypoint", indexes = {
+    @Index(name = "idx_waypoint_has_been_scanned", columnList = "has_been_scanned")})
 public class Waypoint {
 
     @Id
