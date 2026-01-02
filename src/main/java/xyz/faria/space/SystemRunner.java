@@ -1,12 +1,12 @@
 package xyz.faria.space;
 
-import jakarta.transaction.Transactional;
-import java.util.List;
-import java.util.logging.Logger;
 import lombok.RequiredArgsConstructor;
 import org.jspecify.annotations.NonNull;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.PlatformTransactionManager;
+import org.springframework.transaction.TransactionStatus;
+import org.springframework.transaction.support.DefaultTransactionDefinition;
 import xyz.faria.space.models.Agent;
 import xyz.faria.space.models.Reset;
 import xyz.faria.space.models.System;
@@ -14,9 +14,13 @@ import xyz.faria.space.models.Waypoint;
 import xyz.faria.space.repositories.AgentRepository;
 import xyz.faria.space.repositories.ResetRepository;
 import xyz.faria.space.repositories.SystemRepository;
+import xyz.faria.space.services.AgentService;
 import xyz.faria.space.services.ResetService;
 import xyz.faria.space.services.SystemService;
 import xyz.faria.space.spaceapi.client.ApiException;
+
+import java.util.List;
+import java.util.logging.Logger;
 
 @Component
 @RequiredArgsConstructor
@@ -29,12 +33,13 @@ public class SystemRunner implements CommandLineRunner {
     private final ResetService resetService;
     private final ResetRepository resetRepository;
     private final AgentRepository agentRepository;
+    private final PlatformTransactionManager transactionManager;
+    private final AgentService agentService;
 
     private Reset currentReset;
     private Agent agent;
 
     @Override
-    @Transactional
     public void run(String @NonNull ... args) throws InterruptedException {
         try {
             doRun();
@@ -46,7 +51,6 @@ public class SystemRunner implements CommandLineRunner {
         }
     }
 
-    @Transactional
     protected void doRun() throws Exception {
         currentReset = resetService.getCurrentReset();
 
@@ -63,42 +67,53 @@ public class SystemRunner implements CommandLineRunner {
             }
 
             logger.info(String.format("Collecting systems for reset %s. Current page %d",
-                currentReset.getResetDate(), currentReset.getSystemsPage()));
+                    currentReset.getResetDate(), currentReset.getSystemsPage()));
 
-            var count = systemService.loadSystems(agent, currentReset.getSystemsPage(), 20);
-            currentReset.setSystemsPage(currentReset.getSystemsPage() + 1);
-            resetRepository.save(currentReset);
-            if (count < 20) {
-                currentReset.setSystemsCollected(true);
+            DefaultTransactionDefinition def = new DefaultTransactionDefinition();
+            TransactionStatus status = transactionManager.getTransaction(def);
+
+            try {
+                var count = systemService.loadSystems(agent, currentReset.getSystemsPage(), 20);
+                currentReset.setSystemsPage(currentReset.getSystemsPage() + 1);
                 resetRepository.save(currentReset);
-                break;
+                if (count < 20) {
+                    currentReset.setSystemsCollected(true);
+                    resetRepository.save(currentReset);
+                    break;
+                }
+                logger.info(String.format("Collected system page %d.",
+                        currentReset.getSystemsPage()));
+
+                transactionManager.commit(status);
+            } catch (ApiException e) {
+                transactionManager.rollback(status);
             }
-            logger.info(String.format("Collected system page %d.",
-                currentReset.getSystemsPage()));
         }
         loadAgentSystem();
         loadWaypoints();
     }
 
-    private void loadAgent() {
+    private void loadAgent() throws ApiException {
         if (agent == null) {
-            var ag = agentRepository.findAgentByReset(currentReset);
-            ag.ifPresent(value -> agent = value);
+            this.agent = agentService.getMainAgent();
         }
     }
 
-    @Transactional
     protected void loadAgentSystem() throws ApiException {
-        var system = systemRepository.findBySymbolAndReset(this.agent.getHeadquartersSystem(),
-            currentReset);
+        var systemOpt = systemRepository.findBySymbolAndReset(this.agent.getHeadquartersSystem(),
+                currentReset);
 
-        if (system.isEmpty()) {
-            return;
+        System system = null;
+
+        if (systemOpt.isEmpty()) {
+            system = systemService.loadSystem(agent, this.agent.getHeadquartersSystem());
+        } else {
+            system = systemOpt.get();
         }
 
-        loadSystemWaypoints(system.get());
+        loadSystemWaypoints(system);
 
-        for (var waypoint : system.get().getWaypoints()) {
+        for (var waypoint : system.getWaypoints()) {
             if (waypoint.hasMarketplace() && waypoint.getMarket() == null) {
                 logger.info(String.format("Loading market for waypoint %s", waypoint.getSymbol()));
                 systemService.loadMarketForWaypoint(agent, waypoint);
@@ -106,7 +121,6 @@ public class SystemRunner implements CommandLineRunner {
         }
     }
 
-    @Transactional
     protected void loadSystemWaypoints(System system) throws ApiException {
         logger.info(String.format("Collecting waypoints for system %s", system.getSymbol()));
 
@@ -117,21 +131,28 @@ public class SystemRunner implements CommandLineRunner {
 
         var page = 1;
 
-        while (true) {
-            var count = systemService.loadSystemWaypoints(agent, system, page, 20);
-            logger.info(
-                String.format("Collected waypoint page %d for system %s. Received %d waypoints",
-                    page,
-                    system.getSymbol(),
-                    count));
-            if (count < 20) {
-                break;
+        TransactionStatus status = transactionManager.getTransaction(new DefaultTransactionDefinition());
+        try {
+            while (true) {
+                var count = systemService.loadSystemWaypoints(agent, system, page, 20);
+                logger.info(
+                        String.format("Collected waypoint page %d for system %s. Received %d waypoints",
+                                page,
+                                system.getSymbol(),
+                                count));
+                if (count < 20) {
+                    break;
+                }
+                page++;
             }
-            page++;
+
+            transactionManager.commit(status);
+        } catch (ApiException e) {
+            logger.severe(e.getMessage());
+            transactionManager.rollback(status);
         }
     }
 
-    @Transactional
     protected void loadWaypoints() throws ApiException {
         List<System> systems = systemRepository.findSystemsWithUnscannedWaypoints();
 

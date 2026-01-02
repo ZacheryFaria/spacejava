@@ -30,7 +30,7 @@ public class ApiLimiter {
                 Thread.currentThread().interrupt();
             }
         }
-        lastAcquireTime = now;
+        lastAcquireTime = System.currentTimeMillis();
     }
 
     private long nextLimitTime() {

@@ -1,5 +1,6 @@
 package xyz.faria.space.services;
 
+import jakarta.annotation.Nonnull;
 import jakarta.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -41,7 +42,6 @@ public class SystemService {
      * @return number of systems loaded
      * @throws ApiException
      */
-    @Transactional
     public Integer loadSystems(Agent agent, Integer page, Integer pageSize) throws ApiException {
         var apiClient = agent.getAgentClient();
         var currentReset = resetService.getCurrentReset();
@@ -70,7 +70,24 @@ public class SystemService {
         return systems.size();
     }
 
-    @Transactional
+    public @Nonnull System loadSystem(Agent agent, String symbol) throws ApiException {
+        var apiClient = agent.getAgentClient();
+        var currentReset = resetService.getCurrentReset();
+        var client = new SystemsApi(apiClient);
+        var response = client.getSystem(symbol);
+        List<Waypoint> waypoints = new ArrayList<>();
+
+        var systemModel = SystemConverter.fromApiSystem(response.getData());
+        systemModel.setReset(currentReset);
+        systemRepository.save(systemModel);
+        for (var waypoint : response.getData().getWaypoints()) {
+            var waypointModel = WaypointConverter.fromApiSystemWaypoint(waypoint, systemModel);
+            waypoints.add(waypointModel);
+        }
+        waypointRepository.saveAll(waypoints);
+        return systemModel;
+    }
+
     public Integer loadSystemWaypoints(Agent agent, System system, Integer page, Integer pageSize)
         throws ApiException {
         var apiClient = agent.getAgentClient();
