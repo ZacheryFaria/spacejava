@@ -7,7 +7,7 @@ import com.vaadin.flow.router.Route;
 @Route("")
 public class HomeView extends VerticalLayout {
 
-    public HomeView() {
+    public HomeView() throws Exception {
         add(new Anchor("/ships", "Ships"));
         add(new Anchor("/new-agent", "Create New Agent"));
     }

@@ -3,6 +3,7 @@ plugins {
     id("org.springframework.boot") version "4.0.1"
     id("io.spring.dependency-management") version "1.1.7"
     id("com.vaadin") version "25.0.2"
+    id("io.sentry.jvm.gradle") version "5.12.2"
 }
 
 group = "xyz.faria"
@@ -25,7 +26,6 @@ repositories {
     mavenCentral()
 }
 
-extra["sentryVersion"] = "8.27.0"
 extra["vaadinVersion"] = "25.0.2"
 
 dependencies {
@@ -36,7 +36,6 @@ dependencies {
     implementation("org.springframework.boot:spring-boot-starter-restclient")
     implementation("org.springframework.boot:spring-boot-starter-webmvc")
     implementation("com.vaadin:vaadin-spring-boot-starter")
-    implementation("io.sentry:sentry-spring-boot-4-starter")
 
     implementation(platform("io.projectreactor:reactor-bom:2025.0.1"))
     implementation("io.projectreactor:reactor-core")
@@ -62,9 +61,18 @@ dependencies {
     testImplementation("org.springframework.boot:spring-boot-starter-webmvc-test")
 }
 
+sentry {
+    // Generates a JVM (Java, Kotlin, etc.) source bundle and uploads your source code to Sentry.
+    // This enables source context, allowing you to see your source
+    // code as part of your stack traces in Sentry.
+    includeSourceContext = true
+    org = "sentry"
+    projectName = "space-java"
+    authToken = System.getenv("SENTRY_AUTH_TOKEN")
+}
+
 dependencyManagement {
     imports {
-        mavenBom("io.sentry:sentry-bom:${property("sentryVersion")}")
         mavenBom("com.vaadin:vaadin-bom:${property("vaadinVersion")}")
     }
 }
