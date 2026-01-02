@@ -10,7 +10,6 @@ import org.springframework.transaction.support.DefaultTransactionDefinition;
 import xyz.faria.space.models.Agent;
 import xyz.faria.space.models.Reset;
 import xyz.faria.space.models.System;
-import xyz.faria.space.models.Waypoint;
 import xyz.faria.space.repositories.AgentRepository;
 import xyz.faria.space.repositories.ResetRepository;
 import xyz.faria.space.repositories.SystemRepository;
@@ -44,6 +43,7 @@ public class SystemRunner implements CommandLineRunner {
         try {
             doRun();
         } catch (Exception e) {
+            e.printStackTrace();
             logger.severe(e.getMessage());
             logger.severe("Ran into an exception. Restarting in 3 seconds");
             Thread.sleep(3000);
@@ -57,6 +57,8 @@ public class SystemRunner implements CommandLineRunner {
         loadAgent();
 
         while (!currentReset.isSystemsCollected()) {
+            DefaultTransactionDefinition def = new DefaultTransactionDefinition();
+            TransactionStatus status = transactionManager.getTransaction(def);
             if (agent == null) {
                 loadAgent();
                 if (agent == null) {
@@ -69,8 +71,6 @@ public class SystemRunner implements CommandLineRunner {
             logger.info(String.format("Collecting systems for reset %s. Current page %d",
                     currentReset.getResetDate(), currentReset.getSystemsPage()));
 
-            DefaultTransactionDefinition def = new DefaultTransactionDefinition();
-            TransactionStatus status = transactionManager.getTransaction(def);
 
             try {
                 var count = systemService.loadSystems(agent, currentReset.getSystemsPage(), 20);
@@ -100,6 +100,7 @@ public class SystemRunner implements CommandLineRunner {
     }
 
     protected void loadAgentSystem() throws ApiException {
+        TransactionStatus status = transactionManager.getTransaction(new DefaultTransactionDefinition());
         var systemOpt = systemRepository.findBySymbolAndReset(this.agent.getHeadquartersSystem(),
                 currentReset);
 
@@ -111,7 +112,7 @@ public class SystemRunner implements CommandLineRunner {
             system = systemOpt.get();
         }
 
-        loadSystemWaypoints(system);
+        systemService.loadSystemWaypoints(agent, system.getSymbol());
 
         for (var waypoint : system.getWaypoints()) {
             if (waypoint.hasMarketplace() && waypoint.getMarket() == null) {
@@ -119,45 +120,14 @@ public class SystemRunner implements CommandLineRunner {
                 systemService.loadMarketForWaypoint(agent, waypoint);
             }
         }
-    }
-
-    protected void loadSystemWaypoints(System system) throws ApiException {
-        logger.info(String.format("Collecting waypoints for system %s", system.getSymbol()));
-
-        // check if all waypoints have been scanned
-        if (system.getWaypoints().stream().allMatch(Waypoint::getHasBeenScanned)) {
-            return;
-        }
-
-        var page = 1;
-
-        TransactionStatus status = transactionManager.getTransaction(new DefaultTransactionDefinition());
-        try {
-            while (true) {
-                var count = systemService.loadSystemWaypoints(agent, system, page, 20);
-                logger.info(
-                        String.format("Collected waypoint page %d for system %s. Received %d waypoints",
-                                page,
-                                system.getSymbol(),
-                                count));
-                if (count < 20) {
-                    break;
-                }
-                page++;
-            }
-
-            transactionManager.commit(status);
-        } catch (ApiException e) {
-            logger.severe(e.getMessage());
-            transactionManager.rollback(status);
-        }
+        transactionManager.commit(status);
     }
 
     protected void loadWaypoints() throws ApiException {
-        List<System> systems = systemRepository.findSystemsWithUnscannedWaypoints();
+        List<String> systemSymbols = systemRepository.findSystemSymbolsWithUnscannedWaypoints();
 
-        for (var sys : systems) {
-            loadSystemWaypoints(sys);
+        for (var symbol : systemSymbols) {
+            systemService.loadSystemWaypoints(agent, symbol);
         }
     }
 }
