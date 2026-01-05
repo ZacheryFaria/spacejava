@@ -1,26 +1,29 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <databaseChangeLog
-  objectQuotingStrategy="QUOTE_ONLY_RESERVED_WORDS"
   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  objectQuotingStrategy="QUOTE_ONLY_RESERVED_WORDS"
   xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
                       http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-5.0.xsd">
-  <changeSet author="zach" id="1767154175545-1">
+  <changeSet author="zach" id="1767631186709-1">
     <createSequence incrementBy="50" sequenceName="agent_seq" startValue="1"/>
   </changeSet>
-  <changeSet author="zach" id="1767154175545-2">
+  <changeSet author="zach" id="1767631186709-2">
     <createSequence incrementBy="50" sequenceName="market_seq" startValue="1"/>
   </changeSet>
-  <changeSet author="zach" id="1767154175545-3">
+  <changeSet author="zach" id="1767631186709-3">
     <createSequence incrementBy="50" sequenceName="reset_seq" startValue="1"/>
   </changeSet>
-  <changeSet author="zach" id="1767154175545-4">
+  <changeSet author="zach" id="1767631186709-4">
+    <createSequence incrementBy="50" sequenceName="ship_seq" startValue="1"/>
+  </changeSet>
+  <changeSet author="zach" id="1767631186709-5">
     <createSequence incrementBy="50" sequenceName="system_seq" startValue="1"/>
   </changeSet>
-  <changeSet author="zach" id="1767154175545-5">
+  <changeSet author="zach" id="1767631186709-6">
     <createSequence incrementBy="50" sequenceName="waypoint_seq" startValue="1"/>
   </changeSet>
-  <changeSet author="zach" id="1767154175545-6">
+  <changeSet author="zach" id="1767631186709-7">
     <createTable tableName="agent">
       <column name="id" type="BIGINT">
         <constraints nullable="false" primaryKey="true" primaryKeyName="pk_agent"/>
@@ -46,7 +49,7 @@
       <column name="reset_id" type="BIGINT"/>
     </createTable>
   </changeSet>
-  <changeSet author="zach" id="1767154175545-7">
+  <changeSet author="zach" id="1767631186709-8">
     <createTable tableName="contract">
       <column name="id" type="VARCHAR(255)">
         <constraints nullable="false" primaryKey="true" primaryKeyName="pk_contract"/>
@@ -76,7 +79,7 @@
       </column>
     </createTable>
   </changeSet>
-  <changeSet author="zach" id="1767154175545-8">
+  <changeSet author="zach" id="1767631186709-9">
     <createTable tableName="contract_deliver">
       <column name="contract_id" type="VARCHAR(255)">
         <constraints nullable="false"/>
@@ -87,7 +90,7 @@
       <column name="units_fulfilled" type="INT"/>
     </createTable>
   </changeSet>
-  <changeSet author="zach" id="1767154175545-9">
+  <changeSet author="zach" id="1767631186709-10">
     <createTable tableName="market">
       <column name="id" type="BIGINT">
         <constraints nullable="false" primaryKey="true" primaryKeyName="pk_market"/>
@@ -98,7 +101,7 @@
       </column>
     </createTable>
   </changeSet>
-  <changeSet author="zach" id="1767154175545-10">
+  <changeSet author="zach" id="1767631186709-11">
     <createTable tableName="market_exchange">
       <column name="market_id" type="BIGINT">
         <constraints nullable="false"/>
@@ -108,7 +111,7 @@
       <column name="description" type="VARCHAR(255)"/>
     </createTable>
   </changeSet>
-  <changeSet author="zach" id="1767154175545-11">
+  <changeSet author="zach" id="1767631186709-12">
     <createTable tableName="market_exports">
       <column name="market_id" type="BIGINT">
         <constraints nullable="false"/>
@@ -118,7 +121,7 @@
       <column name="description" type="VARCHAR(255)"/>
     </createTable>
   </changeSet>
-  <changeSet author="zach" id="1767154175545-12">
+  <changeSet author="zach" id="1767631186709-13">
     <createTable tableName="market_imports">
       <column name="market_id" type="BIGINT">
         <constraints nullable="false"/>
@@ -128,7 +131,7 @@
       <column name="description" type="VARCHAR(255)"/>
     </createTable>
   </changeSet>
-  <changeSet author="zach" id="1767154175545-13">
+  <changeSet author="zach" id="1767631186709-14">
     <createTable tableName="market_trade_goods">
       <column name="market_id" type="BIGINT">
         <constraints nullable="false"/>
@@ -142,7 +145,7 @@
       <column name="sell_price" type="INT"/>
     </createTable>
   </changeSet>
-  <changeSet author="zach" id="1767154175545-14">
+  <changeSet author="zach" id="1767631186709-15">
     <createTable tableName="market_transactions">
       <column name="market_id" type="BIGINT">
         <constraints nullable="false"/>
@@ -157,7 +160,7 @@
       <column name="timestamp" type="timestamp"/>
     </createTable>
   </changeSet>
-  <changeSet author="zach" id="1767154175545-15">
+  <changeSet author="zach" id="1767631186709-16">
     <createTable tableName="reset">
       <column name="id" type="BIGINT">
         <constraints nullable="false" primaryKey="true" primaryKeyName="pk_reset"/>
@@ -168,12 +171,18 @@
       <column name="systems_collected" type="BOOLEAN">
         <constraints nullable="false"/>
       </column>
+      <column name="systems_page" type="INT">
+        <constraints nullable="false"/>
+      </column>
     </createTable>
   </changeSet>
-  <changeSet author="zach" id="1767154175545-16">
+  <changeSet author="zach" id="1767631186709-17">
     <createTable tableName="ship">
-      <column name="symbol" type="VARCHAR(255)">
+      <column name="id" type="BIGINT">
         <constraints nullable="false" primaryKey="true" primaryKeyName="pk_ship"/>
+      </column>
+      <column name="symbol" type="VARCHAR(255)">
+        <constraints nullable="false"/>
       </column>
       <column name="agent_id" type="BIGINT"/>
       <column name="registration_name" type="VARCHAR(255)">
@@ -351,9 +360,9 @@
       </column>
     </createTable>
   </changeSet>
-  <changeSet author="zach" id="1767154175545-17">
+  <changeSet author="zach" id="1767631186709-18">
     <createTable tableName="ship_inventory">
-      <column name="ship_symbol" type="VARCHAR(255)">
+      <column name="ship_id" type="BIGINT">
         <constraints nullable="false"/>
       </column>
       <column name="symbol" type="SMALLINT"/>
@@ -362,9 +371,9 @@
       <column name="units" type="INT"/>
     </createTable>
   </changeSet>
-  <changeSet author="zach" id="1767154175545-18">
+  <changeSet author="zach" id="1767631186709-19">
     <createTable tableName="ship_modules">
-      <column name="ship_symbol" type="VARCHAR(255)">
+      <column name="ship_symbol" type="BIGINT">
         <constraints nullable="false"/>
       </column>
       <column name="symbol" type="SMALLINT"/>
@@ -377,9 +386,9 @@
       <column name="slots" type="INT"/>
     </createTable>
   </changeSet>
-  <changeSet author="zach" id="1767154175545-19">
+  <changeSet author="zach" id="1767631186709-20">
     <createTable tableName="ship_mounts">
-      <column name="ship_symbol" type="VARCHAR(255)">
+      <column name="ship_symbol" type="BIGINT">
         <constraints nullable="false"/>
       </column>
       <column name="symbol" type="SMALLINT"/>
@@ -392,7 +401,7 @@
       <column name="slots" type="INT"/>
     </createTable>
   </changeSet>
-  <changeSet author="zach" id="1767154175545-20">
+  <changeSet author="zach" id="1767631186709-21">
     <createTable tableName="system">
       <column name="id" type="BIGINT">
         <constraints nullable="false" primaryKey="true" primaryKeyName="pk_system"/>
@@ -417,7 +426,7 @@
       <column name="reset_id" type="BIGINT"/>
     </createTable>
   </changeSet>
-  <changeSet author="zach" id="1767154175545-21">
+  <changeSet author="zach" id="1767631186709-22">
     <createTable tableName="waypoint">
       <column name="id" type="BIGINT">
         <constraints nullable="false" primaryKey="true" primaryKeyName="pk_waypoint"/>
@@ -444,11 +453,11 @@
       <column name="has_been_scanned" type="BOOLEAN">
         <constraints nullable="false"/>
       </column>
-      <column name="faction_symbol" type="VARCHAR(255)"/>
       <column name="system_id" type="BIGINT"/>
+      <column name="faction_symbol" type="VARCHAR(255)"/>
     </createTable>
   </changeSet>
-  <changeSet author="zach" id="1767154175545-22">
+  <changeSet author="zach" id="1767631186709-23">
     <createTable tableName="waypoint_modifiers">
       <column name="waypoint_id" type="BIGINT">
         <constraints nullable="false"/>
@@ -458,7 +467,7 @@
       <column name="description" type="VARCHAR(255)"/>
     </createTable>
   </changeSet>
-  <changeSet author="zach" id="1767154175545-23">
+  <changeSet author="zach" id="1767631186709-24">
     <createTable tableName="waypoint_orbitals">
       <column name="waypoint_id" type="BIGINT">
         <constraints nullable="false"/>
@@ -466,7 +475,7 @@
       <column name="symbol" type="VARCHAR(255)"/>
     </createTable>
   </changeSet>
-  <changeSet author="zach" id="1767154175545-24">
+  <changeSet author="zach" id="1767631186709-25">
     <createTable tableName="waypoint_traits">
       <column name="waypoint_id" type="BIGINT">
         <constraints nullable="false"/>
@@ -476,104 +485,129 @@
       <column name="description" type="VARCHAR(255)"/>
     </createTable>
   </changeSet>
-  <changeSet author="zach" id="1767154175545-25">
+  <changeSet author="zach" id="1767631186709-26">
     <addUniqueConstraint columnNames="reset_date" constraintName="uc_reset_reset_date"
       tableName="reset"/>
   </changeSet>
-  <changeSet author="zach" id="1767154175545-26">
+  <changeSet author="zach" id="1767631186709-27">
+    <createIndex indexName="idx_3373c0ecf33be29377aee7540" tableName="market_trade_goods">
+      <column name="symbol"/>
+    </createIndex>
+  </changeSet>
+  <changeSet author="zach" id="1767631186709-28">
+    <createIndex indexName="idx_4167bc0410f0014727cd25623" tableName="market_exchange">
+      <column name="symbol"/>
+    </createIndex>
+  </changeSet>
+  <changeSet author="zach" id="1767631186709-29">
+    <createIndex indexName="idx_4e88e3f045d8f52fa7f76f1a1" tableName="market_exports">
+      <column name="symbol"/>
+    </createIndex>
+  </changeSet>
+  <changeSet author="zach" id="1767631186709-30">
     <createIndex indexName="idx_agent_symbol" tableName="agent" unique="true">
       <column name="symbol"/>
       <column name="reset_id"/>
     </createIndex>
   </changeSet>
-  <changeSet author="zach" id="1767154175545-27">
+  <changeSet author="zach" id="1767631186709-31">
+    <createIndex indexName="idx_c0956531f3d46c69e2e7b046a" tableName="market_imports">
+      <column name="symbol"/>
+    </createIndex>
+  </changeSet>
+  <changeSet author="zach" id="1767631186709-32">
     <createIndex indexName="idx_system_symbol" tableName="system" unique="true">
       <column name="symbol"/>
       <column name="reset_id"/>
     </createIndex>
   </changeSet>
-  <changeSet author="zach" id="1767154175545-28">
+  <changeSet author="zach" id="1767631186709-33">
+    <createIndex indexName="idx_waypoint_has_been_scanned" tableName="waypoint">
+      <column name="has_been_scanned"/>
+    </createIndex>
+  </changeSet>
+  <changeSet author="zach" id="1767631186709-34">
     <addForeignKeyConstraint baseColumnNames="reset_id" baseTableName="agent"
       constraintName="FK_AGENT_ON_RESET" referencedColumnNames="id" referencedTableName="reset"/>
   </changeSet>
-  <changeSet author="zach" id="1767154175545-29">
+  <changeSet author="zach" id="1767631186709-35">
     <addForeignKeyConstraint baseColumnNames="agent_id" baseTableName="contract"
       constraintName="FK_CONTRACT_ON_AGENT" referencedColumnNames="id" referencedTableName="agent"/>
   </changeSet>
-  <changeSet author="zach" id="1767154175545-30">
+  <changeSet author="zach" id="1767631186709-36">
     <addForeignKeyConstraint baseColumnNames="waypoint_id" baseTableName="market"
       constraintName="FK_MARKET_ON_WAYPOINT" referencedColumnNames="id"
       referencedTableName="waypoint"/>
   </changeSet>
-  <changeSet author="zach" id="1767154175545-31">
+  <changeSet author="zach" id="1767631186709-37">
     <addForeignKeyConstraint baseColumnNames="agent_id" baseTableName="ship"
       constraintName="FK_SHIP_ON_AGENT" referencedColumnNames="id" referencedTableName="agent"/>
   </changeSet>
-  <changeSet author="zach" id="1767154175545-32">
+  <changeSet author="zach" id="1767631186709-38">
     <addForeignKeyConstraint baseColumnNames="reset_id" baseTableName="system"
       constraintName="FK_SYSTEM_ON_RESET" referencedColumnNames="id" referencedTableName="reset"/>
   </changeSet>
-  <changeSet author="zach" id="1767154175545-33">
+  <changeSet author="zach" id="1767631186709-39">
     <addForeignKeyConstraint baseColumnNames="system_id" baseTableName="waypoint"
       constraintName="FK_WAYPOINT_ON_SYSTEM" referencedColumnNames="id"
       referencedTableName="system"/>
   </changeSet>
-  <changeSet author="zach" id="1767154175545-34">
+  <changeSet author="zach" id="1767631186709-40">
     <addForeignKeyConstraint baseColumnNames="contract_id" baseTableName="contract_deliver"
       constraintName="fk_contract_deliver_on_contract" referencedColumnNames="id"
       referencedTableName="contract"/>
   </changeSet>
-  <changeSet author="zach" id="1767154175545-35">
+  <changeSet author="zach" id="1767631186709-41">
     <addForeignKeyConstraint baseColumnNames="market_id" baseTableName="market_exchange"
       constraintName="fk_market_exchange_on_market" referencedColumnNames="id"
       referencedTableName="market"/>
   </changeSet>
-  <changeSet author="zach" id="1767154175545-36">
+  <changeSet author="zach" id="1767631186709-42">
     <addForeignKeyConstraint baseColumnNames="market_id" baseTableName="market_exports"
       constraintName="fk_market_exports_on_market" referencedColumnNames="id"
       referencedTableName="market"/>
   </changeSet>
-  <changeSet author="zach" id="1767154175545-37">
+  <changeSet author="zach" id="1767631186709-43">
     <addForeignKeyConstraint baseColumnNames="market_id" baseTableName="market_imports"
       constraintName="fk_market_imports_on_market" referencedColumnNames="id"
       referencedTableName="market"/>
   </changeSet>
-  <changeSet author="zach" id="1767154175545-38">
+  <changeSet author="zach" id="1767631186709-44">
     <addForeignKeyConstraint baseColumnNames="market_id" baseTableName="market_trade_goods"
       constraintName="fk_market_tradegoods_on_market" referencedColumnNames="id"
       referencedTableName="market"/>
   </changeSet>
-  <changeSet author="zach" id="1767154175545-39">
+  <changeSet author="zach" id="1767631186709-45">
     <addForeignKeyConstraint baseColumnNames="market_id" baseTableName="market_transactions"
       constraintName="fk_market_transactions_on_market" referencedColumnNames="id"
       referencedTableName="market"/>
   </changeSet>
-  <changeSet author="zach" id="1767154175545-40">
-    <addForeignKeyConstraint baseColumnNames="ship_symbol" baseTableName="ship_inventory"
-      constraintName="fk_ship_inventory_on_ship" referencedColumnNames="symbol"
+  <changeSet author="zach" id="1767631186709-46">
+    <addForeignKeyConstraint baseColumnNames="ship_id" baseTableName="ship_inventory"
+      constraintName="fk_ship_inventory_on_ship" referencedColumnNames="id"
       referencedTableName="ship"/>
   </changeSet>
-  <changeSet author="zach" id="1767154175545-41">
+  <changeSet author="zach" id="1767631186709-47">
     <addForeignKeyConstraint baseColumnNames="ship_symbol" baseTableName="ship_modules"
-      constraintName="fk_ship_modules_on_ship" referencedColumnNames="symbol"
+      constraintName="fk_ship_modules_on_ship" referencedColumnNames="id"
       referencedTableName="ship"/>
   </changeSet>
-  <changeSet author="zach" id="1767154175545-42">
+  <changeSet author="zach" id="1767631186709-48">
     <addForeignKeyConstraint baseColumnNames="ship_symbol" baseTableName="ship_mounts"
-      constraintName="fk_ship_mounts_on_ship" referencedColumnNames="symbol"
+      constraintName="fk_ship_mounts_on_ship" referencedColumnNames="id"
       referencedTableName="ship"/>
   </changeSet>
-  <changeSet author="zach" id="1767154175545-43">
+  <changeSet author="zach" id="1767631186709-49">
     <addForeignKeyConstraint baseColumnNames="waypoint_id" baseTableName="waypoint_modifiers"
       constraintName="fk_waypoint_modifiers_on_waypoint" referencedColumnNames="id"
       referencedTableName="waypoint"/>
   </changeSet>
-  <changeSet author="zach" id="1767154175545-44">
+  <changeSet author="zach" id="1767631186709-50">
     <addForeignKeyConstraint baseColumnNames="waypoint_id" baseTableName="waypoint_orbitals"
       constraintName="fk_waypoint_orbitals_on_waypoint" referencedColumnNames="id"
       referencedTableName="waypoint"/>
   </changeSet>
-  <changeSet author="zach" id="1767154175545-45">
+  <changeSet author="zach" id="1767631186709-51">
     <addForeignKeyConstraint baseColumnNames="waypoint_id" baseTableName="waypoint_traits"
       constraintName="fk_waypoint_traits_on_waypoint" referencedColumnNames="id"
       referencedTableName="waypoint"/>
