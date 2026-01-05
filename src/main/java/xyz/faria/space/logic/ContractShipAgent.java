@@ -1,16 +1,15 @@
 package xyz.faria.space.logic;
 
+import xyz.faria.space.events.ShipBus;
+import xyz.faria.space.logic.navigation.Navigator;
 import xyz.faria.space.models.Ship;
+import xyz.faria.space.services.ShipService;
+import xyz.faria.space.services.SystemService;
 
-public class ContractShipAgent implements ShipAgent {
+public class ContractShipAgent extends ShipAgent {
 
-    private final Ship ship;
-    private ContractAgentStatus status;
-
-    public ContractShipAgent(Ship ship) {
-        this.ship = ship;
-
-        this.status = ContractAgentStatus.INIT;
+    public ContractShipAgent(Ship ship, ShipService shipService, ShipBus shipBus, SystemService systemService, Navigator navigator) {
+        super(ship, shipService, shipBus, systemService, navigator);
     }
 
     @Override
