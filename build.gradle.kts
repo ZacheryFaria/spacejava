@@ -8,7 +8,6 @@ plugins {
 }
 
 group = "xyz.faria"
-version = "0.0.1-SNAPSHOT"
 description = "space"
 
 java {
