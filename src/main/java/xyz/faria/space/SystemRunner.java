@@ -1,8 +1,11 @@
 package xyz.faria.space;
 
+import java.util.List;
+import java.util.logging.Logger;
 import lombok.RequiredArgsConstructor;
 import org.jspecify.annotations.NonNull;
 import org.springframework.boot.CommandLineRunner;
+import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.TransactionStatus;
@@ -18,11 +21,9 @@ import xyz.faria.space.services.ResetService;
 import xyz.faria.space.services.SystemService;
 import xyz.faria.space.spaceapi.client.ApiException;
 
-import java.util.List;
-import java.util.logging.Logger;
-
 @Component
 @RequiredArgsConstructor
+@Profile("!test")
 public class SystemRunner implements CommandLineRunner {
 
     private static final Logger logger = Logger.getLogger(SystemRunner.class.getName());
@@ -69,8 +70,7 @@ public class SystemRunner implements CommandLineRunner {
             }
 
             logger.info(String.format("Collecting systems for reset %s. Current page %d",
-                    currentReset.getResetDate(), currentReset.getSystemsPage()));
-
+                currentReset.getResetDate(), currentReset.getSystemsPage()));
 
             try {
                 var count = systemService.loadSystems(agent, currentReset.getSystemsPage(), 20);
@@ -81,7 +81,7 @@ public class SystemRunner implements CommandLineRunner {
                     resetRepository.save(currentReset);
                 }
                 logger.info(String.format("Collected system page %d.",
-                        currentReset.getSystemsPage()));
+                    currentReset.getSystemsPage()));
 
                 transactionManager.commit(status);
             } catch (ApiException e) {
@@ -99,9 +99,10 @@ public class SystemRunner implements CommandLineRunner {
     }
 
     protected void loadAgentSystem() throws ApiException {
-        TransactionStatus status = transactionManager.getTransaction(new DefaultTransactionDefinition());
+        TransactionStatus status = transactionManager.getTransaction(
+            new DefaultTransactionDefinition());
         var systemOpt = systemRepository.findBySymbolAndReset(this.agent.getHeadquartersSystem(),
-                currentReset);
+            currentReset);
 
         System system = null;
 

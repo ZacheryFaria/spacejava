@@ -6,6 +6,7 @@ import java.util.Map;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.CommandLineRunner;
+import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
 import xyz.faria.space.logic.ShipAgent;
 import xyz.faria.space.logic.ShipAgentFactory;
@@ -16,6 +17,7 @@ import xyz.faria.space.services.ShipService;
 
 @Component
 @RequiredArgsConstructor
+@Profile("!test")
 public class GameRunner implements CommandLineRunner {
 
     private final ShipService shipService;
