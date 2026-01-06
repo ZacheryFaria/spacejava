@@ -4,6 +4,7 @@ plugins {
     id("io.spring.dependency-management") version "1.1.7"
     id("com.vaadin") version "25.0.2"
     id("io.sentry.jvm.gradle") version "5.12.2"
+    id("com.netflix.nebula.release") version "20.1.0"
 }
 
 group = "xyz.faria"
