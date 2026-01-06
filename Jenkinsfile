@@ -1,6 +1,10 @@
 pipeline {
     agent any
 
+    tools {
+        jdk 'java 25'
+    }
+
     environment {
         BRANCH_TAG = env.BRANCH_NAME.replace('/', '__').replace('-', '_').toLowerCase()
         BUILD_TAG = "${env.BRANCH_TAG}_${env.GIT_COMMIT.substring(0, 8)}_${env.BUILD_NUMBER}"
