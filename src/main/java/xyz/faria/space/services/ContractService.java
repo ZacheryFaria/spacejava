@@ -86,4 +86,8 @@ public class ContractService {
             .shipSymbol(ship.getSymbol())
             .units(itemToTransfer.getUnits());
     }
+
+    public Contract getActiveContract(Ship ship) {
+        return contractRepository.getContractByAgentAndFulfilled(ship.getAgent(), false);
+    }
 }

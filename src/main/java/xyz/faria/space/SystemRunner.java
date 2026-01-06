@@ -79,7 +79,6 @@ public class SystemRunner implements CommandLineRunner {
                 if (count < 20) {
                     currentReset.setSystemsCollected(true);
                     resetRepository.save(currentReset);
-                    break;
                 }
                 logger.info(String.format("Collected system page %d.",
                         currentReset.getSystemsPage()));
