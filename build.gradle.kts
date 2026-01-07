@@ -4,10 +4,10 @@ plugins {
     id("io.spring.dependency-management") version "1.1.7"
     id("com.vaadin") version "25.0.2"
     id("io.sentry.jvm.gradle") version "5.12.2"
+    id("com.netflix.nebula.release") version "20.1.0"
 }
 
 group = "xyz.faria"
-version = "0.0.1-SNAPSHOT"
 description = "space"
 
 java {
@@ -55,6 +55,7 @@ dependencies {
     runtimeOnly("io.micrometer:micrometer-registry-prometheus")
 
     testRuntimeOnly("org.junit.platform:junit-platform-launcher")
+    testRuntimeOnly("com.h2database:h2")
     testImplementation("org.springframework.boot:spring-boot-starter-data-jpa-test")
     testImplementation("org.springframework.boot:spring-boot-starter-liquibase-test")
     testImplementation("org.springframework.boot:spring-boot-starter-restclient-test")
