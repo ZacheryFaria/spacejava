@@ -2,6 +2,12 @@ package xyz.faria.space.services;
 
 import jakarta.annotation.Nonnull;
 import jakarta.transaction.Transactional;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+import java.util.logging.Logger;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import xyz.faria.space.models.Agent;
@@ -17,12 +23,10 @@ import xyz.faria.space.spaceapi.converters.MarketConverter;
 import xyz.faria.space.spaceapi.converters.SystemConverter;
 import xyz.faria.space.spaceapi.converters.WaypointConverter;
 
-import java.util.*;
-import java.util.logging.Logger;
-
 @Service
 @RequiredArgsConstructor
 public class SystemService {
+
     private static final Logger logger = Logger.getLogger(SystemService.class.getName());
 
     private final SystemRepository systemRepository;
@@ -88,7 +92,7 @@ public class SystemService {
     }
 
     public Integer loadSystemWaypoints(Agent agent, System system, Integer page, Integer pageSize)
-            throws ApiException {
+        throws ApiException {
         var apiClient = agent.getAgentClient();
         var client = new SystemsApi(apiClient);
 
@@ -114,7 +118,7 @@ public class SystemService {
             var waypoint = waypointMap.get(wp.getSymbol());
             if (waypoint == null) {
                 throw new IllegalArgumentException(
-                        "Waypoint not found for symbol: " + wp.getSymbol());
+                    "Waypoint not found for symbol: " + wp.getSymbol());
             }
             var updatedWaypoint = WaypointConverter.fromApiWaypoint(waypoint, wp);
             updatedWaypoints.add(updatedWaypoint);
@@ -141,10 +145,10 @@ public class SystemService {
             while (true) {
                 var count = loadSystemWaypoints(agent, system, page, 20);
                 logger.info(
-                        String.format("Collected waypoint page %d for system %s. Received %d waypoints",
-                                page,
-                                system.getSymbol(),
-                                count));
+                    String.format("Collected waypoint page %d for system %s. Received %d waypoints",
+                        page,
+                        system.getSymbol(),
+                        count));
                 if (count < 20) {
                     break;
                 }

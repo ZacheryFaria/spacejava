@@ -1,5 +1,7 @@
 package xyz.faria.space.models;
 
+import io.sentry.Sentry;
+import io.sentry.SentryLevel;
 import jakarta.persistence.AttributeOverride;
 import jakarta.persistence.AttributeOverrides;
 import jakarta.persistence.Column;
@@ -14,6 +16,7 @@ import jakarta.persistence.Table;
 import java.time.LocalDateTime;
 import lombok.Getter;
 import lombok.Setter;
+import xyz.faria.space.spaceapi.model.ContractDeliverGood;
 import xyz.faria.space.spaceapi.model.ContractTerms;
 
 @Getter
@@ -62,4 +65,12 @@ public class Contract {
     @Column(name = "deadline_to_accept")
     private LocalDateTime deadlineToAccept;
 
+    public ContractDeliverGood getDeliverGood() {
+        var deliver = terms.getDeliver();
+        if (deliver == null) {
+            Sentry.captureMessage("Contract terms do not contain deliver", SentryLevel.FATAL);
+            throw new RuntimeException("Contract terms do not contain deliver. Unknown behavior");
+        }
+        return deliver.getFirst();
+    }
 }

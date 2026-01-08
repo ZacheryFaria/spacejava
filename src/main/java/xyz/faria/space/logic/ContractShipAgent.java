@@ -7,16 +7,19 @@ import xyz.faria.space.models.Ship;
 import xyz.faria.space.services.ContractService;
 import xyz.faria.space.services.ShipService;
 import xyz.faria.space.services.SystemService;
+import xyz.faria.space.spaceapi.client.ApiClient;
 
 public class ContractShipAgent extends ShipAgent {
 
     private final ContractService contractService;
     private ContractAgentStatus status = ContractAgentStatus.INIT;
 
-    private final Contract activeContract = null;
+    private Contract activeContract = null;
 
-    public ContractShipAgent(Ship ship, ShipService shipService, ShipBus shipBus, SystemService systemService, Navigator navigator, ContractService contractService) {
-        super(ship, shipService, shipBus, systemService, navigator);
+    public ContractShipAgent(ApiClient apiClient, Ship ship, ShipService shipService,
+        ShipBus shipBus,
+        SystemService systemService, Navigator navigator, ContractService contractService) {
+        super(apiClient, ship, shipService, shipBus, systemService, navigator);
 
         this.contractService = contractService;
     }
@@ -29,6 +32,13 @@ public class ContractShipAgent extends ShipAgent {
             case TRAVELING_TO_CONTRACT -> handleTravelToContract();
             case RESET -> handleReset();
         };
+    }
+
+    private Contract getContract() {
+        if (this.activeContract == null) {
+            this.activeContract = contractService.getActiveContract(ship);
+        }
+        return this.activeContract;
     }
 
     private ContractAgentStatus handleInit() {
@@ -47,11 +57,14 @@ public class ContractShipAgent extends ShipAgent {
     }
 
     private ContractAgentStatus handleTravelToMarket() {
-        // pull all markets
+        // pull all markets with the target contract
+        var targetResource = getContract();
+        var deliver = targetResource.getDeliverGood();
         return ContractAgentStatus.INIT;
     }
 
     private ContractAgentStatus handleTravelToContract() {
+
         return ContractAgentStatus.INIT;
     }
 

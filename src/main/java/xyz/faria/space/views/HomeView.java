@@ -9,6 +9,7 @@ public class HomeView extends VerticalLayout {
 
     public HomeView() throws Exception {
         add(new Anchor("/ships", "Ships"));
+        add(new Anchor("/market", "Market"));
         add(new Anchor("/new-agent", "Create New Agent"));
     }
 }
