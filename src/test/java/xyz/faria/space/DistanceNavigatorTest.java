@@ -52,4 +52,17 @@ public class DistanceNavigatorTest {
         assertEquals(2, result.size());
         assertEquals("planet", result.get(1).getSymbol());
     }
+
+    @Test
+    void test_next_step() {
+        DistanceNavigator navigator = new DistanceNavigator(waypoints);
+
+        var nextStop = navigator.findNextStop(start, end, 100).orElseThrow();
+
+        assertEquals("mid", nextStop.getSymbol());
+
+        var finalStop = navigator.findNextStop(nextStop, end, 100).orElseThrow();
+
+        assertEquals("planet", finalStop.getSymbol());
+    }
 }

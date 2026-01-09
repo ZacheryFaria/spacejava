@@ -146,6 +146,10 @@ public class ContractDeliverGood {
         this.unitsFulfilled = unitsFulfilled;
     }
 
+    public Integer getUnitsRemaining() {
+        return unitsRequired - unitsFulfilled;
+    }
+
     /**
      * Validates the JSON Element and throws an exception if issues found
      *

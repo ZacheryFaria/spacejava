@@ -25,7 +25,7 @@ public class ContractService {
         this.shipService = shipService;
     }
 
-    public void negotiateContract(Ship ship) throws ApiException {
+    public Contract negotiateContract(Ship ship) throws ApiException {
         var fleetApi = ship.getFleetApi();
 
         var response = fleetApi.negotiateContract(ship.getSymbol());
@@ -34,28 +34,32 @@ public class ContractService {
         var contractModel = ContractConverter.fromApiContract(contract);
         contractModel.setAgent(ship.getAgent());
         contractRepository.save(contractModel);
+        return contractModel;
     }
 
-    public void acceptContract(Contract contract) throws ApiException {
+    public Contract acceptContract(Contract contract) throws ApiException {
         var contractApi = new ContractsApi(contract.getAgent().getAgentClient());
         var response = contractApi.acceptContract(contract.getId());
         ContractConverter.fromApiContract(contract, response.getData().getContract());
         contractRepository.save(contract);
+        return contract;
     }
 
-    public void fulfillContract(Contract contract) throws ApiException {
+    public Contract fulfillContract(Contract contract) throws ApiException {
         var contractApi = new ContractsApi(contract.getAgent().getAgentClient());
         var response = contractApi.fulfillContract(contract.getId());
         ContractConverter.fromApiContract(contract, response.getData().getContract());
         contractRepository.save(contract);
+        return contract;
     }
 
-    public void deliverContract(Contract contract, Ship ship) throws ApiException {
+    public Contract deliverContract(Contract contract, Ship ship) throws ApiException {
         var contractApi = new ContractsApi(contract.getAgent().getAgentClient());
         var deliverRequest = createDeliverContractRequest(contract, ship);
         var response = contractApi.deliverContract(contract.getId(), deliverRequest);
         ContractConverter.fromApiContract(contract, response.getData().getContract());
         contractRepository.save(contract);
+        return contract;
     }
 
     private DeliverContractRequest createDeliverContractRequest(Contract contract, Ship ship) {

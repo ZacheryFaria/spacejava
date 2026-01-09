@@ -46,6 +46,7 @@ public class Contract {
 
     @javax.annotation.Nonnull
     @Embedded
+
     @AttributeOverrides({
         @AttributeOverride(name = "deadline", column = @Column(name = "terms_deadline", nullable = false)),
         @AttributeOverride(name = "payment.onAccepted", column = @Column(name = "terms_payment_on_accepted", nullable = false)),
@@ -72,5 +73,10 @@ public class Contract {
             throw new RuntimeException("Contract terms do not contain deliver. Unknown behavior");
         }
         return deliver.getFirst();
+    }
+
+    public boolean isCompleted() {
+        return this.terms.getDeliver().stream()
+            .allMatch(deliverGood -> deliverGood.getUnitsRemaining() == 0);
     }
 }

@@ -1,6 +1,7 @@
 package xyz.faria.space.repositories;
 
 import java.util.List;
+import java.util.Optional;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import xyz.faria.space.models.System;
@@ -27,4 +28,8 @@ public interface WaypointRepository extends CrudRepository<Waypoint, Long> {
         """)
     List<Waypoint> findWaypointsBySystemAndHasMarketWithTradeSymbol(String systemSymbol,
         TradeSymbol tradeSymbol);
+
+    Optional<Waypoint> findWaypointBySymbol(String symbol);
+
+    Optional<Waypoint> findWaypointsBySymbol(String symbol);
 }

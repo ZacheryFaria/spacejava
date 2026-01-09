@@ -39,7 +39,8 @@ public class ShipDetailsView extends VerticalLayout implements BeforeEnterObserv
     @Override
     public void beforeEnter(BeforeEnterEvent event) {
         this.shipSymbol = event.getRouteParameters().get("shipSymbol").orElse(null);
-        this.subscription = ShipBus.getInstance().subscribe(this);
+        this.subscription = ShipBus.getInstance()
+            .subscribe(UI.getCurrent().accessLater(this::onShipUpdate, null));
     }
 
     @Override
@@ -79,10 +80,6 @@ public class ShipDetailsView extends VerticalLayout implements BeforeEnterObserv
     public void onShipUpdate(Ship ship) {
         System.out.println("Ship updated event received");
         this.ship = ship;
-        var ui = UI.getCurrent();
-        ui.access(() -> {
-            render();
-            ui.push();
-        });
+        render();
     }
 }

@@ -160,7 +160,7 @@ public class SystemService {
         }
     }
 
-    public void loadMarketForWaypoint(Agent agent, Waypoint waypoint) throws ApiException {
+    public Market loadMarketForWaypoint(Agent agent, Waypoint waypoint) throws ApiException {
         var apiClient = agent.getAgentClient();
         var client = new SystemsApi(apiClient);
 
@@ -173,5 +173,11 @@ public class SystemService {
         var market = MarketConverter.fromApiMarket(marketModel, response.getData());
         market.setWaypoint(waypoint);
         marketRepository.save(market);
+        return market;
+    }
+
+    public Market loadMarketForWaypoint(Agent agent, String waypointSymbol) throws ApiException {
+        var waypoint = waypointRepository.findWaypointsBySymbol(waypointSymbol).orElseThrow();
+        return loadMarketForWaypoint(agent, waypoint);
     }
 }

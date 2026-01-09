@@ -68,6 +68,10 @@ public class ShipCargo {
         return this;
     }
 
+    public Integer getRemainingCapacity() {
+        return capacity - units;
+    }
+
     /**
      * The max number of items that can be stored in the cargo hold. minimum: 0
      *

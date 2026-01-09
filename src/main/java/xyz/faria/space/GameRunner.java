@@ -10,6 +10,7 @@ import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
 import xyz.faria.space.logic.ShipAgent;
 import xyz.faria.space.logic.ShipAgentFactory;
+import xyz.faria.space.logic.ShipAgentThread;
 import xyz.faria.space.models.Agent;
 import xyz.faria.space.repositories.ShipRepository;
 import xyz.faria.space.services.AgentService;
@@ -23,22 +24,27 @@ public class GameRunner implements CommandLineRunner {
     private final ShipService shipService;
     private final ShipRepository shipRepository;
     private final AgentService agentService;
+    private final ShipAgentFactory shipAgentFactory;
 
     private Agent mainAgent;
 
     private final Map<String, ShipAgent> agents = new HashMap<>();
-    private final Map<String, Thread> agentThreads = new HashMap<>();
+    private final Map<String, ShipAgentThread> agentThreads = new HashMap<>();
 
     @Override
     @Transactional
     public void run(String @NonNull ... args) throws Exception {
         this.mainAgent = agentService.getMainAgent();
-        var ships = shipRepository.findAll();
+        var ships = shipRepository.findShipsByAgent(mainAgent);
 
         for (var ship : ships) {
-            agents.put(ship.getSymbol(), ShipAgentFactory.createShipEngine(ship));
-            agentThreads.put(ship.getSymbol(),
-                new Thread(() -> agents.get(ship.getSymbol()).updateTick()));
+            var engine = shipAgentFactory.createShipEngine(ship);
+            if (engine.isPresent()) {
+                agents.put(ship.getSymbol(), engine.get());
+                var agentThread = new ShipAgentThread(engine.get());
+                agentThread.start();
+                agentThreads.put(ship.getSymbol(), agentThread);
+            }
         }
 
 //        while (true) {

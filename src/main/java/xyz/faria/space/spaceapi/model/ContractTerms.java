@@ -26,6 +26,7 @@ import com.google.gson.stream.JsonWriter;
 import jakarta.persistence.ElementCollection;
 import jakarta.persistence.Embeddable;
 import jakarta.persistence.Embedded;
+import jakarta.persistence.FetchType;
 import java.io.IOException;
 import java.time.OffsetDateTime;
 import java.util.ArrayList;
@@ -58,7 +59,7 @@ public class ContractTerms {
     public static final String SERIALIZED_NAME_DELIVER = "deliver";
     @SerializedName(SERIALIZED_NAME_DELIVER)
     @javax.annotation.Nullable
-    @ElementCollection
+    @ElementCollection(fetch = FetchType.EAGER)
     private List<ContractDeliverGood> deliver = new ArrayList<>();
 
     public ContractTerms() {

@@ -13,11 +13,13 @@ import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import lombok.Getter;
 import lombok.Setter;
 import xyz.faria.space.spaceapi.model.MarketTradeGood;
 import xyz.faria.space.spaceapi.model.MarketTransaction;
 import xyz.faria.space.spaceapi.model.TradeGood;
+import xyz.faria.space.spaceapi.model.TradeSymbol;
 
 @Getter
 @Setter
@@ -60,4 +62,13 @@ public class Market {
     @ElementCollection
     @CollectionTable(indexes = {@Index(columnList = "symbol")})
     private List<MarketTradeGood> tradeGoods = new ArrayList<>();
+
+    public Optional<MarketTradeGood> getTradeGoodBySymbol(TradeSymbol symbol) {
+        if (tradeGoods != null) {
+            return tradeGoods.stream()
+                .filter(tradeGood -> tradeGood.getSymbol().equals(symbol))
+                .findFirst();
+        }
+        return Optional.empty();
+    }
 }

@@ -19,7 +19,7 @@ public class ShipAgentThread implements Runnable {
         try {
             this.agent.updateTick();
             long nextTick = this.agent.getNextUpdateTick();
-            long sleepDuration = Long.min(nextTick - System.currentTimeMillis(), 1);
+            long sleepDuration = Long.max(nextTick - System.currentTimeMillis(), 1);
             Thread.sleep(sleepDuration);
             run();
         } catch (Exception e) {

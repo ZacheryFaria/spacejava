@@ -11,4 +11,6 @@ public interface AgentRepository extends CrudRepository<Agent, UUID> {
     Optional<Agent> findAgentByReset(Reset reset);
 
     Optional<Agent> findAgentByResetAndSymbol(Reset reset, String symbol);
+
+    Agent findAgentById(Long id);
 }

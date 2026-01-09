@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.HashSet;
 import java.util.List;
-import java.util.PriorityQueue;
+import java.util.Optional;
 import java.util.Set;
 import xyz.faria.space.models.Waypoint;
 
@@ -24,7 +24,6 @@ public class DistanceNavigator implements Navigator {
             .toList();
 
         Set<String> inRangeWaypointsSet = new HashSet<>(inRangeWaypoints);
-
 
         Waypoint best = null;
         double bestScore = Double.MAX_VALUE;
@@ -58,5 +57,16 @@ public class DistanceNavigator implements Navigator {
         }
 
         return route;
+    }
+
+    @Override
+    public Optional<Waypoint> findNextStop(Waypoint start, Waypoint end, int maxDistance) {
+        return Optional.of(getNextPoint(start, end, maxDistance));
+    }
+
+    @Override
+    public Optional<Waypoint> findNearestWaypoint(Waypoint start) {
+        return waypoints.stream()
+            .min(Comparator.comparingDouble(waypoint -> Utils.distance(start, waypoint)));
     }
 }
